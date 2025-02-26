@@ -3,6 +3,7 @@
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { MaskitoDateMode } from "@maskito/kit";
+import { Measurable } from "@radix-ui/rect";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import * as React from "react";
@@ -252,7 +253,11 @@ const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         {editable && triggerContent}
         {isDesktop ? (
           <Popover open={open} onOpenChange={setOpen}>
-            {editable && <PopoverAnchor virtualRef={calendarButtonRef} />}
+            {editable && calendarButtonRef && (
+              <PopoverAnchor
+                virtualRef={calendarButtonRef as React.RefObject<Measurable>}
+              />
+            )}
             <PopoverTrigger asChild>
               {!editable && triggerContent}
             </PopoverTrigger>
