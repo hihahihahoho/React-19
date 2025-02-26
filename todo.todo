@@ -7,3 +7,5 @@ src\components\ui\textarea\textarea.tsx
 src\components\ui\form\form.tsx
 src\components\ui\table
 src\components\ui\datepicker\datepicker.tsx
+src\components\ui\selection-controls\selection-group.tsx
+src\components\ui\file-upload\file-upload.tsx

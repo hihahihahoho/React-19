@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 // file-upload.tsx
 import { useToast } from "@/hooks/use-toast";
 import { formatFileSize } from "@/lib/file-size";
@@ -90,16 +89,19 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
     });
 
     const previewUrls = useMemo(() => {
-      return internalFiles.reduce((acc, file) => {
-        let previewUrl;
-        if (file.file && file.file.size > 0) {
-          previewUrl = URL.createObjectURL(file.file);
-        } else {
-          previewUrl = file.file.name;
-        }
-        acc[file.id] = previewUrl;
-        return acc;
-      }, {} as Record<string, string>);
+      return internalFiles.reduce(
+        (acc, file) => {
+          let previewUrl;
+          if (file.file && file.file.size > 0) {
+            previewUrl = URL.createObjectURL(file.file);
+          } else {
+            previewUrl = file.file.name;
+          }
+          acc[file.id] = previewUrl;
+          return acc;
+        },
+        {} as Record<string, string>
+      );
     }, [internalFiles]);
 
     useImperativeHandle(ref, () => inputRef.current!);
@@ -195,7 +197,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             variant: "destructive",
             title: "File trùng lặp",
             description: (
-              <ul className="list-disc list-inside text-xs">
+              <ul className="text-xs list-disc list-inside">
                 {duplicates.map((name, index) => (
                   <li key={index}>Đã tồn tại file: {name}</li>
                 ))}
@@ -210,7 +212,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
             variant: "destructive",
             title: "Không thể tải lên một số file",
             description: (
-              <ul className="list-disc list-inside text-xs">
+              <ul className="text-xs list-disc list-inside">
                 {errors.map((error, index) => (
                   <li key={index}>{error}</li>
                 ))}
@@ -338,7 +340,7 @@ const FileUpload = forwardRef<HTMLInputElement, FileUploadProps>(
                       <img
                         src={previewUrls[fileMeta.id]}
                         alt={fileMeta.file.name}
-                        className="object-cover w-full h-full rounded-lg border"
+                        className="object-cover w-full h-full border rounded-lg"
                         onError={(e) => {
                           (e.target as HTMLImageElement).style.display = "none";
                         }}
