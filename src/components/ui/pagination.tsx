@@ -4,34 +4,38 @@ import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
 import * as React from "react";
 import { ButtonProps, buttonVariants } from "./button";
 
-const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
-  <nav
-    role="navigation"
-    aria-label="pagination"
-    className={cn("mx-auto flex justify-center", className)}
-    {...props}
-  />
-);
+function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
+  return (
+    <nav
+      data-slot="pagination"
+      role="navigation"
+      aria-label="pagination"
+      className={cn("mx-auto flex justify-center", className)}
+      {...props}
+    />
+  );
+}
 Pagination.displayName = "Pagination";
 
-const PaginationContent = React.forwardRef<
-  HTMLUListElement,
-  React.ComponentProps<"ul">
->(({ className, ...props }, ref) => (
-  <ul
-    ref={ref}
-    className={cn("flex flex-row items-center gap-1", className)}
-    {...props}
-  />
-));
+function PaginationContent({
+  className,
+  ...props
+}: React.ComponentProps<"ul">) {
+  return (
+    <ul
+      data-slot="pagination-content"
+      className={cn("flex flex-row items-center gap-1", className)}
+      {...props}
+    />
+  );
+}
 PaginationContent.displayName = "PaginationContent";
 
-const PaginationItem = React.forwardRef<
-  HTMLLIElement,
-  React.ComponentProps<"li">
->(({ className, ...props }, ref) => (
-  <li ref={ref} className={cn("", className)} {...props} />
-));
+function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
+  return (
+    <li data-slot="pagination-item" className={cn("", className)} {...props} />
+  );
+}
 PaginationItem.displayName = "PaginationItem";
 
 type PaginationLinkProps = {
@@ -42,38 +46,42 @@ type PaginationLinkProps = {
   Pick<ButtonProps, "iconOnly"> &
   React.ComponentProps<"a">;
 
-const PaginationLink = ({
+function PaginationLink({
   className,
   isActive,
   size,
   disabled,
   iconOnly,
   ...props
-}: PaginationLinkProps) => (
-  <a
-    aria-current={isActive ? "page" : undefined}
-    className={cn(
-      buttonVariants({
-        variant: isActive ? "secondary" : "ghost",
-        size,
-        iconOnly: iconOnly,
-        disabled,
-      }),
-      "px-1",
-      className
-    )}
-    {...props}
-  />
-);
+}: PaginationLinkProps) {
+  return (
+    <a
+      data-slot="pagination-link"
+      aria-current={isActive ? "page" : undefined}
+      className={cn(
+        buttonVariants({
+          variant: isActive ? "secondary" : "ghost",
+          size,
+          iconOnly: iconOnly,
+          disabled,
+        }),
+        "px-1",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 PaginationLink.displayName = "PaginationLink";
 
-const PaginationPrevious = ({
+function PaginationPrevious({
   className,
   title,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => {
+}: React.ComponentProps<typeof PaginationLink>) {
   return (
     <PaginationLink
+      data-slot="pagination-previous"
       aria-label={"Trước"}
       size="default"
       iconOnly={!title}
@@ -84,16 +92,17 @@ const PaginationPrevious = ({
       {title && <span>{title}</span>}
     </PaginationLink>
   );
-};
+}
 PaginationPrevious.displayName = "PaginationPrevious";
 
-const PaginationNext = ({
+function PaginationNext({
   className,
   title,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => {
+}: React.ComponentProps<typeof PaginationLink>) {
   return (
     <PaginationLink
+      data-slot="pagination-next"
       aria-label={"Tiếp"}
       size="default"
       iconOnly={!title}
@@ -104,15 +113,16 @@ const PaginationNext = ({
       <ChevronRight />
     </PaginationLink>
   );
-};
+}
 PaginationNext.displayName = "PaginationNext";
 
-const PaginationEllipsis = ({
+function PaginationEllipsis({
   className,
   ...props
-}: React.ComponentProps<"span">) => {
+}: React.ComponentProps<"span">) {
   return (
     <span
+      data-slot="pagination-ellipsis"
       aria-hidden
       className={cn("flex h-9 w-9 items-center justify-center", className)}
       {...props}
@@ -121,7 +131,7 @@ const PaginationEllipsis = ({
       <span className="sr-only">Trang khác</span>
     </span>
   );
-};
+}
 PaginationEllipsis.displayName = "PaginationEllipsis";
 
 export type CombinedPaginationProps = {
@@ -135,7 +145,7 @@ export type CombinedPaginationProps = {
   size?: ButtonProps["size"];
 };
 
-const CombinedPagination = ({
+function CombinedPagination({
   currentPage,
   totalPages,
   onPageChange,
@@ -143,7 +153,7 @@ const CombinedPagination = ({
   onNextClick,
   className,
   size,
-}: CombinedPaginationProps) => {
+}: CombinedPaginationProps) {
   const isDesktop = useMediaQuery("(min-width: 640px)");
   const defaultSize = !isDesktop ? "sm" : size || "default";
   type PageItem = number | "ellipsis";
@@ -172,6 +182,7 @@ const CombinedPagination = ({
       return [firstPage, "ellipsis", currentPage, "ellipsis", lastPage];
     }
   };
+
   const handlePrevious = (e: React.MouseEvent) => {
     e.preventDefault();
     if (currentPage > 1) {
@@ -237,7 +248,7 @@ const CombinedPagination = ({
       </PaginationContent>
     </Pagination>
   );
-};
+}
 
 export {
   CombinedPagination,

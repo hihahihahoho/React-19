@@ -5,3 +5,5 @@ src\components\ui\input\input.tsx
 src\components\ui\select\select.tsx
 src\components\ui\textarea\textarea.tsx
 src\components\ui\form\form.tsx
+src\components\ui\table
+src\components\ui\datepicker\datepicker.tsx
