@@ -1,0 +1,53 @@
+import { cn } from "@/lib/utils";
+import React from "react";
+import {
+  Lightbox,
+  LightboxContext,
+  LightBoxImageType,
+  LightboxItem,
+} from "./lightbox";
+
+const LightBoxImageGrid = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & {
+    images: LightBoxImageType[];
+  }
+>(({ className, images, ...props }, ref) => {
+  const [index, setIndex] = React.useState(0);
+  const [open, setOpen] = React.useState(false);
+  return (
+    <LightboxContext>
+      <div
+        ref={ref}
+        className={cn(
+          "grid grid-cols-3 md:grid-cols-6 gap-2 overflow-hidden",
+          className
+        )}
+        {...props}
+      >
+        {images.map((image, i) => (
+          <LightboxItem
+            key={i}
+            src={image.thumb || image.src}
+            index={i}
+            selectedIndex={index}
+            onSelect={() => {
+              setIndex(i);
+              setOpen(true);
+            }}
+          />
+        ))}
+      </div>
+      <Lightbox
+        open={open}
+        onOpenChange={setOpen}
+        index={index}
+        onIndexChange={setIndex}
+        images={images}
+      ></Lightbox>
+    </LightboxContext>
+  );
+});
+LightBoxImageGrid.displayName = "LightBoxImageGrid";
+
+export { LightBoxImageGrid };

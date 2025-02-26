@@ -1,0 +1,284 @@
+import { cn } from "@/lib/utils";
+import { ColumnPinningState, flexRender, Header } from "@tanstack/react-table";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  ChevronsUpDown,
+  Pin,
+} from "lucide-react";
+import React from "react";
+import { Button } from "../button";
+import { SelectCommand } from "../select/select-command";
+import { SelectGroup } from "../select/select-interface";
+import { SelectPopover } from "../select/select-popover";
+import { useDataTable } from "./data-table-context";
+import { useHeaderRefs } from "./header-ref-context";
+import { TableHead } from "./table";
+
+interface DataTableHeaderCellProps<TData, TValue> {
+  header: Header<TData, TValue>;
+  isPin?: boolean;
+  width?: number;
+  setColumnPinning?: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
+  isRegisterHeaderRef?: boolean;
+}
+
+const toolbarOptions: SelectGroup[] = [
+  {
+    heading: "Sắp xếp",
+    value: "sort-group",
+    options: [
+      {
+        value: "asc",
+        label: (
+          <>
+            <ArrowUp />
+            Tăng dần
+          </>
+        ),
+      },
+      {
+        value: "desc",
+        label: (
+          <>
+            <ArrowDown />
+            Giảm dần
+          </>
+        ),
+      },
+      {
+        value: "no-sort",
+        label: (
+          <>
+            <ArrowUpDown />
+            Bỏ sắp xếp
+          </>
+        ),
+      },
+    ],
+  },
+  {
+    heading: "Ghim",
+    value: "pin-group",
+    isMultiSelect: true,
+    options: [
+      {
+        value: "pin",
+        label: (
+          <>
+            <Pin />
+            Ghim
+          </>
+        ),
+      },
+    ],
+  },
+];
+
+export function DataTableHeaderCell<TData, TValue>({
+  header,
+  isPin = false,
+  width,
+  isRegisterHeaderRef = true,
+}: DataTableHeaderCellProps<TData, TValue>) {
+  const { setColumnPinning, fixedPinLeft, fixedPinRight } = useDataTable();
+  const sortState = header.column.getIsSorted();
+  const ref = React.useRef<HTMLTableCellElement>(null);
+  const initialSelected = ["no-sort"];
+  if (isPin) initialSelected.push("pin");
+  const { registerHeaderRef, unregisterHeaderRef } = useHeaderRefs();
+
+  const [selected, setSelected] = React.useState<string[]>(initialSelected);
+  const [open, setOpen] = React.useState(false);
+
+  const triggerContent = flexRender(
+    header.column.columnDef.header,
+    header.getContext()
+  );
+
+  const handleOnSelect = (newSelected: string) => {
+    // Sorting logic
+    if (["asc", "desc", "no-sort"].includes(newSelected)) {
+      if (newSelected === "asc") {
+        header.column.toggleSorting(false);
+      } else if (newSelected === "desc") {
+        header.column.toggleSorting(true);
+      } else {
+        header.column.clearSorting();
+      }
+
+      // Update the selected state for sorting without affecting pinning
+      setSelected((prev) => {
+        const withoutSort = prev.filter(
+          (val) => !["asc", "desc", "no-sort"].includes(val)
+        );
+        return [...withoutSort, newSelected];
+      });
+    }
+
+    // Pinning logic
+    if (newSelected === "pin") {
+      if (selected.includes("pin")) {
+        // Unpin
+        setColumnPinning?.(() => ({
+          left: [...fixedPinLeft],
+          right: [...fixedPinRight],
+        }));
+      } else {
+        // Pin this column to the left
+        setColumnPinning?.(() => ({
+          left: [...fixedPinLeft, header.column.id],
+          right: [...fixedPinRight],
+        }));
+      }
+    }
+  };
+
+  const filteredOptions = React.useMemo(() => {
+    if (!header.column.getCanSort()) {
+      return toolbarOptions.filter((group) => group.value !== "sort-group");
+    }
+    return toolbarOptions;
+  }, [header.column]);
+
+  // Determine pin classes based on pinned state
+  const isPinned = header.column.getIsPinned?.();
+  const isLastPinned = header.column.getIsLastColumn("left");
+  const isFirstPinnedRight = header.column.getIsFirstColumn("right");
+  const pinnedClasses = isPinned
+    ? isPinned === "left"
+      ? "sticky z-20"
+      : "sticky z-20"
+    : "";
+  React.useEffect(() => {
+    if (isPinned) {
+      setSelected((prev) => [...prev.filter((v) => v !== "pin"), "pin"]);
+    } else {
+      setSelected((prev) => prev.filter((v) => v !== "pin"));
+    }
+  }, [isPinned]);
+
+  React.useEffect(() => {
+    setSelected((prev) => {
+      const withoutSort = prev.filter(
+        (val) => !["asc", "desc", "no-sort"].includes(val)
+      );
+
+      if (sortState === "asc") {
+        return [...withoutSort, "asc"];
+      } else if (sortState === "desc") {
+        return [...withoutSort, "desc"];
+      } else {
+        return [...withoutSort, "no-sort"];
+      }
+    });
+  }, [sortState]);
+
+  React.useEffect(() => {
+    if (isRegisterHeaderRef) {
+      if (ref.current) {
+        registerHeaderRef(header.column.id, ref.current);
+      }
+      return () => {
+        unregisterHeaderRef(header.column.id);
+      };
+    }
+  }, [
+    header.column.id,
+    registerHeaderRef,
+    unregisterHeaderRef,
+    isRegisterHeaderRef,
+  ]);
+  return (
+    <TableHead
+      key={header.id}
+      ref={ref}
+      className={cn(
+        header.column.columnDef.meta?.align === "right" && "text-right",
+        header.column.columnDef.meta?.align === "center" && "text-center",
+        "whitespace-nowrap",
+        pinnedClasses,
+        header.column.columnDef.meta?.headerClassName
+      )}
+      style={{
+        width:
+          width ||
+          (isNaN(header.getSize()) || header.getSize() === 0
+            ? "auto"
+            : header.getSize() - 16),
+        left:
+          isPinned === "left"
+            ? `${header.column.getStart("left")}px`
+            : undefined,
+        right:
+          isPinned === "right"
+            ? `${header.column.getAfter("right")}px`
+            : undefined,
+      }}
+    >
+      <div
+        className={cn(
+          "flex items-center",
+          header.column.columnDef.meta?.align === "right" && "justify-right",
+          header.column.columnDef.meta?.align === "center" && "justify-center",
+          pinnedClasses
+        )}
+        style={{
+          minWidth: header.column.columnDef.minSize,
+          width:
+            isNaN(header.getSize()) || header.getSize() === 0
+              ? "auto"
+              : header.getSize() - 16,
+        }}
+      >
+        {header.isPlaceholder || triggerContent === null ? null : header.column
+            .columnDef.meta?.hideActiionsButton ? (
+          triggerContent
+        ) : (
+          <SelectPopover
+            open={open}
+            setOpen={setOpen}
+            triggerContent={
+              <Button
+                variant="ghost"
+                size={"sm"}
+                className={cn(
+                  "h-auto text-left px-0 gap-1",
+                  header.column.columnDef.meta?.align === "right" && "ml-auto",
+                  header.column.columnDef.meta?.align === "center" && "mx-auto",
+                  pinnedClasses
+                )}
+              >
+                {header.column.getIsPinned() && <Pin />}
+                {triggerContent}
+                {header.column.getCanSort() && (
+                  <>
+                    {sortState === "asc" && <ArrowUp />}
+                    {sortState === "desc" && <ArrowDown />}
+                    {sortState === false && <ChevronsUpDown />}
+                  </>
+                )}
+              </Button>
+            }
+            label={triggerContent}
+          >
+            <SelectCommand
+              items={filteredOptions}
+              selected={selected}
+              onSelect={handleOnSelect}
+            />
+          </SelectPopover>
+        )}
+      </div>
+      {isPinned &&
+        (isPinned === "left" && isLastPinned ? (
+          <div className="column-left-shadow" />
+        ) : (
+          isFirstPinnedRight &&
+          isPinned === "right" && <div className="column-right-shadow" />
+        ))}
+      {isPinned && <div className="column-pin-backdrop !bg-muted" />}
+    </TableHead>
+  );
+}

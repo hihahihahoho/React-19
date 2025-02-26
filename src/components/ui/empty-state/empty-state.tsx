@@ -1,0 +1,86 @@
+import { cn } from "@/lib/utils";
+import React from "react";
+
+const VARIANTS = {
+  search: "/images/empty-states/search.svg",
+  "api-fail": "/images/empty-states/api-fail.svg",
+  disconnected: "/images/empty-states/disconnected.svg",
+  "empty-data": "/images/empty-states/empty-data.svg",
+  maintain: "/images/empty-states/maintain.svg",
+} as const;
+
+type VariantKey = keyof typeof VARIANTS;
+
+interface EmptyStateProps {
+  variant?: VariantKey;
+  title?: string;
+  description?: string;
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const getDefaultContent = (variant: VariantKey) => {
+  const content = {
+    search: {
+      title: "Không tìm thấy kết quả",
+      description: "Hãy thử điều chỉnh từ khóa hoặc bộ lọc tìm kiếm",
+    },
+    "api-fail": {
+      title: "Lỗi kết nối",
+      description: "Chúng tôi đang gặp sự cố kết nối đến máy chủ",
+    },
+    disconnected: {
+      title: "Bạn đang ngoại tuyến",
+      description: "Vui lòng kiểm tra kết nối internet của bạn",
+    },
+    "empty-data": {
+      title: "Chưa có dữ liệu",
+      description: "Không có dữ liệu để hiển thị. Vui lòng tải lại",
+    },
+    maintain: {
+      title: "Đang bảo trì",
+      description: "Chúng tôi sẽ sớm trở lại với những cải tiến mới",
+    },
+  };
+
+  return content[variant];
+};
+
+const EmptyState: React.FC<EmptyStateProps> = ({
+  variant = "empty-data",
+  title,
+  description,
+  className,
+  children,
+}) => {
+  const defaultContent = getDefaultContent(variant);
+  const displayTitle = title || defaultContent.title;
+  const displayDescription = description || defaultContent.description;
+
+  return (
+    <div className={cn("w-full mx-auto text-center p-6 rounded-lg", className)}>
+      <div className="flex items-center justify-center">
+        <img
+          src={VARIANTS[variant]}
+          alt={`Empty state ${variant}`}
+          width={120}
+          height={120}
+        />
+      </div>
+
+      <h3 className="mt-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+        {displayTitle}
+      </h3>
+
+      {displayDescription && (
+        <p className="mt-2 text-sm text-muted-foreground">
+          {displayDescription}
+        </p>
+      )}
+
+      {children && <div className="flex justify-center mt-6">{children}</div>}
+    </div>
+  );
+};
+
+export { EmptyState, type EmptyStateProps, type VariantKey };
