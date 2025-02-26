@@ -5,7 +5,7 @@ import React from "react";
  * @param ref - The ref of the DOM element to observe
  * @returns - True if the element's display is 'none', false otherwise
  */
-function useIsDisplayNone<T extends HTMLElement>(ref: React.RefObject<T>): boolean {
+function useIsDisplayNone<T extends HTMLElement>(ref: React.RefObject<T | null>): boolean {
   const [isDisplayNone, setIsDisplayNone] = React.useState<boolean>(false);
 
   React.useEffect(() => {

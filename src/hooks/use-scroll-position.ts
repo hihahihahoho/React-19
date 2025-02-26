@@ -7,7 +7,7 @@ type ScrollPosition = {
   isReachRight: boolean;
 };
 
-function useScrollPosition(ref: RefObject<Element>): ScrollPosition {
+function useScrollPosition(ref: RefObject<Element | null>): ScrollPosition {
   const [position, setPosition] = useState<ScrollPosition>({
     isReachTop: true,
     isReachBottom: false,

@@ -11,8 +11,8 @@ import { createPortal } from "react-dom";
 const ScrollAreaTable = React.forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> & {
-    viewportRef: React.RefObject<HTMLDivElement>;
-    srcollBarPortalRef: React.RefObject<HTMLDivElement>;
+    viewportRef: React.RefObject<HTMLDivElement | null>;
+    srcollBarPortalRef: React.RefObject<HTMLDivElement | null>;
     scrollbarClassName?: string;
   }
 >(

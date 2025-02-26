@@ -9,10 +9,10 @@ import { useHeaderRefs } from "./header-ref-context";
 import { Table, TableHeader, TableRow } from "./table";
 
 interface FloatingHeaderProps {
-  tableRef: React.RefObject<HTMLDivElement>;
-  headerRef: React.RefObject<HTMLTableSectionElement>;
+  tableRef: React.RefObject<HTMLDivElement | null>;
+  headerRef: React.RefObject<HTMLTableSectionElement | null>;
   fixedHeaderOffset?: string;
-  mainScrollRef: React.RefObject<HTMLDivElement>;
+  mainScrollRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export function FloatingHeader({

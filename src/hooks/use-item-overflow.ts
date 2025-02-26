@@ -9,7 +9,7 @@ interface UseItemOverflowProps {
 }
 
 interface UseItemOverflowReturn {
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   visibleCount: number;
   overflowCount: number;
   isVisible: (index: number) => boolean;

@@ -1,8 +1,8 @@
 import React from "react";
 
 export function useSyncScroll(
-  containerRef: React.RefObject<HTMLElement>,
-  syncWithContainer?: React.RefObject<HTMLElement>
+  containerRef: React.RefObject<HTMLElement | null>,
+  syncWithContainer?: React.RefObject<HTMLElement | null>
 ) {
   React.useEffect(() => {
     const container = containerRef.current;
