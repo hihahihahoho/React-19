@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import { motion } from "motion/react"; // Corrected import
+import { motion } from "motion/react";
 import * as React from "react";
 
 type TabsContextType = {
@@ -10,7 +10,7 @@ type TabsContextType = {
   setActiveTab: (tabValue: string) => void;
   layoutId: string;
   registerTab: (tabValue: string, ref: React.RefObject<HTMLElement>) => void;
-  listContainerRef: React.RefObject<HTMLDivElement>;
+  listContainerRef: React.RefObject<HTMLDivElement | null>;
 };
 
 const TabsContext = React.createContext<TabsContextType | undefined>(undefined);
@@ -23,13 +23,14 @@ export const useTabsContext = () => {
   return context;
 };
 
-// --- Tabs Component ---
-const TabsRoot = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & {
-    setActiveTab?: (tabValue: string) => void;
-  }
->(({ onValueChange, children, setActiveTab, ...props }, ref) => {
+function TabsRoot({
+  onValueChange,
+  children,
+  setActiveTab,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Root> & {
+  setActiveTab?: (tabValue: string) => void;
+}) {
   const { setActiveTab: setActive } = useTabsContext();
 
   const handleTabChange = (newActiveTab: string) => {
@@ -39,132 +40,114 @@ const TabsRoot = React.forwardRef<
   };
 
   return (
-    <TabsPrimitive.Root ref={ref} onValueChange={handleTabChange} {...props}>
+    <TabsPrimitive.Root
+      data-slot="tabs-root"
+      onValueChange={handleTabChange}
+      {...props}
+    >
       {children}
     </TabsPrimitive.Root>
   );
-});
-TabsRoot.displayName = "TabsRoot"; // For debugging
+}
 
-const Tabs = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & {
-    setActiveTab?: (tabValue: string) => void;
-  }
->(
-  (
-    { value, defaultValue, onValueChange, setActiveTab, children, ...props },
-    ref
-  ) => {
-    const [internalActiveTab, setInternalActiveTab] = React.useState<string>(
-      defaultValue || ""
-    );
+function Tabs({
+  value,
+  defaultValue,
+  onValueChange,
+  setActiveTab,
+  children,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Root> & {
+  setActiveTab?: (tabValue: string) => void;
+}) {
+  const [internalActiveTab, setInternalActiveTab] = React.useState<string>(
+    defaultValue || ""
+  );
 
-    // Determine if the component is controlled
-    const isControlled = value !== undefined;
+  const isControlled = value !== undefined;
+  const activeTab = isControlled ? value! : internalActiveTab;
+  const uniqueId = React.useId();
+  const layoutId = `tabs-anim-${uniqueId}`;
+  const tabRefs = React.useRef<Map<string, React.RefObject<HTMLElement>>>(
+    new Map()
+  );
 
-    // Active tab is either controlled or internal state
-    const activeTab = isControlled ? value! : internalActiveTab;
+  const registerTab = (tabValue: string, ref: React.RefObject<HTMLElement>) => {
+    tabRefs.current.set(tabValue, ref);
+  };
 
-    // Generate a unique ID for layoutId using React.useId
-    const uniqueId = React.useId();
-    const layoutId = `tabs-anim-${uniqueId}`;
+  const listContainerRef = React.useRef<HTMLDivElement>(null);
 
-    // Refs map
-    const tabRefs = React.useRef<Map<string, React.RefObject<HTMLElement>>>(
-      new Map()
-    );
+  React.useEffect(() => {
+    if (isControlled && value !== internalActiveTab) {
+      setInternalActiveTab(value!);
+    }
+  }, [value, isControlled, internalActiveTab]);
 
-    // Function to register tab refs
-    const registerTab = (
-      tabValue: string,
-      ref: React.RefObject<HTMLElement>
-    ) => {
-      tabRefs.current.set(tabValue, ref);
-    };
+  React.useEffect(() => {
+    const activeTabRef = tabRefs.current.get(activeTab);
+    const listRef = listContainerRef.current;
+    if (activeTabRef?.current && listRef) {
+      const tabElement = activeTabRef.current;
+      const listElement = listRef;
 
-    // Ref for the TabsList container
-    const listContainerRef = React.useRef<HTMLDivElement>(null);
+      const tabRect = tabElement.getBoundingClientRect();
+      const listRect = listElement.getBoundingClientRect();
 
-    // Sync internal state with value prop if controlled
-    React.useEffect(() => {
-      if (isControlled && value !== internalActiveTab) {
-        setInternalActiveTab(value!);
-      }
-    }, [value, isControlled, internalActiveTab]);
+      const tabCenter = tabRect.left + tabRect.width / 2;
+      const listCenter = listRect.left + listRect.width / 2;
+      const scrollOffset = tabCenter - listCenter;
 
-    // Scroll active tab into view when it changes
-    React.useEffect(() => {
-      const activeTabRef = tabRefs.current.get(activeTab);
-      const listRef = listContainerRef.current;
-      if (activeTabRef?.current && listRef) {
-        const tabElement = activeTabRef.current;
-        const listElement = listRef;
+      const newScrollLeft = listElement.scrollLeft + scrollOffset;
 
-        const tabRect = tabElement.getBoundingClientRect();
-        const listRect = listElement.getBoundingClientRect();
+      listElement.scrollTo({
+        left: newScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  }, [activeTab]);
 
-        // Calculate the difference between tab's center and container's center
-        const tabCenter = tabRect.left + tabRect.width / 2;
-        const listCenter = listRect.left + listRect.width / 2;
-        const scrollOffset = tabCenter - listCenter;
+  const handleSetActiveTab = (tab: string) => {
+    if (!isControlled) {
+      setInternalActiveTab(tab);
+    }
+    setActiveTab?.(tab);
+  };
 
-        // Calculate new scrollLeft
-        const newScrollLeft = listElement.scrollLeft + scrollOffset;
+  return (
+    <TabsContext.Provider
+      value={{
+        activeTab,
+        setActiveTab: handleSetActiveTab,
+        layoutId,
+        registerTab,
+        listContainerRef,
+      }}
+    >
+      <motion.div layout layoutRoot>
+        <TabsRoot
+          data-slot="tabs"
+          value={activeTab}
+          onValueChange={(tab) => {
+            handleSetActiveTab(tab);
+            if (onValueChange) {
+              onValueChange(tab);
+            }
+          }}
+          {...props}
+        >
+          {children}
+        </TabsRoot>
+      </motion.div>
+    </TabsContext.Provider>
+  );
+}
 
-        // Scroll the container smoothly
-        listElement.scrollTo({
-          left: newScrollLeft,
-          behavior: "smooth",
-        });
-      }
-    }, [activeTab]);
-
-    // Function to handle tab changes
-    const handleSetActiveTab = (tab: string) => {
-      if (!isControlled) {
-        setInternalActiveTab(tab);
-      }
-      setActiveTab?.(tab);
-    };
-
-    return (
-      <TabsContext.Provider
-        value={{
-          activeTab,
-          setActiveTab: handleSetActiveTab,
-          layoutId,
-          registerTab,
-          listContainerRef, // Provide the list container ref
-        }}
-      >
-        <motion.div layout layoutRoot>
-          <TabsRoot
-            ref={ref}
-            value={activeTab}
-            onValueChange={(tab) => {
-              handleSetActiveTab(tab);
-              if (onValueChange) {
-                onValueChange(tab);
-              }
-            }}
-            {...props}
-          >
-            {children}
-          </TabsRoot>
-        </motion.div>
-      </TabsContext.Provider>
-    );
-  }
-);
-Tabs.displayName = "Tabs"; // For debugging
-
-const TabsList = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => {
+function TabsList({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.List>) {
   const { listContainerRef } = useTabsContext();
-  React.useImperativeHandle(ref, () => listContainerRef.current!);
 
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     if (!listContainerRef.current || event.deltaY === 0 || event.deltaX !== 0) {
@@ -172,46 +155,42 @@ const TabsList = React.forwardRef<
     }
     event.stopPropagation();
     listContainerRef.current?.scrollBy({
-      left: event.deltaY, // Scroll by the amount of vertical wheel movement
-      behavior: "smooth", // Optional: smooth scrolling
+      left: event.deltaY,
+      behavior: "smooth",
     });
   };
 
-  React.useImperativeHandle(ref, () => listContainerRef.current!);
-
   return (
     <TabsPrimitive.List
+      data-slot="tabs-list"
       className={cn(
         "inline-flex h-9 items-center justify-start rounded-lg bg-muted p-1 text-muted-foreground overflow-auto no-scrollbar max-w-full overscroll-contain",
         className
       )}
-      ref={listContainerRef}
+      ref={listContainerRef as React.RefObject<HTMLDivElement>}
       onWheel={handleWheel}
       {...props}
     />
   );
-});
-TabsList.displayName = TabsPrimitive.List.displayName;
+}
 
-const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, value, ...props }, ref) => {
+function TabsTrigger({
+  className,
+  value,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
   const { activeTab, layoutId, registerTab } = useTabsContext();
   const triggerRef = React.useRef<HTMLButtonElement>(null);
 
-  // Expose the triggerRef via forwarded ref
-  React.useImperativeHandle(ref, () => triggerRef.current!);
-
-  // Register the tab ref on mount
   React.useEffect(() => {
     if (value) {
-      registerTab(value, triggerRef);
+      registerTab(value, triggerRef as React.RefObject<HTMLElement>);
     }
   }, [value, registerTab]);
 
   return (
     <TabsPrimitive.Trigger
+      data-slot="tabs-trigger"
       ref={triggerRef}
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:text-foreground relative",
@@ -223,8 +202,8 @@ const TabsTrigger = React.forwardRef<
       <div className="z-10">{props.children}</div>
       {activeTab === value && (
         <motion.div
-          className="bg-background absolute w-full h-full top-0 z-0 rounded-md shadow"
-          layoutId={layoutId} // Use the unique layoutId
+          className="absolute top-0 z-0 w-full h-full rounded-md shadow bg-background"
+          layoutId={layoutId}
           transition={{
             duration: 0.2,
             ease: "easeInOut",
@@ -233,22 +212,22 @@ const TabsTrigger = React.forwardRef<
       )}
     </TabsPrimitive.Trigger>
   );
-});
-TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
+}
 
-const TabsContent = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content
-    ref={ref}
-    className={cn(
-      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      className
-    )}
-    {...props}
-  />
-));
-TabsContent.displayName = TabsPrimitive.Content.displayName;
+function TabsContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+  return (
+    <TabsPrimitive.Content
+      data-slot="tabs-content"
+      className={cn(
+        "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        className
+      )}
+      {...props}
+    />
+  );
+}
 
 export { Tabs, TabsContent, TabsList, TabsTrigger };

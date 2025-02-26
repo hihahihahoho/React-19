@@ -21,7 +21,7 @@ interface SelectPopoverProps {
   label?: React.ReactNode;
 }
 
-export function SelectPopover({
+function SelectPopover({
   open,
   setOpen,
   children,
@@ -38,6 +38,7 @@ export function SelectPopover({
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>{triggerContent}</PopoverTrigger>
           <PopoverContent
+            data-slot="select-popover-content"
             align="start"
             className={cn(
               "p-0",
@@ -51,7 +52,7 @@ export function SelectPopover({
       ) : (
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>{triggerContent}</DrawerTrigger>
-          <DrawerContent>
+          <DrawerContent data-slot="select-popover-drawer">
             <DrawerHeader>
               {label && <DrawerTitle>{label}</DrawerTitle>}
             </DrawerHeader>
@@ -62,3 +63,5 @@ export function SelectPopover({
     </>
   );
 }
+
+export { SelectPopover };
