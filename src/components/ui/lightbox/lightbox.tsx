@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react";
 import {
@@ -350,7 +349,7 @@ const LightboxRoot = ({
                           onClick={(e) => e.stopPropagation()}
                         >
                           <motion.div
-                            className="flex items-center h-full max-h-full w-fit pointer-events-auto"
+                            className="flex items-center h-full max-h-full pointer-events-auto w-fit"
                             layoutId={`${id}-image-${i}`}
                             transition={{
                               duration: selectedIndex === i ? 0.3 : 0,
