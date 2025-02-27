@@ -140,7 +140,7 @@ function FormDemo() {
         new File([], "https://swiperjs.com/demos/images/nature-4.jpg", {
           type: ACCEPTED_IMAGE_TYPES[0],
         }),
-      ] as unknown as FileList,
+      ],
       checkbox_group: ["recents", "home"],
       radio_group: "include",
     },

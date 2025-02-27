@@ -30,7 +30,7 @@ const zodFile = ({
     maxFileSize,
     maxFiles: length.max,
   };
-  let schema = z.custom<FileList>();
+  let schema = z.custom<File[]>();
 
   const minLength = length?.min ?? 1; // Provide default value of 1 if undefined
   const maxLength = length?.max ?? 5; // Provide default value of 5 if undefined
@@ -247,3 +247,4 @@ const zodDateRange = ({
 };
 
 export { zodDate, zodDateRange, zodFile, zodRequiredString };
+

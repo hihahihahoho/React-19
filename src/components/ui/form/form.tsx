@@ -299,13 +299,9 @@ function FormLabel({
       className={cn("text-sm", error && "text-destructive", className)}
       {...props}
     >
-      {requiredSymbol ? (
-        <div className="flex gap-1">
-          {children}
-          <div className="w-2 text-center text-destructive">*</div>
-        </div>
-      ) : (
-        children
+      {children}{" "}
+      {requiredSymbol && (
+        <span className="w-2 text-center text-destructive">*</span>
       )}
     </Label>
   );
