@@ -12,7 +12,6 @@ import {
   CommandList,
   CommandSeparator,
 } from "../command";
-import { EmptyState } from "../empty-state/empty-state";
 import { Checkbox } from "../selection-controls/checkbox";
 import { SelectGroup, SelectItems } from "./select-interface";
 
@@ -134,9 +133,7 @@ function SelectCommand({
       )}
 
       <CommandList ref={commandListRef} tabIndex={0}>
-        <CommandEmpty>
-          <EmptyState className="border-0" variant="search" />
-        </CommandEmpty>
+        <CommandEmpty>Không tìm thấy kết quả</CommandEmpty>
 
         {modifyItemsNew.map(
           ({ heading, options, isMultiSelect }, groupIndex) => (

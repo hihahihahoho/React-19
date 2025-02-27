@@ -11,12 +11,10 @@ const VARIANTS = {
 
 type VariantKey = keyof typeof VARIANTS;
 
-interface EmptyStateProps {
+export interface EmptyStateProps extends React.ComponentProps<"div"> {
   variant?: VariantKey;
   title?: string;
   description?: string;
-  className?: string;
-  children?: React.ReactNode;
 }
 
 const getDefaultContent = (variant: VariantKey) => {
@@ -46,29 +44,34 @@ const getDefaultContent = (variant: VariantKey) => {
   return content[variant];
 };
 
-const EmptyState: React.FC<EmptyStateProps> = ({
+function EmptyState({
   variant = "empty-data",
   title,
   description,
   className,
   children,
-}) => {
+  ...props
+}: EmptyStateProps) {
   const defaultContent = getDefaultContent(variant);
   const displayTitle = title || defaultContent.title;
   const displayDescription = description || defaultContent.description;
 
   return (
-    <div className={cn("w-full mx-auto text-center p-6 rounded-lg", className)}>
+    <div
+      data-slot="empty-state"
+      className={cn("w-full mx-auto text-center p-6 rounded-lg", className)}
+      {...props}
+    >
       <div className="flex items-center justify-center">
         <img
           src={VARIANTS[variant]}
           alt={`Empty state ${variant}`}
-          width={120}
-          height={120}
+          width={100}
+          height={100}
         />
       </div>
 
-      <h3 className="mt-3 text-xl font-semibold text-gray-900 dark:text-gray-100">
+      <h3 className="mt-3 text-lg font-semibold text-gray-900 dark:text-gray-100">
         {displayTitle}
       </h3>
 
@@ -81,6 +84,6 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       {children && <div className="flex justify-center mt-6">{children}</div>}
     </div>
   );
-};
+}
 
-export { EmptyState, type EmptyStateProps, type VariantKey };
+export { EmptyState };

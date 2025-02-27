@@ -80,26 +80,13 @@ function MultiSelect({
     [currentValue, handleValueChange]
   );
 
-  // Validate options against available choices
-  React.useEffect(() => {
-    if (!currentValue?.length || !flattenItems?.length) return;
-
-    const validOptions = currentValue.filter((selected) =>
-      flattenItems.some((option) => option.value === selected)
-    );
-
-    if (validOptions.length !== currentValue.length) {
-      handleValueChange(validOptions);
-    }
-  }, [currentValue, flattenItems, handleValueChange]);
-
   return (
     <SelectPopover
       open={open}
       setOpen={setOpen}
       triggerContent={
         <FormComposition
-          inputClear={false}
+          inputClear={true}
           {...formComposition}
           className={cn("cursor-pointer", formComposition?.className)}
           asChild
@@ -147,14 +134,17 @@ function MultiSelect({
                     ),
                     removeButton: !option?.disabled,
                     onRemove: () => handleRemove(optionValue),
+                    badgeProps: option?.badgeProps,
                   };
                 })}
                 maxShownItems={maxShownBadges}
-                className={cn("-mx-1.5", className)}
+                className={cn("-mx-2", className)}
                 badgeMeasureClassName={badgeMeasureClassName}
                 overflowMeasureClassName={overflowMeasureClassName}
                 badgeProps={{
                   clearBtn: true,
+                  variant: "secondary",
+                  size: "md",
                 }}
               />
             ) : (

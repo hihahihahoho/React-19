@@ -124,7 +124,7 @@ function FormDemo() {
       datepicker: new Date("2024-10-28"),
       dob: new Date("1995-10-24,18:00"),
       textarea: "This is a textarea",
-      select: "pizza",
+      select: "pizza2",
       daterange: {
         from: parse("24/10/2024", FORMAT_DATE, new Date()),
         to: new Date("2024-10-28"),

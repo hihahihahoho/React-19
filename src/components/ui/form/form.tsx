@@ -89,7 +89,7 @@ const inputSizeVariants = cva("", {
 });
 
 const inputContainerVariants = cva(
-  "outline-none flex w-full rounded-md bg-transparent ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 cursor-text px-3 gap-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "outline-none flex w-full rounded-lg bg-transparent ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 cursor-text px-3 gap-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -101,8 +101,9 @@ const inputContainerVariants = cva(
           "!border-0 !ring-offset-0 !ring-0 !shadow-none rounded-none bg-transparent p-0 !block",
       },
       focusWithin: {
-        true: "focus-within:ring-1 focus-within:ring-ring",
-        false: "focus-visible:ring-1 focus-visible:ring-ring",
+        true: "focus-within:ring-[3px] focus-within:ring-ring/20 transition-shadow focus-within:border-ring",
+        false:
+          "focus-visible:ring-[3px] focus-visible:ring-ring/20 transition-shadow focus-visible:border-ring",
       },
     },
     defaultVariants: {
@@ -241,7 +242,7 @@ function FormWrapper({
       <div
         data-slot="form-wrapper"
         className={cn(
-          "form-wrapper-class grid gap-y-1 text-sm items-start",
+          "form-wrapper-class grid gap-y-1.5 text-sm items-start",
           labelPosition === "horizontal" && "md:grid-cols-12 gap-x-6",
           isFocused && "isFocused",
           className
@@ -590,15 +591,15 @@ function FormComposition({
           <div className="flex gap-2">
             <div className="space-y-1">
               {description && (
-                <FormDescription className="flex-1 mt-1">
+                <FormDescription className="flex-1 mt-1.5">
                   {description}
                 </FormDescription>
               )}
-              {showErrorMsg && <FormMessage className="mt-1" />}
+              {showErrorMsg && <FormMessage className="mt-1.5" />}
             </div>
 
             {subDescription && (
-              <div className="text-[0.8rem] text-muted-foreground ml-auto mt-1">
+              <div className="text-[0.8rem] text-muted-foreground ml-auto mt-1.5">
                 {subDescription}
               </div>
             )}
