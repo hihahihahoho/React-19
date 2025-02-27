@@ -324,9 +324,6 @@ function FormDemo() {
           <DateRangePickerForm
             control={form.control}
             name="daterange"
-            calendarProps={{
-              showConfirmButton: true,
-            }}
             formComposition={{
               label: "DateRangePicker",
               labelPosition: "horizontal",

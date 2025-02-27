@@ -38,10 +38,7 @@ import {
 export type OnValueChangeDatePicker = Date | undefined;
 
 export interface DatePickerProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "value" | "onChange" | "placeholder" | "defaultValue"
-  > {
+  extends Omit<React.ComponentProps<"button">, "value" | "defaultValue"> {
   placeholder?: string | React.ReactNode;
   placeholderColor?: string;
   defaultValue?: Date;
@@ -54,251 +51,229 @@ export interface DatePickerProps
   onValueChange?: (value: OnValueChangeDatePicker) => void;
 }
 
-const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
-  (
-    {
-      dateFormat = "dd/mm/yyyy",
-      placeholder = "dd/mm/yyyy",
-      placeholderColor = "text-muted-foreground",
-      value,
-      className,
-      disabled = false,
-      formComposition,
-      editable = false,
-      onValueChange,
-      calendarProps,
-      defaultValue,
-      inputTime = false,
+function DatePicker({
+  dateFormat = "dd/mm/yyyy",
+  placeholder = "dd/mm/yyyy",
+  placeholderColor = "text-muted-foreground",
+  value,
+  className,
+  disabled = false,
+  formComposition,
+  editable = false,
+  onValueChange,
+  calendarProps,
+  defaultValue,
+  inputTime = false,
+  ...props
+}: DatePickerProps) {
+  const [open, setOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const DateTimeInputRef = useRef<DateTimeInputHandle>(null);
+  const calendarButtonRef = useRef<HTMLButtonElement>(null);
+  const convertedDateFormat = dateFormat.replace("mm", "MM");
+  const [isInvalid, setIsInvalid] = useState(false);
+
+  const [internalDate, setInternalDate] = useState<OnValueChangeDatePicker>(
+    (defaultValue as Date) || undefined
+  );
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  const handleChange = useCallback(
+    (value: Date | "invalid" | undefined) => {
+      if (value && value !== "invalid") {
+        setInternalDate(value);
+        onValueChange?.(value);
+        setIsInvalid(false);
+      } else if (value === "invalid") {
+        setInternalDate(undefined);
+        onValueChange?.(undefined);
+        setIsInvalid(true);
+      } else {
+        setIsInvalid(false);
+        setInternalDate(undefined);
+        onValueChange?.(undefined);
+      }
     },
-    ref
-  ) => {
-    const [open, setOpen] = useState(false);
-    const isDesktop = useMediaQuery("(min-width: 768px)");
-    const internalRef = useRef<HTMLInputElement>(null);
-    const DateTimeInputRef = useRef<DateTimeInputHandle>(null);
-    const calendarButtonRef = useRef<HTMLButtonElement>(null);
-    const convertedDateFormat = dateFormat.replace("mm", "MM");
-    const [isInvalid, setIsInvalid] = useState(false);
+    [onValueChange]
+  );
 
-    const [internalDate, setInternalDate] = useState<OnValueChangeDatePicker>(
-      (defaultValue as Date) || undefined
-    );
-
-    const [isFocused, setIsFocused] = useState(false);
-
-    const handleFocus = () => {
-      setIsFocused(true);
-    };
-
-    const handleBlur = () => {
-      setIsFocused(false);
-    };
-
-    const handleChange = useCallback(
-      (value: Date | "invalid" | undefined) => {
-        if (value && value !== "invalid") {
-          setInternalDate(value);
-          onValueChange?.(value);
-          setIsInvalid(false);
-        } else if (value === "invalid") {
-          setInternalDate(undefined);
-          onValueChange?.(undefined);
-          setIsInvalid(true);
-        } else {
-          setIsInvalid(false);
-          setInternalDate(undefined);
-          onValueChange?.(undefined);
+  const handleCalendarSelect = useCallback(
+    (date: Date | undefined) => {
+      if (date) {
+        // Preserve the time component from the existing date if available
+        if (internalDate || value) {
+          const currentDate = internalDate || value;
+          date = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            currentDate?.getHours(),
+            currentDate?.getMinutes(),
+            currentDate?.getSeconds(),
+            currentDate?.getMilliseconds()
+          );
         }
-      },
-      [onValueChange]
-    );
 
-    const handleCalendarSelect = useCallback(
-      (date: Date | undefined) => {
-        if (date) {
-          // Preserve the time component from the existing date if available
-          if (internalDate || value) {
-            const currentDate = internalDate || value;
-            date = new Date(
-              date.getFullYear(),
-              date.getMonth(),
-              date.getDate(),
-              currentDate?.getHours(),
-              currentDate?.getMinutes(),
-              currentDate?.getSeconds(),
-              currentDate?.getMilliseconds()
-            );
-          }
-
-          setInternalDate(date);
-          onValueChange?.(date);
-          if (internalRef.current)
-            internalRef.current.value = format(date, convertedDateFormat);
-        } else {
-          setInternalDate(undefined);
-          onValueChange?.(undefined);
-        }
-        setOpen(false);
-      },
-      [onValueChange, convertedDateFormat, internalDate, value]
-    );
-
-    const handleClear = useCallback(() => {
-      if (internalRef.current) {
-        internalRef.current.value = "";
-        internalRef.current.focus();
+        setInternalDate(date);
+        onValueChange?.(date);
+      } else {
+        setInternalDate(undefined);
+        onValueChange?.(undefined);
       }
-      setInternalDate(undefined);
-      setIsInvalid(false);
-      onValueChange?.(undefined);
-      formComposition?.onClear?.();
+      setOpen(false);
+    },
+    [onValueChange, internalDate, value]
+  );
+
+  const handleClear = useCallback(() => {
+    setInternalDate(undefined);
+    setIsInvalid(false);
+    onValueChange?.(undefined);
+    formComposition?.onClear?.();
+    DateTimeInputRef.current?.clear();
+  }, [formComposition, onValueChange]);
+
+  const currentDate = value === null ? undefined : value || internalDate;
+  const currentInputValue = currentDate
+    ? format(currentDate, convertedDateFormat)
+    : "";
+  const hasValue = Boolean(currentDate || isInvalid);
+
+  React.useEffect(() => {
+    if (value === null && !isInvalid) {
       DateTimeInputRef.current?.clear();
-    }, [formComposition, onValueChange]);
+    }
+  }, [value, isInvalid]);
 
-    const currentDate = value === null ? undefined : value || internalDate;
-    const currentInputValue = currentDate
-      ? format(currentDate, convertedDateFormat)
-      : "";
-    const hasValue = Boolean(currentDate || isInvalid);
-
-    React.useEffect(() => {
-      if (value === null && !isInvalid) {
-        DateTimeInputRef.current?.clear();
-      }
-    }, [value, isInvalid]);
-
-    const triggerContent = (
-      <FormComposition
-        {...formComposition}
-        asChild={!editable}
-        clearWhenNotFocus={editable ? false : true}
-        className={cn(
-          !editable && "cursor-pointer",
-          formComposition?.className
-        )}
-        hasValue={hasValue}
-        onClear={handleClear}
-        iconLeft={!editable && <CalendarIcon />}
-        disabled={disabled}
-        isFocused={isFocused}
-        focusWithin={editable}
-        onFormCompositionClick={() => {
-          DateTimeInputRef.current?.focus();
-        }}
-        suffixNotFocusInput={
-          editable
-            ? {
-                element: (
-                  <Button
-                    ref={calendarButtonRef}
-                    onClick={() => setOpen(!open)}
-                    size="xs"
-                    variant="outline"
-                    iconOnly
-                    disabled={disabled}
-                    className="-mr-1"
-                  >
-                    <CalendarIcon />
-                  </Button>
-                ),
-              }
-            : undefined
-        }
-      >
-        {editable ? (
-          <div className={cn("flex items-center h-full flex-1", className)}>
-            <FormControl>
-              <DateGroup
-                ref={ref}
-                onFocusWithin={handleFocus}
-                onBlurWithin={handleBlur}
-              >
-                <DateTimeInput
+  const triggerContent = (
+    <FormComposition
+      {...formComposition}
+      asChild={!editable}
+      clearWhenNotFocus={editable ? false : true}
+      className={cn(!editable && "cursor-pointer", formComposition?.className)}
+      hasValue={hasValue}
+      onClear={handleClear}
+      iconLeft={!editable && <CalendarIcon />}
+      disabled={disabled}
+      isFocused={isFocused}
+      focusWithin={editable}
+      onFormCompositionClick={() => {
+        DateTimeInputRef.current?.focus();
+      }}
+      suffixNotFocusInput={
+        editable
+          ? {
+              element: (
+                <Button
+                  ref={calendarButtonRef}
+                  onClick={() => setOpen(!open)}
+                  size="xs"
+                  variant="outline"
+                  iconOnly
                   disabled={disabled}
-                  granularity={inputTime ? "datetime" : "date"}
-                  ref={DateTimeInputRef}
-                  locale="en-GB"
-                  value={currentDate}
-                  onValueChange={handleChange}
-                />
-              </DateGroup>
-            </FormControl>
-          </div>
-        ) : (
-          <FormControlButton disabled={disabled}>
-            <div className={cn("flex items-center h-full flex-1", className)}>
-              {currentInputValue ? (
-                <span>{currentInputValue}</span>
-              ) : (
-                <span className={cn(placeholderColor)}>{placeholder}</span>
-              )}
-            </div>
-          </FormControlButton>
-        )}
-      </FormComposition>
-    );
-
-    const calendarContent = (
-      <Calendar
-        {...calendarProps}
-        defaultMonth={currentDate}
-        mode="single"
-        selected={currentDate}
-        onSelect={handleCalendarSelect}
-      />
-    );
-
-    return (
-      <>
-        {editable && triggerContent}
-        {isDesktop ? (
-          <Popover open={open} onOpenChange={setOpen}>
-            {editable && calendarButtonRef && (
-              <PopoverAnchor
-                virtualRef={calendarButtonRef as React.RefObject<Measurable>}
+                  className="-mr-1"
+                >
+                  <CalendarIcon />
+                </Button>
+              ),
+            }
+          : undefined
+      }
+    >
+      {editable ? (
+        <div className={cn("flex items-center h-full flex-1", className)}>
+          <FormControl>
+            <DateGroup onFocusWithin={handleFocus} onBlurWithin={handleBlur}>
+              <DateTimeInput
+                disabled={disabled}
+                granularity={inputTime ? "datetime" : "date"}
+                ref={DateTimeInputRef}
+                locale="en-GB"
+                value={currentDate}
+                onValueChange={handleChange}
               />
+            </DateGroup>
+          </FormControl>
+        </div>
+      ) : (
+        <FormControlButton disabled={disabled} {...props}>
+          <div className={cn("flex items-center h-full flex-1", className)}>
+            {currentInputValue ? (
+              <span>{currentInputValue}</span>
+            ) : (
+              <span className={cn(placeholderColor)}>{placeholder}</span>
             )}
-            <PopoverTrigger asChild>
-              {!editable && triggerContent}
-            </PopoverTrigger>
-            <PopoverContent
-              onInteractOutside={(e) => {
-                if (editable) {
-                  if (
-                    calendarButtonRef.current &&
-                    calendarButtonRef.current.contains(e.target as Node)
-                  ) {
-                    e.preventDefault();
-                  } else {
-                    setOpen(false);
-                  }
-                }
-              }}
-              align={editable ? "end" : "start"}
-              className="p-0"
-              style={{ width: "auto" }}
-            >
-              {calendarContent}
-            </PopoverContent>
-          </Popover>
-        ) : (
-          <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>{!editable && triggerContent}</DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                {formComposition?.label && (
-                  <DrawerTitle>{formComposition?.label}</DrawerTitle>
-                )}
-              </DrawerHeader>
-              <div className="border-t">{calendarContent}</div>
-            </DrawerContent>
-          </Drawer>
-        )}
-      </>
-    );
-  }
-);
+          </div>
+        </FormControlButton>
+      )}
+    </FormComposition>
+  );
 
-DatePicker.displayName = "DatePicker";
+  const calendarContent = (
+    <Calendar
+      {...calendarProps}
+      defaultMonth={currentDate}
+      mode="single"
+      selected={currentDate}
+      onSelect={handleCalendarSelect}
+    />
+  );
+
+  return (
+    <>
+      {editable && triggerContent}
+      {isDesktop ? (
+        <Popover open={open} onOpenChange={setOpen}>
+          {editable && calendarButtonRef && (
+            <PopoverAnchor
+              virtualRef={calendarButtonRef as React.RefObject<Measurable>}
+            />
+          )}
+          <PopoverTrigger asChild>{!editable && triggerContent}</PopoverTrigger>
+          <PopoverContent
+            onInteractOutside={(e) => {
+              if (editable) {
+                if (
+                  calendarButtonRef.current &&
+                  calendarButtonRef.current.contains(e.target as Node)
+                ) {
+                  e.preventDefault();
+                } else {
+                  setOpen(false);
+                }
+              }
+            }}
+            align={editable ? "end" : "start"}
+            className="p-0"
+            style={{ width: "auto" }}
+          >
+            {calendarContent}
+          </PopoverContent>
+        </Popover>
+      ) : (
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>{!editable && triggerContent}</DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              {formComposition?.label && (
+                <DrawerTitle>{formComposition?.label}</DrawerTitle>
+              )}
+            </DrawerHeader>
+            <div className="border-t">{calendarContent}</div>
+          </DrawerContent>
+        </Drawer>
+      )}
+    </>
+  );
+}
 
 export { DatePicker };

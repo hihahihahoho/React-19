@@ -29,8 +29,8 @@ export type OnValueChangeDateRangePicker = DateRange | undefined;
 
 export interface DateRangePickerProps
   extends Omit<
-    React.HTMLAttributes<HTMLDivElement>,
-    "placeholder" | "defaultValue"
+    React.ComponentProps<typeof FormControlButton>,
+    "placeholder" | "defaultValue" | "value"
   > {
   placeholder?: string | React.ReactNode;
   placeholderColor?: string;
@@ -43,152 +43,147 @@ export interface DateRangePickerProps
   calendarProps?: CalendarRangeProps;
 }
 
-const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerProps>(
-  (props, ref) => {
-    const {
-      placeholder = (
-        <div className="flex gap-2 items-center">
-          dd/mm/yyyy
-          <ArrowRightIcon />
-          dd/mm/yyyy
-        </div>
-      ),
-      placeholderColor = "text-muted-foreground",
-      disabled = false,
-      dateFormat = "dd/MM/yyyy",
-      defaultValue,
-      value,
-      onValueChange,
-      formComposition,
-      className,
-      calendarProps,
-    } = props;
+function DateRangePicker({
+  placeholder = (
+    <div className="flex items-center gap-2">
+      dd/mm/yyyy
+      <ArrowRightIcon />
+      dd/mm/yyyy
+    </div>
+  ),
+  placeholderColor = "text-muted-foreground",
+  disabled = false,
+  dateFormat = "dd/MM/yyyy",
+  defaultValue,
+  value,
+  onValueChange,
+  formComposition,
+  className,
+  calendarProps,
+  ...props
+}: DateRangePickerProps) {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [open, setOpen] = React.useState(false);
 
-    const isDesktop = useMediaQuery("(min-width: 768px)");
-    const [open, setOpen] = React.useState(false);
+  const [internalRange, setInternalRange] = React.useState<
+    DateRange | undefined
+  >(defaultValue);
 
-    const [internalRange, setInternalRange] = React.useState<
-      DateRange | undefined
-    >(defaultValue);
+  const currentRange = value ?? internalRange;
 
-    const currentRange = value ?? internalRange;
+  const handleSelect = React.useCallback(
+    (range: DateRange | undefined) => {
+      setInternalRange(range);
+      onValueChange?.(range);
+    },
+    [onValueChange]
+  );
 
-    const handleSelect = React.useCallback(
-      (range: DateRange | undefined) => {
-        setInternalRange(range);
-        onValueChange?.(range);
-      },
-      [onValueChange]
-    );
+  const handleClear = React.useCallback(() => {
+    setInternalRange(undefined);
+    onValueChange?.(undefined);
+    formComposition?.onClear?.();
+  }, [onValueChange, formComposition]);
 
-    const handleClear = React.useCallback(() => {
-      setInternalRange(undefined);
-      onValueChange?.(undefined);
-      formComposition?.onClear?.();
-    }, [onValueChange, formComposition]);
-
-    const fromFormatted =
-      value === null
-        ? undefined
-        : currentRange?.from
+  const fromFormatted =
+    value === null
+      ? undefined
+      : currentRange?.from
         ? format(currentRange.from, dateFormat)
         : "";
-    const toFormatted =
-      value === null
-        ? undefined
-        : currentRange?.to
+  const toFormatted =
+    value === null
+      ? undefined
+      : currentRange?.to
         ? format(currentRange.to, dateFormat)
         : "";
-    const displayRange =
-      fromFormatted || toFormatted ? (
-        <>
-          {fromFormatted}
-          {fromFormatted && toFormatted ? (
-            <ArrowRightIcon className="text-muted-foreground" />
-          ) : (
-            ""
-          )}
-          {toFormatted}
-        </>
-      ) : (
-        ""
-      );
-
-    const hasValue = Boolean(fromFormatted || toFormatted);
-    const triggerContent = (
-      <FormComposition
-        {...formComposition}
-        asChild
-        ref={ref}
-        clearWhenNotFocus
-        disabled={disabled}
-        hasValue={hasValue}
-        onClear={handleClear}
-        iconLeft={<CalendarDays />}
-        className={cn("cursor-pointer", formComposition?.className)}
-      >
-        <FormControlButton disabled={disabled}>
-          <div className={cn("flex items-center h-full flex-1", className)}>
-            {hasValue ? (
-              <span className="flex items-center gap-2">{displayRange}</span>
-            ) : (
-              <span className={cn(placeholderColor)}>{placeholder}</span>
-            )}
-          </div>
-        </FormControlButton>
-      </FormComposition>
-    );
-
-    const calendarRangeContent = (
-      <CalendarRange
-        setOpen={setOpen}
-        selectedRange={currentRange}
-        onValueChange={
-          !calendarProps?.showConfirmButton
-            ? handleSelect
-            : calendarProps?.onValueChange
-        }
-        onConfirm={
-          calendarProps?.showConfirmButton
-            ? handleSelect
-            : calendarProps?.onConfirm
-        }
-        {...calendarProps}
-      />
-    );
-
-    return (
+  const displayRange =
+    fromFormatted || toFormatted ? (
       <>
-        {isDesktop ? (
-          <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>{triggerContent}</PopoverTrigger>
-            <PopoverContent
-              align="start"
-              className="p-0"
-              style={{ width: "auto" }}
-            >
-              {calendarRangeContent}
-            </PopoverContent>
-          </Popover>
+        {fromFormatted}
+        {fromFormatted && toFormatted ? (
+          <ArrowRightIcon className="text-muted-foreground" />
         ) : (
-          <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerTrigger asChild>{triggerContent}</DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                {formComposition?.label && (
-                  <DrawerTitle>{formComposition?.label}</DrawerTitle>
-                )}
-              </DrawerHeader>
-              <Separator />
-              {calendarRangeContent}
-            </DrawerContent>
-          </Drawer>
+          ""
         )}
+        {toFormatted}
       </>
+    ) : (
+      ""
     );
-  }
-);
 
-DateRangePicker.displayName = "DateRangePicker";
+  const hasValue = Boolean(fromFormatted || toFormatted);
+  const triggerContent = (
+    <FormComposition
+      data-slot="date-range-picker"
+      {...formComposition}
+      asChild
+      clearWhenNotFocus
+      disabled={disabled}
+      hasValue={hasValue}
+      onClear={handleClear}
+      iconLeft={<CalendarDays />}
+      className={cn("cursor-pointer", formComposition?.className)}
+    >
+      <FormControlButton disabled={disabled} {...props}>
+        <div className={cn("flex items-center h-full flex-1", className)}>
+          {hasValue ? (
+            <span className="flex items-center gap-2">{displayRange}</span>
+          ) : (
+            <span className={cn(placeholderColor)}>{placeholder}</span>
+          )}
+        </div>
+      </FormControlButton>
+    </FormComposition>
+  );
+
+  const calendarRangeContent = (
+    <CalendarRange
+      setOpen={setOpen}
+      selectedRange={currentRange}
+      onValueChange={
+        !calendarProps?.showConfirmButton
+          ? handleSelect
+          : calendarProps?.onValueChange
+      }
+      onConfirm={
+        calendarProps?.showConfirmButton
+          ? handleSelect
+          : calendarProps?.onConfirm
+      }
+      {...calendarProps}
+    />
+  );
+
+  return (
+    <>
+      {isDesktop ? (
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>{triggerContent}</PopoverTrigger>
+          <PopoverContent
+            align="start"
+            className="p-0"
+            style={{ width: "auto" }}
+          >
+            {calendarRangeContent}
+          </PopoverContent>
+        </Popover>
+      ) : (
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>{triggerContent}</DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              {formComposition?.label && (
+                <DrawerTitle>{formComposition?.label}</DrawerTitle>
+              )}
+            </DrawerHeader>
+            <Separator />
+            {calendarRangeContent}
+          </DrawerContent>
+        </Drawer>
+      )}
+    </>
+  );
+}
 
 export { DateRangePicker };

@@ -57,52 +57,46 @@ export interface ButtonProps
   isLoading?: boolean;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      iconOnly,
-      asChild = false,
-      iconLeft,
-      iconRight,
-      type = "button",
-      isRounded,
-      isLoading,
-      disabled,
-      ...props
-    }: ButtonProps,
-    ref
-  ) => {
-    const Comp = asChild ? Slot : "button";
+function Button({
+  className,
+  variant,
+  size,
+  iconOnly,
+  asChild = false,
+  iconLeft,
+  iconRight,
+  type = "button",
+  isRounded,
+  isLoading,
+  disabled,
+  ...props
+}: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
+  const Comp = asChild ? Slot : "button";
 
-    return (
-      <Comp
-        type={type}
-        className={cn(
-          buttonVariants({
-            variant,
-            size,
-            className,
-            iconOnly,
-            isRounded,
-            disabled,
-          }),
-          "flex items-center"
-        )}
-        disabled={isLoading || disabled || false}
-        ref={ref}
-        {...props}
-      >
-        {isLoading && <Loader2 className="animate-spin" />}
-        {!isLoading && iconLeft && iconLeft}
-        <Slottable>{props.children}</Slottable>
-        {iconRight && iconRight}
-      </Comp>
-    );
-  }
-);
-Button.displayName = "Button";
+  return (
+    <Comp
+      data-slot="button"
+      type={type}
+      className={cn(
+        buttonVariants({
+          variant,
+          size,
+          className,
+          iconOnly,
+          isRounded,
+          disabled,
+        }),
+        "flex items-center"
+      )}
+      disabled={isLoading || disabled || false}
+      {...props}
+    >
+      {isLoading && <Loader2 className="animate-spin" />}
+      {!isLoading && iconLeft && iconLeft}
+      <Slottable>{props.children}</Slottable>
+      {iconRight && iconRight}
+    </Comp>
+  );
+}
 
 export { Button, buttonVariants };

@@ -26,7 +26,7 @@ const selectionGroupVariants = cva(
 // Interface for SelectionGroup props
 export interface SelectionGroupProps
   extends VariantProps<typeof selectionGroupVariants>,
-    React.HTMLAttributes<HTMLDivElement> {
+    React.ComponentProps<typeof FormItem> {
   control?: React.ReactNode;
 }
 
@@ -37,7 +37,7 @@ function SelectionGroup({
   children,
   className,
   ...props
-}: SelectionGroupProps & React.ComponentProps<typeof FormItem>) {
+}: SelectionGroupProps) {
   return (
     <FormItem
       data-slot="selection-control"

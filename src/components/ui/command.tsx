@@ -8,7 +8,7 @@ import { getNodeText } from "@/lib/get-node-text";
 import { transliterateVietnamese } from "@/lib/transliterate-vietnamese";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent } from "./dialog";
-import { CommandPrimitiveInput } from "./input/commandPrimitiveInput";
+import { CommandPrimitiveInput } from "./input/command-primitive-input";
 
 function Command({
   className,

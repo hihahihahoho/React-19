@@ -108,12 +108,12 @@ function SelectCommand({
   };
 
   return (
-    <Command defaultValue={selected[0]}>
+    <Command defaultValue={selected.at(-1)}>
       {showSearch && <CommandInput placeholder="Tìm kiếm..." />}
 
       {isCheckAll && (
         <CommandGroup>
-          <div className="flex gap-2 px-2 pt-1 pb-2 items-center">
+          <div className="flex items-center gap-2 px-2 pt-1 pb-2">
             <div className="flex-1">
               <Badge
                 size={"md"}

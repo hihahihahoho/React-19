@@ -1,7 +1,5 @@
 import React, {
   createContext,
-  ForwardedRef,
-  PropsWithChildren,
   useCallback,
   useContext,
   useRef,
@@ -19,7 +17,7 @@ function useDateGroupContext() {
   return useContext(DateGroupContext);
 }
 
-export interface DateGroupProps extends PropsWithChildren {
+export interface DateGroupProps extends React.ComponentProps<"div"> {
   onFocusWithin?: (event: React.FocusEvent<HTMLDivElement>) => void;
   onBlurWithin?: (event: React.FocusEvent<HTMLDivElement>) => void;
 }
@@ -27,95 +25,92 @@ export interface DateGroupProps extends PropsWithChildren {
 /**
  * Wrap multiple <DateTimeInput> components in <DateGroup> if you want arrow-key
  * navigation to cross from one date input to another.
- * Also supports onFocusWithin / onBlurWithin and forwards a ref to the container <div>.
+ * Also supports onFocusWithin / onBlurWithin.
  */
-const DateGroup = React.forwardRef<HTMLDivElement, DateGroupProps>(
-  function DateGroup(props, forwardedRef: ForwardedRef<HTMLDivElement>) {
-    const { children, onFocusWithin, onBlurWithin } = props;
+function DateGroup({
+  children,
+  onFocusWithin,
+  onBlurWithin,
+  ...props
+}: DateGroupProps) {
+  // We'll store references to all segments here.
+  const segmentRefs = useRef<HTMLDivElement[]>([]);
 
-    // We'll store references to all segments here.
-    const segmentRefs = useRef<HTMLDivElement[]>([]);
+  // Track whether the group currently has focus (focus is within a child).
+  const [isFocusWithin, setIsFocusWithin] = useState(false);
 
-    // Track whether the group currently has focus (focus is within a child).
-    const [isFocusWithin, setIsFocusWithin] = useState(false);
+  // Called by each <DateSegment> on mount to register itself.
+  const registerSegment = useCallback((seg: HTMLDivElement) => {
+    segmentRefs.current.push(seg);
+  }, []);
 
-    // Called by each <DateSegment> on mount to register itself.
-    const registerSegment = useCallback((seg: HTMLDivElement) => {
-      segmentRefs.current.push(seg);
-    }, []);
+  // Called by each <DateSegment> on unmount to remove itself.
+  const unregisterSegment = useCallback((seg: HTMLDivElement) => {
+    segmentRefs.current = segmentRefs.current.filter((el) => el !== seg);
+  }, []);
 
-    // Called by each <DateSegment> on unmount to remove itself.
-    const unregisterSegment = useCallback((seg: HTMLDivElement) => {
-      segmentRefs.current = segmentRefs.current.filter((el) => el !== seg);
-    }, []);
+  // Move focus to next/previous segment in actual DOM order.
+  const moveFocus = useCallback(
+    (current: HTMLDivElement, direction: -1 | 1) => {
+      // Filter out anything no longer in the DOM:
+      const validRefs = segmentRefs.current.filter((el) =>
+        document.contains(el)
+      );
 
-    // Move focus to next/previous segment in actual DOM order.
-    const moveFocus = useCallback(
-      (current: HTMLDivElement, direction: -1 | 1) => {
-        // Filter out anything no longer in the DOM:
-        const validRefs = segmentRefs.current.filter((el) =>
-          document.contains(el)
-        );
+      // Sort by DOM order:
+      validRefs.sort((a, b) => {
+        const pos = a.compareDocumentPosition(b);
+        if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+        if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+        return 0;
+      });
 
-        // Sort by DOM order:
-        validRefs.sort((a, b) => {
-          const pos = a.compareDocumentPosition(b);
-          if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
-          if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
-          return 0;
-        });
+      const currentIndex = validRefs.indexOf(current);
+      if (currentIndex === -1) return;
 
-        const currentIndex = validRefs.indexOf(current);
-        if (currentIndex === -1) return;
-
-        const targetIndex = currentIndex + direction;
-        if (targetIndex >= 0 && targetIndex < validRefs.length) {
-          validRefs[targetIndex].focus();
-        }
-      },
-      []
-    );
-
-    const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
-      // If we previously did NOT have focus, that means focus just entered.
-      if (!isFocusWithin) {
-        setIsFocusWithin(true);
-        onFocusWithin?.(e);
+      const targetIndex = currentIndex + direction;
+      if (targetIndex >= 0 && targetIndex < validRefs.length) {
+        validRefs[targetIndex].focus();
       }
-    };
+    },
+    []
+  );
 
-    const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
-      // If focus is leaving the container entirely, call onBlurWithin.
-      if (!e.currentTarget.contains(e.relatedTarget)) {
-        setIsFocusWithin(false);
-        onBlurWithin?.(e);
-      }
-    };
+  const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
+    // If we previously did NOT have focus, that means focus just entered.
+    if (!isFocusWithin) {
+      setIsFocusWithin(true);
+      onFocusWithin?.(e);
+    }
+  };
 
-    const contextValue: DateGroupContextValue = {
-      registerSegment,
-      unregisterSegment,
-      moveFocus,
-    };
+  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    // If focus is leaving the container entirely, call onBlurWithin.
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+      setIsFocusWithin(false);
+      onBlurWithin?.(e);
+    }
+  };
 
-    return (
-      <DateGroupContext.Provider value={contextValue}>
-        {/* 
-          Attach the forwardedRef to the container <div>. 
-          tabIndex={-1} ensures the <div> can receive 
-          focus events in the bubble phase from its children.
-        */}
-        <div
-          ref={forwardedRef}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          tabIndex={-1}
-        >
-          {children}
-        </div>
-      </DateGroupContext.Provider>
-    );
-  }
-);
+  const contextValue: DateGroupContextValue = {
+    registerSegment,
+    unregisterSegment,
+    moveFocus,
+  };
+
+  return (
+    <DateGroupContext.Provider value={contextValue}>
+      <div
+        data-slot="date-group"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        tabIndex={-1}
+        {...props}
+      >
+        {children}
+      </div>
+    </DateGroupContext.Provider>
+  );
+}
 
 export { DateGroup, useDateGroupContext };

@@ -1,8 +1,7 @@
-import { useMergedRef } from "@/hooks/use-merge-ref";
 import { getNodeText } from "@/lib/get-node-text";
 import { cn, lowercaseFirstChar } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
-import React, { forwardRef, useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
 import {
   FormComposition,
@@ -15,7 +14,7 @@ import { SelectPopover } from "./select-popover";
 
 export type OnValueChangeSelect = string | undefined;
 
-export interface SelectProps {
+export interface SelectProps extends React.ComponentProps<"button"> {
   placeholder?: string | React.ReactNode;
   options: SelectItems[] | SelectGroup[];
   value?: OnValueChangeSelect;
@@ -28,135 +27,124 @@ export interface SelectProps {
   readonly?: boolean;
 }
 
-const Select = forwardRef<HTMLDivElement, SelectProps>(
-  (
-    {
-      placeholder,
-      options,
-      value,
-      defaultValue,
-      disabled = false,
-      formComposition,
-      onValueChange,
-      onFocus,
-      onBlur,
-      readonly,
+function Select({
+  placeholder,
+  options,
+  value,
+  defaultValue,
+  disabled = false,
+  formComposition,
+  onValueChange,
+  onFocus,
+  onBlur,
+  readonly,
+  ...props
+}: SelectProps) {
+  const [open, setOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [internalValue, setInternalValue] =
+    useState<OnValueChangeSelect>(defaultValue);
+
+  const flattenItems = flatItems(options);
+
+  const handleValueChange = useCallback(
+    (newValue: OnValueChangeSelect) => {
+      setInternalValue(newValue);
+      onValueChange?.(newValue);
     },
-    ref
-  ) => {
-    const internalRef = useRef<HTMLDivElement>(null);
-    const mergedRef = useMergedRef(ref, internalRef);
-    const [open, setOpen] = useState(false);
-    const [isFocused, setIsFocused] = useState(false);
-    const [internalValue, setInternalValue] =
-      useState<OnValueChangeSelect>(defaultValue);
+    [onValueChange]
+  );
 
-    const flattenItems = flatItems(options);
+  const handleClear = useCallback(() => {
+    handleValueChange(undefined);
+    formComposition?.onClear?.();
+  }, [formComposition, handleValueChange]);
 
-    const handleValueChange = useCallback(
-      (newValue: OnValueChangeSelect) => {
-        setInternalValue(newValue);
-        onValueChange?.(newValue);
-      },
-      [onValueChange]
-    );
+  const currentValue = value !== undefined ? value : internalValue;
+  const hasValue = Boolean(currentValue);
+  const selectedOption = flattenItems.find(
+    (item) => item.value === currentValue
+  );
 
-    const handleClear = useCallback(() => {
-      handleValueChange(undefined);
-      formComposition?.onClear?.();
-      if (internalRef.current) {
-        const button = internalRef.current.querySelector("button");
-        button?.focus();
-      }
-    }, [formComposition, handleValueChange]);
-
-    const currentValue = value !== undefined ? value : internalValue;
-    const hasValue = Boolean(currentValue);
-    const selectedOption = flattenItems.find(
-      (item) => item.value === currentValue
-    );
-
-    return (
-      <SelectPopover
-        open={open}
-        setOpen={setOpen}
-        triggerContent={
-          <FormComposition
-            clearWhenNotFocus={true}
-            inputClear={false}
-            iconRight={<ChevronDown className="opacity-50" />}
-            {...formComposition}
-            asChild
-            ref={mergedRef}
-            hasValue={hasValue}
-            className={cn("cursor-pointer", formComposition?.className)}
-            onClear={handleClear}
+  return (
+    <SelectPopover
+      open={open}
+      setOpen={setOpen}
+      triggerContent={
+        <FormComposition
+          clearWhenNotFocus={true}
+          inputClear={false}
+          iconRight={<ChevronDown className="opacity-50" />}
+          {...formComposition}
+          asChild
+          hasValue={hasValue}
+          className={cn("cursor-pointer", formComposition?.className)}
+          onClear={handleClear}
+          disabled={disabled}
+          focusWithin={false}
+          readonly={readonly}
+          isFocused={isFocused}
+        >
+          <FormControlButton
+            data-slot="select"
             disabled={disabled}
-            focusWithin={false}
-            readonly={readonly}
-            isFocused={isFocused}
+            onFocus={(e) => {
+              setIsFocused(true);
+              onFocus?.(e);
+            }}
+            onBlur={(e) => {
+              setIsFocused(false);
+              onBlur?.(e);
+            }}
+            {...props}
           >
-            <FormControlButton
-              disabled={disabled}
-              onFocus={(e) => {
-                setIsFocused(true);
-                onFocus?.(e);
-              }}
-              onBlur={(e) => {
-                setIsFocused(false);
-                onBlur?.(e);
-              }}
-            >
-              <div className={cn("flex items-center h-full flex-1")}>
-                <div className="line-clamp-1">
-                  {selectedOption?.label ? (
-                    <div className="flex items-center gap-2">
-                      {selectedOption?.icon &&
-                        (typeof selectedOption.icon === "string" ? (
-                          <Avatar size={"xs"}>
-                            <AvatarImage src={selectedOption.icon} />
-                            <AvatarFallback>
-                              {(selectedOption.value || "").substring(0, 2)}
-                            </AvatarFallback>
-                          </Avatar>
-                        ) : (
-                          selectedOption.icon
-                        ))}
-                      <span className="line-clamp-1">
-                        {selectedOption?.label || selectedOption.value}
-                      </span>
-                    </div>
-                  ) : (
-                    <span
-                      className={cn(!selectedOption && "text-muted-foreground")}
-                    >
-                      {placeholder ||
-                        "Chọn " +
-                          lowercaseFirstChar(
-                            getNodeText(formComposition?.label) || ""
-                          )}
+            <div className={cn("flex items-center h-full flex-1")}>
+              <div className="line-clamp-1">
+                {selectedOption?.label ? (
+                  <div className="flex items-center gap-2">
+                    {selectedOption?.icon &&
+                      (typeof selectedOption.icon === "string" ? (
+                        <Avatar size={"xs"}>
+                          <AvatarImage src={selectedOption.icon} />
+                          <AvatarFallback>
+                            {(selectedOption.value || "").substring(0, 2)}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        selectedOption.icon
+                      ))}
+                    <span className="line-clamp-1">
+                      {selectedOption?.label || selectedOption.value}
                     </span>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <span
+                    className={cn(!selectedOption && "text-muted-foreground")}
+                  >
+                    {placeholder ||
+                      "Chọn " +
+                        lowercaseFirstChar(
+                          getNodeText(formComposition?.label) || ""
+                        )}
+                  </span>
+                )}
               </div>
-            </FormControlButton>
-          </FormComposition>
-        }
-        label={formComposition?.label || placeholder || "Chọn"}
-      >
-        <SelectCommand
-          items={options}
-          selected={[currentValue || ""]}
-          setSelected={(values) => handleValueChange(values[0])}
-          onSelect={() => {
-            setOpen(false);
-          }}
-        />
-      </SelectPopover>
-    );
-  }
-);
-
-Select.displayName = "Select";
+            </div>
+          </FormControlButton>
+        </FormComposition>
+      }
+      label={formComposition?.label || placeholder || "Chọn"}
+    >
+      <SelectCommand
+        items={options}
+        selected={[currentValue || ""]}
+        setSelected={(values) => handleValueChange(values[0])}
+        onSelect={() => {
+          setOpen(false);
+        }}
+      />
+    </SelectPopover>
+  );
+}
 
 export { Select };
