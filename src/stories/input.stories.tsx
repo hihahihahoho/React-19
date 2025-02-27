@@ -4,7 +4,7 @@ import { Input, OnValueChangeInput } from "@/components/ui/input/input";
 import { Select } from "@/components/ui/select/select";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Smile } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const meta = {
   title: "Base/Input",
@@ -30,11 +30,19 @@ export const Controled: Story = {
   },
   render: (args) => {
     const [value, setValue] = useState<OnValueChangeInput>(args.value || "");
+    const ref = useRef<HTMLInputElement>(null);
 
     return (
       <div className="w-full">
-        <Input {...args} value={value} onValueChange={setValue} />
-        <Button variant={"secondary"}>Button</Button>
+        <Input ref={ref} {...args} value={value} onValueChange={setValue} />
+        <Button
+          variant={"secondary"}
+          onClick={() => {
+            ref.current?.focus();
+          }}
+        >
+          Focus
+        </Button>
       </div>
     );
   },

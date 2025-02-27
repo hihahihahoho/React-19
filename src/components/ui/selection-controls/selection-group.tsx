@@ -30,13 +30,17 @@ export interface SelectionGroupProps
   control?: React.ReactNode;
 }
 
-// ForwardRef for the SelectionGroup component
-const SelectionGroup = React.forwardRef<
-  React.ElementRef<typeof Slot>,
-  SelectionGroupProps & React.ComponentPropsWithoutRef<typeof Slot>
->(({ control, variant, children, className, ...props }, ref) => {
+// Updated component without forwardRef
+function SelectionGroup({
+  control,
+  variant,
+  children,
+  className,
+  ...props
+}: SelectionGroupProps & React.ComponentProps<typeof FormItem>) {
   return (
     <FormItem
+      data-slot="selection-control"
       className={cn("flex flex-row text-sm group/group-checkbox")}
       {...props}
     >
@@ -46,9 +50,7 @@ const SelectionGroup = React.forwardRef<
             &nbsp;
           </span>
           <FormControl>
-            <Slot className={cn("align-middle")} ref={ref}>
-              {control}
-            </Slot>
+            <Slot className={cn("align-middle")}>{control}</Slot>
           </FormControl>
         </div>
       </div>
@@ -58,9 +60,6 @@ const SelectionGroup = React.forwardRef<
       </FormLabel>
     </FormItem>
   );
-});
-
-// Set display name for better debugging
-SelectionGroup.displayName = "SelectionGroup";
+}
 
 export { SelectionGroup };

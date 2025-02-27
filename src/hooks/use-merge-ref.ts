@@ -1,14 +1,44 @@
-import * as React from "react";
+import { Ref, type RefCallback } from 'react';
 
-function useMergedRef<T>(...refs: React.Ref<T>[]): React.RefCallback<T> {
-  return React.useCallback((element: T) => {
-    for (let i = 0; i < refs.length; i++) {
-      const ref = refs[i];
-      if (typeof ref === "function") ref(element);
-      else if (ref && typeof ref === "object")
-        (ref as React.MutableRefObject<T>).current = element;
-    }
-  }, refs);
+type PossibleRef<T> = Ref<T> | undefined;
+
+type RefCleanup<T> = ReturnType<RefCallback<T>>;
+
+export function assignRef<T>(ref: PossibleRef<T>, value: T): RefCleanup<T> {
+  if (typeof ref === 'function') {
+    return ref(value);
+  } else if (typeof ref === 'object' && ref !== null && 'current' in ref) {
+    ref.current = value;
+  }
 }
 
-export { useMergedRef };
+export function mergeRefs<T>(...refs: PossibleRef<T>[]) {
+  const cleanupMap = new Map<PossibleRef<T>, Exclude<RefCleanup<T>, void>>();
+
+  return (node: T | null) => {
+    refs.forEach((ref) => {
+      const cleanup = assignRef(ref, node);
+      if (cleanup) {
+        cleanupMap.set(ref, cleanup);
+      }
+    });
+
+    if (cleanupMap.size > 0) {
+      return () => {
+        refs.forEach((ref) => {
+          const cleanup = cleanupMap.get(ref);
+          if (cleanup) {
+            cleanup();
+          } else {
+            assignRef(ref, null);
+          }
+        });
+        cleanupMap.clear();
+      };
+    }
+  };
+}
+
+export function useMergedRef<T>(...refs: PossibleRef<T>[]) {
+  return mergeRefs(...refs);
+}

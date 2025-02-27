@@ -21,7 +21,8 @@ const badgeVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80 [&_.x-button]:opacity-30",
         destructive:
           "bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
-        outline: "text-foreground [&_.x-button]:opacity-30",
+        outline:
+          "text-foreground ring-1 ring-primary/10 [&_.x-button]:opacity-30",
         lightGreen:
           "bg-green-100 ring-green-600/20  text-green-800 dark:bg-green-500/20 dark:text-green-400 ring-1 dark:ring-green-400/30 border-0",
         lightRed:

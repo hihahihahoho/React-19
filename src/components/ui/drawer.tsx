@@ -17,7 +17,6 @@ function Drawer({
     />
   );
 }
-Drawer.displayName = "Drawer";
 
 const DrawerTrigger = DrawerPrimitive.Trigger;
 
@@ -39,7 +38,6 @@ function DrawerOverlay({
     />
   );
 }
-DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
 
 function DrawerContent({
   className,
@@ -48,7 +46,9 @@ function DrawerContent({
 }: React.ComponentProps<typeof DrawerPrimitive.Content>) {
   return (
     <DrawerPortal>
-      <DrawerOverlay />
+      <DrawerClose asChild>
+        <DrawerOverlay />
+      </DrawerClose>
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
@@ -63,7 +63,6 @@ function DrawerContent({
     </DrawerPortal>
   );
 }
-DrawerContent.displayName = "DrawerContent";
 
 function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -74,7 +73,6 @@ function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
     />
   );
 }
-DrawerHeader.displayName = "DrawerHeader";
 
 function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
@@ -85,7 +83,6 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
     />
   );
 }
-DrawerFooter.displayName = "DrawerFooter";
 
 function DrawerTitle({
   className,
@@ -102,7 +99,6 @@ function DrawerTitle({
     />
   );
 }
-DrawerTitle.displayName = DrawerPrimitive.Title.displayName;
 
 function DrawerDescription({
   className,
@@ -116,7 +112,6 @@ function DrawerDescription({
     />
   );
 }
-DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
 
 export {
   Drawer,

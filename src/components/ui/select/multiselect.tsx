@@ -159,7 +159,7 @@ const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                     };
                   })}
                   maxShownItems={maxShownBadges}
-                  className={cn("-mx-1", className)}
+                  className={cn("-mx-1.5", className)}
                   badgeMeasureClassName={badgeMeasureClassName}
                   overflowMeasureClassName={overflowMeasureClassName}
                   badgeProps={{
