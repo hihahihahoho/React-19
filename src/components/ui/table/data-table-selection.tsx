@@ -1,16 +1,16 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { CheckCheck, XCircle } from "lucide-react";
 import { Button } from "../button";
 import { useDataTable } from "./data-table-context";
+import { AnimatePresence, motion } from "motion/react";
 
 export function DataTableSelection() {
   const { table } = useDataTable();
   return (
     <AnimatePresence>
       {table.getSelectedRowModel().rows.length > 0 && (
-        <div className="sticky bottom-20 z-30 flex left-0 right-0 items-center justify-center text-xs mb-4 pointer-events-none">
+        <div className="sticky left-0 right-0 z-30 flex items-center justify-center mb-4 text-xs pointer-events-none bottom-20">
           <motion.div
-            className="flex items-center pointer-events-auto flex-wrap rounded-xl bg-card/90 border px-4 py-3 backdrop-blur gap-2 -sm:flex-col"
+            className="flex flex-wrap items-center gap-2 px-4 py-3 border pointer-events-auto rounded-xl bg-card/90 backdrop-blur -sm:flex-col"
             initial={{
               opacity: 0,
               y: 20,
