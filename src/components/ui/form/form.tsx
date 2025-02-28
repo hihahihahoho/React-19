@@ -89,11 +89,11 @@ const inputSizeVariants = cva("", {
 });
 
 const inputContainerVariants = cva(
-  "outline-none flex w-full rounded-lg bg-transparent ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 cursor-text px-3 gap-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "outline-none flex w-full rounded-lg bg-transparent ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 cursor-text px-3 gap-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 ",
   {
     variants: {
       variant: {
-        default: "border border-input shadow-sm",
+        default: "border border-input shadow-sm dark:bg-neutral-900",
         white: "bg-background",
         ghost:
           "!border-0 !ring-offset-0 !ring-0 !shadow-none rounded-none bg-transparent",

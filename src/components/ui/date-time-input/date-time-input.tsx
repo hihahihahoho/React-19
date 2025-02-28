@@ -288,8 +288,8 @@ function DateSegment({
     (id.includes("year") && displayValue
       ? displayValue.padStart(4, "0")
       : displayValue
-      ? displayValue.padStart(maxLength, "0")
-      : placeholder) || placeholder;
+        ? displayValue.padStart(maxLength, "0")
+        : placeholder) || placeholder;
 
   return (
     <div>
@@ -297,7 +297,7 @@ function DateSegment({
         ref={ref}
         role="spinbutton"
         className={`relative caret-transparent select-none tabular-nums px-[1px] outline-none rounded-md cursor-text text-center ${
-          !displayValue ? "text-muted-foreground" : "text-black"
+          !displayValue && "text-muted-foreground"
         } ${isFocused ? "bg-primary/20" : "hover:bg-gray-50"}`}
         id={id}
         aria-label={label}

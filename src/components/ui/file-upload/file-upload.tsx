@@ -277,6 +277,7 @@ function FileUpload({
       data-slot="file-upload"
       {...formComposition}
       className="p-0 border-0 flex-col !ring-0 !shadow-none"
+      variant="ghost"
       isMinHeight
       description={null}
     >

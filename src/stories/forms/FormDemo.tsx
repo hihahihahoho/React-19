@@ -167,7 +167,10 @@ function FormDemo() {
   return (
     <ZodSchemaProvider schema={FormSchema}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 max-w-[760px] mx-auto"
+        >
           <InputForm
             control={form.control}
             name="username"
