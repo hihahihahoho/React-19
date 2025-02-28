@@ -1,8 +1,8 @@
 "use client";
 
+import { useLocaleDateConfig } from "@/hooks/use-date-locale-config";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
-import { MaskitoDateMode } from "@maskito/kit";
 import { Measurable } from "@radix-ui/rect";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -39,21 +39,20 @@ export type OnValueChangeDatePicker = Date | undefined;
 
 export interface DatePickerProps
   extends Omit<React.ComponentProps<"button">, "value" | "defaultValue"> {
-  placeholder?: string | React.ReactNode;
+  placeholder?: React.ReactNode;
   placeholderColor?: string;
   defaultValue?: Date;
   value?: Date | null;
   formComposition?: FormCompositionProps;
   editable?: boolean;
-  dateFormat?: MaskitoDateMode;
   calendarProps?: React.ComponentProps<typeof Calendar>;
   inputTime?: boolean;
   onValueChange?: (value: OnValueChangeDatePicker) => void;
+  locale?: string;
 }
 
 function DatePicker({
-  dateFormat = "dd/mm/yyyy",
-  placeholder = "dd/mm/yyyy",
+  placeholder,
   placeholderColor = "text-muted-foreground",
   value,
   className,
@@ -64,13 +63,14 @@ function DatePicker({
   calendarProps,
   defaultValue,
   inputTime = false,
+  locale,
   ...props
 }: DatePickerProps) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const DateTimeInputRef = useRef<DateTimeInputHandle>(null);
   const calendarButtonRef = useRef<HTMLButtonElement>(null);
-  const convertedDateFormat = dateFormat.replace("mm", "MM");
+  const localeConfig = useLocaleDateConfig(locale);
   const [isInvalid, setIsInvalid] = useState(false);
 
   const [internalDate, setInternalDate] = useState<OnValueChangeDatePicker>(
@@ -144,7 +144,7 @@ function DatePicker({
 
   const currentDate = value === null ? undefined : value || internalDate;
   const currentInputValue = currentDate
-    ? format(currentDate, convertedDateFormat)
+    ? format(currentDate, localeConfig.format)
     : "";
   const hasValue = Boolean(currentDate || isInvalid);
 
@@ -197,9 +197,9 @@ function DatePicker({
                 disabled={disabled}
                 granularity={inputTime ? "datetime" : "date"}
                 ref={DateTimeInputRef}
-                locale="en-GB"
                 value={currentDate}
                 onValueChange={handleChange}
+                locale={locale}
               />
             </DateGroup>
           </FormControl>
@@ -210,7 +210,9 @@ function DatePicker({
             {currentInputValue ? (
               <span>{currentInputValue}</span>
             ) : (
-              <span className={cn(placeholderColor)}>{placeholder}</span>
+              <span className={cn(placeholderColor)}>
+                {placeholder || localeConfig.format.toLowerCase()}
+              </span>
             )}
           </div>
         </FormControlButton>
@@ -221,6 +223,7 @@ function DatePicker({
   const calendarContent = (
     <Calendar
       {...calendarProps}
+      localeString={localeConfig.locale}
       defaultMonth={currentDate}
       mode="single"
       selected={currentDate}

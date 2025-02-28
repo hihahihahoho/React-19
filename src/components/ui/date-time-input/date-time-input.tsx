@@ -1,3 +1,5 @@
+import { useLocaleDateConfig } from "@/hooks/use-date-locale-config";
+import { SegmentDateId } from "@/lib/locale-date";
 import { format, getDaysInMonth, isValid, parse } from "date-fns";
 import React, { useEffect, useRef, useState } from "react";
 import { useDateGroupContext } from "./date-time-input-group";
@@ -11,49 +13,6 @@ function handleZeroValue(val: string): string {
 }
 
 export type Granularity = "date" | "time" | "datetime";
-type SegmentId = "month" | "day" | "year" | "hour" | "minute";
-
-interface LocaleConfig {
-  format: string;
-  segments: Array<{
-    id: SegmentId;
-    placeholder: string;
-    label: string;
-  }>;
-  separator?: string;
-}
-
-type LocaleConfigs = {
-  [key in "en-US" | "en-GB" | "de-DE"]: LocaleConfig;
-};
-
-const LOCALES: LocaleConfigs = {
-  "en-US": {
-    format: "MM/DD/YYYY",
-    segments: [
-      { id: "month", placeholder: "mm", label: "Month" },
-      { id: "day", placeholder: "dd", label: "Day" },
-      { id: "year", placeholder: "yyyy", label: "Year" },
-    ],
-  },
-  "en-GB": {
-    format: "DD/MM/YYYY",
-    segments: [
-      { id: "day", placeholder: "dd", label: "Day" },
-      { id: "month", placeholder: "mm", label: "Month" },
-      { id: "year", placeholder: "yyyy", label: "Year" },
-    ],
-  },
-  "de-DE": {
-    format: "DD.MM.YYYY",
-    segments: [
-      { id: "day", placeholder: "TT", label: "Tag" },
-      { id: "month", placeholder: "MM", label: "Monat" },
-      { id: "year", placeholder: "JJJJ", label: "Jahr" },
-    ],
-    separator: ".",
-  },
-};
 
 interface DateSegmentProps {
   value: string;
@@ -288,8 +247,8 @@ function DateSegment({
     (id.includes("year") && displayValue
       ? displayValue.padStart(4, "0")
       : displayValue
-        ? displayValue.padStart(maxLength, "0")
-        : placeholder) || placeholder;
+      ? displayValue.padStart(maxLength, "0")
+      : placeholder) || placeholder;
 
   return (
     <div>
@@ -320,7 +279,7 @@ function DateSegment({
 }
 
 export interface DateTimeInputProps {
-  locale?: keyof LocaleConfigs;
+  locale?: string;
   value?: Date;
   defaultValue?: Date;
   onValueChange?: (value: Date | undefined | "invalid") => void;
@@ -337,7 +296,7 @@ export interface DateTimeInputHandle {
 const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
   function DateTimeInput(
     {
-      locale = "en-US",
+      locale,
       value,
       defaultValue,
       onValueChange,
@@ -348,6 +307,8 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
     ref
   ) {
     const uid = React.useId();
+
+    const localeConfig = useLocaleDateConfig(locale);
 
     const [resetKey, setResetKey] = useState(0);
 
@@ -444,10 +405,10 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       }
     }
 
-    function getSegmentIds(): SegmentId[] {
-      const ids: SegmentId[] = [];
+    function getSegmentDateIds(): SegmentDateId[] {
+      const ids: SegmentDateId[] = [];
       if (granularity !== "time") {
-        ids.push(...LOCALES[locale].segments.map((s) => s.id));
+        ids.push(...localeConfig.segments.map((s) => s.id));
       }
       if (granularity !== "date") {
         ids.push("hour", "minute");
@@ -455,7 +416,7 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       return ids;
     }
 
-    function getSegmentConfig(id: SegmentId) {
+    function getSegmentConfig(id: SegmentDateId) {
       switch (id) {
         case "day": {
           const yInt = parseInt(year);
@@ -481,8 +442,8 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       }
     }
 
-    function getSegmentMeta(id: SegmentId) {
-      const dateSeg = LOCALES[locale].segments.find((s) => s.id === id);
+    function getSegmentMeta(id: SegmentDateId) {
+      const dateSeg = localeConfig.segments.find((s) => s.id === id);
       if (dateSeg)
         return { placeholder: dateSeg.placeholder, label: dateSeg.label };
 
@@ -495,7 +456,7 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       return { placeholder: "", label: "" };
     }
 
-    function getSegmentValue(id: SegmentId) {
+    function getSegmentValue(id: SegmentDateId) {
       switch (id) {
         case "day":
           return day;
@@ -512,7 +473,7 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       }
     }
 
-    function setSegmentValue(id: SegmentId, newVal: string) {
+    function setSegmentValue(id: SegmentDateId, newVal: string) {
       let d = day,
         m = month,
         y = year,
@@ -571,7 +532,7 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       updateFinalValue(d, m, y, h, min);
     }
 
-    const segmentIds = getSegmentIds();
+    const segmentDateIds = getSegmentDateIds();
 
     React.useImperativeHandle(ref, () => ({
       focus: () => {
@@ -610,21 +571,21 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
         className="flex gap-[1px] mx-[-1px] select-none"
         aria-label="Date/Time Input"
       >
-        {segmentIds.map((segId, index) => {
+        {segmentDateIds.map((segId, index) => {
           const segmentValue = getSegmentValue(segId);
           const { maxLength, maxValue } = getSegmentConfig(segId);
           const { placeholder, label } = getSegmentMeta(segId);
 
           let sep: string | undefined;
-          const dateConfig = LOCALES[locale];
+          const dateConfig = localeConfig;
 
-          if (segId === "hour" && index < segmentIds.length - 1) {
+          if (segId === "hour" && index < segmentDateIds.length - 1) {
             sep = ":";
           } else if (
             (segId === "day" || segId === "month" || segId === "year") &&
-            index < segmentIds.length - 1
+            index < segmentDateIds.length - 1
           ) {
-            const nextSegId = segmentIds[index + 1];
+            const nextSegId = segmentDateIds[index + 1];
             if (["day", "month", "year"].includes(nextSegId)) {
               sep = dateConfig.separator ?? "/";
             } else {

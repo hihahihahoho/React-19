@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocaleDateConfig } from "@/hooks/use-date-locale-config";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -32,38 +33,34 @@ export interface DateRangePickerProps
     React.ComponentProps<typeof FormControlButton>,
     "placeholder" | "defaultValue" | "value"
   > {
-  placeholder?: string | React.ReactNode;
+  placeholder?: React.ReactNode;
   placeholderColor?: string;
   disabled?: boolean;
-  dateFormat?: string;
   defaultValue?: DateRange;
   value?: DateRange | null;
   onValueChange?: (value: OnValueChangeDateRangePicker) => void;
   formComposition?: FormCompositionProps;
   calendarProps?: CalendarRangeProps;
+  locale?: string;
 }
 
 function DateRangePicker({
-  placeholder = (
-    <div className="flex items-center gap-2">
-      dd/mm/yyyy
-      <ArrowRightIcon />
-      dd/mm/yyyy
-    </div>
-  ),
+  placeholder,
   placeholderColor = "text-muted-foreground",
   disabled = false,
-  dateFormat = "dd/MM/yyyy",
   defaultValue,
   value,
   onValueChange,
   formComposition,
   className,
   calendarProps,
+  locale,
   ...props
 }: DateRangePickerProps) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [open, setOpen] = React.useState(false);
+
+  const localeConfig = useLocaleDateConfig(locale);
 
   const [internalRange, setInternalRange] = React.useState<
     DateRange | undefined
@@ -89,14 +86,14 @@ function DateRangePicker({
     value === null
       ? undefined
       : currentRange?.from
-        ? format(currentRange.from, dateFormat)
-        : "";
+      ? format(currentRange.from, localeConfig.format)
+      : "";
   const toFormatted =
     value === null
       ? undefined
       : currentRange?.to
-        ? format(currentRange.to, dateFormat)
-        : "";
+      ? format(currentRange.to, localeConfig.format)
+      : "";
   const displayRange =
     fromFormatted || toFormatted ? (
       <>
@@ -130,7 +127,15 @@ function DateRangePicker({
           {hasValue ? (
             <span className="flex items-center gap-2">{displayRange}</span>
           ) : (
-            <span className={cn(placeholderColor)}>{placeholder}</span>
+            <span className={cn(placeholderColor)}>
+              {placeholder || (
+                <div className="flex items-center gap-2">
+                  {localeConfig.format.toLowerCase()}
+                  <ArrowRightIcon />
+                  {localeConfig.format.toLowerCase()}
+                </div>
+              )}
+            </span>
           )}
         </div>
       </FormControlButton>
@@ -151,6 +156,7 @@ function DateRangePicker({
           ? handleSelect
           : calendarProps?.onConfirm
       }
+      localeString={localeConfig.locale}
       {...calendarProps}
     />
   );

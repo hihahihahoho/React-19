@@ -122,7 +122,7 @@ function FormDemo() {
       money: 1000000,
       multi_select: ["honda", "chevrolet"],
       datepicker: new Date("2024-10-28"),
-      dob: new Date("1995-10-24,18:00"),
+      dob: new Date("1995-10-24 18:00"),
       textarea: "This is a textarea",
       select: "pizza2",
       daterange: {

@@ -17,7 +17,6 @@ export const Default: Story = {
     formComposition: {
       label: "DatePicker",
       labelPosition: "horizontal",
-
       inputClear: true,
     },
   },
@@ -27,10 +26,10 @@ export const Editable: Story = {
   args: {
     defaultValue: new Date(),
     editable: true,
+    locale: "ko-KR",
     formComposition: {
       label: "DatePicker Editable",
       labelPosition: "horizontal",
-
       inputClear: true,
     },
   },

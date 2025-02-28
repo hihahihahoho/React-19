@@ -26,6 +26,7 @@ export const DateRangPickerConfirmButton: Story = {
     calendarProps: {
       showConfirmButton: true,
     },
+    locale: "ko-KR",
     formComposition: {
       label: "DatePicker",
       labelPosition: "horizontal",

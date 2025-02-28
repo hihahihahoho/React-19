@@ -64,6 +64,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
   setOpen,
   minRange,
   maxRange,
+  localeString,
   ...props
 }) => {
   const [isSelecting, setIsSelecting] = React.useState(false);
@@ -476,23 +477,25 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
           onDayMouseEnter={handleDayMouseEnter}
           onDayMouseLeave={handleDayMouseLeave}
           modifiers={finalModifiers}
+          localeString={localeString}
         />
         <div className="sticky bottom-0 flex items-center gap-4 p-4 border-t -md:flex-col backdrop-blur-xl">
-          <div className="flex items-center flex-1 gap-2 justify-center">
+          <div className="flex items-center justify-center flex-1 gap-2">
             <FormComposition
               iconRight={<CalendarIcon />}
               showErrorMsg={false}
               onFormCompositionClick={() => {
                 DateTimeInputFromRef.current?.focus();
               }}
+              className="min-w-[144px]"
             >
               <div className="flex items-center flex-1 h-full">
                 <DateGroup onBlurWithin={handleInputBlur}>
                   <DateTimeInput
                     value={inputFrom}
                     ref={DateTimeInputFromRef}
+                    locale={localeString}
                     onValueChange={(value) => handleInputChange(value, "from")}
-                    locale="en-GB"
                   />
                 </DateGroup>
               </div>
@@ -504,14 +507,15 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
               onFormCompositionClick={() => {
                 DateTimeInputToRef.current?.focus();
               }}
+              className="min-w-[144px]"
             >
               <div className="flex items-center flex-1 h-full">
                 <DateGroup onBlurWithin={handleInputBlur}>
                   <DateTimeInput
                     value={inputTo}
                     ref={DateTimeInputToRef}
+                    locale={localeString}
                     onValueChange={(value) => handleInputChange(value, "to")}
-                    locale="en-GB"
                   />
                 </DateGroup>
               </div>
