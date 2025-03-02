@@ -4,17 +4,41 @@ import { useToast } from "@/hooks/use-toast";
 import { ACCEPTED_IMAGE_TYPES } from "@/lib/const";
 import { formatFileSize } from "@/lib/file-size";
 import { cn } from "@/lib/utils";
-import { Upload, X } from "lucide-react";
+import { AlignLeft, CloudUpload, Image, Music, Play, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Badge } from "../badge/badge";
 import { Button } from "../button";
+import { CloseCircle } from "../custom-icons";
 import {
   FormComposition,
   FormCompositionProps,
   FormControl,
 } from "../form/form";
+import { GlassIcon } from "../glass-icon";
 
 type TAccept = string;
+
+const fileIcon = {
+  image: (
+    <GlassIcon color="blue" variant="card">
+      <Image />
+    </GlassIcon>
+  ),
+  audio: (
+    <GlassIcon color="blue" variant="card">
+      <Music />
+    </GlassIcon>
+  ),
+  video: (
+    <GlassIcon color="red" variant="card">
+      <Play />
+    </GlassIcon>
+  ),
+  other: (
+    <GlassIcon color="red" variant="card">
+      <AlignLeft />
+    </GlassIcon>
+  ),
+};
 
 export interface FileUploadProps
   extends Omit<
@@ -23,7 +47,7 @@ export interface FileUploadProps
   > {
   onFileChange?: (files: FileList) => void;
   maxFiles?: number;
-  display?: "image" | "chip";
+  display?: "grid" | "list";
   accept?: TAccept[];
   buttonLabel?: string;
   maxFileSize?: number;
@@ -38,27 +62,15 @@ interface FileWithMeta {
   file: File;
 }
 
-const MAX_FILE_SIZE = 500000; // 500KB
+const MAX_FILE_SIZE = 500000; // 500
 
 const generateFileId = (file: File) => {
   return `${file.name}-${file.size}-${file.lastModified}`;
 };
-
-const truncateFileName = (fileName: string, maxLength = 20) => {
-  if (fileName.length <= maxLength) return fileName;
-  const extension = fileName.split(".").pop() || "";
-  const baseName = fileName.slice(0, fileName.lastIndexOf("."));
-  return `${baseName.slice(
-    0,
-    maxLength - extension.length - 3
-  )}...${extension}`;
-};
-
 function FileUpload({
-  buttonLabel = "Tải file",
   onFileChange,
   maxFiles = 5,
-  display = "chip",
+  display = "grid",
   accept = ACCEPTED_IMAGE_TYPES,
   maxFileSize = MAX_FILE_SIZE,
   formComposition,
@@ -72,6 +84,7 @@ function FileUpload({
   const [isDragOver, setIsDragOver] = useState(false);
   const isControlled = value !== undefined;
   const isMultipleAllowed = maxFiles > 1;
+  const acceptString = accept.map((type) => `${type.split("/")[1]}`).join(",");
 
   const [internalFiles, setInternalFiles] = useState<FileWithMeta[]>(() => {
     const initial = (value || defaultValue || []).map((file) => ({
@@ -82,19 +95,20 @@ function FileUpload({
   });
 
   const previewUrls = useMemo(() => {
-    return internalFiles.reduce(
-      (acc, file) => {
-        let previewUrl;
-        if (file.file && file.file.size > 0) {
-          previewUrl = URL.createObjectURL(file.file);
-        } else {
-          previewUrl = file.file.name;
+    return internalFiles.reduce((acc, file) => {
+      let previewUrl = null;
+      if (file.file) {
+        if (file.file.type.startsWith("image/")) {
+          if (file.file.size > 0) {
+            previewUrl = URL.createObjectURL(file.file);
+          } else {
+            previewUrl = file.file.name;
+          }
         }
-        acc[file.id] = previewUrl;
-        return acc;
-      },
-      {} as Record<string, string>
-    );
+      }
+      acc[file.id] = previewUrl;
+      return acc;
+    }, {} as Record<string, string | null>);
   }, [internalFiles]);
 
   useEffect(() => {
@@ -109,7 +123,9 @@ function FileUpload({
 
   useEffect(() => {
     return () => {
-      Object.values(previewUrls).forEach(URL.revokeObjectURL);
+      Object.values(previewUrls)
+        .filter((url): url is string => url !== null)
+        .forEach(URL.revokeObjectURL);
     };
   }, [previewUrls]);
 
@@ -134,7 +150,7 @@ function FileUpload({
         errors.push(
           `File ${file.name} vượt quá kích thước tối đa (${formatFileSize(
             maxFileSize
-          )}kb)`
+          )})`
         );
       }
       return errors;
@@ -281,85 +297,182 @@ function FileUpload({
       isMinHeight
       description={null}
     >
-      <div className="space-y-2">
-        <div
-          className="flex"
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
-        >
-          <FormControl>
-            <input
-              {...props}
-              ref={inputRef}
-              type="file"
-              hidden
-              multiple={isMultipleAllowed}
-              accept={accept.join(",")}
-              onChange={(e) => e.target.files && handleFiles(e.target.files)}
-              disabled={disabled}
-            />
-          </FormControl>
-
-          <Button
-            type="button"
-            variant="secondary"
-            iconLeft={<Upload />}
-            onClick={() => inputRef.current?.click()}
-            className={cn(
-              "transition-all",
-              isDragOver && "ring-2 ring-primary ring-offset-2"
-            )}
+      <div
+        onDragOver={handleDrag}
+        onDragLeave={handleDrag}
+        onDrop={handleDrop}
+        onClick={() =>
+          (internalFiles.length < maxFiles || maxFiles === 1) &&
+          inputRef.current?.click()
+        }
+        className={cn(
+          "transition-all p-3 min-h-[126px] border-dashed border rounded-xl items-center justify-center w-full",
+          isDragOver && "ring-2 ring-primary ring-offset-2",
+          (internalFiles.length < maxFiles || maxFiles === 1) &&
+            "cursor-pointer"
+        )}
+      >
+        <FormControl>
+          <input
+            {...props}
+            ref={inputRef}
+            type="file"
+            hidden
+            multiple={isMultipleAllowed}
+            accept={accept.join(",")}
+            onChange={(e) => e.target.files && handleFiles(e.target.files)}
             disabled={disabled}
-          >
-            {buttonLabel}
-          </Button>
-        </div>
-
-        {internalFiles.length > 0 && (
-          <div
-            className={cn(
-              "mt-4",
-              display === "image"
-                ? "grid grid-cols-2 md:grid-cols-4 gap-4"
-                : "flex flex-wrap gap-2"
-            )}
-          >
-            {internalFiles.map((fileMeta) =>
-              display === "image" ? (
+          />
+        </FormControl>
+        {internalFiles.length > 0 ? (
+          display === "grid" ? (
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              {internalFiles.map((fileMeta) => (
                 <div key={fileMeta.id} className="relative group">
-                  <div className="aspect-square">
+                  <div
+                    className="h-[100px] cursor-default"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {previewUrls[fileMeta.id] ? (
+                      <img
+                        src={previewUrls[fileMeta.id] || ""}
+                        alt={fileMeta.file.name}
+                        className="object-cover w-full h-full border rounded-lg"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center w-full h-full gap-2 px-3 rounded-lg bg-secondary">
+                        {fileMeta.file.type.startsWith("image/")
+                          ? fileIcon.image
+                          : fileMeta.file.type.startsWith("audio/")
+                          ? fileIcon.audio
+                          : fileMeta.file.type.startsWith("video/")
+                          ? fileIcon.video
+                          : fileIcon.other}
+                        <div className="w-full text-xs text-muted-foreground space-y-[2px] text-center">
+                          <div className="truncate">{fileMeta.file.name}</div>
+                          <div className="">
+                            {fileMeta.file.type.split("/")[1].toUpperCase()} -
+                            {formatFileSize(fileMeta.file.size)}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <Button
+                    size="xs"
+                    variant="ghost"
+                    isRounded
+                    iconOnly
+                    className="absolute min-w-0 text-white border-0 size-5 top-1 right-1 bg-black/60 backdrop-blur"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile(fileMeta.id);
+                    }}
+                    iconLeft={<X />}
+                  />
+                </div>
+              ))}
+              {(internalFiles.length < maxFiles || maxFiles === 1) && (
+                <div className="h-[100px] rounded-lg border border-dashed flex items-center justify-center flex-col gap-3">
+                  <GlassIcon>
+                    <CloudUpload />
+                  </GlassIcon>
+                  <div className="text-xs text-muted-foreground">
+                    {maxFiles === 1 ? (
+                      <>Chọn lại</>
+                    ) : (
+                      internalFiles.length + "/" + maxFiles
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="grid gap-3">
+              {(internalFiles.length < maxFiles || maxFiles === 1) && (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground min-h-6">
+                  <CloudUpload />
+                  <div className="flex-1">
+                    {maxFiles === 1 ? (
+                      <>Chọn lại</>
+                    ) : (
+                      <>
+                        <span className="text-primary">Tải lên</span> hoặc kéo
+                        thả vào đây
+                      </>
+                    )}
+                  </div>
+                  {maxFiles !== 1 && internalFiles.length + "/" + maxFiles}
+                </div>
+              )}
+              {internalFiles.map((fileMeta) => (
+                <div
+                  key={fileMeta.id}
+                  className="flex items-center min-w-0 gap-3 p-2 rounded-lg cursor-default bg-secondary"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {previewUrls[fileMeta.id] ? (
                     <img
-                      src={previewUrls[fileMeta.id]}
+                      src={previewUrls[fileMeta.id] || ""}
                       alt={fileMeta.file.name}
-                      className="object-cover w-full h-full border rounded-lg"
+                      className="object-cover border rounded-lg size-12"
                       onError={(e) => {
                         (e.target as HTMLImageElement).style.display = "none";
                       }}
                     />
+                  ) : (
+                    <div className="flex items-center justify-center size-12">
+                      {fileMeta.file.type.startsWith("image/")
+                        ? fileIcon.image
+                        : fileMeta.file.type.startsWith("audio/")
+                        ? fileIcon.audio
+                        : fileMeta.file.type.startsWith("video/")
+                        ? fileIcon.video
+                        : fileIcon.other}
+                    </div>
+                  )}
+                  <div className="grid flex-1 gap-1">
+                    <div className="text-sm truncate">{fileMeta.file.name}</div>
+                    <div className="text-xs text-muted-foreground">
+                      {fileMeta.file.type.split("/")[1].toUpperCase()} -{" "}
+                      {formatFileSize(fileMeta.file.size)}
+                    </div>
                   </div>
                   <Button
-                    size="xs"
-                    variant="outline"
+                    variant="ghost"
+                    isRounded
                     iconOnly
-                    className="absolute -top-2 -right-2"
-                    onClick={() => removeFile(fileMeta.id)}
-                    iconLeft={<X />}
-                  />
+                    className="min-w-0 border-0 size-8 opacity-70 hover:opacity-100"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile(fileMeta.id);
+                    }}
+                  >
+                    <CloseCircle className="!size-5" />
+                  </Button>
                 </div>
-              ) : (
-                <Badge
-                  key={fileMeta.id}
-                  variant="secondary"
-                  clearBtn
-                  onClearBtnClick={() => removeFile(fileMeta.id)}
-                  className="max-w-[200px] truncate"
-                  tooltip={fileMeta.file.name}
-                >
-                  {truncateFileName(fileMeta.file.name)}
-                </Badge>
-              )
-            )}
+              ))}
+            </div>
+          )
+        ) : (
+          <div className="flex flex-col items-center gap-3">
+            <GlassIcon>
+              <CloudUpload />
+            </GlassIcon>
+            <div className="space-y-1 text-xs text-center text-muted-foreground">
+              <div className="">
+                <span className="text-primary">Tải lên</span> hoặc kéo thả vào
+                đây
+              </div>
+              <div className="">
+                <span className="uppercase">{acceptString}</span>{" "}
+                {maxFileSize && `(Tối đa ${formatFileSize(maxFileSize)})`}{" "}
+                {isMultipleAllowed && `(Tối đa ${maxFiles} tệp)`}
+              </div>
+            </div>
           </div>
         )}
       </div>

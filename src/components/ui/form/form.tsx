@@ -14,6 +14,7 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { buttonVariants } from "../button";
+import { CloseCircle } from "../custom-icons";
 import { Label } from "../label";
 
 const Form = FormProvider;
@@ -114,7 +115,7 @@ const inputContainerVariants = cva(
 );
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 > = {
   name: TName;
 };
@@ -125,7 +126,7 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -456,7 +457,7 @@ function FormComposition({
             labelPosition === "horizontal" && newLayout.rightColClass
           )}
         >
-          <div className="flex flex-1 gap-1 -md:text-base">
+          <div className="flex flex-1 gap-2 -md:text-base">
             {prefixOutside && (
               <FormPrefixOutside>{prefixOutside}</FormPrefixOutside>
             )}
@@ -529,20 +530,7 @@ function FormComposition({
                       inputSizeVariants({ size, isMinHeight: true })
                     )}
                   >
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      height="1em"
-                      role="presentation"
-                      viewBox="0 0 24 24"
-                      width="1em"
-                      className="!size-[18px]"
-                    >
-                      <path
-                        d="M12 2a10 10 0 1010 10A10.016 10.016 0 0012 2zm3.36 12.3a.754.754 0 010 1.06.748.748 0 01-1.06 0l-2.3-2.3-2.3 2.3a.748.748 0 01-1.06 0 .754.754 0 010-1.06l2.3-2.3-2.3-2.3A.75.75 0 019.7 8.64l2.3 2.3 2.3-2.3a.75.75 0 011.06 1.06l-2.3 2.3z"
-                        fill="currentColor"
-                      ></path>
-                    </svg>
+                    <CloseCircle />
                   </div>
                 )}
               {suffixNotFocusInput && (

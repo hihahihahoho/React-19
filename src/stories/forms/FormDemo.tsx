@@ -25,7 +25,7 @@ import { parse } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 700000; // 500KB
+const MAX_FILE_SIZE = 3000000; // 3MB
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
@@ -101,7 +101,7 @@ const FormSchema = z.object({
   file_upload: zodFile({
     accepted: ACCEPTED_IMAGE_TYPES,
     maxFileSize: MAX_FILE_SIZE,
-    length: { min: 1, max: 3 },
+    length: { min: 1, max: 5 },
   }),
   checkbox_group: z
     .array(z.string())
@@ -124,7 +124,7 @@ function FormDemo() {
       datepicker: new Date("2024-10-28"),
       dob: new Date("1995-10-24 18:00"),
       textarea: "This is a textarea",
-      select: "pizza2",
+      select: "pizza",
       daterange: {
         from: parse("24/10/2024", FORMAT_DATE, new Date()),
         to: new Date("2024-10-28"),
@@ -137,9 +137,6 @@ function FormDemo() {
             type: ACCEPTED_IMAGE_TYPES[0],
           }
         ),
-        new File([], "https://swiperjs.com/demos/images/nature-4.jpg", {
-          type: ACCEPTED_IMAGE_TYPES[0],
-        }),
       ],
       checkbox_group: ["recents", "home"],
       radio_group: "include",
@@ -335,7 +332,6 @@ function FormDemo() {
           <FileUploadForm
             control={form.control}
             name="file_upload"
-            display="image"
             formComposition={{
               labelPosition: "horizontal",
               label: "File Upload",

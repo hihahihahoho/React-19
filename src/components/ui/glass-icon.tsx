@@ -16,7 +16,7 @@ const glassIconWraperVariants = cva(" relative", {
 });
 
 const glassIconVariants = cva(
-  "flex items-center justify-center backdrop-blur-md from-white/80 to-white/0 rounded-lg bg-gradient-to-tr z-[1] absolute text-white ring-1 ring-white dark:ring-white/20 dark:ring-inset",
+  "flex items-center justify-center backdrop-blur-md from-white/80 to-white/0 rounded-lg bg-gradient-to-tr z-[1] absolute text-white ring-1 ring-white/40 dark:ring-white/20 ring-inset",
   {
     variants: {
       variant: {
