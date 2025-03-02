@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form/form";
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
 import { Checkbox } from "@/components/ui/selection-controls/checkbox";
 import { CheckboxGroupForm } from "@/components/ui/selection-controls/checkbox-group-form";
 import { SelectionGroup } from "@/components/ui/selection-controls/selection-group";
@@ -52,21 +53,23 @@ const CheckboxGroupFormDemo = () => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <CheckboxGroupForm
-          control={form.control}
-          name="checkboxDemo"
-          formComposition={{
-            label: "Checkbox Group",
-            description: "Select your preferences",
-          }}
-          items={itemsCheckbox}
-        />
+    <ZodSchemaProvider schema={FormSchema}>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <CheckboxGroupForm
+            control={form.control}
+            name="checkboxDemo"
+            formComposition={{
+              label: "Checkbox Group",
+              description: "Select your preferences",
+            }}
+            items={itemsCheckbox}
+          />
 
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </ZodSchemaProvider>
   );
 };
 

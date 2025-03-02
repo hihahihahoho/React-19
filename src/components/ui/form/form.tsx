@@ -100,6 +100,7 @@ const inputContainerVariants = cva(
           "!border-0 !ring-offset-0 !ring-0 !shadow-none rounded-none bg-transparent",
         empty:
           "!border-0 !ring-offset-0 !ring-0 !shadow-none rounded-none bg-transparent p-0 !block",
+        inline: "border-none shadow-none bg-transparent px-0 h-full",
       },
       focusWithin: {
         true: "focus-within:ring-[3px] focus-within:ring-ring/20 transition-shadow focus-within:border-ring",
@@ -388,6 +389,7 @@ export interface FormCompositionProps
     rightColClass: string;
   };
   ref?: React.RefObject<HTMLDivElement>;
+  customError?: React.ReactNode;
 }
 
 function FormComposition({
@@ -424,6 +426,7 @@ function FormComposition({
   subDescription,
   requiredSymbol,
   ref,
+  customError,
   ...props
 }: FormCompositionProps) {
   const defaultLayout = {
@@ -579,7 +582,10 @@ function FormComposition({
                   {description}
                 </FormDescription>
               )}
-              {showErrorMsg && <FormMessage className="mt-1.5" />}
+              {(showErrorMsg && !customError) || (
+                <FormMessage className="mt-1.5" />
+              )}
+              {customError && <p className="text-destructive">{customError}</p>}
             </div>
 
             {subDescription && (
