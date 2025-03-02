@@ -110,7 +110,7 @@ function Calendar({
             <Select
               options={
                 props.options.map((option) => ({
-                  value: option.value.toString(),
+                  value: (option.value + 1).toString(),
                   label:
                     localeString === "vi" || localeString === "vi-VN" ? (
                       <>Tháng {option.value + 1}</>
@@ -120,10 +120,10 @@ function Calendar({
                   disabled: option.disabled,
                 })) || []
               }
-              value={String(props.value)}
+              value={String((props.value as number) + 1)}
               onValueChange={(value) => {
                 if (props.onChange && value) {
-                  handleCalendarChange(value, props.onChange);
+                  handleCalendarChange(parseInt(value) - 1, props.onChange);
                 }
               }}
               formComposition={{

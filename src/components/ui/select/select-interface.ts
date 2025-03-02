@@ -1,11 +1,12 @@
 import { Command as CommandPrimitive } from "cmdk";
 import { BadgeProps } from "../badge/badge";
+import { CommandItem } from "../command";
 
-export type SelectItems = React.ComponentProps<typeof CommandPrimitive.Item> & {
+export type SelectItems = React.ComponentProps<typeof CommandItem> & {
   value: string | number;
   label: React.ReactNode;
   icon?: React.ReactNode;
-  badgeProps?: BadgeProps
+  badgeProps?: BadgeProps;
 };
 
 export type SelectGroup = React.ComponentProps<

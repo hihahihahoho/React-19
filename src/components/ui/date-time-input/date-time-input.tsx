@@ -257,7 +257,7 @@ function DateSegment({
         role="spinbutton"
         className={`relative caret-transparent select-none tabular-nums px-[1px] outline-none rounded-md cursor-text text-center ${
           !displayValue && "text-muted-foreground"
-        } ${isFocused ? "bg-primary/20" : "hover:bg-gray-50"}`}
+        } ${isFocused ? "bg-primary/20" : "hover:bg-primary/20"}`}
         id={id}
         aria-label={label}
         contentEditable={!disabled && !readonly}
@@ -307,7 +307,7 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
     ref
   ) {
     const uid = React.useId();
-
+    const dateGroup = useDateGroupContext();
     const localeConfig = useLocaleDateConfig(locale);
 
     const [resetKey, setResetKey] = useState(0);
@@ -536,7 +536,11 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
 
     React.useImperativeHandle(ref, () => ({
       focus: () => {
-        if (segmentRefs.current.length > 0) {
+        if (dateGroup) {
+          // Use the new group context function instead
+          dateGroup.focusFirstEmptySegment();
+        } else if (segmentRefs.current.length > 0) {
+          // Fallback for when not in a group
           let firstUneditedSegment: HTMLDivElement | null = null;
           for (let i = 0; i < segmentRefs.current.length; i++) {
             const segment = segmentRefs.current[i];

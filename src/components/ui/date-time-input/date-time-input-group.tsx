@@ -10,11 +10,18 @@ interface DateGroupContextValue {
   registerSegment: (seg: HTMLDivElement) => void;
   unregisterSegment: (seg: HTMLDivElement) => void;
   moveFocus: (current: HTMLDivElement, direction: -1 | 1) => void;
+  focusFirstEmptySegment: () => void; // New function for smart focusing
 }
 
 const DateGroupContext = createContext<DateGroupContextValue | null>(null);
 function useDateGroupContext() {
   return useContext(DateGroupContext);
+}
+
+// Utility function to check if a string is a number
+function isStringNumber(value: string | null) {
+  if (!value) return false;
+  return /^-?\d+(\.\d+)?$/.test(value);
 }
 
 export interface DateGroupProps extends React.ComponentProps<"div"> {
@@ -76,6 +83,39 @@ function DateGroup({
     []
   );
 
+  // Focus the first empty (or first) segment - moved from DateTimeInput
+  const focusFirstEmptySegment = useCallback(() => {
+    // Filter out anything no longer in the DOM
+    const validRefs = segmentRefs.current.filter((el) => document.contains(el));
+
+    // Sort by DOM order
+    validRefs.sort((a, b) => {
+      const pos = a.compareDocumentPosition(b);
+      if (pos & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+      if (pos & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+      return 0;
+    });
+
+    if (validRefs.length === 0) return;
+
+    // Try to find first empty segment
+    let firstEmptySegment: HTMLDivElement | null = null;
+    for (let i = 0; i < validRefs.length; i++) {
+      const segment = validRefs[i];
+      if (!isStringNumber(segment.textContent)) {
+        firstEmptySegment = segment;
+        break;
+      }
+    }
+
+    // Focus first empty or last segment
+    if (firstEmptySegment) {
+      firstEmptySegment.focus();
+    } else {
+      validRefs[validRefs.length - 1].focus();
+    }
+  }, []);
+
   const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
     // If we previously did NOT have focus, that means focus just entered.
     if (!isFocusWithin) {
@@ -96,6 +136,7 @@ function DateGroup({
     registerSegment,
     unregisterSegment,
     moveFocus,
+    focusFirstEmptySegment,
   };
 
   return (
