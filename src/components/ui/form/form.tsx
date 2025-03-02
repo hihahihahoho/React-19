@@ -582,7 +582,7 @@ function FormComposition({
                   {description}
                 </FormDescription>
               )}
-              {(showErrorMsg && !customError) || (
+              {showErrorMsg && !customError && (
                 <FormMessage className="mt-1.5" />
               )}
               {customError && <p className="text-destructive">{customError}</p>}
