@@ -99,7 +99,7 @@ They can include various types, validation states, and additional elements like 
   },
   decorators: [
     (Story) => (
-      <div className="flex items-center justify-center p-6 w-96">
+      <div className="flex items-center justify-center md:w-96">
         <Story />
       </div>
     ),

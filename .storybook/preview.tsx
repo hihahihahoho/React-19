@@ -9,6 +9,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/zoom";
 import "../src/index.css";
+import "./story-style.css";
 
 const preview: Preview = {
   decorators: [
@@ -55,7 +56,7 @@ const preview: Preview = {
       ],
     },
   },
-  tags: ["autodocs", "autodocs"],
+  tags: ["autodocs"],
 };
 
 export default preview;
