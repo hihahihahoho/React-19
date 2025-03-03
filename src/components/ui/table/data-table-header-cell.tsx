@@ -215,6 +215,7 @@ export function DataTableHeaderCell<TData, TValue>({
           isPinned === "right"
             ? `${header.column.getAfter("right")}px`
             : undefined,
+        minWidth: header.column.columnDef.minSize,
       }}
     >
       <div
@@ -224,13 +225,6 @@ export function DataTableHeaderCell<TData, TValue>({
           header.column.columnDef.meta?.align === "center" && "justify-center",
           pinnedClasses
         )}
-        style={{
-          minWidth: header.column.columnDef.minSize,
-          width:
-            isNaN(header.getSize()) || header.getSize() === 0
-              ? "auto"
-              : header.getSize() - 16,
-        }}
       >
         {header.isPlaceholder || triggerContent === null ? null : header.column
             .columnDef.meta?.hideActiionsButton ? (
@@ -278,7 +272,7 @@ export function DataTableHeaderCell<TData, TValue>({
           isFirstPinnedRight &&
           isPinned === "right" && <div className="column-right-shadow" />
         ))}
-      {isPinned && <div className="column-pin-backdrop !bg-muted" />}
+      {isPinned && <div className="column-pin-backdrop" />}
     </TableHead>
   );
 }

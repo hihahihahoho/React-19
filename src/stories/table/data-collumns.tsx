@@ -66,7 +66,7 @@ export const columns: ColumnDef<SegmentData>[] = [
               {tinhKhaDung}
             </Badge>
             {tinhKhaDung.startsWith("Đang tính toán") && (
-              <div className="text-muted-foreground text-xs font-medium">
+              <div className="text-xs font-medium text-muted-foreground">
                 Còn khoảng 30p
               </div>
             )}
@@ -129,12 +129,10 @@ export const columns: ColumnDef<SegmentData>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div className="px-1">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-        />
-      </div>
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+      />
     ),
   },
   {

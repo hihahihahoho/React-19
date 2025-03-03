@@ -1,14 +1,14 @@
 import { CheckCheck, XCircle } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { Button } from "../button";
 import { useDataTable } from "./data-table-context";
-import { AnimatePresence, motion } from "motion/react";
 
 export function DataTableSelection() {
   const { table } = useDataTable();
   return (
     <AnimatePresence>
       {table.getSelectedRowModel().rows.length > 0 && (
-        <div className="sticky left-0 right-0 z-30 flex items-center justify-center mb-4 text-xs pointer-events-none bottom-20">
+        <div className="sticky left-0 right-0 z-30 flex items-center justify-center mb-4 text-xs pointer-events-none bottom-24">
           <motion.div
             className="flex flex-wrap items-center gap-2 px-4 py-3 border pointer-events-auto rounded-xl bg-card/90 backdrop-blur -sm:flex-col"
             initial={{
