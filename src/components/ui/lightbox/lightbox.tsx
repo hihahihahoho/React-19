@@ -57,6 +57,37 @@ type LightboxItemProps = React.HTMLAttributes<HTMLDivElement> &
 const LightboxItem = React.forwardRef<HTMLDivElement, LightboxItemProps>(
   ({ className, src, index, selectedIndex, onSelect, ...props }, ref) => {
     const id = useLightBoxId();
+    const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
+    const imageRef = React.useRef<HTMLImageElement | null>(null);
+
+    React.useEffect(() => {
+      if (!src) return;
+
+      let checkInterval: NodeJS.Timeout | null = null;
+      const img = new Image();
+      img.src = src;
+
+      const checkDimensions = () => {
+        if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+          setDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+          console.log("Image dimensions:", img.naturalWidth, img.naturalHeight);
+
+          if (checkInterval) {
+            clearInterval(checkInterval);
+            checkInterval = null;
+          }
+        }
+      };
+
+      checkInterval = setInterval(checkDimensions, 10);
+
+      return () => {
+        if (checkInterval) {
+          clearInterval(checkInterval);
+        }
+      };
+    }, [src]);
+
     return (
       <div
         ref={ref}
@@ -69,6 +100,7 @@ const LightboxItem = React.forwardRef<HTMLDivElement, LightboxItemProps>(
         <motion.img
           layoutId={`${id}-image-${index}`}
           src={src}
+          ref={imageRef}
           className="absolute z-10 object-cover w-full h-full col-start-1 row-start-1 rounded-lg pointer-events-none"
           transition={{
             duration: selectedIndex === index ? 0.3 : 0,
