@@ -340,6 +340,12 @@ export const LayoutVariants: Story = {
 /**
  * Controlled checkbox example with indeterminate state.
  */
+/**
+ * Controlled checkbox example with indeterminate state.
+ */
+/**
+ * Controlled checkbox example with indeterminate state.
+ */
 export const IndeterminateExample: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -370,14 +376,9 @@ export const IndeterminateExample: Story = {
         <SelectionGroup
           control={
             <Checkbox
-              checked={allChecked}
+              checked={allChecked || (someChecked && "indeterminate")}
               onCheckedChange={handleParentChange}
-              ref={(ref) => {
-                if (ref) {
-                  // This property is not included in the types, but works for the indeterminate state
-                  (ref as any).indeterminate = someChecked && !allChecked;
-                }
-              }}
+              aria-label="Select all options"
             />
           }
         >
@@ -408,12 +409,11 @@ export const IndeterminateExample: Story = {
     docs: {
       description: {
         story:
-          "Example of a parent checkbox with indeterminate state when some child options are selected.",
+          "Example of a parent checkbox with indeterminate state when some child options are selected. Uses the same pattern as in data tables.",
       },
     },
   },
 };
-
 /**
  * Complex form with validation using CheckboxForm and react-hook-form.
  */
