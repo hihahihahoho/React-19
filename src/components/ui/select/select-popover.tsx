@@ -44,6 +44,7 @@ function SelectPopover({
               "p-0",
               popoverWidthFull && "popover-content-width-full"
             )}
+            onWheel={(e) => e.stopPropagation()}
             {...popoverContentProps}
           >
             {children}
