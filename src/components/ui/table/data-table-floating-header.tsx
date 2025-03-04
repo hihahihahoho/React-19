@@ -96,7 +96,7 @@ export function FloatingHeader({
   return (
     <div
       className={cn(
-        "fixed border-b-0 z-[30] shadow-md overflow-hidden top-0",
+        "fixed border-b-0 z-[30] shadow-md overflow-hidden top-0 bg-background",
         state === "collapsed" && "top-12",
         state === "expanded" && "top-16",
         isMobile && "top-16",

@@ -56,63 +56,67 @@ export function DataTable({
   return (
     <HeaderRefsProvider>
       <div className="w-full" ref={tableRef}>
-        <FloatingHeader
-          mainScrollRef={mainScrollRef}
-          tableRef={tableRef}
-          headerRef={headerRef}
-          fixedHeaderOffset={fixedHeaderOffset}
-        />
-
-        <div className={cn(tableVariants({ variant }))}>
-          <ScrollAreaTable
-            type="always"
-            srcollBarPortalRef={scrollBarAreaRef}
-            viewportRef={mainScrollRef}
-            className="w-full"
-          >
-            <Table
-              style={{ minWidth: table.getVisibleFlatColumns().length * 120 }}
+        <div className="relative">
+          {variant === "rounded" && (
+            <div className="absolute top-0 left-0 z-[50] w-full h-full border rounded-xl pointer-events-none"></div>
+          )}
+          <FloatingHeader
+            mainScrollRef={mainScrollRef}
+            tableRef={tableRef}
+            headerRef={headerRef}
+            fixedHeaderOffset={fixedHeaderOffset}
+          />
+          <div className={cn(tableVariants({ variant }))}>
+            <ScrollAreaTable
+              type="always"
+              srcollBarPortalRef={scrollBarAreaRef}
+              viewportRef={mainScrollRef}
+              className="w-full"
             >
-              <TableHeader ref={headerRef}>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <DataTableHeaderCell key={header.id} header={header} />
-                    ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
-                      {row.getVisibleCells().map((cell) => (
-                        <DataTableCell key={cell.id} cell={cell} />
+              <Table
+                style={{ minWidth: table.getVisibleFlatColumns().length * 120 }}
+              >
+                <TableHeader ref={headerRef}>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => (
+                        <DataTableHeaderCell key={header.id} header={header} />
                       ))}
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={table.getAllColumns().length}
-                      className="h-24 text-center"
-                    >
-                      Không có dữ liệu.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </ScrollAreaTable>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() && "selected"}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <DataTableCell key={cell.id} cell={cell} />
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={table.getAllColumns().length}
+                        className="h-24 text-center"
+                      >
+                        Không có dữ liệu.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </ScrollAreaTable>
+          </div>
+          <div className="sticky bottom-0 z-30 border-t mt-[-1px] bg-card/90 backdrop-blur">
+            <div ref={scrollBarAreaRef} />
+            {table.getRowModel().rows?.length > 0 && <DataTablePagination />}
+          </div>
+          <DataTableSelection />
         </div>
-        <div className="sticky bottom-0 z-30 border-t mt-[-1px] bg-card/90 backdrop-blur">
-          <div ref={scrollBarAreaRef} />
-          {table.getRowModel().rows?.length > 0 && <DataTablePagination />}
-        </div>
-        <DataTableSelection />
       </div>
     </HeaderRefsProvider>
   );
