@@ -46,7 +46,7 @@ function SelectionGroup({
     >
       <div>
         <div className="flex items-center">
-          <span aria-hidden="true" className="w-0">
+          <span aria-hidden="true" className="w-0 select-none">
             &nbsp;
           </span>
           <FormControl>
