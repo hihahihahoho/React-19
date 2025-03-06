@@ -121,10 +121,6 @@ function SelectCommand({
 
   const compProps = commandWrapper ? { defaultValue: selected.at(-1) } : {};
 
-  if (!items) {
-    return null;
-  }
-
   return (
     <Comp {...compProps}>
       {showSearch && !hideSearch && <CommandInput placeholder="Tìm kiếm..." />}
@@ -158,7 +154,8 @@ function SelectCommand({
           <>
             <CommandEmpty>Không tìm thấy kết quả</CommandEmpty>
 
-            {items.length > 0 &&
+            {items &&
+              items.length > 0 &&
               modifyItemsNew.map(
                 ({ heading, options, isMultiSelect }, groupIndex) => (
                   <React.Fragment key={uniqueId + groupIndex}>
