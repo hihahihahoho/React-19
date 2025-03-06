@@ -10,9 +10,10 @@ import { SelectGroup, SelectItems } from "../select/select-interface";
 import { Input } from "./input";
 
 export interface InputAutoCompleteProps
-  extends React.ComponentProps<typeof Input> {
+  extends Omit<React.ComponentProps<typeof Input>, "onValueChange"> {
   options: SelectItems[] | SelectGroup[];
   popoverContentProps?: PopoverContentProps;
+  onValueChange?: (value: string) => void;
   value?: string;
   initialState?: React.ReactNode;
   loading?: boolean;
@@ -70,6 +71,7 @@ function InputAutoComplete({
   );
 
   const currentValue = value !== undefined ? value : internalValue;
+  console.log(currentValue);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

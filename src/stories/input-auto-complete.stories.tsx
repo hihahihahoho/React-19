@@ -158,7 +158,6 @@ function DemoFetching() {
     setSearchTerm(value);
 
     // For 4 chars, show loading
-    console.log(value.length);
     if (value.length === 3) {
       setIsLoading(true);
     } else {
@@ -180,6 +179,10 @@ function DemoFetching() {
       </div>
     ) : null;
 
+  const handleOnValueChange = (value: string) => {
+    setSearchTerm(value);
+  };
+
   return (
     <div className="flex flex-col w-full gap-4">
       <InputAutoComplete
@@ -189,7 +192,7 @@ function DemoFetching() {
         onChange={handleChange}
         loading={isLoading}
         initialState={initialStateMessage}
-        value={searchTerm}
+        onValueChange={handleOnValueChange}
       />
     </div>
   );
