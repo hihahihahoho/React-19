@@ -5,6 +5,7 @@ import { FileUploadForm } from "@/components/ui/file-upload/file-upload-form";
 import { Form } from "@/components/ui/form/form";
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
 import { InputNumberForm } from "@/components/ui/input-number/input-number-form";
+import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form";
 import { InputForm } from "@/components/ui/input/input-form";
 import { MultiSelectForm } from "@/components/ui/select/multiselect-form";
 import { SelectForm } from "@/components/ui/select/select-form";
@@ -81,6 +82,7 @@ const FormSchema = z.object({
     .gt(100000),
   textarea: zodRequiredString("Please enter a description.").max(100),
   select: zodRequiredString("Please select an option."),
+  auto_complete: zodRequiredString("Please select an option."),
   multi_select: z
     .array(z.string())
     .min(2, { message: "Select at least 2 options." }),
@@ -260,6 +262,49 @@ function FormDemo() {
               inputClear: true,
               description: "This is a description",
               label: "Select",
+              labelPosition: "horizontal",
+              suffixOutside: <Button>Button</Button>,
+            }}
+          />
+          <InputAutoCompleteForm
+            control={form.control}
+            name="auto_complete"
+            options={[
+              {
+                label: "Pizza",
+                value: "pizza",
+                keywords: ["Tùng", "cheese", "tomato sauce"],
+              },
+              {
+                label: "Salad",
+                value: "salad",
+                disabled: true,
+              },
+              {
+                label: "Pasta",
+                value: "pasta",
+              },
+              {
+                label: "Burger",
+                value: "burger",
+              },
+              {
+                label: "Soup",
+                value: "soup",
+              },
+              {
+                label: "Sushi",
+                value: "sushi",
+              },
+              {
+                label: "Tacos",
+                value: "tacos",
+              },
+            ]}
+            formComposition={{
+              inputClear: true,
+              description: "This is a description",
+              label: "Auto Complete",
               labelPosition: "horizontal",
               suffixOutside: <Button>Button</Button>,
             }}

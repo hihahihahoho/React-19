@@ -22,7 +22,6 @@ function CommandPrimitiveInput({
   onValueChange,
   ...props
 }: CommandPrimitiveInputProps) {
-  const inputRef = React.useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = React.useState(false);
   const [inputValue, setInputValue] = React.useState<string>(
     value?.toString() || ""
@@ -38,21 +37,6 @@ function CommandPrimitiveInput({
     onBlur?.(e);
   };
 
-  const handleClick = () => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
-
-  const handleClear = () => {
-    setInputValue("");
-    if (inputRef.current) {
-      inputRef.current.value = "";
-      inputRef.current.focus();
-    }
-    formComposition?.onClear?.();
-  };
-
   const handelValueChange = (value: string) => {
     setInputValue(value);
     onValueChange?.(value);
@@ -62,9 +46,7 @@ function CommandPrimitiveInput({
     <FormComposition
       data-slot="command-input"
       hasValue={!!inputValue}
-      onFormCompositionClick={handleClick}
       onClick={() => {}}
-      onClear={handleClear}
       disabled={props.disabled}
       isFocused={isFocused}
       iconLeft={<Search className="opacity-50" />}
@@ -79,7 +61,6 @@ function CommandPrimitiveInput({
             "flex-grow bg-transparent border-none focus:outline-none focus:ring-0 placeholder:text-muted-foreground h-full w-full",
             className
           )}
-          ref={inputRef}
           value={inputValue}
           onFocus={handleFocus}
           onBlur={handleBlur}
