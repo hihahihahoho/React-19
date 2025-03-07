@@ -341,10 +341,14 @@ function FormDemo() {
           <CheckboxGroupForm
             control={form.control}
             name="checkbox_group"
+            selectionGroup={{
+              variant: "card",
+            }}
             formComposition={{
               label: "Checkboxes",
               labelPosition: "horizontal",
             }}
+            className="grid-cols-1 gap-4 lg:grid-cols-2"
             items={itemsCheckbox}
           />
           <RadioGroupForm

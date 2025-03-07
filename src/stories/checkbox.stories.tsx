@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge/badge";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form/form";
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
@@ -140,17 +141,13 @@ export const LabelVariants: Story = {
           <SelectionGroup control={<Checkbox />}>
             <div className="flex items-center gap-2">
               <span className="font-medium">Premium Plan</span>
-              <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-600 dark:bg-blue-900 dark:text-blue-200">
-                Recommended
-              </span>
+              <Badge variant={"blue"}>Recommended</Badge>
             </div>
           </SelectionGroup>
           <SelectionGroup control={<Checkbox />}>
             <div className="flex items-center gap-2">
               <span className="font-medium">Enterprise Plan</span>
-              <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-600 dark:bg-purple-900 dark:text-purple-200">
-                New
-              </span>
+              <Badge variant={"green"}>New</Badge>
             </div>
           </SelectionGroup>
         </div>
@@ -647,6 +644,110 @@ export const CompleteShowcase: Story = {
       description: {
         story:
           "A comprehensive showcase displaying checkbox variations and common use cases.",
+      },
+    },
+  },
+};
+
+/**
+ * Card variant of SelectionGroup for more prominent selection options.
+ */
+export const CardVariants: Story = {
+  render: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [selected, setSelected] = useState<string[]>(["option2"]);
+
+    const handleToggle = (value: string) => {
+      setSelected((prev) =>
+        prev.includes(value)
+          ? prev.filter((item) => item !== value)
+          : [...prev, value]
+      );
+    };
+
+    const isSelected = (value: string) => selected.includes(value);
+
+    return (
+      <div className="grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
+        <SelectionGroup
+          variant="card"
+          control={
+            <Checkbox
+              checked={isSelected("option1")}
+              onCheckedChange={() => handleToggle("option1")}
+            />
+          }
+        >
+          <div className="ml-2">
+            <h3 className="font-medium">Basic Plan</h3>
+            <p className="text-sm text-muted-foreground">
+              All essential features for beginners
+            </p>
+          </div>
+        </SelectionGroup>
+
+        <SelectionGroup
+          variant="card"
+          control={
+            <Checkbox
+              checked={isSelected("option2")}
+              onCheckedChange={() => handleToggle("option2")}
+            />
+          }
+        >
+          <div className="ml-2">
+            <div className="flex items-center gap-2">
+              <h3 className="font-medium">Premium Plan</h3>
+              <Badge variant={"blue"}>Popular</Badge>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Advanced features with priority support
+            </p>
+          </div>
+        </SelectionGroup>
+
+        <SelectionGroup
+          variant="card"
+          control={
+            <Checkbox
+              checked={isSelected("option3")}
+              onCheckedChange={() => handleToggle("option3")}
+              disabled
+            />
+          }
+        >
+          <div className="ml-2">
+            <h3 className="font-medium">Team Plan</h3>
+            <p className="text-sm text-muted-foreground">
+              Collaboration tools for teams (disabled)
+            </p>
+          </div>
+        </SelectionGroup>
+
+        <SelectionGroup
+          variant="card"
+          control={
+            <Checkbox
+              checked={isSelected("option4")}
+              onCheckedChange={() => handleToggle("option4")}
+            />
+          }
+        >
+          <div className="ml-2">
+            <h3 className="font-medium">Enterprise Plan</h3>
+            <p className="text-sm text-muted-foreground">
+              Custom solutions for large organizations
+            </p>
+          </div>
+        </SelectionGroup>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The card variant of SelectionGroup provides a more prominent visual container for checkbox options. It shows a border around the entire content and highlights the selected items with a primary-colored ring.",
       },
     },
   },

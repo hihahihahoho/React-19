@@ -117,7 +117,7 @@ function SelectCommand({
               <Badge
                 size={"md"}
                 className="cursor-pointer select-none"
-                variant={isAllSelected ? "lightBlue" : "secondary"}
+                variant={isAllSelected ? "blue" : "secondary"}
                 onClick={toggleAll}
               >
                 <CheckCheck />

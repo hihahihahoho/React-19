@@ -54,10 +54,24 @@ They can include icons, display text, and have interactive elements like tooltip
         "secondary",
         "destructive",
         "outline",
-        "lightGreen",
-        "lightRed",
-        "lightBlue",
-        "lightOrange",
+        "red",
+        "orange",
+        "amber",
+        "yellow",
+        "lime",
+        "green",
+        "emerald",
+        "teal",
+        "cyan",
+        "sky",
+        "blue",
+        "indigo",
+        "violet",
+        "purple",
+        "fuchsia",
+        "pink",
+        "rose",
+        "zinc",
       ],
       description: "Controls the visual style of the badge",
       table: {
@@ -136,24 +150,21 @@ export const BasicVariants: Story = {
 };
 
 /**
- * Light colored variants for various contexts like success, warning, info, and error.
+ * Color variants for various contexts like success, warning, info, and error.
  */
-export const LightColorVariants: Story = {
+export const ColorVariants: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
-      <Badge variant="lightGreen" iconLeft={<Check className="size-4" />}>
+      <Badge variant="green" iconLeft={<Check className="size-4" />}>
         Success
       </Badge>
-      <Badge
-        variant="lightOrange"
-        iconLeft={<AlertTriangle className="size-4" />}
-      >
+      <Badge variant="orange" iconLeft={<AlertTriangle className="size-4" />}>
         Warning
       </Badge>
-      <Badge variant="lightBlue" iconLeft={<Info className="size-4" />}>
+      <Badge variant="blue" iconLeft={<Info className="size-4" />}>
         Information
       </Badge>
-      <Badge variant="lightRed" iconLeft={<AlertCircle className="size-4" />}>
+      <Badge variant="red" iconLeft={<AlertCircle className="size-4" />}>
         Error
       </Badge>
     </div>
@@ -162,7 +173,43 @@ export const LightColorVariants: Story = {
     docs: {
       description: {
         story:
-          "Light colored variants are useful for status indicators with reduced visual weight.",
+          "Color variants are useful for status indicators with semantic meaning.",
+      },
+    },
+  },
+};
+
+/**
+ * Showcase of all available color variants for badges.
+ */
+export const AllColorVariants: Story = {
+  render: () => (
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+      <Badge variant="red">Red</Badge>
+      <Badge variant="orange">Orange</Badge>
+      <Badge variant="amber">Amber</Badge>
+      <Badge variant="yellow">Yellow</Badge>
+      <Badge variant="lime">Lime</Badge>
+      <Badge variant="green">Green</Badge>
+      <Badge variant="emerald">Emerald</Badge>
+      <Badge variant="teal">Teal</Badge>
+      <Badge variant="cyan">Cyan</Badge>
+      <Badge variant="sky">Sky</Badge>
+      <Badge variant="blue">Blue</Badge>
+      <Badge variant="indigo">Indigo</Badge>
+      <Badge variant="violet">Violet</Badge>
+      <Badge variant="purple">Purple</Badge>
+      <Badge variant="fuchsia">Fuchsia</Badge>
+      <Badge variant="pink">Pink</Badge>
+      <Badge variant="rose">Rose</Badge>
+      <Badge variant="zinc">Zinc</Badge>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Complete set of color variants available for badges to match your design system.",
       },
     },
   },
@@ -366,7 +413,7 @@ export const WithTooltips: Story = {
         Critical
       </Badge>
       <Badge
-        variant="lightBlue"
+        variant="blue"
         tooltip="System is running normally"
         iconLeft={<Info className="size-4" />}
       >
@@ -464,12 +511,32 @@ export const CompleteShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-2 text-sm font-medium">Light Color Variants</h3>
+        <h3 className="mb-2 text-sm font-medium">Status Color Variants</h3>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="lightGreen">Success</Badge>
-          <Badge variant="lightRed">Error</Badge>
-          <Badge variant="lightBlue">Information</Badge>
-          <Badge variant="lightOrange">Warning</Badge>
+          <Badge variant="green">Success</Badge>
+          <Badge variant="red">Error</Badge>
+          <Badge variant="blue">Information</Badge>
+          <Badge variant="orange">Warning</Badge>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Additional Color Variants</h3>
+        <div className="flex flex-wrap gap-2">
+          <Badge variant="amber">Amber</Badge>
+          <Badge variant="yellow">Yellow</Badge>
+          <Badge variant="lime">Lime</Badge>
+          <Badge variant="emerald">Emerald</Badge>
+          <Badge variant="teal">Teal</Badge>
+          <Badge variant="cyan">Cyan</Badge>
+          <Badge variant="sky">Sky</Badge>
+          <Badge variant="indigo">Indigo</Badge>
+          <Badge variant="violet">Violet</Badge>
+          <Badge variant="purple">Purple</Badge>
+          <Badge variant="fuchsia">Fuchsia</Badge>
+          <Badge variant="pink">Pink</Badge>
+          <Badge variant="rose">Rose</Badge>
+          <Badge variant="zinc">Zinc</Badge>
         </div>
       </div>
 
@@ -519,19 +586,16 @@ export const CompleteShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium">Common Use Cases</h3>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="lightGreen" iconLeft={<Check className="size-4" />}>
+          <Badge variant="green" iconLeft={<Check className="size-4" />}>
             Completed
           </Badge>
-          <Badge variant="lightBlue" iconLeft={<Info className="size-4" />}>
+          <Badge variant="blue" iconLeft={<Info className="size-4" />}>
             New
           </Badge>
-          <Badge variant="lightOrange" iconLeft={<Clock className="size-4" />}>
+          <Badge variant="orange" iconLeft={<Clock className="size-4" />}>
             Pending
           </Badge>
-          <Badge
-            variant="lightRed"
-            iconLeft={<AlertCircle className="size-4" />}
-          >
+          <Badge variant="red" iconLeft={<AlertCircle className="size-4" />}>
             Failed
           </Badge>
           <Badge variant="secondary" clearBtn>
@@ -600,7 +664,7 @@ export const WithIconsAndClear: Story = {
         Featured
       </Badge>
       <Badge
-        variant="lightBlue"
+        variant="blue"
         clearBtn
         onClearBtnClick={() => console.log("Info cleared")}
         iconLeft={<Info className="size-4" />}
@@ -608,7 +672,7 @@ export const WithIconsAndClear: Story = {
         Info
       </Badge>
       <Badge
-        variant="lightRed"
+        variant="red"
         clearBtn
         onClearBtnClick={() => console.log("Error cleared")}
         iconLeft={<AlertCircle className="size-4" />}

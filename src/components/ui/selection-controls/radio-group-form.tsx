@@ -14,7 +14,7 @@ export type ItemRadioType = RadioGroupItemProps & {
 
 export interface RadioGroupFormProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<ControllerProps<TFieldValues, TName>, "render"> {
   formComposition?: FormCompositionProps;
   selectionGroup?: SelectionGroupProps;
@@ -24,7 +24,7 @@ export interface RadioGroupFormProps<
 
 const RadioGroupForm = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   control,
   name,
@@ -50,6 +50,7 @@ const RadioGroupForm = <
           <RadioGroup
             {...props}
             className={cn("grid grid-cols-2 gap-2 mt-2", className)}
+            value={field.value}
             onValueChange={field.onChange}
           >
             {items.map((item) => {
