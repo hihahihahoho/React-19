@@ -17,11 +17,11 @@ export interface InputAutoCompleteProps
   value?: string;
   initialState?: React.ReactNode;
   loading?: boolean;
+  minCharToSearch?: number;
 }
 
 function InputAutoComplete({
   options,
-  onBlur,
   formComposition,
   value,
   onValueChange,
@@ -30,22 +30,16 @@ function InputAutoComplete({
   popoverContentProps,
   loading,
   initialState,
+  minCharToSearch = 1,
   ref,
   ...props
 }: InputAutoCompleteProps) {
-  const formCompositionRef = React.useRef<HTMLDivElement>(null);
   const internalRef = React.useRef<HTMLInputElement>(null);
-  const mergedRef = useMergedRef(ref, internalRef);
+  const mergeRef = useMergedRef(internalRef, ref);
+  const formCompositionRef = React.useRef<HTMLDivElement>(null);
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const [internalValue, setInternalValue] = React.useState("");
-  const handleBlur = React.useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
-      onBlur?.(e);
-      setInputValue(internalValue);
-    },
-    [onBlur, internalValue]
-  );
   const handleFocus = React.useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
       setOpen(true);
@@ -62,6 +56,7 @@ function InputAutoComplete({
   );
   const handleOnSelect = React.useCallback(
     (selected: SelectItems) => {
+      console.log(selected);
       setInternalValue(selected.value);
       setInputValue(selected.value);
       onValueChange?.(selected.value);
@@ -70,23 +65,32 @@ function InputAutoComplete({
     [onValueChange]
   );
 
+  const handleOpenChange = React.useCallback(
+    (open: boolean) => {
+      setOpen(open);
+      if (!open) {
+        internalRef.current?.blur();
+        setInputValue(internalValue);
+      }
+    },
+    [internalValue]
+  );
+
   const currentValue = value !== undefined ? value : internalValue;
-  console.log(currentValue);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverAnchor
         virtualRef={formCompositionRef as React.RefObject<Measurable>}
       />
       <Command className="overflow-visible" defaultValue={currentValue}>
         <Input
-          ref={mergedRef}
           value={inputValue}
-          onBlur={handleBlur}
           onFocus={handleFocus}
           onChange={handleChange}
           autoComplete="off"
           {...props}
+          ref={mergeRef}
           formComposition={{
             ...formComposition,
             ref: formCompositionRef,
@@ -101,8 +105,8 @@ function InputAutoComplete({
           onOpenAutoFocus={(e) => e.preventDefault()}
           onInteractOutside={(e) => {
             if (
-              internalRef.current &&
-              internalRef.current.contains(e.target as Node)
+              formCompositionRef.current &&
+              formCompositionRef.current.contains(e.target as Node)
             ) {
               e.preventDefault();
             } else {
@@ -115,8 +119,12 @@ function InputAutoComplete({
           onWheel={(e) => e.stopPropagation()}
           {...popoverContentProps}
         >
-          {initialState ? (
-            initialState
+          {inputValue.length < minCharToSearch ? (
+            initialState || (
+              <div className="p-6 text-sm text-center">
+                Vui lòng nhập ít nhất {minCharToSearch} kí tự để tìm kiếm
+              </div>
+            )
           ) : (
             <SelectCommand
               hideSearch

@@ -10,7 +10,7 @@ import {
 import React from "react";
 import { Button } from "../button";
 import { SelectCommand } from "../select/select-command";
-import { SelectGroup } from "../select/select-interface";
+import { SelectGroup, SelectItems } from "../select/select-interface";
 import { SelectPopover } from "../select/select-popover";
 import { useDataTable } from "./data-table-context";
 import { useHeaderRefs } from "./header-ref-context";
@@ -97,12 +97,12 @@ export function DataTableHeaderCell<TData, TValue>({
     header.getContext()
   );
 
-  const handleOnSelect = (newSelected: string) => {
-    // Sorting logic
-    if (["asc", "desc", "no-sort"].includes(newSelected)) {
-      if (newSelected === "asc") {
+  const handleOnSelect = (newSelected: SelectItems) => {
+    const selected = newSelected.value;
+    if (["asc", "desc", "no-sort"].includes(selected)) {
+      if (selected === "asc") {
         header.column.toggleSorting(false);
-      } else if (newSelected === "desc") {
+      } else if (selected === "desc") {
         header.column.toggleSorting(true);
       } else {
         header.column.clearSorting();
@@ -113,12 +113,12 @@ export function DataTableHeaderCell<TData, TValue>({
         const withoutSort = prev.filter(
           (val) => !["asc", "desc", "no-sort"].includes(val)
         );
-        return [...withoutSort, newSelected];
+        return [...withoutSort, selected];
       });
     }
 
     // Pinning logic
-    if (newSelected === "pin") {
+    if (selected === "pin") {
       if (selected.includes("pin")) {
         // Unpin
         setColumnPinning?.(() => ({

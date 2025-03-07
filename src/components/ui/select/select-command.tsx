@@ -211,7 +211,9 @@ function SelectCommand({
                         );
                       })}
                     </CommandGroup>
-                    {groupIndex < items.length - 1 && <CommandSeparator />}
+                    {groupIndex < modifyItemsNew.length - 1 && (
+                      <CommandSeparator />
+                    )}
                   </React.Fragment>
                 )
               )}

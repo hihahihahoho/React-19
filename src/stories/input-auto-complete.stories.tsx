@@ -1,9 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form/form";
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
 import { Input } from "@/components/ui/input/input";
-import { InputAutoComplete } from "@/components/ui/input/input-auto-complete";
+import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form";
 import { SelectItems } from "@/components/ui/select/select-interface";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 /**
  * Input component allows users to enter text or other data in a form.
@@ -94,70 +100,84 @@ They can include various types, validation states, and additional elements like 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const allOptions = [
+  {
+    icon: "https://github.com/shadcn.png",
+    label: "John - Engineer",
+    value: "John - Engineer",
+  },
+  {
+    icon: "https://avatars.githubusercontent.com/u/1",
+    label: "Jane - Designer",
+    value: "Jane - Designer",
+  },
+  {
+    icon: "https://avatars.githubusercontent.com/u/2",
+    label: "Alex - Manager",
+    value: "Alex - Manager",
+  },
+  {
+    icon: "https://avatars.githubusercontent.com/u/3",
+    label: "Sam - Developer",
+    value: "Sam - Developer",
+  },
+  {
+    icon: "https://avatars.githubusercontent.com/u/4",
+    label: "Taylor - Architect",
+    value: "Taylor - Architect",
+  },
+  {
+    icon: "https://github.com/shadcn.png",
+    label: "Jordan - Engineer",
+    value: "Jordan - Engineer",
+  },
+  {
+    icon: "https://avatars.githubusercontent.com/u/1",
+    label: "Casey - Designer",
+    value: "Casey - Designer",
+  },
+  {
+    icon: "https://avatars.githubusercontent.com/u/2",
+    label: "Morgan - Manager",
+    value: "Morgan - Manager",
+  },
+  {
+    icon: "https://avatars.githubusercontent.com/u/3",
+    label: "John - Developer",
+    value: "John - Developer",
+  },
+  {
+    icon: "https://avatars.githubusercontent.com/u/4",
+    label: "Jane - Architect",
+    value: "Jane - Architect",
+  },
+];
+
+const formSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+});
+
 function DemoFetching() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+    alert("Form submitted successfully!\n" + JSON.stringify(values, null, 2));
+  };
+
   const [searchTerm, setSearchTerm] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(false);
 
-  // Options for autocomplete
-  const allOptions = [
-    {
-      icon: "https://github.com/shadcn.png",
-      label: "John - Engineer",
-      value: "John - Engineer",
-    },
-    {
-      icon: "https://avatars.githubusercontent.com/u/1",
-      label: "Jane - Designer",
-      value: "Jane - Designer",
-    },
-    {
-      icon: "https://avatars.githubusercontent.com/u/2",
-      label: "Alex - Manager",
-      value: "Alex - Manager",
-    },
-    {
-      icon: "https://avatars.githubusercontent.com/u/3",
-      label: "Sam - Developer",
-      value: "Sam - Developer",
-    },
-    {
-      icon: "https://avatars.githubusercontent.com/u/4",
-      label: "Taylor - Architect",
-      value: "Taylor - Architect",
-    },
-    {
-      icon: "https://github.com/shadcn.png",
-      label: "Jordan - Engineer",
-      value: "Jordan - Engineer",
-    },
-    {
-      icon: "https://avatars.githubusercontent.com/u/1",
-      label: "Casey - Designer",
-      value: "Casey - Designer",
-    },
-    {
-      icon: "https://avatars.githubusercontent.com/u/2",
-      label: "Morgan - Manager",
-      value: "Morgan - Manager",
-    },
-    {
-      icon: "https://avatars.githubusercontent.com/u/3",
-      label: "John - Developer",
-      value: "John - Developer",
-    },
-    {
-      icon: "https://avatars.githubusercontent.com/u/4",
-      label: "Jane - Architect",
-      value: "Jane - Architect",
-    },
-  ];
-
-  // Handle different behaviors based on input length
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setSearchTerm(value);
 
-    // For 4 chars, show loading
+    // For 3 chars, show loading
     if (value.length === 3) {
       setIsLoading(true);
     } else {
@@ -165,35 +185,37 @@ function DemoFetching() {
     }
   };
 
-  // Determine which options to show based on input length
   let currentOptions: SelectItems[] = [];
-  if (searchTerm.length >= 4 && searchTerm.length < 5) {
+  if (searchTerm.length >= 4 && searchTerm.length < 8) {
     currentOptions = allOptions;
+  } else {
+    currentOptions = [];
   }
 
-  // Initial state for less than 3 chars
-  const initialStateMessage =
-    searchTerm.length < 3 ? (
-      <div className="p-6 text-sm text-center">
-        Vui lòng nhập ít nhất 3 kí tự
-      </div>
-    ) : null;
-
-  const handleOnValueChange = (value: string) => {
-    setSearchTerm(value);
-  };
-
   return (
-    <div className="flex flex-col w-full gap-4">
-      <InputAutoComplete
-        formComposition={{ label: "Text" }}
-        placeholder="Enter text"
-        options={currentOptions}
-        onChange={handleChange}
-        loading={isLoading}
-        initialState={initialStateMessage}
-        onValueChange={handleOnValueChange}
-      />
+    <div className="w-full">
+      <ZodSchemaProvider schema={formSchema}>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-4"
+          >
+            <InputAutoCompleteForm
+              control={form.control}
+              name="username"
+              formComposition={{ label: "Text" }}
+              placeholder="Enter text"
+              options={currentOptions}
+              onChange={handleChange}
+              loading={isLoading}
+              minCharToSearch={3}
+            />
+            <Button type="submit" className="w-full">
+              Submit
+            </Button>
+          </form>
+        </Form>
+      </ZodSchemaProvider>
     </div>
   );
 }
