@@ -7,6 +7,7 @@ import * as React from "react";
 import { getNodeText } from "@/lib/get-node-text";
 import { transliterateVietnamese } from "@/lib/transliterate-vietnamese";
 import { cn } from "@/lib/utils";
+import { LoaderCircle } from "lucide-react";
 import { Dialog, DialogContent } from "./dialog";
 import { CommandPrimitiveInput } from "./input/command-primitive-input";
 
@@ -80,6 +81,21 @@ function CommandEmpty(
   );
 }
 
+function CommandLoading({
+  className,
+  ...props
+}: React.ComponentProps<typeof CommandPrimitive.Loading>) {
+  return (
+    <CommandPrimitive.Loading
+      data-slot="command-loading"
+      className={cn("py-6 text-sm text-center", className)}
+      {...props}
+    >
+      <LoaderCircle className="mx-auto animate-spin" size={20} />
+    </CommandPrimitive.Loading>
+  );
+}
+
 function CommandGroup({
   className,
   ...props
@@ -88,7 +104,7 @@ function CommandGroup({
     <CommandPrimitive.Group
       data-slot="command-group"
       className={cn(
-        "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground",
+        "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground empty:p-0",
         className
       )}
       {...props}
@@ -166,6 +182,7 @@ export {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandLoading,
   CommandSeparator,
   CommandShortcut,
 };

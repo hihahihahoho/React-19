@@ -388,7 +388,7 @@ export interface FormCompositionProps
     leftColClass: string;
     rightColClass: string;
   };
-  ref?: React.RefObject<HTMLDivElement>;
+  ref?: React.RefObject<HTMLDivElement | null>;
   customError?: React.ReactNode;
 }
 

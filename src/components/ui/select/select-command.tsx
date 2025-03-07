@@ -10,6 +10,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
+  CommandLoading,
   CommandSeparator,
 } from "../command";
 import { Checkbox } from "../selection-controls/checkbox";
@@ -19,7 +20,11 @@ function isSelectGroup(item: SelectItems | SelectGroup): item is SelectGroup {
   return (item as SelectGroup).options !== undefined;
 }
 
-export function modifyItems(options: SelectItems[] | SelectGroup[]) {
+export function modifyItems(options: SelectItems[] | SelectGroup[] = []) {
+  if (!options || options.length === 0) {
+    return [{ heading: undefined, options: [], isMultiSelect: false }];
+  }
+
   return isSelectGroup(options[0])
     ? (options as SelectGroup[])
     : [
@@ -31,18 +36,23 @@ export function modifyItems(options: SelectItems[] | SelectGroup[]) {
       ];
 }
 
-export function flatItems(options: SelectItems[] | SelectGroup[]) {
+export function flatItems(options: SelectItems[] | SelectGroup[] = []) {
+  if (!options || options.length === 0) {
+    return [];
+  }
   return modifyItems(options).flatMap((item) => item.options);
 }
-
 interface SelectCommandProps {
-  onSelect?: (selected: string) => void;
+  onSelect?: (selected: SelectItems) => void;
   selected?: string[];
   setSelected?: (selected: string[]) => void;
   defaultSelect?: string[];
-  items: SelectItems[] | SelectGroup[];
+  items?: SelectItems[] | SelectGroup[];
   isCheckAll?: boolean;
   allMultiSelect?: boolean;
+  hideSearch?: boolean;
+  commandWrapper?: boolean;
+  loading?: boolean;
 }
 
 function SelectCommand({
@@ -53,9 +63,13 @@ function SelectCommand({
   items,
   isCheckAll,
   allMultiSelect,
+  hideSearch = false,
+  commandWrapper = true,
+  loading,
 }: SelectCommandProps) {
   const flattenItems = flatItems(items);
   const modifyItemsNew = modifyItems(items);
+  const Comp = commandWrapper ? Command : React.Fragment;
 
   const isControlled = selectedProp !== undefined;
 
@@ -75,7 +89,6 @@ function SelectCommand({
     [isControlled, setSelectedProp]
   );
 
-  const commandListRef = React.useRef<HTMLDivElement>(null);
   const showSearch = flattenItems.length > 5;
   const uniqueId = React.useId();
 
@@ -106,9 +119,11 @@ function SelectCommand({
     }
   };
 
+  const compProps = commandWrapper ? { defaultValue: selected.at(-1) } : {};
+
   return (
-    <Command defaultValue={selected.at(-1)}>
-      {showSearch && <CommandInput placeholder="Tìm kiếm..." />}
+    <Comp {...compProps}>
+      {showSearch && !hideSearch && <CommandInput placeholder="Tìm kiếm..." />}
 
       {isCheckAll && (
         <CommandGroup>
@@ -132,70 +147,78 @@ function SelectCommand({
         </CommandGroup>
       )}
 
-      <CommandList ref={commandListRef} tabIndex={0}>
-        <CommandEmpty>Không tìm thấy kết quả</CommandEmpty>
+      <CommandList tabIndex={0}>
+        {loading ? (
+          <CommandLoading />
+        ) : (
+          <>
+            <CommandEmpty>Không tìm thấy kết quả</CommandEmpty>
 
-        {modifyItemsNew.map(
-          ({ heading, options, isMultiSelect }, groupIndex) => (
-            <React.Fragment key={uniqueId + groupIndex}>
-              <CommandGroup heading={heading}>
-                {options.map((option) => {
-                  const isSelected = selected.includes(option.value);
-                  return (
-                    <CommandItem
-                      {...option}
-                      key={uniqueId + option.value}
-                      value={option.value}
-                      onSelect={() => {
-                        onSelect?.(option.value);
-                        if (isMultiSelect || allMultiSelect) {
-                          toggleOption(option);
-                          return;
-                        }
-                        handleSetSelected([option.value]);
-                      }}
-                    >
-                      <div className="flex items-center gap-3 flex-1 -md:text-base [&_svg]:size-4 -md:[&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">
-                        <div className="flex items-center flex-1 gap-2">
-                          {option.icon &&
-                            (typeof option.icon === "string" ? (
-                              <Avatar size={"xs"}>
-                                <AvatarImage src={option.icon} />
-                                <AvatarFallback>
-                                  {option.value.substring(0, 2)}
-                                </AvatarFallback>
-                              </Avatar>
-                            ) : (
-                              option.icon
-                            ))}
-                          {option.label}
-                        </div>
-                        {isMultiSelect || allMultiSelect ? (
-                          <Checkbox
-                            className="[&_svg]:!text-primary-foreground"
-                            checked={isSelected}
-                          />
-                        ) : (
-                          isSelected && (
-                            <Check
-                              className={cn(
-                                "size-4 !text-foreground",
-                                isSelected ? "opacity-100" : "opacity-0"
+            {items &&
+              items.length > 0 &&
+              modifyItemsNew.map(
+                ({ heading, options, isMultiSelect }, groupIndex) => (
+                  <React.Fragment key={uniqueId + groupIndex}>
+                    <CommandGroup heading={heading}>
+                      {options.map((option) => {
+                        const isSelected = selected.includes(option.value);
+                        return (
+                          <CommandItem
+                            {...option}
+                            key={uniqueId + option.value}
+                            value={option.value}
+                            onSelect={() => {
+                              onSelect?.(option);
+                              if (isMultiSelect || allMultiSelect) {
+                                toggleOption(option);
+                                return;
+                              }
+                              handleSetSelected([option.value]);
+                            }}
+                          >
+                            <div className="flex items-center gap-3 flex-1 -md:text-base [&_svg]:size-4 -md:[&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">
+                              <div className="flex items-center flex-1 gap-2">
+                                {option.icon &&
+                                  (typeof option.icon === "string" ? (
+                                    <Avatar size={"xs"}>
+                                      <AvatarImage src={option.icon} />
+                                      <AvatarFallback>
+                                        {option.value.substring(0, 2)}
+                                      </AvatarFallback>
+                                    </Avatar>
+                                  ) : (
+                                    option.icon
+                                  ))}
+                                {option.label}
+                              </div>
+                              {isMultiSelect || allMultiSelect ? (
+                                <Checkbox
+                                  className="[&_svg]:!text-primary-foreground"
+                                  checked={isSelected}
+                                />
+                              ) : (
+                                isSelected && (
+                                  <Check
+                                    className={cn(
+                                      "size-4 !text-foreground",
+                                      isSelected ? "opacity-100" : "opacity-0"
+                                    )}
+                                  />
+                                )
                               )}
-                            />
-                          )
-                        )}
-                      </div>
-                    </CommandItem>
-                  );
-                })}
-              </CommandGroup>
-              {groupIndex < items.length - 1 && <CommandSeparator />}
-            </React.Fragment>
-          )
+                            </div>
+                          </CommandItem>
+                        );
+                      })}
+                    </CommandGroup>
+                    {groupIndex < items.length - 1 && <CommandSeparator />}
+                  </React.Fragment>
+                )
+              )}
+          </>
         )}
       </CommandList>
-    </Command>
+    </Comp>
   );
 }
 
