@@ -1,14 +1,32 @@
-import { useGesture } from "@use-gesture/react";
 import { animate, motion, useMotionValue } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 function TestZoom() {
-  const [down, setDown] = useState(false);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const scale = useMotionValue(1);
+
+  const ref = useRef<HTMLImageElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const lastDragPos = useRef({ x: 0, y: 0 });
+
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  }, []);
+  const [clickStartPos, setClickStartPos] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const clickThreshold = 5; // pixels of movement allowed to still count as a click
   useEffect(() => {
     const handler = (e: Event) => e.preventDefault();
     document.addEventListener("gesturestart", handler);
     document.addEventListener("gesturechange", handler);
     document.addEventListener("gestureend", handler);
+
     return () => {
       document.removeEventListener("gesturestart", handler);
       document.removeEventListener("gesturechange", handler);
@@ -16,223 +34,464 @@ function TestZoom() {
     };
   }, []);
 
-  // Replace useSpring with useMotionValue
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const scale = useMotionValue(1);
+  const getBounds = useCallback(() => {
+    if (!ref.current || !containerRef.current) return {};
 
-  const ref = useRef<HTMLImageElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const cardRect = ref.current.getBoundingClientRect();
 
-  // Combined function to handle bounds calculation and position updates
+    const leftBound =
+      cardRect.width < containerRect.width
+        ? -(containerRect.width / 2 - cardRect.width / 2)
+        : -(cardRect.width / 2 - containerRect.width / 2);
+    const rightBound =
+      cardRect.width < containerRect.width
+        ? containerRect.width / 2 - cardRect.width / 2
+        : cardRect.width / 2 - containerRect.width / 2;
+
+    const topBound =
+      cardRect.height < containerRect.height
+        ? -(containerRect.height / 2 - cardRect.height / 2)
+        : -(cardRect.height / 2 - containerRect.height / 2);
+    const bottomBound =
+      cardRect.height < containerRect.height
+        ? containerRect.height / 2 - cardRect.height / 2
+        : cardRect.height / 2 - containerRect.height / 2;
+    console.log({
+      left: leftBound,
+      right: rightBound,
+      top: topBound,
+      bottom: bottomBound,
+    });
+
+    return {
+      left: leftBound,
+      right: rightBound,
+      top: topBound,
+      bottom: bottomBound,
+    };
+  }, []);
+
   const updatePosition = useCallback(
-    (newX: number, newY: number, shouldAnimate = false) => {
+    (
+      newX: number,
+      newY: number,
+      shouldAnimate = false,
+      newScale?: number,
+      animateScale = false
+    ) => {
       if (!ref.current || !containerRef.current)
         return { bounds: {}, x: newX, y: newY };
 
       const containerRect = containerRef.current.getBoundingClientRect();
-      const cardRect = ref.current.getBoundingClientRect();
-      console.log(cardRect.width, containerRect.height);
+      const currentScale = newScale !== undefined ? newScale : scale.get();
 
-      // Calculate bounds
-      const leftBound =
-        cardRect.width < containerRect.width
-          ? -(containerRect.width / 2 - cardRect.width / 2)
-          : -(cardRect.width / 2 - containerRect.width / 2);
-      const rightBound =
-        cardRect.width < containerRect.width
-          ? containerRect.width / 2 - cardRect.width / 2
-          : cardRect.width / 2 - containerRect.width / 2;
+      // We need to calculate the scaled dimensions of the image
+      const naturalWidth = ref.current.naturalWidth;
+      const naturalHeight = ref.current.naturalHeight;
 
-      const topBound =
-        cardRect.height < containerRect.height
-          ? -(containerRect.height / 2 - cardRect.height / 2)
-          : -(cardRect.height / 2 - containerRect.height / 2);
-      const bottomBound =
-        cardRect.height < containerRect.height
-          ? containerRect.height / 2 - cardRect.height / 2
-          : cardRect.height / 2 - containerRect.height / 2;
+      // Calculate aspect ratio
+      const imageAspectRatio = naturalWidth / naturalHeight;
+      const containerAspectRatio = containerRect.width / containerRect.height;
 
-      const bounds = {
-        left: leftBound,
-        right: rightBound,
-        top: topBound,
-        bottom: bottomBound,
-      };
+      // Calculate the effective dimensions of the image at scale = 1
+      let baseWidth, baseHeight;
+      if (imageAspectRatio > containerAspectRatio) {
+        // Image is wider than container (relative to height)
+        baseWidth = containerRect.width;
+        baseHeight = baseWidth / imageAspectRatio;
+      } else {
+        // Image is taller than container (relative to width)
+        baseHeight = containerRect.height;
+        baseWidth = baseHeight * imageAspectRatio;
+      }
 
-      // Determine final positions
+      // Calculate scaled dimensions
+      const scaledWidth = baseWidth * currentScale;
+      const scaledHeight = baseHeight * currentScale;
+
       let finalX = newX;
       let finalY = newY;
 
-      // If image width is smaller than container width, center it horizontally
-      if (cardRect.width < containerRect.width) {
+      // Calculate boundaries based on scaled dimensions
+      const maxOffsetX = Math.max(0, (scaledWidth - containerRect.width) / 2);
+      const maxOffsetY = Math.max(0, (scaledHeight - containerRect.height) / 2);
+
+      // Apply boundaries
+      finalX = Math.max(-maxOffsetX, Math.min(maxOffsetX, finalX));
+      finalY = Math.max(-maxOffsetY, Math.min(maxOffsetY, finalY));
+
+      // Center image if smaller than container in any dimension
+      if (scaledWidth <= containerRect.width) {
         finalX = 0;
-      } else {
-        // Constrain to bounds
-        finalX = Math.max(bounds.left, Math.min(bounds.right, finalX));
       }
 
-      // If image height is smaller than container height, center it vertically
-      if (cardRect.height < containerRect.height) {
+      if (scaledHeight <= containerRect.height) {
         finalY = 0;
-      } else {
-        // Constrain to bounds
-        finalY = Math.max(bounds.top, Math.min(bounds.bottom, finalY));
       }
 
-      // Apply positions
+      // Apply with or without animation
       if (shouldAnimate) {
         animate(x, finalX, { type: "tween", duration: 0.2 });
         animate(y, finalY, { type: "tween", duration: 0.2 });
+
+        // Animate scale if provided and animation is requested
+        if (newScale !== undefined && animateScale) {
+          animate(scale, newScale, {
+            type: "tween",
+            duration: 0.2,
+          });
+        }
       } else {
         x.set(finalX);
         y.set(finalY);
+
+        // Set scale immediately if provided
+        if (newScale !== undefined) {
+          scale.set(newScale);
+        }
       }
 
-      return { bounds, x: finalX, y: finalY };
+      getBounds();
+
+      return {
+        bounds: {
+          left: -maxOffsetX,
+          right: maxOffsetX,
+          top: -maxOffsetY,
+          bottom: maxOffsetY,
+        },
+        x: finalX,
+        y: finalY,
+      };
     },
-    []
+    [x, y, scale, getBounds]
   );
 
-  useGesture(
-    {
-      onDrag: ({ down, pinching, cancel, offset: [offsetX, offsetY] }) => {
-        if (pinching) return cancel();
-        setDown(down);
+  const [touchStartDistance, setTouchStartDistance] = useState<number | null>(
+    null
+  );
+  const [initialScale, setInitialScale] = useState<number>(1);
 
-        if (ref.current && containerRef.current) {
-          const containerRect = containerRef.current.getBoundingClientRect();
-          const cardRect = ref.current.getBoundingClientRect();
-          if (cardRect.width > containerRect.width) {
-            if (!down) {
-              animate(x, offsetX, { type: "tween" });
-            } else {
-              x.set(offsetX);
-            }
-          }
-          if (cardRect.height > containerRect.height) {
-            if (!down) {
-              animate(y, offsetY, { type: "tween" });
-            } else {
-              y.set(offsetY);
-            }
-          }
-        }
-      },
-      onDragEnd: ({ down, velocity: [vx, vy], direction: [dx, dy] }) => {
-        if (down) return;
+  // Add these utility functions before the useGesture hook
+  const getDistance = (p1: Touch, p2: Touch) => {
+    return Math.sqrt(
+      Math.pow(p2.clientX - p1.clientX, 2) +
+        Math.pow(p2.clientY - p1.clientY, 2)
+    );
+  };
 
-        // Use smaller multiplier for velocity and apply deceleration
-        const velocityFactor = Math.min(0.2, Math.max(0.05, 1 / scale.get()));
-        const targetX = x.get() + vx * velocityFactor * 300 * dx;
-        const targetY = y.get() + vy * velocityFactor * 300 * dy;
+  const getMidpoint = (p1: Touch, p2: Touch) => {
+    return {
+      x: (p1.clientX + p2.clientX) / 2,
+      y: (p1.clientY + p2.clientY) / 2,
+    };
+  };
 
-        // Use spring animation for smoother deceleration
-        updatePosition(targetX, targetY, true);
-      },
-      onPinch: ({
-        origin: [ox, oy],
-        first,
-        movement: [ms],
-        offset: [s],
-        memo,
-      }) => {
-        if (first) {
-          const {
-            width,
-            height,
-            x: rectX,
-            y: rectY,
-          } = ref.current!.getBoundingClientRect();
-          const tx = ox - (rectX + width / 2);
-          const ty = oy - (rectY + height / 2);
-          memo = [x.get(), y.get(), tx, ty];
-        }
-
-        const newX = memo[0] - (ms - 1) * memo[2];
-        const newY = memo[1] - (ms - 1) * memo[3];
-
-        x.set(newX);
-        y.set(newY);
-
-        scale.set(s);
-
-        return memo;
-      },
-      onPinchEnd: ({ velocity: [v], offset: [s] }) => {
-        updatePosition(x.get() + v * 50 * s, y.get() + v * 50 * s, true);
-        if (scale.get() < 1) {
-          animate(scale, s, { type: "tween" });
-        }
-      },
+  // Add these touch handlers
+  const handleTouchStart = useCallback(
+    (e: TouchEvent) => {
+      if (e.touches.length === 1) {
+        // Start of a drag gesture
+        setIsDragging(true);
+        lastDragPos.current = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY,
+        };
+      } else if (e.touches.length === 2) {
+        // Start of a pinch gesture
+        const distance = getDistance(e.touches[0], e.touches[1]);
+        setTouchStartDistance(distance);
+        setInitialScale(scale.get());
+        e.preventDefault();
+      }
     },
-    {
-      target: ref,
-      drag: {
-        from: () => [x.get(), y.get()],
-        swipe: {
-          velocity: 2,
-        },
-        bounds: () => {
-          if (!containerRef.current || !ref.current) return {};
+    [scale]
+  );
 
-          const containerRect = containerRef.current.getBoundingClientRect();
-          const cardRect = ref.current.getBoundingClientRect();
+  const handleTouchMove = useCallback(
+    (e: TouchEvent) => {
+      // Only handle pinch gestures (2 fingers)
+      if (e.touches.length === 1 && isDragging && scale.get() > 1) {
+        // Handle drag
+        const deltaX = e.touches[0].clientX - lastDragPos.current.x;
+        const deltaY = e.touches[0].clientY - lastDragPos.current.y;
 
-          const leftBound =
-            cardRect.width < containerRect.width
-              ? -(containerRect.width / 2 - cardRect.width / 2)
-              : -(cardRect.width / 2 - containerRect.width / 2);
-          const rightBound =
-            cardRect.width < containerRect.width
-              ? containerRect.width / 2 - cardRect.width / 2
-              : cardRect.width / 2 - containerRect.width / 2;
+        lastDragPos.current = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY,
+        };
 
-          const topBound =
-            cardRect.height < containerRect.height
-              ? -(containerRect.height / 2 - cardRect.height / 2)
-              : -(cardRect.height / 2 - containerRect.height / 2);
-          const bottomBound =
-            cardRect.height < containerRect.height
-              ? containerRect.height / 2 - cardRect.height / 2
-              : cardRect.height / 2 - containerRect.height / 2;
+        // Update position with the delta
+        updatePosition(x.get() + deltaX, y.get() + deltaY, false);
+        e.preventDefault();
+      }
+      // Only handle pinch gestures (2 fingers)
+      else if (e.touches.length === 2 && touchStartDistance !== null) {
+        e.preventDefault();
 
-          return {
-            left: leftBound,
-            right: rightBound,
-            top: topBound,
-            bottom: bottomBound,
-          };
-        },
-        rubberband: 0.5,
-      },
-      pinch: {
-        scaleBounds: { min: 1, max: 3 },
-        rubberband: 0.5,
-      },
+        // Calculate new scale
+        const currentDistance = getDistance(e.touches[0], e.touches[1]);
+        const scaleFactor = currentDistance / touchStartDistance;
+        const newScale = Math.min(Math.max(initialScale * scaleFactor, 1), 3);
+
+        // Calculate midpoint (center of pinch)
+        const midpoint = getMidpoint(e.touches[0], e.touches[1]);
+
+        if (ref.current) {
+          const imgRef = ref.current.getBoundingClientRect();
+
+          // Get position relative to the image center
+          const pinchX = midpoint.x - imgRef.left - imgRef.width / 2;
+          const pinchY = midpoint.y - imgRef.top - imgRef.height / 2;
+
+          // Convert to image coordinates with current panning
+          const pinchOnImageX = pinchX - x.get();
+          const pinchOnImageY = pinchY - y.get();
+
+          // Calculate new position to keep the pinch point fixed during zoom
+          const currentScale = scale.get();
+          const newX =
+            x.get() + pinchOnImageX - pinchOnImageX * (newScale / currentScale);
+          const newY =
+            y.get() + pinchOnImageY - pinchOnImageY * (newScale / currentScale);
+
+          // Update position and scale
+          updatePosition(newX, newY, false, newScale);
+        }
+      }
+    },
+    [touchStartDistance, initialScale, scale, x, y, updatePosition, isDragging]
+  );
+
+  const handleTouchEnd = useCallback(() => {
+    if (touchStartDistance !== null) {
+      setTouchStartDistance(null);
+      // Ensure we have proper bounds after pinch
+      updatePosition(x.get(), y.get(), true);
     }
+    setIsDragging(false);
+  }, [touchStartDistance, x, y, updatePosition]);
+
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      // Determine zoom direction
+      const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+      const currentScale = scale.get();
+      const newScale = Math.min(Math.max(currentScale * zoomFactor, 1), 3);
+
+      if (newScale === currentScale) return; // No change needed
+
+      // Get container dimensions
+      const imgRef = ref.current!.getBoundingClientRect();
+
+      // Calculate mouse position relative to the container center
+      const mouseX = e.clientX - imgRef.left - imgRef.width / 2;
+      const mouseY = e.clientY - imgRef.top - imgRef.height / 2;
+
+      // Convert mouse position to image coordinates by accounting for current panning
+      const mouseOnImageX = mouseX - x.get();
+      const mouseOnImageY = mouseY - y.get();
+
+      // Calculate new position to keep the mouse point fixed during zoom
+      const newX =
+        x.get() + mouseOnImageX - mouseOnImageX * (newScale / currentScale);
+      const newY =
+        y.get() + mouseOnImageY - mouseOnImageY * (newScale / currentScale);
+
+      // Update the scale first
+      scale.set(newScale);
+
+      // Update position with bounds check
+      updatePosition(newX, newY, false);
+
+      // Prevent default scrolling behavior
+      e.preventDefault();
+    },
+    [scale, x, y, updatePosition]
   );
+
+  const handleMouseDown = useCallback((e: MouseEvent) => {
+    setClickStartPos({ x: e.clientX, y: e.clientY });
+    setIsDragging(true);
+    lastDragPos.current = { x: e.clientX, y: e.clientY };
+
+    if (ref.current) {
+      ref.current.style.cursor = "grabbing";
+    }
+  }, []);
+  const handleMouseUp = useCallback(
+    (e: MouseEvent) => {
+      if (ref.current) {
+        ref.current.style.cursor = "grab";
+      }
+
+      // Check if this was a click or a drag
+      if (clickStartPos) {
+        const dx = Math.abs(e.clientX - clickStartPos.x);
+        const dy = Math.abs(e.clientY - clickStartPos.y);
+
+        // If minimal movement occurred, treat as a click
+        if (dx <= clickThreshold && dy <= clickThreshold) {
+          const currentScale = scale.get();
+          // If zoomed in, reset to 1x, otherwise zoom to 2x
+          const newScale =
+            currentScale > 1.5 ? 1 : Math.min(currentScale * 2, 3);
+
+          if (newScale === currentScale) return; // No change needed
+
+          // Get container dimensions
+          const imgRef = ref.current!.getBoundingClientRect();
+
+          // Calculate mouse position relative to the container center
+          const mouseX = e.clientX - imgRef.left - imgRef.width / 2;
+          const mouseY = e.clientY - imgRef.top - imgRef.height / 2;
+
+          // Convert mouse position to image coordinates
+          const mouseOnImageX = mouseX - x.get();
+          const mouseOnImageY = mouseY - y.get();
+
+          // Calculate new position to keep the mouse point fixed during zoom
+          const newX =
+            x.get() + mouseOnImageX - mouseOnImageX * (newScale / currentScale);
+          const newY =
+            y.get() + mouseOnImageY - mouseOnImageY * (newScale / currentScale);
+
+          // Update position with bounds check and animate scale
+          updatePosition(newX, newY, true, newScale, true);
+        }
+
+        setClickStartPos(null);
+      }
+
+      // End drag regardless of whether it was a click or drag
+      setIsDragging(false);
+    },
+    [clickStartPos, scale, x, y, updatePosition, clickThreshold]
+  );
+
+  // Add new handler for mouse move during drag
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (isDragging && scale.get() > 1) {
+        const deltaX = e.clientX - lastDragPos.current.x;
+        const deltaY = e.clientY - lastDragPos.current.y;
+
+        lastDragPos.current = { x: e.clientX, y: e.clientY };
+
+        // Update position with the delta
+        updatePosition(x.get() + deltaX, y.get() + deltaY, false);
+      }
+    },
+    [isDragging, scale, x, y, updatePosition]
+  );
+
+  const handleZoomOnClick = useCallback(
+    (e: MouseEvent) => {
+      const currentScale = scale.get();
+      // If zoomed in, reset to 1x, otherwise zoom to 2x
+      const newScale = currentScale > 1.5 ? 1 : Math.min(currentScale * 2, 3);
+
+      if (newScale === currentScale) return; // No change needed
+
+      // Get container dimensions
+      const imgRef = ref.current!.getBoundingClientRect();
+
+      // Calculate mouse position relative to the container center
+      const mouseX = e.clientX - imgRef.left - imgRef.width / 2;
+      const mouseY = e.clientY - imgRef.top - imgRef.height / 2;
+
+      // Convert mouse position to image coordinates by accounting for current panning
+      const mouseOnImageX = mouseX - x.get();
+      const mouseOnImageY = mouseY - y.get();
+
+      // Calculate new position to keep the mouse point fixed during zoom
+      const newX =
+        x.get() + mouseOnImageX - mouseOnImageX * (newScale / currentScale);
+      const newY =
+        y.get() + mouseOnImageY - mouseOnImageY * (newScale / currentScale);
+
+      // Update position with bounds check and animate scale together
+      updatePosition(newX, newY, true, newScale, true);
+
+      e.preventDefault();
+    },
+    [scale, x, y, updatePosition]
+  );
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (container) {
+      container.addEventListener("wheel", handleWheel, { passive: false });
+
+      if (isTouchDevice) {
+        container.addEventListener("dblclick", handleZoomOnClick);
+        container.addEventListener("touchstart", handleTouchStart, {
+          passive: false,
+        });
+        container.addEventListener("touchmove", handleTouchMove, {
+          passive: false,
+        });
+        container.addEventListener("touchend", handleTouchEnd);
+      } else {
+        container.addEventListener("mousedown", handleMouseDown);
+        container.addEventListener("mousemove", handleMouseMove);
+        container.addEventListener("mouseup", handleMouseUp);
+        // Add mouseleave to handle case when cursor leaves container while dragging
+        container.addEventListener("mouseleave", handleMouseUp);
+      }
+
+      return () => {
+        container.removeEventListener("wheel", handleWheel);
+
+        if (isTouchDevice) {
+          container.removeEventListener("dblclick", handleZoomOnClick);
+          container.removeEventListener("touchstart", handleTouchStart);
+          container.removeEventListener("touchmove", handleTouchMove);
+          container.removeEventListener("touchend", handleTouchEnd);
+        } else {
+          container.removeEventListener("mousedown", handleMouseDown);
+          container.removeEventListener("mousemove", handleMouseMove);
+          container.removeEventListener("mouseup", handleMouseUp);
+          container.removeEventListener("mouseleave", handleMouseUp);
+        }
+      };
+    }
+  }, [
+    handleWheel,
+    handleZoomOnClick,
+    isTouchDevice,
+    handleMouseDown,
+    handleMouseMove,
+    handleMouseUp,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+  ]);
 
   return (
-    <div className="">
+    <div>
       <div
-        className="container-main w-full h-[80svh] bg-white rounded-lg shadow-lg ring ring-red-600 overflow-hidden flex items-center justify-center"
+        className="container-main w-full h-[70svh] bg-white rounded-lg shadow-lg ring ring-red-600 overflow-hidden flex items-center justify-center"
         ref={containerRef}
       >
         <motion.img
-          className="object-contain object-center max-w-full max-h-full rounded-lg select-none touch-none will-change-transform cursor-grab"
+          className="object-contain object-center max-w-full max-h-full rounded-lg select-none touch-none cursor-grab"
           src="https://images.pexels.com/photos/1007431/pexels-photo-1007431.jpeg"
           ref={ref}
-          height={750}
           draggable={false}
+          onDrag={(e) => {
+            e.preventDefault();
+          }}
           style={{
             x,
             y,
             scale,
+            backfaceVisibility: "hidden",
           }}
         />
       </div>
-      {down.toString()}
     </div>
   );
 }

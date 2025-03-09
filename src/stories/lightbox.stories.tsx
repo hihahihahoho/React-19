@@ -44,7 +44,7 @@ const lightboxItems: LightBoxImageType[] = [
     alt: "Image 3",
   },
   {
-    src: "https://swiperjs.com/demos/images/nature-4.jpg",
+    src: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Cambriae_Typus_NLW.jpg",
     alt: "Image 4",
   },
   {
@@ -99,7 +99,7 @@ export const InsideDialog: Story = {
             <DialogDescription>This is a form</DialogDescription>
           </DialogHeader>
           <LightboxContext>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 overflow-hidden">
+            <div className="grid grid-cols-3 gap-2 overflow-hidden md:grid-cols-6">
               {lightboxItems.map((image, i) => (
                 <LightboxItem
                   key={i}
@@ -140,7 +140,7 @@ export const Custom: Story = {
     const [open, setOpen] = useState(false);
     return (
       <LightboxContext>
-        <div className="grid grid-cols-3 md:grid-cols-8 gap-2 overflow-hidden">
+        <div className="grid grid-cols-3 gap-2 overflow-hidden md:grid-cols-8">
           {lightboxItems.map((image, i) => (
             <LightboxItem
               key={i}
