@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { FormDemo } from "./FormDemo";
 
 const meta = {
-  title: "Base/Form",
+  title: "Forms/Form",
   component: FormDemo,
   parameters: {},
 } satisfies Meta<typeof FormDemo>;

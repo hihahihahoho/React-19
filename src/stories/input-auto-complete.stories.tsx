@@ -16,7 +16,7 @@ import { z } from "zod";
  * Use inputs to collect user information or data entry.
  */
 const meta = {
-  title: "BASE/Input Auto Complete",
+  title: "Forms/Input Auto Complete",
   component: Input,
   parameters: {
     layout: "centered",

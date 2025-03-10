@@ -3,7 +3,7 @@ import { Select } from "@/components/ui/select/select";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "Base/Select",
+  title: "Forms/Select",
   component: Select,
   parameters: {},
 } satisfies Meta<typeof Select>;

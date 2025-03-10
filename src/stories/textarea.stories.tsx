@@ -1,201 +1,762 @@
 import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form/form";
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
 import { Textarea } from "@/components/ui/textarea/textarea";
+import { TextareaForm } from "@/components/ui/textarea/textarea-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Smile } from "lucide-react";
+import {
+  AlertCircle,
+  Check,
+  FileText,
+  MessageSquare,
+  Pencil,
+} from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
+/**
+ * Textarea component allows users to enter multi-line text.
+ * Use textareas when users need to enter longer content such as comments, descriptions, or messages.
+ */
 const meta = {
-  title: "Base/Textarea",
+  title: "Forms/Textarea",
   component: Textarea,
-  parameters: {},
+  parameters: {
+    layout: "centered",
+    docs: {
+      description: {
+        component: `
+Textarea components are interactive controls that allow users to enter multiple lines of text.
+They are useful for collecting longer form content and support various states, sizes, and compositions.
+
+## When to use
+- When collecting longer text input such as comments, feedback, or descriptions
+- When users need to enter multi-paragraph content
+- When presenting users with a larger writing space than a standard input field
+- For content that might include line breaks
+
+## Accessibility
+- Textareas should always have associated labels for screen readers
+- Error states should be communicated both visually and to screen readers
+- Form elements should have proper tab order and keyboard accessibility
+- Required fields should be clearly marked
+        `,
+      },
+    },
+  },
+  argTypes: {
+    placeholder: {
+      control: "text",
+      description: "Placeholder text displayed when the textarea is empty",
+    },
+    disabled: {
+      control: "boolean",
+      description: "When true, prevents user interaction with the textarea",
+    },
+    readOnly: {
+      control: "boolean",
+      description: "When true, makes the textarea read-only",
+    },
+    formComposition: {
+      description:
+        "Configuration for form composition elements like label, help text, etc.",
+    },
+    onValueChange: {
+      description: "Function called when the textarea value changes",
+      action: "value changed",
+    },
+    maxHeight: {
+      control: "number",
+      description: "Maximum height of the textarea in pixels",
+    },
+    minHeight: {
+      control: "number",
+      description: "Minimum height of the textarea in pixels",
+    },
+    maxLength: {
+      control: "number",
+      description: "Maximum number of characters allowed",
+    },
+    className: {
+      control: "text",
+      description: "Additional CSS classes to apply to the textarea",
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div className="flex items-center justify-center md:w-96">
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Textarea>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Default textarea with placeholder */
-export const Default: Story = {
-  args: {
-    placeholder: "Enter text",
-  },
-};
-
-export const PlaceholderBlack: Story = {
-  args: {
-    placeholder: "Enter text",
-    className: "placeholder:text-foreground",
-  },
-};
-
-export const TextareaWhite: Story = {
-  args: {
-    placeholder: "Enter text",
-    className: "placeholder:text-foreground",
-    formComposition: {
-      variant: "white",
+/**
+ * Basic examples of textareas with different configurations.
+ */
+export const BasicExamples: Story = {
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{ label: "Default Textarea" }}
+        placeholder="Enter your comments here..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Textarea with description",
+          description: "Add your feedback below (max 200 characters)",
+        }}
+        placeholder="Your feedback matters to us!"
+      />
+      <Textarea
+        formComposition={{ label: "Limited Text" }}
+        placeholder="Limited to 100 characters"
+        maxLength={100}
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: "Basic textarea examples with different configurations.",
+      },
     },
   },
 };
 
-/** Textarea with label positioned above */
-export const WithLabel: Story = {
-  args: {
-    placeholder: "Enter your username",
-    formComposition: {
-      label: "Username",
+/**
+ * Textareas with different states (disabled, read-only).
+ */
+export const TextareaStates: Story = {
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{ label: "Default" }}
+        placeholder="Regular textarea"
+        defaultValue="This is editable content that you can modify."
+      />
+      <Textarea
+        formComposition={{ label: "Disabled" }}
+        placeholder="Disabled textarea"
+        defaultValue="This content cannot be edited because the textarea is disabled."
+        disabled
+      />
+      <Textarea
+        formComposition={{ label: "Read-only" }}
+        placeholder="Read-only textarea"
+        defaultValue="This content cannot be changed because the textarea is read-only."
+        readOnly
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: "Textarea fields in various interactive states.",
+      },
     },
   },
 };
 
-/** Textarea with label positioned to the left */
-export const WithLabelHorizontal: Story = {
-  args: {
-    formComposition: {
-      labelPosition: "horizontal",
-      label: "Username",
+/**
+ * Textareas with different form composition variations.
+ */
+export const WithFormComposition: Story = {
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{
+          label: "Feedback",
+          description: "Share your thoughts about our service",
+        }}
+        placeholder="Tell us what you think..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Product Review",
+          requiredSymbol: true,
+        }}
+        placeholder="Write your review here"
+      />
+      <Textarea
+        formComposition={{
+          label: "Message",
+          requiredSymbol: true,
+          description: "Your message will be sent to our support team",
+        }}
+        placeholder="How can we help you?"
+      />
+      <Textarea
+        formComposition={{
+          label: "Additional Notes",
+          description: "Any other information we should know",
+          labelPosition: "horizontal",
+        }}
+        placeholder="Add any relevant details..."
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Textarea fields with various form composition elements like labels, descriptions, and positioning.",
+      },
     },
-    placeholder: "Enter your username",
   },
 };
 
-export const WithLabelHorizontalBreakpoint: Story = {
-  args: {
-    formComposition: {
-      labelPosition: "horizontal",
-      label: "Username",
+/**
+ * Textareas with different icon configurations.
+ */
+export const WithIcons: Story = {
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{
+          label: "Comment",
+          iconLeft: <MessageSquare className="size-4" />,
+        }}
+        placeholder="Add your comment here..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Notes",
+          iconLeft: <Pencil className="size-4" />,
+        }}
+        placeholder="Add your notes here..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Document",
+          iconLeft: <FileText className="size-4" />,
+        }}
+        placeholder="Add your document content here..."
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: "Textarea fields with icons to provide visual context.",
+      },
     },
-    placeholder: "Enter your username",
   },
 };
 
-/** Textarea with a prefix element */
-export const WithPrefix: Story = {
-  args: {
-    formComposition: {
-      prefix: "@",
-    },
-    placeholder: "Enter your handle",
-  },
-};
-
-/** Textarea with a suffix element */
-export const WithSuffix: Story = {
-  args: {
-    formComposition: {
-      suffix: ".com",
-    },
-    placeholder: "Enter domain name",
-  },
-};
-
-/** Textarea with an icon on the left */
-export const WithIconLeft: Story = {
-  args: {
-    formComposition: {
-      iconLeft: <Smile />,
-    },
-    placeholder: "Enter your name",
-  },
-};
-
-/** Textarea with an icon on the right */
-export const WithIconRight: Story = {
-  args: {
-    formComposition: {
-      iconRight: <Smile />,
-    },
-    placeholder: "Search...",
-  },
-};
-
-/** Textarea with both prefix and suffix */
+/**
+ * Textarea fields with prefix and suffix elements.
+ */
 export const WithPrefixAndSuffix: Story = {
-  args: {
-    formComposition: {
-      prefix: "$",
-      suffix: "USD",
-    },
-    placeholder: "Enter amount",
-  },
-};
-
-/** Textarea with icons on both sides */
-export const WithIconLeftAndRight: Story = {
-  args: {
-    formComposition: {
-      iconLeft: <Smile />,
-      iconRight: <Smile />,
-    },
-    placeholder: "Enter password",
-    type: "password",
-  },
-};
-
-/** Textarea with a prefixNotFocusInput element */
-export const WithprefixNotFInput: Story = {
-  args: {
-    formComposition: {
-      prefixNotFocusInput: {
-        order: 0,
-        element: <Button size={"xs"}>Button</Button>,
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{
+          label: "Comment",
+          prefix: <span className="text-muted-foreground">@</span>,
+        }}
+        placeholder="Add your comment..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Editor",
+          suffix: <span className="text-muted-foreground">.md</span>,
+        }}
+        placeholder="Type markdown content here..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Custom",
+          prefix: <span className="text-muted-foreground">&lt;p&gt;</span>,
+          suffix: <span className="text-muted-foreground">&lt;/p&gt;</span>,
+        }}
+        placeholder="Enter paragraph content..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Content",
+          prefix: <span className="text-muted-foreground">&lt;div&gt;</span>,
+          suffixOutside: <Button variant="outline">Format</Button>,
+        }}
+        placeholder="Enter HTML content..."
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Textarea fields with prefix and suffix elements to provide context or additional functionality.",
       },
     },
-    placeholder: "Textarea with prefixNotFocusInput",
   },
 };
 
-/** Textarea with a suffixNotFocusInput element */
-export const WithsuffixNotFocusInput: Story = {
-  args: {
-    formComposition: {
-      suffixNotFocusInput: {
-        order: 6,
-        element: <span>SuffixNF</span>,
+/**
+ * Auto-resizing textareas with different configurations.
+ */
+export const AutoResize: Story = {
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{
+          label: "Auto-resize (default)",
+          description: "Grows as you type, up to 300px by default",
+        }}
+        placeholder="Type multiple lines to see auto-resize in action..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Limited height",
+          description: "Maximum height of 100px",
+        }}
+        maxHeight={100}
+        placeholder="This textarea will stop growing at 100px and show scrollbars instead..."
+      />
+      <Textarea
+        formComposition={{
+          label: "Taller minimum",
+          description: "Starts at a taller height (100px)",
+        }}
+        minHeight={100}
+        placeholder="This textarea has a larger starting height..."
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Textarea fields that automatically resize based on content, with configurable min/max heights.",
       },
     },
-    placeholder: "Textarea with suffixNotFocusInput",
   },
 };
 
-/** Textarea with small size variant */
-export const SmallSize: Story = {
-  args: {
-    formComposition: {
-      size: "sm",
+/**
+ * Character counting in textareas.
+ */
+export const CharacterCounting: Story = {
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{
+          label: "Tweet",
+          description: "Similar to Twitter/X character limit",
+        }}
+        placeholder="What's happening?"
+        maxLength={280}
+      />
+      <Textarea
+        formComposition={{
+          label: "Short description",
+          description: "Keep it brief and to the point",
+        }}
+        placeholder="Describe your product in under 100 characters"
+        maxLength={100}
+      />
+      <Textarea
+        formComposition={{
+          label: "Custom message",
+          description: "Use maxLength to set character limits",
+        }}
+        placeholder="Limited to 150 characters"
+        maxLength={150}
+        defaultValue="This text already takes up some of your character allowance. The counter shows how many you've used and how many remain."
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Textarea fields with character counting to help users stay within limits.",
+      },
     },
-    placeholder: "Small size textarea",
   },
 };
 
-/** Textarea with large size variant */
-export const LargeSize: Story = {
-  args: {
-    formComposition: {
-      size: "lg",
+/**
+ * Form with textarea validation using react-hook-form and zod.
+ */
+export const WithFormValidation: Story = {
+  render: () => {
+    const formSchema = z.object({
+      feedback: z
+        .string()
+        .min(10, "Feedback must be at least 10 characters")
+        .max(500, "Feedback must not exceed 500 characters"),
+      description: z
+        .string()
+        .min(20, "Description must be at least 20 characters"),
+      summary: z.string().max(100, "Summary must not exceed 100 characters"),
+    });
+
+    function FormExample() {
+      const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+          feedback: "",
+          description: "",
+          summary: "",
+        },
+      });
+
+      const onSubmit = (values: z.infer<typeof formSchema>) => {
+        console.log(values);
+        alert(
+          "Form submitted successfully!\n" + JSON.stringify(values, null, 2)
+        );
+      };
+
+      return (
+        <ZodSchemaProvider schema={formSchema}>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full space-y-4"
+            >
+              <TextareaForm
+                name="feedback"
+                control={form.control}
+                formComposition={{
+                  label: "Feedback",
+                  iconLeft: <MessageSquare className="size-4" />,
+                }}
+                placeholder="Tell us what you think..."
+              />
+
+              <TextareaForm
+                name="description"
+                control={form.control}
+                formComposition={{
+                  label: "Description",
+                  iconLeft: <FileText className="size-4" />,
+                }}
+                placeholder="Provide a detailed description"
+              />
+
+              <TextareaForm
+                name="summary"
+                control={form.control}
+                formComposition={{
+                  label: "Summary",
+                  iconLeft: <Pencil className="size-4" />,
+                }}
+                placeholder="Provide a brief summary"
+                maxLength={100}
+              />
+
+              <Button type="submit" className="w-full">
+                Submit
+              </Button>
+            </form>
+          </Form>
+        </ZodSchemaProvider>
+      );
+    }
+
+    return <FormExample />;
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Example of form validation using react-hook-form and zod with TextareaForm component.",
+      },
     },
-    placeholder: "Large size textarea",
   },
 };
 
-/** Textarea combining all features */
-export const AllFeatures: Story = {
+/**
+ * Textareas with different variant styles.
+ */
+export const VariantStyles: Story = {
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{
+          label: "Default style",
+          variant: "default",
+        }}
+        placeholder="Default textarea style"
+      />
+
+      <Textarea
+        formComposition={{
+          label: "White variant",
+          variant: "white",
+        }}
+        placeholder="White background textarea"
+      />
+
+      <Textarea
+        formComposition={{
+          label: "Ghost variant",
+          variant: "ghost",
+        }}
+        placeholder="Ghost style textarea"
+      />
+
+      <Textarea
+        formComposition={{
+          label: "Inline variant",
+          variant: "inline",
+        }}
+        placeholder="Inline style textarea"
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Textarea fields with different visual styles based on variants.",
+      },
+    },
+  },
+};
+
+/**
+ * Textarea fields with label positioning.
+ */
+export const LabelPositioning: Story = {
+  render: () => (
+    <div className="flex flex-col w-full gap-4">
+      <Textarea
+        formComposition={{
+          label: "Vertical label (default)",
+          description: "Label appears above the textarea",
+        }}
+        placeholder="Vertical label position"
+      />
+
+      <Textarea
+        formComposition={{
+          label: "Horizontal label",
+          labelPosition: "horizontal",
+          description: "Label appears to the left of the textarea",
+        }}
+        placeholder="Horizontal label position"
+      />
+
+      <Textarea
+        formComposition={{
+          label: "Horizontal with custom layout",
+          labelPosition: "horizontal",
+          layout: {
+            leftColClass: "md:col-span-3",
+            rightColClass: "md:col-span-9",
+          },
+          description: "Custom column span",
+        }}
+        placeholder="Custom layout"
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: "Textarea fields with different label positioning options.",
+      },
+    },
+  },
+};
+
+/**
+ * A comprehensive showcase of all textarea variants and features.
+ */
+export const CompleteShowcase: Story = {
+  render: () => (
+    <div className="grid w-full gap-6">
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Basic Textareas</h3>
+        <div className="space-y-2">
+          <Textarea placeholder="Basic textarea" />
+          <Textarea
+            placeholder="With default value"
+            defaultValue="This is some default content that appears in the textarea when it's first loaded."
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-medium">With Labels</h3>
+        <div className="space-y-2">
+          <Textarea
+            formComposition={{ label: "Comments" }}
+            placeholder="Enter your comments"
+          />
+          <Textarea
+            formComposition={{ label: "Feedback", requiredSymbol: true }}
+            placeholder="Enter your feedback"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-medium">With Description Text</h3>
+        <div className="space-y-2">
+          <Textarea
+            formComposition={{
+              label: "Bio",
+              description: "Tell us about yourself in 200 characters or less",
+              requiredSymbol: true,
+            }}
+            placeholder="Write a short bio"
+            maxLength={200}
+          />
+          <Textarea
+            formComposition={{
+              label: "Review",
+              description: "Share your experience with our product",
+              customError: "Please be more specific in your review",
+            }}
+            placeholder="Write your review here"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-medium">With Icons</h3>
+        <div className="space-y-2">
+          <Textarea
+            formComposition={{
+              label: "Comment",
+              iconLeft: <MessageSquare className="size-4" />,
+            }}
+            placeholder="Enter your comment"
+          />
+          <Textarea
+            formComposition={{
+              label: "Notes",
+              iconRight: <Pencil className="size-4" />,
+            }}
+            placeholder="Add your notes"
+          />
+          <Textarea
+            formComposition={{
+              label: "Documentation",
+              iconLeft: <FileText className="size-4" />,
+              iconRight: <Check className="size-4" />,
+            }}
+            placeholder="Add documentation"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-medium">States</h3>
+        <div className="space-y-2">
+          <Textarea
+            formComposition={{
+              label: "Disabled textarea",
+            }}
+            placeholder="Cannot be edited"
+            disabled
+          />
+          <Textarea
+            formComposition={{
+              label: "Read-only textarea",
+            }}
+            defaultValue="This content cannot be changed because the textarea is read-only."
+            readOnly
+          />
+          <Textarea
+            formComposition={{
+              label: "With error",
+              customError: "This field is required",
+            }}
+            placeholder="Required field"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Auto-resize Behavior</h3>
+        <div className="space-y-2">
+          <Textarea
+            formComposition={{
+              label: "Default auto-resize",
+              description: "Grows up to 300px by default",
+            }}
+            placeholder="Type multiple lines to see auto-resize in action..."
+          />
+          <Textarea
+            formComposition={{
+              label: "Limited height",
+              description: "Maximum height of 100px",
+            }}
+            maxHeight={100}
+            placeholder="This textarea has a height limit of 100px"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Status Indicators</h3>
+        <div className="space-y-2">
+          <Textarea
+            formComposition={{
+              label: "Success state",
+              iconLeft: <Check className="text-green-500 size-4" />,
+              description: "Input value is valid",
+            }}
+            defaultValue="This is a valid comment that meets all our requirements."
+          />
+          <Textarea
+            formComposition={{
+              label: "Error state",
+              iconLeft: <AlertCircle className="text-red-500 size-4" />,
+              customError: "Comment is too short",
+            }}
+            defaultValue="Too short"
+          />
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A comprehensive showcase displaying all textarea variants and features for reference.",
+      },
+    },
+  },
+};
+
+/**
+ * Fully interactive example with all available props.
+ */
+export const Interactive: Story = {
   args: {
+    placeholder: "Interactive textarea",
+    disabled: false,
+    readOnly: false,
+    maxHeight: 300,
+    minHeight: 54,
+    maxLength: 200,
     formComposition: {
+      label: "Interactive Textarea",
+      description: "This is a customizable textarea field",
+      iconLeft: <MessageSquare className="size-4" />,
+      variant: "default",
+      size: "default",
       labelPosition: "vertical",
-      label: "Email",
-      prefix: "@",
-      suffix: ".com",
-      iconLeft: <Smile />,
-      iconRight: <Smile />,
-      prefixNotFocusInput: {
-        order: 0,
-        element: <span>PrefixNF</span>,
-      },
-      suffixNotFocusInput: {
-        order: 6,
-        element: <span>SuffixNF</span>,
-      },
-      prefixOutside: <Button variant={"secondary"}>Button</Button>,
     },
-    placeholder: "Enter your email",
+    defaultValue: "This is some sample text you can edit.",
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A fully interactive textarea that can be customized using the Controls panel.",
+      },
+    },
   },
 };

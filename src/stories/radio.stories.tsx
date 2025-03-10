@@ -22,7 +22,7 @@ import { z } from "zod";
  * Use radio buttons when the user needs to see all available options and select exactly one.
  */
 const meta: Meta<typeof RadioGroup> = {
-  title: "Base/Radio",
+  title: "Forms/Radio",
   component: RadioGroup,
   tags: ["autodocs"],
   parameters: {

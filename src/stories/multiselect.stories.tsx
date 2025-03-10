@@ -3,7 +3,7 @@ import { MultiSelect } from "@/components/ui/select/multiselect";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "Base/MultiSelect",
+  title: "Forms/MultiSelect",
   component: MultiSelect,
   parameters: {},
 } satisfies Meta<typeof MultiSelect>;

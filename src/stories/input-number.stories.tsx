@@ -24,7 +24,7 @@ import { z } from "zod";
  * Use when you need validated and formatted number entry.
  */
 const meta = {
-  title: "Base/Input Number",
+  title: "Forms/Input Number",
   component: InputNumber,
   parameters: {
     layout: "centered",

@@ -95,20 +95,23 @@ function FileUpload({
   });
 
   const previewUrls = useMemo(() => {
-    return internalFiles.reduce((acc, file) => {
-      let previewUrl = null;
-      if (file.file) {
-        if (file.file.type.startsWith("image/")) {
-          if (file.file.size > 0) {
-            previewUrl = URL.createObjectURL(file.file);
-          } else {
-            previewUrl = file.file.name;
+    return internalFiles.reduce(
+      (acc, file) => {
+        let previewUrl = null;
+        if (file.file) {
+          if (file.file.type.startsWith("image/")) {
+            if (file.file.size > 0) {
+              previewUrl = URL.createObjectURL(file.file);
+            } else {
+              previewUrl = file.file.name;
+            }
           }
         }
-      }
-      acc[file.id] = previewUrl;
-      return acc;
-    }, {} as Record<string, string | null>);
+        acc[file.id] = previewUrl;
+        return acc;
+      },
+      {} as Record<string, string | null>
+    );
   }, [internalFiles]);
 
   useEffect(() => {
@@ -295,7 +298,6 @@ function FileUpload({
       className="p-0 border-0 flex-col !ring-0 !shadow-none"
       variant="ghost"
       isMinHeight
-      description={null}
     >
       <div
         onDragOver={handleDrag}
@@ -347,10 +349,10 @@ function FileUpload({
                         {fileMeta.file.type.startsWith("image/")
                           ? fileIcon.image
                           : fileMeta.file.type.startsWith("audio/")
-                          ? fileIcon.audio
-                          : fileMeta.file.type.startsWith("video/")
-                          ? fileIcon.video
-                          : fileIcon.other}
+                            ? fileIcon.audio
+                            : fileMeta.file.type.startsWith("video/")
+                              ? fileIcon.video
+                              : fileIcon.other}
                         <div className="w-full text-xs text-muted-foreground space-y-[2px] text-center">
                           <div className="truncate">{fileMeta.file.name}</div>
                           <div className="">
@@ -428,10 +430,10 @@ function FileUpload({
                       {fileMeta.file.type.startsWith("image/")
                         ? fileIcon.image
                         : fileMeta.file.type.startsWith("audio/")
-                        ? fileIcon.audio
-                        : fileMeta.file.type.startsWith("video/")
-                        ? fileIcon.video
-                        : fileIcon.other}
+                          ? fileIcon.audio
+                          : fileMeta.file.type.startsWith("video/")
+                            ? fileIcon.video
+                            : fileIcon.other}
                     </div>
                   )}
                   <div className="grid flex-1 gap-1">

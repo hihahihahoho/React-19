@@ -16,7 +16,7 @@ import { z } from "zod";
  * Use switches when users need to toggle a setting on or off.
  */
 const meta = {
-  title: "Base/Switch",
+  title: "Forms/Switch",
   component: Switch,
   parameters: {
     layout: "centered",

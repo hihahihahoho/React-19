@@ -168,7 +168,7 @@ function FormDemo() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 max-w-[760px] mx-auto"
+          className="space-y-6 w-full max-w-[760px] mx-auto"
         >
           <InputForm
             control={form.control}

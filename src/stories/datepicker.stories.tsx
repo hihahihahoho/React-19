@@ -2,7 +2,7 @@ import { DatePicker } from "@/components/ui/datepicker/datepicker";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "Base/DatePicker/DatePicker",
+  title: "Forms/DatePicker",
   component: DatePicker,
   parameters: {},
 } satisfies Meta<typeof DatePicker>;

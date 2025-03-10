@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { Button } from "@/components/ui/button";
@@ -42,10 +43,6 @@ const lightboxItems: LightBoxImageType[] = [
   {
     src: "https://swiperjs.com/demos/images/nature-3.jpg",
     alt: "Image 3",
-  },
-  {
-    src: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Cambriae_Typus_NLW.jpg",
-    alt: "Image 4",
   },
   {
     src: "https://swiperjs.com/demos/images/nature-5.jpg",

@@ -1,0 +1,68 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+import { TestZoom } from "@/components/ui/test-zoom";
+import type { Meta, StoryObj } from "@storybook/react";
+import useEmblaCarousel from "embla-carousel-react";
+import { motion } from "motion/react";
+import React, { useCallback, useEffect, useState } from "react";
+
+const meta = {
+  title: "Base/TestZoom",
+  component: TestZoom,
+  parameters: {},
+} satisfies Meta<typeof TestZoom>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+/** Default select with placeholder */
+export const Default: Story = {};
+
+export const Custom: Story = {
+  args: {},
+  render: () => {
+    const [isDragableY, setIsDragableY] = useState(true);
+    const [isDragable, setIsDragable] = useState(true);
+
+    const [emblaRef, emblaApi] = useEmblaCarousel({
+      watchDrag: isDragable,
+      duration: 0,
+    });
+
+    const handleZoomChange = useCallback((isZoomed: boolean) => {
+      setIsDragable(!isZoomed);
+      setIsDragableY(!isZoomed);
+    }, []);
+
+    useEffect(() => {
+      if (emblaApi && isDragable) {
+        emblaApi.reInit();
+      }
+    }, [emblaApi, isDragable]);
+
+    return (
+      <motion.div
+        className="overflow-hidden embla__viewport"
+        ref={emblaRef}
+        dragDirectionLock
+        drag={isDragableY ? "y" : false}
+        dragConstraints={{
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+        }}
+      >
+        <div className="embla__container">
+          <div className="embla__slide">
+            <TestZoom onZoomChange={handleZoomChange} />
+          </div>
+          <div className="embla__slide">
+            <TestZoom onZoomChange={handleZoomChange} />
+          </div>
+          <div className="embla__slide">
+            <TestZoom onZoomChange={handleZoomChange} />
+          </div>
+        </div>
+      </motion.div>
+    );
+  },
+};

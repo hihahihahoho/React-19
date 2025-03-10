@@ -17,7 +17,7 @@ import { z } from "zod";
  * Use checkboxes when users need to make multiple selections or toggle options on/off.
  */
 const meta = {
-  title: "Base/Checkbox",
+  title: "Forms/Checkbox",
   component: Checkbox,
   parameters: {
     layout: "centered",

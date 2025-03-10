@@ -25,7 +25,7 @@ import { z } from "zod";
  * Use inputs to collect user information or data entry.
  */
 const meta = {
-  title: "BASE/Input",
+  title: "Forms/Input",
   component: Input,
   parameters: {
     layout: "centered",

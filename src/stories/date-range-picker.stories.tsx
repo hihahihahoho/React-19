@@ -2,7 +2,7 @@ import { DateRangePicker } from "@/components/ui/date-range-picker/date-range-pi
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  title: "Base/DatePicker/DateRangePicker",
+  title: "Forms/DateRangePicker",
   component: DateRangePicker,
   parameters: {},
 } satisfies Meta<typeof DateRangePicker>;
