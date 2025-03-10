@@ -11,13 +11,14 @@ import { Input } from "./input";
 
 export interface InputAutoCompleteProps
   extends Omit<React.ComponentProps<typeof Input>, "onValueChange"> {
-  options: SelectItems[] | SelectGroup[];
+  options?: SelectItems[] | SelectGroup[];
   popoverContentProps?: PopoverContentProps;
   onValueChange?: (value: string) => void;
   value?: string;
   initialState?: React.ReactNode;
   loading?: boolean;
   minCharToSearch?: number;
+  mode?: "default" | "select";
 }
 
 function InputAutoComplete({
@@ -31,6 +32,7 @@ function InputAutoComplete({
   loading,
   initialState,
   minCharToSearch = 1,
+  mode = "default",
   ref,
   ...props
 }: InputAutoCompleteProps) {
@@ -50,9 +52,13 @@ function InputAutoComplete({
   const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.target.value);
+      if (mode === "default") {
+        setInternalValue(e.target.value);
+        onValueChange?.(e.target.value);
+      }
       onChange?.(e);
     },
-    [onChange]
+    [onChange, onValueChange, mode]
   );
   const handleOnSelect = React.useCallback(
     (selected: SelectItems) => {
@@ -70,12 +76,22 @@ function InputAutoComplete({
       setOpen(open);
       if (!open) {
         internalRef.current?.blur();
-        setInputValue(internalValue);
+        if (mode === "select") {
+          setInputValue(internalValue);
+        }
       }
     },
-    [internalValue]
+    [internalValue, mode]
   );
 
+  React.useEffect(() => {
+    if (value !== undefined) {
+      setInternalValue(value);
+      if (!open || mode === "default") {
+        setInputValue(value);
+      }
+    }
+  }, [value, open, mode]);
   const currentValue = value !== undefined ? value : internalValue;
 
   return (
@@ -85,7 +101,7 @@ function InputAutoComplete({
       />
       <Command className="overflow-visible" defaultValue={currentValue}>
         <Input
-          value={inputValue}
+          value={mode === "default" ? currentValue : inputValue}
           onFocus={handleFocus}
           onChange={handleChange}
           autoComplete="off"
@@ -97,6 +113,7 @@ function InputAutoComplete({
             onClear: () => {
               setInternalValue("");
               setInputValue("");
+              onValueChange?.("");
               formComposition?.onClear?.();
             },
           }}

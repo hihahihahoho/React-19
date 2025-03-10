@@ -189,7 +189,7 @@ function SelectCommand({
                                   ) : (
                                     option.icon
                                   ))}
-                                {option.label}
+                                {option.label || option.value}
                               </div>
                               {isMultiSelect || allMultiSelect ? (
                                 <Checkbox

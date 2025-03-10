@@ -4,7 +4,7 @@ import { CommandItem } from "../command";
 
 export type SelectItems = React.ComponentProps<typeof CommandItem> & {
   value: string | number;
-  label: React.ReactNode;
+  label?: React.ReactNode;
   icon?: React.ReactNode;
   badgeProps?: BadgeProps;
 };
