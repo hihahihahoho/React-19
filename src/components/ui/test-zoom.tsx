@@ -10,6 +10,8 @@ function TestZoom() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const lastDragPos = useRef({ x: 0, y: 0 });
+  const lastDragTime = useRef(0); // Track timestamp of last drag event
+  const velocityTracker = useRef({ x: 0, y: 0 });
 
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -57,12 +59,6 @@ function TestZoom() {
       cardRect.height < containerRect.height
         ? containerRect.height / 2 - cardRect.height / 2
         : cardRect.height / 2 - containerRect.height / 2;
-    console.log({
-      left: leftBound,
-      right: rightBound,
-      top: topBound,
-      bottom: bottomBound,
-    });
 
     return {
       left: leftBound,
@@ -168,6 +164,38 @@ function TestZoom() {
     [x, y, scale, getBounds]
   );
 
+  const applyMomentum = useCallback(() => {
+    const vx = velocityTracker.current.x * 450; // Convert to pixels/second
+    const vy = velocityTracker.current.y * 450;
+
+    // Only apply momentum if velocity is significant
+    if (Math.abs(vx) > 50 || Math.abs(vy) > 50) {
+      // Calculate target position based on velocity
+      const newX = x.get() + vx * 0.3; // Adjust multiplier for momentum strength
+      const newY = y.get() + vy * 0.3;
+
+      // Remove this line as it's redundant
+      // updatePosition(newX, newY, true);
+
+      // iOS-like behavior with proper animation API
+      animate(x, newX, {
+        type: "tween",
+        velocity: vx / 450, // Convert back to appropriate velocity unit
+        onUpdate: (latest) => {
+          updatePosition(latest, y.get(), false);
+        },
+      });
+
+      animate(y, newY, {
+        type: "tween",
+        velocity: vy / 450, // Convert back to appropriate velocity unit
+        onUpdate: (latest) => {
+          updatePosition(x.get(), latest, false);
+        },
+      });
+    }
+  }, [x, y, updatePosition]);
+
   const [touchStartDistance, setTouchStartDistance] = useState<number | null>(
     null
   );
@@ -198,6 +226,8 @@ function TestZoom() {
           x: e.touches[0].clientX,
           y: e.touches[0].clientY,
         };
+        lastDragTime.current = performance.now();
+        velocityTracker.current = { x: 0, y: 0 };
       } else if (e.touches.length === 2) {
         // Start of a pinch gesture
         const distance = getDistance(e.touches[0], e.touches[1]);
@@ -214,13 +244,24 @@ function TestZoom() {
       // Only handle pinch gestures (2 fingers)
       if (e.touches.length === 1 && isDragging && scale.get() > 1) {
         // Handle drag
+        const now = performance.now();
+        const deltaTime = now - lastDragTime.current;
         const deltaX = e.touches[0].clientX - lastDragPos.current.x;
         const deltaY = e.touches[0].clientY - lastDragPos.current.y;
+
+        // Update velocity (pixels per millisecond)
+        if (deltaTime > 0) {
+          velocityTracker.current = {
+            x: deltaX / deltaTime,
+            y: deltaY / deltaTime,
+          };
+        }
 
         lastDragPos.current = {
           x: e.touches[0].clientX,
           y: e.touches[0].clientY,
         };
+        lastDragTime.current = now;
 
         // Update position with the delta
         updatePosition(x.get() + deltaX, y.get() + deltaY, false);
@@ -267,11 +308,15 @@ function TestZoom() {
   const handleTouchEnd = useCallback(() => {
     if (touchStartDistance !== null) {
       setTouchStartDistance(null);
-      // Ensure we have proper bounds after pinch
-      updatePosition(x.get(), y.get(), true);
     }
+
+    // Apply momentum if we were dragging
+    if (isDragging && scale.get() > 1) {
+      applyMomentum();
+    }
+
     setIsDragging(false);
-  }, [touchStartDistance, x, y, updatePosition]);
+  }, [touchStartDistance, scale, applyMomentum, isDragging]);
 
   const handleWheel = useCallback(
     (e: WheelEvent) => {
@@ -315,6 +360,8 @@ function TestZoom() {
     setClickStartPos({ x: e.clientX, y: e.clientY });
     setIsDragging(true);
     lastDragPos.current = { x: e.clientX, y: e.clientY };
+    lastDragTime.current = performance.now();
+    velocityTracker.current = { x: 0, y: 0 };
 
     if (ref.current) {
       ref.current.style.cursor = "grabbing";
@@ -324,6 +371,11 @@ function TestZoom() {
     (e: MouseEvent) => {
       if (ref.current) {
         ref.current.style.cursor = "grab";
+      }
+
+      // Apply momentum if we were dragging
+      if (isDragging && scale.get() > 1) {
+        applyMomentum();
       }
 
       // Check if this was a click or a drag
@@ -367,17 +419,37 @@ function TestZoom() {
       // End drag regardless of whether it was a click or drag
       setIsDragging(false);
     },
-    [clickStartPos, scale, x, y, updatePosition, clickThreshold]
+    [
+      clickStartPos,
+      scale,
+      x,
+      y,
+      updatePosition,
+      clickThreshold,
+      applyMomentum,
+      isDragging,
+    ]
   );
 
   // Add new handler for mouse move during drag
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
       if (isDragging && scale.get() > 1) {
+        const now = performance.now();
+        const deltaTime = now - lastDragTime.current;
         const deltaX = e.clientX - lastDragPos.current.x;
         const deltaY = e.clientY - lastDragPos.current.y;
 
+        // Update velocity (pixels per millisecond)
+        if (deltaTime > 0) {
+          velocityTracker.current = {
+            x: deltaX / deltaTime,
+            y: deltaY / deltaTime,
+          };
+        }
+
         lastDragPos.current = { x: e.clientX, y: e.clientY };
+        lastDragTime.current = now;
 
         // Update position with the delta
         updatePosition(x.get() + deltaX, y.get() + deltaY, false);
@@ -390,7 +462,7 @@ function TestZoom() {
     (e: MouseEvent) => {
       const currentScale = scale.get();
       // If zoomed in, reset to 1x, otherwise zoom to 2x
-      const newScale = currentScale > 1.5 ? 1 : Math.min(currentScale * 2, 3);
+      const newScale = currentScale > 1.5 ? 1 : Math.min(currentScale * 3, 3);
 
       if (newScale === currentScale) return; // No change needed
 
