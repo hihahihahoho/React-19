@@ -36,38 +36,6 @@ function TestZoom() {
     };
   }, []);
 
-  const getBounds = useCallback(() => {
-    if (!ref.current || !containerRef.current) return {};
-
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const cardRect = ref.current.getBoundingClientRect();
-
-    const leftBound =
-      cardRect.width < containerRect.width
-        ? -(containerRect.width / 2 - cardRect.width / 2)
-        : -(cardRect.width / 2 - containerRect.width / 2);
-    const rightBound =
-      cardRect.width < containerRect.width
-        ? containerRect.width / 2 - cardRect.width / 2
-        : cardRect.width / 2 - containerRect.width / 2;
-
-    const topBound =
-      cardRect.height < containerRect.height
-        ? -(containerRect.height / 2 - cardRect.height / 2)
-        : -(cardRect.height / 2 - containerRect.height / 2);
-    const bottomBound =
-      cardRect.height < containerRect.height
-        ? containerRect.height / 2 - cardRect.height / 2
-        : cardRect.height / 2 - containerRect.height / 2;
-
-    return {
-      left: leftBound,
-      right: rightBound,
-      top: topBound,
-      bottom: bottomBound,
-    };
-  }, []);
-
   const updatePosition = useCallback(
     (
       newX: number,
@@ -148,8 +116,6 @@ function TestZoom() {
         }
       }
 
-      getBounds();
-
       return {
         bounds: {
           left: -maxOffsetX,
@@ -161,7 +127,7 @@ function TestZoom() {
         y: finalY,
       };
     },
-    [x, y, scale, getBounds]
+    [x, y, scale]
   );
 
   const applyMomentum = useCallback(() => {
