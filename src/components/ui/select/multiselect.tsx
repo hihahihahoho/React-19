@@ -8,7 +8,7 @@ import {
   FormCompositionProps,
   FormControlButton,
 } from "../form/form";
-import { flatItems, SelectCommand } from "./select-command";
+import { flatItems, SelectCommand, SelectCommandProps } from "./select-command";
 import { SelectGroup, SelectItems } from "./select-interface";
 import { SelectPopover } from "./select-popover";
 
@@ -16,7 +16,7 @@ export interface MultiSelectProps
   extends Omit<React.ComponentProps<"button">, "value"> {
   placeholder?: string | React.ReactNode;
   placeholderColor?: string;
-  options: SelectItems[] | SelectGroup[];
+  options?: SelectItems[] | SelectGroup[];
   value?: string[] | null;
   defaultValue?: string[];
   className?: string;
@@ -29,6 +29,8 @@ export interface MultiSelectProps
   onValueChange?: (value: string[]) => void;
   readonly?: boolean;
   showClear?: boolean;
+  selectCommandProps?: SelectCommandProps;
+  customDisplayValue?: SelectItems[];
 }
 
 function MultiSelect({
@@ -45,6 +47,8 @@ function MultiSelect({
   placeholder = "Select",
   placeholderColor = "text-muted-foreground",
   maxShownBadges,
+  selectCommandProps,
+  customDisplayValue,
   ...props
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
@@ -79,6 +83,9 @@ function MultiSelect({
     },
     [currentValue, handleValueChange]
   );
+  const currentItems =
+    customDisplayValue ||
+    flattenItems.filter((item) => currentValue.includes(item.value));
 
   return (
     <SelectPopover
@@ -108,33 +115,30 @@ function MultiSelect({
           >
             {currentValue.length > 0 ? (
               <OverflowBadgeGroup
-                items={currentValue.map((optionValue) => {
-                  const option = flattenItems.find(
-                    (o) => o.value === optionValue
-                  );
+                items={currentItems.map((optionValue) => {
                   return {
-                    key: optionValue,
+                    key: optionValue.value,
                     content: (
                       <div className="flex items-center gap-1 max-w-[90px] overflow-hidden text-ellipsis">
-                        {option?.icon &&
-                          (typeof option.icon === "string" ? (
+                        {optionValue?.icon &&
+                          (typeof optionValue.icon === "string" ? (
                             <Avatar size={"xs"}>
-                              <AvatarImage src={option.icon} />
+                              <AvatarImage src={optionValue.icon} />
                               <AvatarFallback>
-                                {(optionValue || "").substring(0, 2)}
+                                {(optionValue.value || "").substring(0, 2)}
                               </AvatarFallback>
                             </Avatar>
                           ) : (
-                            option.icon
+                            optionValue.icon
                           ))}
                         <span className="overflow-hidden text-ellipsis">
-                          {option?.label || optionValue}
+                          {optionValue?.label || optionValue.value}
                         </span>
                       </div>
                     ),
-                    removeButton: !option?.disabled,
-                    onRemove: () => handleRemove(optionValue),
-                    badgeProps: option?.badgeProps,
+                    removeButton: !optionValue?.disabled,
+                    onRemove: () => handleRemove(optionValue.value),
+                    badgeProps: optionValue?.badgeProps,
                   };
                 })}
                 maxShownItems={maxShownBadges}
@@ -163,6 +167,7 @@ function MultiSelect({
       label={formComposition?.label || placeholder}
     >
       <SelectCommand
+        {...selectCommandProps}
         items={options}
         selected={currentValue}
         setSelected={handleValueChange}

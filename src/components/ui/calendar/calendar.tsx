@@ -39,15 +39,6 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       captionLayout="dropdown"
       className={cn("p-3", className)}
-      // formatters={{
-      //   formatCaption: (date, options) => {
-      //     const formattedMonth = format(date, "M", options);
-      //     const formattedYear = format(date, "yyyy", options);
-      //     return "Tháng " + formattedMonth + " " + formattedYear;
-      //   },
-      //   formatWeekdayName: (weekNumber) =>
-      //     format(weekNumber, "eeeee", { locale: vi }),
-      // }}
       classNames={{
         months: "flex flex-row justify-center gap-5",
         month: "gap-4 flex flex-col items-center", // changed from month

@@ -400,7 +400,7 @@ export const WithFormValidation: Story = {
       const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-          feedback: "",
+          feedback: "Hello, this is a test feedback message.",
           description: "",
           summary: "",
         },

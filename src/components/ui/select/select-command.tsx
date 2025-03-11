@@ -14,6 +14,7 @@ import {
   CommandSeparator,
 } from "../command";
 import { Checkbox } from "../selection-controls/checkbox";
+import { Separator } from "../separator";
 import { SelectGroup, SelectItems } from "./select-interface";
 
 function isSelectGroup(item: SelectItems | SelectGroup): item is SelectGroup {
@@ -42,7 +43,8 @@ export function flatItems(options: SelectItems[] | SelectGroup[] = []) {
   }
   return modifyItems(options).flatMap((item) => item.options);
 }
-interface SelectCommandProps {
+export interface SelectCommandProps
+  extends Omit<React.ComponentProps<typeof Command>, "onSelect"> {
   onSelect?: (selected: SelectItems) => void;
   selected?: string[];
   setSelected?: (selected: string[]) => void;
@@ -50,9 +52,11 @@ interface SelectCommandProps {
   items?: SelectItems[] | SelectGroup[];
   isCheckAll?: boolean;
   allMultiSelect?: boolean;
-  hideSearch?: boolean;
+  showSearch?: boolean;
   commandWrapper?: boolean;
   loading?: boolean;
+  minItemsToShowSearch?: number; // if have more than this number of items, show search, this should override showSearch
+  commandInputProps?: React.ComponentProps<typeof CommandInput>;
 }
 
 function SelectCommand({
@@ -63,9 +67,12 @@ function SelectCommand({
   items,
   isCheckAll,
   allMultiSelect,
-  hideSearch = false,
+  showSearch = true,
   commandWrapper = true,
   loading,
+  minItemsToShowSearch = 5,
+  commandInputProps,
+  ...props
 }: SelectCommandProps) {
   const flattenItems = flatItems(items);
   const modifyItemsNew = modifyItems(items);
@@ -88,8 +95,6 @@ function SelectCommand({
     },
     [isControlled, setSelectedProp]
   );
-
-  const showSearch = flattenItems.length > 5;
   const uniqueId = React.useId();
 
   const toggleOption = (item: SelectItems) => {
@@ -119,15 +124,19 @@ function SelectCommand({
     }
   };
 
-  const compProps = commandWrapper ? { defaultValue: selected.at(-1) } : {};
+  const compProps = commandWrapper
+    ? { defaultValue: selected.at(-1), ...props }
+    : {};
 
   return (
     <Comp {...compProps}>
-      {showSearch && !hideSearch && <CommandInput placeholder="Tìm kiếm..." />}
+      {flattenItems.length > minItemsToShowSearch && showSearch && (
+        <CommandInput placeholder="Tìm kiếm..." {...commandInputProps} />
+      )}
 
       {isCheckAll && (
-        <CommandGroup>
-          <div className="flex items-center gap-2 px-2 pt-1 pb-2">
+        <>
+          <div className="flex items-center gap-2 p-2">
             <div className="flex-1">
               <Badge
                 size={"md"}
@@ -143,8 +152,8 @@ function SelectCommand({
               Đã chọn {selected.length} / {flattenItems.length}
             </div>
           </div>
-          <CommandSeparator />
-        </CommandGroup>
+          <Separator />
+        </>
       )}
 
       <CommandList tabIndex={0}>

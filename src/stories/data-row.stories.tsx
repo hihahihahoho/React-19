@@ -155,9 +155,6 @@ export const WithInteractiveElements: Story = {
         <DataRowLabel>Privacy Settings</DataRowLabel>
         <DataRowValue className="flex items-center justify-between">
           <span>Private Profile</span>
-          <button className="px-2 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200">
-            Change
-          </button>
         </DataRowValue>
       </DataRow>
     </DataRowWrapper>

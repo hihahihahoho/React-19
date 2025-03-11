@@ -8,7 +8,7 @@ import {
   FormCompositionProps,
   FormControlButton,
 } from "../form/form";
-import { flatItems, SelectCommand } from "./select-command";
+import { flatItems, SelectCommand, SelectCommandProps } from "./select-command";
 import { SelectGroup, SelectItems } from "./select-interface";
 import { SelectPopover } from "./select-popover";
 
@@ -16,7 +16,7 @@ export type OnValueChangeSelect = string | undefined;
 
 export interface SelectProps extends React.ComponentProps<"button"> {
   placeholder?: string | React.ReactNode;
-  options: SelectItems[] | SelectGroup[];
+  options?: SelectItems[] | SelectGroup[];
   value?: OnValueChangeSelect;
   defaultValue?: OnValueChangeSelect;
   disabled?: boolean;
@@ -25,6 +25,8 @@ export interface SelectProps extends React.ComponentProps<"button"> {
   onFocus?: React.FocusEventHandler<HTMLButtonElement>;
   onBlur?: React.FocusEventHandler<HTMLButtonElement>;
   readonly?: boolean;
+  selectCommandProps?: SelectCommandProps;
+  customDisplayValue?: SelectItems;
 }
 
 function Select({
@@ -38,6 +40,8 @@ function Select({
   onFocus,
   onBlur,
   readonly,
+  selectCommandProps,
+  customDisplayValue,
   ...props
 }: SelectProps) {
   const [open, setOpen] = useState(false);
@@ -62,9 +66,9 @@ function Select({
 
   const currentValue = value !== undefined ? value : internalValue;
   const hasValue = Boolean(currentValue);
-  const selectedOption = flattenItems.find(
-    (item) => item.value === currentValue
-  );
+  const selectedOption =
+    customDisplayValue ||
+    flattenItems.find((item) => item.value === currentValue);
 
   return (
     <SelectPopover
@@ -100,7 +104,7 @@ function Select({
           >
             <div className={cn("flex items-center h-full flex-1")}>
               <div className="line-clamp-1">
-                {selectedOption?.label ? (
+                {selectedOption?.label || value || selectedOption?.value ? (
                   <div className="flex items-center gap-2">
                     {selectedOption?.icon &&
                       (typeof selectedOption.icon === "string" ? (
@@ -114,7 +118,7 @@ function Select({
                         selectedOption.icon
                       ))}
                     <span className="line-clamp-1">
-                      {selectedOption?.label || selectedOption.value}
+                      {selectedOption?.label || value || selectedOption?.value}
                     </span>
                   </div>
                 ) : (
@@ -136,6 +140,7 @@ function Select({
       label={formComposition?.label || placeholder || "Chọn"}
     >
       <SelectCommand
+        {...selectCommandProps}
         items={options}
         selected={[currentValue || ""]}
         setSelected={(values) => handleValueChange(values[0])}

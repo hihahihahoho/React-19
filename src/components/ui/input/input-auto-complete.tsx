@@ -62,7 +62,6 @@ function InputAutoComplete({
   );
   const handleOnSelect = React.useCallback(
     (selected: SelectItems) => {
-      console.log(selected);
       setInternalValue(selected.value);
       setInputValue(selected.value);
       onValueChange?.(selected.value);
@@ -144,7 +143,7 @@ function InputAutoComplete({
             )
           ) : (
             <SelectCommand
-              hideSearch
+              showSearch={false}
               selected={[(currentValue as string) || ""]}
               items={options}
               onSelect={handleOnSelect}

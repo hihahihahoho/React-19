@@ -82,7 +82,7 @@ const FormSchema = z.object({
     .gt(100000),
   textarea: zodRequiredString("Please enter a description.").max(100),
   select: zodRequiredString("Please select an option."),
-  auto_complete: zodRequiredString("Please select an option."),
+  auto_complete: zodRequiredString("Please type to search."),
   multi_select: z
     .array(z.string())
     .min(2, { message: "Select at least 2 options." }),

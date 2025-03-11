@@ -10,7 +10,7 @@ const avatarVariants = cva(
   {
     variants: {
       size: {
-        xs: "size-6 text-xs",
+        xs: "size-5 text-xs",
         default: "size-10",
         sm: "size-9",
         lg: "size-11",
@@ -44,7 +44,7 @@ function AvatarImage({
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
-      className={cn("aspect-square h-full w-full", className)}
+      className={cn("aspect-square h-full w-full object-cover", className)}
       {...props}
     />
   );

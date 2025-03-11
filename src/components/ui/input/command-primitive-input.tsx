@@ -42,6 +42,11 @@ function CommandPrimitiveInput({
     onValueChange?.(value);
   };
 
+  const handleClear = () => {
+    setInputValue("");
+    onValueChange?.("");
+  };
+
   return (
     <FormComposition
       data-slot="command-input"
@@ -50,6 +55,7 @@ function CommandPrimitiveInput({
       disabled={props.disabled}
       isFocused={isFocused}
       iconLeft={<Search className="opacity-50" />}
+      onClear={handleClear}
       variant={"ghost"}
       {...formComposition}
       showErrorMsg={false}

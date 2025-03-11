@@ -78,7 +78,7 @@ FileUpload component allows users to upload files with drag-and-drop functionali
   },
   decorators: [
     (Story) => (
-      <div className="w-[600px] max-w-full mx-auto">
+      <div className="w-[600px] max-w-[80vw] mx-auto">
         <Story />
       </div>
     ),
