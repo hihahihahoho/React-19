@@ -149,7 +149,7 @@ function SelectCommand({
               </Badge>
             </div>
             <div className="text-sm text-muted-foreground">
-              Đã chọn {selected.length} / {flattenItems.length}
+              {selected.length} / {flattenItems.length}
             </div>
           </div>
           <Separator />

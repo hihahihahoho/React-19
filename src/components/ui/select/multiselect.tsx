@@ -8,6 +8,7 @@ import {
   FormCompositionProps,
   FormControlButton,
 } from "../form/form";
+import { Separator } from "../separator";
 import { flatItems, SelectCommand, SelectCommandProps } from "./select-command";
 import { SelectGroup, SelectItems } from "./select-interface";
 import { SelectPopover } from "./select-popover";
@@ -26,11 +27,13 @@ export interface MultiSelectProps
   disabled?: boolean;
   formComposition?: FormCompositionProps;
   maxShownBadges?: number;
+  minShownBadges?: number;
   onValueChange?: (value: string[]) => void;
   readonly?: boolean;
   showClear?: boolean;
   selectCommandProps?: SelectCommandProps;
   customDisplayValue?: SelectItems[];
+  variant?: "default" | "button";
 }
 
 function MultiSelect({
@@ -47,8 +50,10 @@ function MultiSelect({
   placeholder = "Select",
   placeholderColor = "text-muted-foreground",
   maxShownBadges,
+  minShownBadges,
   selectCommandProps,
   customDisplayValue,
+  variant = "default",
   ...props
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
@@ -93,15 +98,37 @@ function MultiSelect({
       setOpen={setOpen}
       triggerContent={
         <FormComposition
+          iconRight={
+            variant !== "button" ? <ChevronDown className="opacity-50" /> : null
+          }
           inputClear={true}
           {...formComposition}
+          prefix={
+            variant === "button" ? (
+              <div
+                className={cn(
+                  "flex items-start gap-2",
+                  currentValue.length && "pr-2.5"
+                )}
+              >
+                {formComposition?.prefix}
+                {currentValue.length > 0 && (
+                  <Separator
+                    className="self-stretch h-auto"
+                    orientation="vertical"
+                  />
+                )}
+              </div>
+            ) : (
+              formComposition?.prefix
+            )
+          }
           className={cn("cursor-pointer", formComposition?.className)}
           asChild
           clearWhenNotFocus={true}
           isMinHeight={true}
           hasValue={hasValue}
           onClear={handleClear}
-          iconRight={<ChevronDown className="opacity-50" />}
           disabled={disabled}
           readonly={readonly}
           isFocused={isFocused}
@@ -143,7 +170,8 @@ function MultiSelect({
                   };
                 })}
                 maxShownItems={maxShownBadges}
-                className={cn("-mx-2", className)}
+                minShowItems={minShownBadges}
+                className={cn("-ml-2", className)}
                 badgeMeasureClassName={badgeMeasureClassName}
                 overflowMeasureClassName={overflowMeasureClassName}
                 badgeProps={{
@@ -152,7 +180,7 @@ function MultiSelect({
                   size: "md",
                 }}
               />
-            ) : (
+            ) : variant !== "button" ? (
               <div
                 className={cn(
                   "w-full h-full flex items-center",
@@ -161,7 +189,7 @@ function MultiSelect({
               >
                 {placeholder}
               </div>
-            )}
+            ) : null}
           </FormControlButton>
         </FormComposition>
       }

@@ -13,6 +13,7 @@ export interface OverflowBadgeGroupProps
     badgeProps?: BadgeProps;
   }>;
   maxShownItems?: number;
+  minShowItems?: number;
   badgeMeasureClassName?: string;
   overflowMeasureClassName?: string;
   badgeProps?: BadgeProps;
@@ -21,6 +22,7 @@ export interface OverflowBadgeGroupProps
 function OverflowBadgeGroup({
   items,
   maxShownItems,
+  minShowItems,
   className,
   badgeMeasureClassName = "measured-badge",
   overflowMeasureClassName = "measured-plus",
@@ -30,6 +32,7 @@ function OverflowBadgeGroup({
   const { containerRef, overflowCount, isVisible } = useItemOverflow({
     totalItems: items.length,
     maxShownItems,
+    minShowItems,
     itemClassName: badgeMeasureClassName,
     plusItemClassName: overflowMeasureClassName,
   });

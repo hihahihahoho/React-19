@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 interface UseItemOverflowProps {
   totalItems: number;
   maxShownItems?: number;
+  minShowItems?: number; // Add this new prop
   itemClassName?: string;
   plusItemClassName?: string;
 }
@@ -18,6 +19,7 @@ interface UseItemOverflowReturn {
 export const useItemOverflow = ({
   totalItems,
   maxShownItems = Infinity,
+  minShowItems = 1,
   itemClassName = "measured-item",
   plusItemClassName = "measured-plus",
 }: UseItemOverflowProps): UseItemOverflowReturn => {
@@ -63,14 +65,14 @@ export const useItemOverflow = ({
           testWidth += itemArray[i].getBoundingClientRect().width + itemGap;
         }
         if (testWidth + plusWidth <= containerWidth) {
-          setVisibleCount(count);
+          setVisibleCount(Math.max(count, minShowItems)); // Ensure we show at least minShowItems
           return;
         }
         count--;
       }
-      setVisibleCount(0);
+      setVisibleCount(minShowItems); // Even if no items fit, show minShowItems
     }
-  }, [totalItems, maxShownItems, itemClassName, plusItemClassName]);
+  }, [totalItems, maxShownItems, minShowItems, itemClassName, plusItemClassName]);
 
   useResizeObserver({
     ref: containerRef,
@@ -81,9 +83,9 @@ export const useItemOverflow = ({
     calculateOverflow();
   }, [calculateOverflow]);
 
-  const showCount = Math.min(visibleCount, totalItems);
+  const showCount = Math.min(Math.max(visibleCount, minShowItems), totalItems);
   const overflowCount = totalItems - showCount;
-  const isVisible = (index: number) => index < showCount;
+  const isVisible = (index: number) => index < minShowItems || index < showCount;
 
   return {
     containerRef,
