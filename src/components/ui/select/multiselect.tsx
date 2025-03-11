@@ -131,6 +131,7 @@ function MultiSelect({
                           ) : (
                             optionValue.icon
                           ))}
+
                         <span className="overflow-hidden text-ellipsis">
                           {optionValue?.label || optionValue.value}
                         </span>

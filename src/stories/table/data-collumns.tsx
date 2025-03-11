@@ -58,9 +58,7 @@ export const columns: ColumnDef<SegmentData>[] = [
           <div className="space-y-1">
             <Badge
               variant={
-                tinhKhaDung.startsWith("Đang tính toán")
-                  ? "lightOrange"
-                  : "lightBlue"
+                tinhKhaDung.startsWith("Đang tính toán") ? "blue" : "orange"
               }
             >
               {tinhKhaDung}
@@ -85,12 +83,12 @@ export const columns: ColumnDef<SegmentData>[] = [
           <Badge
             variant={
               trangThai === "Đã tạo"
-                ? "lightBlue"
+                ? "blue"
                 : trangThai === "Hoạt động"
-                ? "lightGreen"
-                : trangThai === "Khóa"
-                ? "lightRed"
-                : "secondary"
+                  ? "green"
+                  : trangThai === "Khóa"
+                    ? "red"
+                    : "secondary"
             }
           >
             {trangThai}

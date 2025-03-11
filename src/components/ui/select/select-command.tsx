@@ -171,6 +171,10 @@ function SelectCommand({
                     <CommandGroup heading={heading}>
                       {options.map((option) => {
                         const isSelected = selected.includes(option.value);
+                        const BadgeComp = option?.badgeProps?.variant
+                          ? Badge
+                          : React.Fragment;
+
                         return (
                           <CommandItem
                             {...option}
@@ -185,20 +189,36 @@ function SelectCommand({
                               handleSetSelected([option.value]);
                             }}
                           >
-                            <div className="flex items-center gap-3 flex-1 -md:text-base [&_svg]:size-4 -md:[&_svg]:size-5 [&_svg]:shrink-0 [&_svg]:text-muted-foreground">
+                            <div className="flex items-center gap-3 flex-1 -md:text-base  [&_svg]:shrink-0">
                               <div className="flex items-center flex-1 gap-2">
-                                {option.icon &&
-                                  (typeof option.icon === "string" ? (
-                                    <Avatar size={"xs"}>
-                                      <AvatarImage src={option.icon} />
-                                      <AvatarFallback>
-                                        {option.value.substring(0, 2)}
-                                      </AvatarFallback>
-                                    </Avatar>
-                                  ) : (
-                                    option.icon
-                                  ))}
-                                {option.label || option.value}
+                                <BadgeComp
+                                  {...(option?.badgeProps?.variant
+                                    ? {
+                                        variant: option.badgeProps.variant,
+                                        size: "sm",
+                                      }
+                                    : {})}
+                                >
+                                  {option.icon &&
+                                    (typeof option.icon === "string" ? (
+                                      <Avatar size={"xs"}>
+                                        <AvatarImage src={option.icon} />
+                                        <AvatarFallback>
+                                          {option.value.substring(0, 2)}
+                                        </AvatarFallback>
+                                      </Avatar>
+                                    ) : (
+                                      <div
+                                        className={cn(
+                                          !option?.badgeProps?.variant &&
+                                            "[&_svg]:text-muted-foreground [&_svg]:size-4 -md:[&_svg]:size-5"
+                                        )}
+                                      >
+                                        {option.icon}
+                                      </div>
+                                    ))}
+                                  {option.label || option.value}
+                                </BadgeComp>
                               </div>
                               {isMultiSelect || allMultiSelect ? (
                                 <Checkbox

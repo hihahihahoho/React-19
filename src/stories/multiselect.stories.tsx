@@ -15,7 +15,17 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-import { Flag, GlobeIcon, Loader2Icon } from "lucide-react";
+import {
+  AlertTriangleIcon,
+  ArrowDownIcon,
+  BanIcon,
+  BriefcaseIcon,
+  CalendarIcon,
+  Flag,
+  GlobeIcon,
+  Loader2Icon,
+  User,
+} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -269,6 +279,140 @@ export const LabelPositioning: Story = {
     docs: {
       description: {
         story: "MultiSelect fields with different label positioning options.",
+      },
+    },
+  },
+};
+
+/**
+ * MultiSelect with colored badges.
+ */
+export const ColoredBadges: Story = {
+  render: () => {
+    // Array of items with different colors assigned
+    const colorOptions: SelectItems[] = [
+      {
+        value: "red",
+        label: "Red",
+        badgeProps: { variant: "red" },
+      },
+      {
+        value: "blue",
+        label: "Blue",
+        badgeProps: { variant: "blue" },
+      },
+      {
+        value: "green",
+        label: "Green",
+        badgeProps: { variant: "green" },
+      },
+      {
+        value: "yellow",
+        label: "Yellow",
+        badgeProps: { variant: "yellow" },
+      },
+      {
+        value: "purple",
+        label: "Purple",
+        badgeProps: { variant: "purple" },
+      },
+      {
+        value: "orange",
+        label: "Orange",
+        badgeProps: { variant: "orange" },
+      },
+      {
+        value: "teal",
+        label: "Teal",
+        badgeProps: { variant: "teal" },
+      },
+      {
+        value: "pink",
+        label: "Pink",
+        badgeProps: { variant: "pink" },
+      },
+      {
+        value: "indigo",
+        label: "Indigo",
+        badgeProps: { variant: "indigo" },
+      },
+      {
+        value: "cyan",
+        label: "Cyan",
+        badgeProps: { variant: "cyan" },
+      },
+    ];
+
+    // Category options with assigned colors and icons
+    const categoryOptions: SelectItems[] = [
+      {
+        value: "work",
+        label: "Work",
+        icon: <BriefcaseIcon className="size-4" />,
+        badgeProps: { variant: "blue" },
+      },
+      {
+        value: "personal",
+        label: "Personal",
+        icon: <User className="size-4" />,
+        badgeProps: { variant: "purple" },
+      },
+      {
+        value: "urgent",
+        label: "Urgent",
+        icon: <AlertTriangleIcon className="size-4" />,
+        badgeProps: { variant: "red" },
+      },
+      {
+        value: "low-priority",
+        label: "Low Priority",
+        icon: <ArrowDownIcon className="size-4" />,
+        badgeProps: { variant: "green" },
+      },
+      {
+        value: "planning",
+        label: "Planning",
+        icon: <CalendarIcon className="size-4" />,
+        badgeProps: { variant: "amber" },
+      },
+      {
+        value: "blocked",
+        label: "Blocked",
+        icon: <BanIcon className="size-4" />,
+        badgeProps: { variant: "orange" },
+      },
+    ];
+
+    return (
+      <div className="flex flex-col w-full gap-4">
+        <MultiSelect
+          options={colorOptions}
+          formComposition={{
+            label: "Color Selection",
+            description: "Choose colors (badges match the selected color)",
+          }}
+          placeholder="Select colors"
+          defaultValue={["red", "blue", "green"]}
+          maxShownBadges={8}
+        />
+
+        <MultiSelect
+          options={categoryOptions}
+          formComposition={{
+            label: "Task Categories",
+            description: "Select categories with color coding",
+          }}
+          placeholder="Select categories"
+          defaultValue={["urgent", "work"]}
+        />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "MultiSelect with colored badges to provide visual categorization. The badge colors are specified using the `badgeProps` property on each option. This can be useful for color-coding categories, priority levels, or statuses.",
       },
     },
   },
