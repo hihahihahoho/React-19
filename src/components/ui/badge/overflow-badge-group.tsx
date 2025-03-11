@@ -1,22 +1,22 @@
-import { useItemOverflow } from "@/hooks/use-item-overflow";
-import { cn } from "@/lib/utils";
-import * as React from "react";
-import { Badge, BadgeProps } from "../badge/badge";
+import { useItemOverflow } from "@/hooks/use-item-overflow"
+import { cn } from "@/lib/utils"
+import * as React from "react"
+import { Badge, BadgeProps } from "../badge/badge"
 
 export interface OverflowBadgeGroupProps
   extends React.HTMLAttributes<HTMLDivElement> {
   items: Array<{
-    key: string;
-    content: React.ReactNode;
-    removeButton?: boolean;
-    onRemove?: () => void;
-    badgeProps?: BadgeProps;
-  }>;
-  maxShownItems?: number;
-  minShowItems?: number;
-  badgeMeasureClassName?: string;
-  overflowMeasureClassName?: string;
-  badgeProps?: BadgeProps;
+    key: string
+    content: React.ReactNode
+    removeButton?: boolean
+    onRemove?: () => void
+    badgeProps?: BadgeProps
+  }>
+  maxShownItems?: number
+  minShowItems?: number
+  badgeMeasureClassName?: string
+  overflowMeasureClassName?: string
+  badgeProps?: BadgeProps
 }
 
 function OverflowBadgeGroup({
@@ -35,20 +35,20 @@ function OverflowBadgeGroup({
     minShowItems,
     itemClassName: badgeMeasureClassName,
     plusItemClassName: overflowMeasureClassName,
-  });
+  })
 
   return (
     <div
       ref={containerRef}
       data-slot="overflow-badge-group"
       className={cn(
-        "relative flex items-center h-full w-full gap-1 overflow-hidden whitespace-nowrap",
+        "relative flex h-full w-full items-center gap-1 overflow-hidden whitespace-nowrap",
         className
       )}
       {...props}
     >
       {items.map((item, index) => {
-        const visible = isVisible(index);
+        const visible = isVisible(index)
         return (
           <Badge
             key={item.key}
@@ -58,7 +58,7 @@ function OverflowBadgeGroup({
               badgeMeasureClassName,
               visible
                 ? "relative opacity-100"
-                : "absolute opacity-0 pointer-events-none"
+                : "pointer-events-none absolute opacity-0"
             )}
             style={visible ? {} : { position: "absolute" }}
             aria-hidden={!visible}
@@ -68,7 +68,7 @@ function OverflowBadgeGroup({
           >
             {item.content}
           </Badge>
-        );
+        )
       })}
       {overflowCount > 0 && (
         <Badge
@@ -76,7 +76,7 @@ function OverflowBadgeGroup({
           clearBtn={false}
           className={cn(
             overflowMeasureClassName,
-            "aspect-square text-center px-0 justify-center",
+            "aspect-square justify-center px-0 text-center",
             "relative opacity-100"
           )}
         >
@@ -84,7 +84,7 @@ function OverflowBadgeGroup({
         </Badge>
       )}
     </div>
-  );
+  )
 }
 
-export { OverflowBadgeGroup };
+export { OverflowBadgeGroup }

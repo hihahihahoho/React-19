@@ -1,27 +1,27 @@
-import { cn } from "@/lib/utils";
-import { ColumnPinningState, flexRender, Header } from "@tanstack/react-table";
+import { cn } from "@/lib/utils"
+import { ColumnPinningState, flexRender, Header } from "@tanstack/react-table"
 import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
   ChevronsUpDown,
   Pin,
-} from "lucide-react";
-import React from "react";
-import { Button } from "../button";
-import { SelectCommand } from "../select/select-command";
-import { SelectGroup, SelectItems } from "../select/select-interface";
-import { SelectPopover } from "../select/select-popover";
-import { useDataTable } from "./data-table-context";
-import { useHeaderRefs } from "./header-ref-context";
-import { TableHead } from "./table";
+} from "lucide-react"
+import React from "react"
+import { Button } from "../button"
+import { SelectCommand } from "../select/select-command"
+import { SelectGroup, SelectItems } from "../select/select-interface"
+import { SelectPopover } from "../select/select-popover"
+import { useDataTable } from "./data-table-context"
+import { useHeaderRefs } from "./header-ref-context"
+import { TableHead } from "./table"
 
 interface DataTableHeaderCellProps<TData, TValue> {
-  header: Header<TData, TValue>;
-  isPin?: boolean;
-  width?: number;
-  setColumnPinning?: React.Dispatch<React.SetStateAction<ColumnPinningState>>;
-  isRegisterHeaderRef?: boolean;
+  header: Header<TData, TValue>
+  isPin?: boolean
+  width?: number
+  setColumnPinning?: React.Dispatch<React.SetStateAction<ColumnPinningState>>
+  isRegisterHeaderRef?: boolean
 }
 
 const toolbarOptions: SelectGroup[] = [
@@ -74,7 +74,7 @@ const toolbarOptions: SelectGroup[] = [
       },
     ],
   },
-];
+]
 
 export function DataTableHeaderCell<TData, TValue>({
   header,
@@ -82,39 +82,39 @@ export function DataTableHeaderCell<TData, TValue>({
   width,
   isRegisterHeaderRef = true,
 }: DataTableHeaderCellProps<TData, TValue>) {
-  const { setColumnPinning, fixedPinLeft, fixedPinRight } = useDataTable();
-  const sortState = header.column.getIsSorted();
-  const ref = React.useRef<HTMLTableCellElement>(null);
-  const initialSelected = ["no-sort"];
-  if (isPin) initialSelected.push("pin");
-  const { registerHeaderRef, unregisterHeaderRef } = useHeaderRefs();
+  const { setColumnPinning, fixedPinLeft, fixedPinRight } = useDataTable()
+  const sortState = header.column.getIsSorted()
+  const ref = React.useRef<HTMLTableCellElement>(null)
+  const initialSelected = ["no-sort"]
+  if (isPin) initialSelected.push("pin")
+  const { registerHeaderRef, unregisterHeaderRef } = useHeaderRefs()
 
-  const [selected, setSelected] = React.useState<string[]>(initialSelected);
-  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState<string[]>(initialSelected)
+  const [open, setOpen] = React.useState(false)
 
   const triggerContent = flexRender(
     header.column.columnDef.header,
     header.getContext()
-  );
+  )
 
   const handleOnSelect = (newSelected: SelectItems) => {
-    const selected = newSelected.value;
+    const selected = newSelected.value
     if (["asc", "desc", "no-sort"].includes(selected)) {
       if (selected === "asc") {
-        header.column.toggleSorting(false);
+        header.column.toggleSorting(false)
       } else if (selected === "desc") {
-        header.column.toggleSorting(true);
+        header.column.toggleSorting(true)
       } else {
-        header.column.clearSorting();
+        header.column.clearSorting()
       }
 
       // Update the selected state for sorting without affecting pinning
       setSelected((prev) => {
         const withoutSort = prev.filter(
           (val) => !["asc", "desc", "no-sort"].includes(val)
-        );
-        return [...withoutSort, selected];
-      });
+        )
+        return [...withoutSort, selected]
+      })
     }
 
     // Pinning logic
@@ -124,72 +124,72 @@ export function DataTableHeaderCell<TData, TValue>({
         setColumnPinning?.(() => ({
           left: [...fixedPinLeft],
           right: [...fixedPinRight],
-        }));
+        }))
       } else {
         // Pin this column to the left
         setColumnPinning?.(() => ({
           left: [...fixedPinLeft, header.column.id],
           right: [...fixedPinRight],
-        }));
+        }))
       }
     }
-  };
+  }
 
   const filteredOptions = React.useMemo(() => {
     if (!header.column.getCanSort()) {
-      return toolbarOptions.filter((group) => group.value !== "sort-group");
+      return toolbarOptions.filter((group) => group.value !== "sort-group")
     }
-    return toolbarOptions;
-  }, [header.column]);
+    return toolbarOptions
+  }, [header.column])
 
   // Determine pin classes based on pinned state
-  const isPinned = header.column.getIsPinned?.();
-  const isLastPinned = header.column.getIsLastColumn("left");
-  const isFirstPinnedRight = header.column.getIsFirstColumn("right");
+  const isPinned = header.column.getIsPinned?.()
+  const isLastPinned = header.column.getIsLastColumn("left")
+  const isFirstPinnedRight = header.column.getIsFirstColumn("right")
   const pinnedClasses = isPinned
     ? isPinned === "left"
       ? "sticky z-20"
       : "sticky z-20"
-    : "";
+    : ""
   React.useEffect(() => {
     if (isPinned) {
-      setSelected((prev) => [...prev.filter((v) => v !== "pin"), "pin"]);
+      setSelected((prev) => [...prev.filter((v) => v !== "pin"), "pin"])
     } else {
-      setSelected((prev) => prev.filter((v) => v !== "pin"));
+      setSelected((prev) => prev.filter((v) => v !== "pin"))
     }
-  }, [isPinned]);
+  }, [isPinned])
 
   React.useEffect(() => {
     setSelected((prev) => {
       const withoutSort = prev.filter(
         (val) => !["asc", "desc", "no-sort"].includes(val)
-      );
+      )
 
       if (sortState === "asc") {
-        return [...withoutSort, "asc"];
+        return [...withoutSort, "asc"]
       } else if (sortState === "desc") {
-        return [...withoutSort, "desc"];
+        return [...withoutSort, "desc"]
       } else {
-        return [...withoutSort, "no-sort"];
+        return [...withoutSort, "no-sort"]
       }
-    });
-  }, [sortState]);
+    })
+  }, [sortState])
 
   React.useEffect(() => {
     if (isRegisterHeaderRef) {
       if (ref.current) {
-        registerHeaderRef(header.column.id, ref.current);
+        registerHeaderRef(header.column.id, ref.current)
       }
       return () => {
-        unregisterHeaderRef(header.column.id);
-      };
+        unregisterHeaderRef(header.column.id)
+      }
     }
   }, [
     header.column.id,
     registerHeaderRef,
     unregisterHeaderRef,
     isRegisterHeaderRef,
-  ]);
+  ])
   return (
     <TableHead
       key={header.id}
@@ -238,7 +238,7 @@ export function DataTableHeaderCell<TData, TValue>({
                 variant="ghost"
                 size={"sm"}
                 className={cn(
-                  "h-auto text-left px-0 gap-1",
+                  "h-auto gap-1 px-0 text-left",
                   header.column.columnDef.meta?.align === "right" && "ml-auto",
                   header.column.columnDef.meta?.align === "center" && "mx-auto",
                   pinnedClasses
@@ -274,5 +274,5 @@ export function DataTableHeaderCell<TData, TValue>({
         ))}
       {isPinned && <div className="column-pin-backdrop" />}
     </TableHead>
-  );
+  )
 }

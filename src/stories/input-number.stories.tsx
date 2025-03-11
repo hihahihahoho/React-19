@@ -1,23 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import {
   InputNumber,
   OnValueChangeInputNumber,
-} from "@/components/ui/input-number/input-number";
-import { InputNumberForm } from "@/components/ui/input-number/input-number-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
-import {
-  Calculator,
-  DollarSign,
-  Hash,
-  Percent,
-  TrendingUp,
-} from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "@/components/ui/input-number/input-number"
+import { InputNumberForm } from "@/components/ui/input-number/input-number-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
+import { Calculator, DollarSign, Hash, Percent, TrendingUp } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * InputNumber component allows users to enter numeric values with formatting.
@@ -78,10 +72,10 @@ They support thousands separators, decimal places, and min/max constraints.
       </div>
     ),
   ],
-} satisfies Meta<typeof InputNumber>;
+} satisfies Meta<typeof InputNumber>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Default input number with formatting
@@ -93,15 +87,15 @@ export const Default: Story = {
   },
   render: (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [value, setValue] = useState(args.value);
+    const [value, setValue] = useState(args.value)
 
     const handleIncrease = () => {
-      setValue((prevValue) => (prevValue || 0) + 1);
-    };
+      setValue((prevValue) => (prevValue || 0) + 1)
+    }
 
     const handleValueChange = (value: OnValueChangeInputNumber) => {
-      setValue(value.unMaskedValue);
-    };
+      setValue(value.unMaskedValue)
+    }
 
     return (
       <div className="w-[250px] space-y-4">
@@ -113,7 +107,7 @@ export const Default: Story = {
         />
         <Button onClick={handleIncrease}>Increase Number</Button>
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -122,14 +116,14 @@ export const Default: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of different number formatting options
  */
 export const FormattingOptions: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <InputNumber
         formComposition={{
           label: "Integer (default)",
@@ -187,14 +181,14 @@ export const FormattingOptions: Story = {
       },
     },
   },
-};
+}
 
 /**
  * InputNumber with various visual customizations
  */
 export const WithCustomization: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <InputNumber
         formComposition={{
           label: "Amount",
@@ -252,14 +246,14 @@ export const WithCustomization: Story = {
       },
     },
   },
-};
+}
 
 /**
  * InputNumber in different states
  */
 export const InputStates: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <InputNumber
         formComposition={{
           label: "Default",
@@ -307,7 +301,7 @@ export const InputStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Form with InputNumber validation
@@ -324,7 +318,7 @@ export const WithFormValidation: Story = {
         .number()
         .min(0, "Discount cannot be negative")
         .max(100, "Maximum discount is 100%"),
-    });
+    })
 
     function FormExample() {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -334,20 +328,20 @@ export const WithFormValidation: Story = {
           quantity: 1,
           discount: 0,
         },
-      });
+      })
 
       const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        console.log(values)
         const total =
-          values.price * values.quantity * (1 - values.discount / 100);
+          values.price * values.quantity * (1 - values.discount / 100)
         alert(
           `Order Summary:\n` +
             `Price: $${values.price}\n` +
             `Quantity: ${values.quantity}\n` +
             `Discount: ${values.discount}%\n` +
             `Total: $${total.toFixed(2)}`
-        );
-      };
+        )
+      }
 
       return (
         <ZodSchemaProvider schema={formSchema}>
@@ -394,10 +388,10 @@ export const WithFormValidation: Story = {
             </form>
           </Form>
         </ZodSchemaProvider>
-      );
+      )
     }
 
-    return <FormExample />;
+    return <FormExample />
   },
   parameters: {
     docs: {
@@ -407,7 +401,7 @@ export const WithFormValidation: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props
@@ -439,4 +433,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}

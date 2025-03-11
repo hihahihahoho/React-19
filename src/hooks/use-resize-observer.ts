@@ -1,10 +1,9 @@
 // https://usehooks-ts.com/react-hook/use-resize-observer
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react"
 
-import type { RefObject } from 'react'
-import { useIsMounted } from './use-is-mounted'
-
+import type { RefObject } from "react"
+import { useIsMounted } from "./use-is-mounted"
 
 type Size = {
   width: number | undefined
@@ -14,7 +13,7 @@ type Size = {
 type UseResizeObserverOptions<T extends HTMLElement = HTMLElement> = {
   ref: RefObject<T | null>
   onResize?: (size: Size) => void
-  box?: 'border-box' | 'content-box' | 'device-pixel-content-box'
+  box?: "border-box" | "content-box" | "device-pixel-content-box"
 }
 
 const initialSize: Size = {
@@ -23,9 +22,9 @@ const initialSize: Size = {
 }
 
 export function useResizeObserver<T extends HTMLElement = HTMLElement>(
-  options: UseResizeObserverOptions<T>,
+  options: UseResizeObserverOptions<T>
 ): Size {
-  const { ref, box = 'content-box' } = options
+  const { ref, box = "content-box" } = options
   const [{ width, height }, setSize] = useState<Size>(initialSize)
   const isMounted = useIsMounted()
   const previousSize = useRef<Size>({ ...initialSize })
@@ -35,18 +34,18 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
   useEffect(() => {
     if (!ref.current) return
 
-    if (typeof window === 'undefined' || !('ResizeObserver' in window)) return
+    if (typeof window === "undefined" || !("ResizeObserver" in window)) return
 
     const observer = new ResizeObserver(([entry]) => {
       const boxProp =
-        box === 'border-box'
-          ? 'borderBoxSize'
-          : box === 'device-pixel-content-box'
-            ? 'devicePixelContentBoxSize'
-            : 'contentBoxSize'
+        box === "border-box"
+          ? "borderBoxSize"
+          : box === "device-pixel-content-box"
+            ? "devicePixelContentBoxSize"
+            : "contentBoxSize"
 
-      const newWidth = extractSize(entry, boxProp, 'inlineSize')
-      const newHeight = extractSize(entry, boxProp, 'blockSize')
+      const newWidth = extractSize(entry, boxProp, "inlineSize")
+      const newHeight = extractSize(entry, boxProp, "blockSize")
 
       const hasChanged =
         previousSize.current.width !== newWidth ||
@@ -79,17 +78,17 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
 
 type BoxSizesKey = keyof Pick<
   ResizeObserverEntry,
-  'borderBoxSize' | 'contentBoxSize' | 'devicePixelContentBoxSize'
+  "borderBoxSize" | "contentBoxSize" | "devicePixelContentBoxSize"
 >
 
 function extractSize(
   entry: ResizeObserverEntry,
   box: BoxSizesKey,
-  sizeType: keyof ResizeObserverSize,
+  sizeType: keyof ResizeObserverSize
 ): number | undefined {
   if (!entry[box]) {
-    if (box === 'contentBoxSize') {
-      return entry.contentRect[sizeType === 'inlineSize' ? 'width' : 'height']
+    if (box === "contentBoxSize") {
+      return entry.contentRect[sizeType === "inlineSize" ? "width" : "height"]
     }
     return undefined
   }
@@ -97,5 +96,5 @@ function extractSize(
   return Array.isArray(entry[box])
     ? entry[box][0][sizeType]
     : // @ts-expect-error Support Firefox's non-standard behavior
-    (entry[box][sizeType] as number)
+      (entry[box][sizeType] as number)
 }

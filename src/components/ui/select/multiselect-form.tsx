@@ -1,11 +1,11 @@
-import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
-import { FormField } from "../form/form";
-import { useZodSchema } from "../form/zod-schema-context";
-import { MultiSelect, MultiSelectProps } from "./multiselect";
+import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
+import { FormField } from "../form/form"
+import { useZodSchema } from "../form/zod-schema-context"
+import { MultiSelect, MultiSelectProps } from "./multiselect"
 
 export interface MultiSelectFormProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends ControllerProps<TFieldValues, TName>,
     Omit<
       MultiSelectProps,
@@ -14,23 +14,23 @@ export interface MultiSelectFormProps<
 
 const MultiSelectForm = <
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 >({
   name,
   control,
   ...props
 }: Omit<MultiSelectFormProps<TFieldValues, TName>, "render">) => {
-  const { getJsonSchema } = useZodSchema();
-  const { isRequired } = getJsonSchema(name);
+  const { getJsonSchema } = useZodSchema()
+  const { isRequired } = getJsonSchema(name)
   return (
     <FormField
       name={name}
       control={control}
       render={({ field: { value, onChange, ...field } }) => {
         const handleClear = () => {
-          onChange([]);
-          props.formComposition?.onClear?.();
-        };
+          onChange([])
+          props.formComposition?.onClear?.()
+        }
 
         return (
           <MultiSelect
@@ -44,12 +44,12 @@ const MultiSelectForm = <
               ...props.formComposition,
             }}
           />
-        );
+        )
       }}
     />
-  );
-};
+  )
+}
 
-MultiSelectForm.displayName = "MultiSelectForm";
+MultiSelectForm.displayName = "MultiSelectForm"
 
-export { MultiSelectForm };
+export { MultiSelectForm }

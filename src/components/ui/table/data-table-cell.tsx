@@ -1,19 +1,19 @@
-import { cn } from "@/lib/utils";
-import { Cell, flexRender } from "@tanstack/react-table";
-import { TableCell } from "./table";
+import { cn } from "@/lib/utils"
+import { Cell, flexRender } from "@tanstack/react-table"
+import { TableCell } from "./table"
 
 interface DataTableCellProps<TData, TValue> {
-  cell: Cell<TData, TValue>;
+  cell: Cell<TData, TValue>
 }
 
 export function DataTableCell<TData, TValue>({
   cell,
 }: DataTableCellProps<TData, TValue>) {
-  const pinnedPosition = cell.column.getIsPinned();
-  const isPinnedLeft = pinnedPosition === "left";
-  const isPinnedRight = pinnedPosition === "right";
-  const isLastPinned = cell.column.getIsLastColumn("left");
-  const isFirstPinnedRight = cell.column.getIsFirstColumn("right");
+  const pinnedPosition = cell.column.getIsPinned()
+  const isPinnedLeft = pinnedPosition === "left"
+  const isPinnedRight = pinnedPosition === "right"
+  const isLastPinned = cell.column.getIsLastColumn("left")
+  const isFirstPinnedRight = cell.column.getIsFirstColumn("right")
   return (
     <TableCell
       style={{
@@ -40,5 +40,5 @@ export function DataTableCell<TData, TValue>({
       )}
       {flexRender(cell.column.columnDef.cell, cell.getContext())}
     </TableCell>
-  );
+  )
 }

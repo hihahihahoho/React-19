@@ -1,15 +1,15 @@
-import { Badge } from "@/components/ui/badge/badge";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { SelectionGroup } from "@/components/ui/selection-controls/selection-group";
-import { Switch } from "@/components/ui/selection-controls/switch";
-import { SwitchForm } from "@/components/ui/selection-controls/switch-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { Badge } from "@/components/ui/badge/badge"
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { SelectionGroup } from "@/components/ui/selection-controls/selection-group"
+import { Switch } from "@/components/ui/selection-controls/switch"
+import { SwitchForm } from "@/components/ui/selection-controls/switch-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Meta, StoryObj } from "@storybook/react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * Switch component allows users to toggle between two states.
@@ -74,10 +74,10 @@ They are commonly used for enabling or disabling features, settings, or preferen
       </div>
     ),
   ],
-} satisfies Meta<typeof Switch>;
+} satisfies Meta<typeof Switch>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * The basic switch variants showing different states.
@@ -102,7 +102,7 @@ export const BasicVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Switches with different label positions and styles.
@@ -168,7 +168,7 @@ export const LabelVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of switches in a list with different states.
@@ -181,19 +181,19 @@ export const SwitchList: Story = {
       { id: "3", label: "Sound alerts", checked: true },
       { id: "4", label: "Marketing emails", checked: false, disabled: true },
       { id: "5", label: "App updates", checked: false },
-    ];
+    ]
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [items, setItems] = useState(options);
+    const [items, setItems] = useState(options)
 
     const handleCheckedChange = (id: string, checked: boolean) => {
       setItems((prevItems) =>
         prevItems.map((item) => (item.id === id ? { ...item, checked } : item))
-      );
-    };
+      )
+    }
 
     return (
-      <div className="p-4 space-y-2 border rounded-lg w-72">
+      <div className="w-72 space-y-2 rounded-lg border p-4">
         <h3 className="mb-3 font-medium">Notification Settings</h3>
         {items.map((item) => (
           <SelectionGroup
@@ -212,7 +212,7 @@ export const SwitchList: Story = {
           </SelectionGroup>
         ))}
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -222,17 +222,17 @@ export const SwitchList: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of using switches in different layouts.
  */
 export const LayoutVariants: Story = {
   render: () => (
-    <div className="space-y-8 w-96">
+    <div className="w-96 space-y-8">
       <div>
         <h3 className="mb-2 text-sm font-medium">Vertical Layout</h3>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="space-y-2 rounded-lg border p-4">
           <SelectionGroup control={<Switch />}>WiFi</SelectionGroup>
           <SelectionGroup control={<Switch defaultChecked />}>
             Bluetooth
@@ -243,7 +243,7 @@ export const LayoutVariants: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Horizontal Layout</h3>
-        <div className="flex flex-wrap gap-6 p-4 border rounded-lg">
+        <div className="flex flex-wrap gap-6 rounded-lg border p-4">
           <SelectionGroup control={<Switch />}>Dark Mode</SelectionGroup>
           <SelectionGroup control={<Switch defaultChecked />}>
             Auto-Save
@@ -254,7 +254,7 @@ export const LayoutVariants: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Grid Layout</h3>
-        <div className="grid grid-cols-2 gap-2 p-4 border rounded-lg">
+        <div className="grid grid-cols-2 gap-2 rounded-lg border p-4">
           <SelectionGroup control={<Switch />}>Notifications</SelectionGroup>
           <SelectionGroup control={<Switch />}>Sound</SelectionGroup>
           <SelectionGroup control={<Switch defaultChecked />}>
@@ -272,15 +272,15 @@ export const LayoutVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Custom styled switches for different visual appearances.
  */
 export const CustomStyledSwitches: Story = {
   render: () => (
-    <div className="space-y-6 w-80">
-      <div className="p-4 space-y-3 border rounded-lg">
+    <div className="w-80 space-y-6">
+      <div className="space-y-3 rounded-lg border p-4">
         <h3 className="mb-2 text-sm font-medium">Feature Toggles</h3>
 
         <SelectionGroup
@@ -317,7 +317,7 @@ export const CustomStyledSwitches: Story = {
         </SelectionGroup>
       </div>
 
-      <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900">
+      <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
         <SelectionGroup control={<Switch className="h-6 w-11" />}>
           <span className="font-medium">Larger switch style</span>
         </SelectionGroup>
@@ -331,7 +331,7 @@ export const CustomStyledSwitches: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Form with Switch validation
@@ -346,7 +346,7 @@ export const WithFormValidation: Story = {
         .refine((val) => val === true, {
           message: "Notifications must be enabled for this application.",
         }),
-    });
+    })
 
     function FormValidationExample() {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -355,21 +355,21 @@ export const WithFormValidation: Story = {
           darkMode: false,
           notifications: true,
         },
-      });
+      })
 
       const onSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log(data);
+        console.log(data)
         alert(
           `Form submitted with:\nDark Mode: ${data.darkMode}\nNotifications: ${data.notifications}`
-        );
-      };
+        )
+      }
 
       return (
         <ZodSchemaProvider schema={formSchema}>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="p-6 space-y-6 border rounded-lg w-96"
+              className="w-96 space-y-6 rounded-lg border p-6"
             >
               <SwitchForm
                 control={form.control}
@@ -397,10 +397,10 @@ export const WithFormValidation: Story = {
             </form>
           </Form>
         </ZodSchemaProvider>
-      );
+      )
     }
 
-    return <FormValidationExample />;
+    return <FormValidationExample />
   },
   parameters: {
     docs: {
@@ -410,7 +410,7 @@ export const WithFormValidation: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Card variant of SelectionGroup for more prominent selection options.
@@ -423,14 +423,14 @@ export const CardVariants: Story = {
       darkMode: false,
       analytics: true,
       marketing: false,
-    });
+    })
 
     const handleToggle = (setting: keyof typeof settings, checked: boolean) => {
       setSettings((prev) => ({
         ...prev,
         [setting]: checked,
-      }));
-    };
+      }))
+    }
 
     return (
       <div className="grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
@@ -508,7 +508,7 @@ export const CardVariants: Story = {
           </div>
         </SelectionGroup>
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -518,7 +518,7 @@ export const CardVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive showcase of all switch variants and use cases.
@@ -528,7 +528,7 @@ export const CompleteShowcase: Story = {
     <div className="grid w-full max-w-2xl gap-6">
       <div>
         <h3 className="mb-2 text-sm font-medium">Basic States</h3>
-        <div className="flex flex-wrap gap-6 p-4 border rounded-lg">
+        <div className="flex flex-wrap gap-6 rounded-lg border p-4">
           <SelectionGroup control={<Switch />}>Off</SelectionGroup>
           <SelectionGroup control={<Switch defaultChecked />}>
             On
@@ -544,23 +544,23 @@ export const CompleteShowcase: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">With Status Indicators</h3>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="space-y-2 rounded-lg border p-4">
           <SelectionGroup control={<Switch defaultChecked />}>
             <div className="flex items-center gap-2">
               <span>Online Status</span>
-              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <div className="h-2 w-2 rounded-full bg-green-500"></div>
             </div>
           </SelectionGroup>
           <SelectionGroup control={<Switch />}>
             <div className="flex items-center gap-2">
               <span>Do Not Disturb</span>
-              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+              <div className="h-2 w-2 rounded-full bg-red-500"></div>
             </div>
           </SelectionGroup>
           <SelectionGroup control={<Switch />}>
             <div className="flex items-center gap-2">
               <span>Maintenance Mode</span>
-              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+              <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
             </div>
           </SelectionGroup>
         </div>
@@ -568,7 +568,7 @@ export const CompleteShowcase: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Common Use Cases</h3>
-        <div className="p-4 space-y-4 border rounded-lg">
+        <div className="space-y-4 rounded-lg border p-4">
           <SelectionGroup control={<Switch />}>Dark Mode</SelectionGroup>
 
           <SelectionGroup control={<Switch defaultChecked />}>
@@ -600,7 +600,7 @@ export const CompleteShowcase: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props.
@@ -624,4 +624,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}

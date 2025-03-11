@@ -1,27 +1,27 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
+import { cn } from "@/lib/utils"
+import { X } from "lucide-react"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../tooltip";
+} from "../tooltip"
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-[6px] px-2.5 py-0.5 text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 [&_svg]:size-4 [&_svg]:shrink-0 gap-1 ring-inset",
+  "inline-flex items-center gap-1 rounded-[6px] px-2.5 py-0.5 text-xs font-medium ring-inset transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/80 ",
+          "bg-primary text-primary-foreground shadow hover:bg-primary/80",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive:
           "bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
-        outline: "text-foreground ring-1 ring-primary/10 ",
+        outline: "text-foreground ring-1 ring-primary/10",
         red: "bg-red-500/15 text-red-700 hover:bg-red-500/25 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20",
         orange:
           "bg-orange-500/15 text-orange-700 hover:bg-orange-500/25 dark:bg-orange-500/10 dark:text-orange-400 dark:hover:bg-orange-500/20",
@@ -51,9 +51,9 @@ const badgeVariants = cva(
         zinc: "bg-zinc-600/10 text-zinc-700 hover:bg-zinc-600/20 dark:bg-white/5 dark:text-zinc-400 dark:hover:bg-white/10",
       },
       size: {
-        sm: "text-xs px-2.5 py-0.5 min-h-6",
-        md: "text-xs px-2.5 py-0.5 min-h-7",
-        lg: "text-sm rounded-4 px-4 py-1 min-h-8",
+        sm: "min-h-6 px-2.5 py-0.5 text-xs",
+        md: "min-h-7 px-2.5 py-0.5 text-xs",
+        lg: "rounded-4 min-h-8 px-4 py-1 text-sm",
       },
       hasLeftIcon: { true: "" },
       hasRightIcon: { true: "" },
@@ -73,15 +73,15 @@ const badgeVariants = cva(
       size: "sm",
     },
   }
-);
+)
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {
-  onClearBtnClick?: () => void;
-  iconLeft?: React.ReactNode;
-  iconRight?: React.ReactNode;
-  tooltip?: React.ReactNode;
+  onClearBtnClick?: () => void
+  iconLeft?: React.ReactNode
+  iconRight?: React.ReactNode
+  tooltip?: React.ReactNode
 }
 
 function Badge({
@@ -113,10 +113,10 @@ function Badge({
       {props.children}
       {clearBtn && (
         <div
-          className="flex items-center justify-center h-5 cursor-pointer aspect-square opacity-40 hover:opacity-100"
+          className="flex aspect-square h-5 cursor-pointer items-center justify-center opacity-40 hover:opacity-100"
           onClick={(e) => {
-            e.stopPropagation();
-            onClearBtnClick?.();
+            e.stopPropagation()
+            onClearBtnClick?.()
           }}
         >
           <X className="x-button" />
@@ -124,7 +124,7 @@ function Badge({
       )}
       {iconRight && iconRight}
     </div>
-  );
+  )
   if (tooltip) {
     return (
       <TooltipProvider>
@@ -133,10 +133,10 @@ function Badge({
           <TooltipContent>{tooltip}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
-    );
+    )
   }
 
-  return badge;
+  return badge
 }
 
-export { Badge, badgeVariants };
+export { Badge, badgeVariants }

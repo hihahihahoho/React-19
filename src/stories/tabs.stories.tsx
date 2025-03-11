@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button } from "@/components/ui/button"; // Adjust the import path as needed
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Adjust the import path as needed
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { Button } from "@/components/ui/button" // Adjust the import path as needed
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs" // Adjust the import path as needed
+import type { Meta, StoryObj } from "@storybook/react"
+import { useState } from "react"
 
 // Meta Configuration
 const meta: Meta<typeof Tabs> = {
@@ -18,10 +18,10 @@ const meta: Meta<typeof Tabs> = {
     // For example:
     // defaultValue: { control: 'text' },
   },
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /** Default Tabs with three tabs */
 export const Default: Story = {
@@ -49,17 +49,17 @@ export const Default: Story = {
   args: {
     defaultValue: "tab1", // Set the default active tab
   },
-};
+}
 
 /** Controlled Tabs with external control */
 export const Controlled: Story = {
   render: (args) => {
-    const [activeTab, setActiveTab] = useState<string>("tab1");
+    const [activeTab, setActiveTab] = useState<string>("tab1")
 
     const handleChangeTab = (value: string) => {
-      setActiveTab(value);
-      console.log("Active Tab Changed To:", value);
-    };
+      setActiveTab(value)
+      console.log("Active Tab Changed To:", value)
+    }
 
     return (
       <div>
@@ -99,9 +99,9 @@ export const Controlled: Story = {
           </TabsContent>
         </Tabs>
       </div>
-    );
+    )
   },
   args: {
     defaultValue: "tab1", // Initial active tab
   },
-};
+}

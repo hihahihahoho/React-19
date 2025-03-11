@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 const DataRowWrapper = ({
   className,
@@ -13,8 +13,8 @@ const DataRowWrapper = ({
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
 const DataRow = ({
   className,
@@ -25,15 +25,15 @@ const DataRow = ({
     <div
       data-slot="data-row"
       className={cn(
-        "form-wrapper-class grid gap-x-6 gap-y-1 text-sm items-start grid-cols-12 py-4",
+        "form-wrapper-class grid grid-cols-12 items-start gap-x-6 gap-y-1 py-4 text-sm",
         className
       )}
       {...props}
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
 const DataRowLabel = ({
   className,
@@ -44,15 +44,15 @@ const DataRowLabel = ({
     <div
       data-slot="data-row-label"
       className={cn(
-        "col-span-5 sm:col-span-4 text-muted-foreground",
+        "col-span-5 text-muted-foreground sm:col-span-4",
         className
       )}
       {...props}
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
 const DataRowValue = ({
   className,
@@ -63,14 +63,14 @@ const DataRowValue = ({
     <div
       data-slot="data-row-value"
       className={cn(
-        "col-span-7 sm:col-span-8 text-text-14-regular word-break",
+        "text-text-14-regular word-break col-span-7 sm:col-span-8",
         className
       )}
       {...props}
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
-export { DataRow, DataRowLabel, DataRowValue, DataRowWrapper };
+export { DataRow, DataRowLabel, DataRowValue, DataRowWrapper }

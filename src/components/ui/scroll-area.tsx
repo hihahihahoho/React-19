@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
-import * as React from "react";
-import { createPortal } from "react-dom";
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
+import * as React from "react"
+import { createPortal } from "react-dom"
 
-import { useMergedRef } from "@/hooks/use-merge-ref";
-import useScrollPosition from "@/hooks/use-scroll-position";
-import { cn } from "@/lib/utils";
+import { useMergedRef } from "@/hooks/use-merge-ref"
+import useScrollPosition from "@/hooks/use-scroll-position"
+import { cn } from "@/lib/utils"
 
 interface ScrollAreaTableProps
   extends React.ComponentProps<typeof ScrollAreaPrimitive.Root> {
-  viewportRef: React.RefObject<HTMLDivElement | null>;
-  srcollBarPortalRef: React.RefObject<HTMLDivElement | null>;
-  scrollbarClassName?: string;
+  viewportRef: React.RefObject<HTMLDivElement | null>
+  srcollBarPortalRef: React.RefObject<HTMLDivElement | null>
+  scrollbarClassName?: string
 }
 
 function ScrollAreaTable({
@@ -23,9 +23,9 @@ function ScrollAreaTable({
   scrollbarClassName,
   ...props
 }: ScrollAreaTableProps) {
-  const internalViewportRef = React.useRef<HTMLDivElement>(null);
-  const { isReachLeft, isReachRight } = useScrollPosition(internalViewportRef);
-  const mergeRef = useMergedRef(internalViewportRef, viewportRef);
+  const internalViewportRef = React.useRef<HTMLDivElement>(null)
+  const { isReachLeft, isReachRight } = useScrollPosition(internalViewportRef)
+  const mergeRef = useMergedRef(internalViewportRef, viewportRef)
 
   return (
     <ScrollAreaPrimitive.Root
@@ -56,7 +56,7 @@ function ScrollAreaTable({
         )}
       <ScrollAreaPrimitive.Corner />
     </ScrollAreaPrimitive.Root>
-  );
+  )
 }
 
 function ScrollArea({
@@ -76,7 +76,7 @@ function ScrollArea({
       <ScrollBar />
       <ScrollAreaPrimitive.Corner />
     </ScrollAreaPrimitive.Root>
-  );
+  )
 }
 
 function ScrollBar({
@@ -100,7 +100,7 @@ function ScrollBar({
     >
       <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border" />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
-  );
+  )
 }
 
-export { ScrollArea, ScrollAreaTable, ScrollBar };
+export { ScrollArea, ScrollAreaTable, ScrollBar }

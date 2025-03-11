@@ -1,24 +1,24 @@
-import { useMergedRef } from "@/hooks/use-merge-ref";
-import { cn } from "@/lib/utils";
-import { PopoverAnchor, PopoverContentProps } from "@radix-ui/react-popover";
-import { Measurable } from "@radix-ui/rect";
-import * as React from "react";
-import { Command } from "../command";
-import { Popover, PopoverContent } from "../popover";
-import { SelectCommand } from "../select/select-command";
-import { SelectGroup, SelectItems } from "../select/select-interface";
-import { Input } from "./input";
+import { useMergedRef } from "@/hooks/use-merge-ref"
+import { cn } from "@/lib/utils"
+import { PopoverAnchor, PopoverContentProps } from "@radix-ui/react-popover"
+import { Measurable } from "@radix-ui/rect"
+import * as React from "react"
+import { Command } from "../command"
+import { Popover, PopoverContent } from "../popover"
+import { SelectCommand } from "../select/select-command"
+import { SelectGroup, SelectItems } from "../select/select-interface"
+import { Input } from "./input"
 
 export interface InputAutoCompleteProps
   extends Omit<React.ComponentProps<typeof Input>, "onValueChange"> {
-  options?: SelectItems[] | SelectGroup[];
-  popoverContentProps?: PopoverContentProps;
-  onValueChange?: (value: string) => void;
-  value?: string;
-  initialState?: React.ReactNode;
-  loading?: boolean;
-  minCharToSearch?: number;
-  mode?: "default" | "select";
+  options?: SelectItems[] | SelectGroup[]
+  popoverContentProps?: PopoverContentProps
+  onValueChange?: (value: string) => void
+  value?: string
+  initialState?: React.ReactNode
+  loading?: boolean
+  minCharToSearch?: number
+  mode?: "default" | "select"
 }
 
 function InputAutoComplete({
@@ -36,62 +36,62 @@ function InputAutoComplete({
   ref,
   ...props
 }: InputAutoCompleteProps) {
-  const internalRef = React.useRef<HTMLInputElement>(null);
-  const mergeRef = useMergedRef(internalRef, ref);
-  const formCompositionRef = React.useRef<HTMLDivElement>(null);
-  const [open, setOpen] = React.useState(false);
-  const [inputValue, setInputValue] = React.useState("");
-  const [internalValue, setInternalValue] = React.useState("");
+  const internalRef = React.useRef<HTMLInputElement>(null)
+  const mergeRef = useMergedRef(internalRef, ref)
+  const formCompositionRef = React.useRef<HTMLDivElement>(null)
+  const [open, setOpen] = React.useState(false)
+  const [inputValue, setInputValue] = React.useState("")
+  const [internalValue, setInternalValue] = React.useState("")
   const handleFocus = React.useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      setOpen(true);
-      onFocus?.(e);
+      setOpen(true)
+      onFocus?.(e)
     },
     [onFocus]
-  );
+  )
   const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
+      setInputValue(e.target.value)
       if (mode === "default") {
-        setInternalValue(e.target.value);
-        onValueChange?.(e.target.value);
+        setInternalValue(e.target.value)
+        onValueChange?.(e.target.value)
       }
-      onChange?.(e);
+      onChange?.(e)
     },
     [onChange, onValueChange, mode]
-  );
+  )
   const handleOnSelect = React.useCallback(
     (selected: SelectItems) => {
-      setInternalValue(selected.value);
-      setInputValue(selected.value);
-      onValueChange?.(selected.value);
-      setOpen(false);
+      setInternalValue(selected.value)
+      setInputValue(selected.value)
+      onValueChange?.(selected.value)
+      setOpen(false)
     },
     [onValueChange]
-  );
+  )
 
   const handleOpenChange = React.useCallback(
     (open: boolean) => {
-      setOpen(open);
+      setOpen(open)
       if (!open) {
-        internalRef.current?.blur();
+        internalRef.current?.blur()
         if (mode === "select") {
-          setInputValue(internalValue);
+          setInputValue(internalValue)
         }
       }
     },
     [internalValue, mode]
-  );
+  )
 
   React.useEffect(() => {
     if (value !== undefined) {
-      setInternalValue(value);
+      setInternalValue(value)
       if (!open || mode === "default") {
-        setInputValue(value);
+        setInputValue(value)
       }
     }
-  }, [value, open, mode]);
-  const currentValue = value !== undefined ? value : internalValue;
+  }, [value, open, mode])
+  const currentValue = value !== undefined ? value : internalValue
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
@@ -110,10 +110,10 @@ function InputAutoComplete({
             ...formComposition,
             ref: formCompositionRef,
             onClear: () => {
-              setInternalValue("");
-              setInputValue("");
-              onValueChange?.("");
-              formComposition?.onClear?.();
+              setInternalValue("")
+              setInputValue("")
+              onValueChange?.("")
+              formComposition?.onClear?.()
             },
           }}
         />
@@ -124,20 +124,20 @@ function InputAutoComplete({
               formCompositionRef.current &&
               formCompositionRef.current.contains(e.target as Node)
             ) {
-              e.preventDefault();
+              e.preventDefault()
             } else {
-              setOpen(false);
+              setOpen(false)
             }
           }}
           data-slot="select-popover-content"
           align="start"
-          className={cn("p-0 popover-content-width-full")}
+          className={cn("popover-content-width-full p-0")}
           onWheel={(e) => e.stopPropagation()}
           {...popoverContentProps}
         >
           {inputValue.length < minCharToSearch ? (
             initialState || (
-              <div className="p-6 text-sm text-center">
+              <div className="p-6 text-center text-sm">
                 Vui lòng nhập ít nhất {minCharToSearch} kí tự để tìm kiếm
               </div>
             )
@@ -154,7 +154,7 @@ function InputAutoComplete({
         </PopoverContent>
       </Command>
     </Popover>
-  );
+  )
 }
 
-export { InputAutoComplete };
+export { InputAutoComplete }

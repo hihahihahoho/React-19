@@ -1,13 +1,13 @@
-import { Badge } from "@/components/ui/badge/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge/badge"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu/dropdown-menu";
-import { Checkbox } from "@/components/ui/selection-controls/checkbox";
-import { ColumnDef } from "@tanstack/react-table";
+} from "@/components/ui/dropdown-menu/dropdown-menu"
+import { Checkbox } from "@/components/ui/selection-controls/checkbox"
+import { ColumnDef } from "@tanstack/react-table"
 import {
   ChartArea,
   Copy,
@@ -15,8 +15,8 @@ import {
   MoreHorizontal,
   SquarePen,
   Trash,
-} from "lucide-react";
-import { SegmentData } from "./data";
+} from "lucide-react"
+import { SegmentData } from "./data"
 
 export const columns: ColumnDef<SegmentData>[] = [
   {
@@ -52,7 +52,7 @@ export const columns: ColumnDef<SegmentData>[] = [
     accessorKey: "tinhKhaDung",
     header: "Tính khả dụng",
     cell: ({ cell }) => {
-      const tinhKhaDung = cell.getValue() as string;
+      const tinhKhaDung = cell.getValue() as string
       return (
         <div>
           <div className="space-y-1">
@@ -70,14 +70,14 @@ export const columns: ColumnDef<SegmentData>[] = [
             )}
           </div>
         </div>
-      );
+      )
     },
   },
   {
     accessorKey: "trangThai",
     header: "Trạng thái",
     cell: ({ cell }) => {
-      const trangThai = cell.getValue() as string;
+      const trangThai = cell.getValue() as string
       return (
         <div>
           <Badge
@@ -94,7 +94,7 @@ export const columns: ColumnDef<SegmentData>[] = [
             {trangThai}
           </Badge>
         </div>
-      );
+      )
     },
   },
   {
@@ -173,7 +173,7 @@ export const columns: ColumnDef<SegmentData>[] = [
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     },
   },
-];
+]

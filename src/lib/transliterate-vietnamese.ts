@@ -137,7 +137,7 @@ export function transliterateVietnamese(
     Ỹ: "Y",
     Ỵ: "Y",
     Đ: "D",
-  };
+  }
 
   const partialDiacriticsMap: { [key: string]: string } = {
     à: "a",
@@ -262,34 +262,34 @@ export function transliterateVietnamese(
     Ỹ: "Y",
     Ỵ: "Y",
     đ: "đ", // Keep đ
-  };
-
-  const keepInput = options?.keepInput ?? true;
-  const toLowerCase = options?.toLowerCase ?? true;
-
-  let noDiacritics = "";
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    noDiacritics += diacriticMap[char] || char;
   }
 
-  let partialDiacritics = "";
+  const keepInput = options?.keepInput ?? true
+  const toLowerCase = options?.toLowerCase ?? true
+
+  let noDiacritics = ""
   for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    partialDiacritics += partialDiacriticsMap[char] || char;
+    const char = text[i]
+    noDiacritics += diacriticMap[char] || char
   }
 
-  let finalNoDiacritics = noDiacritics;
-  let finalPartialDiacritics = partialDiacritics;
+  let partialDiacritics = ""
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i]
+    partialDiacritics += partialDiacriticsMap[char] || char
+  }
+
+  let finalNoDiacritics = noDiacritics
+  let finalPartialDiacritics = partialDiacritics
 
   if (toLowerCase) {
-    finalNoDiacritics = noDiacritics.toLowerCase();
-    finalPartialDiacritics = partialDiacritics.toLowerCase();
+    finalNoDiacritics = noDiacritics.toLowerCase()
+    finalPartialDiacritics = partialDiacritics.toLowerCase()
   }
 
   if (keepInput) {
-    return [text, finalNoDiacritics, finalPartialDiacritics];
+    return [text, finalNoDiacritics, finalPartialDiacritics]
   } else {
-    return [finalNoDiacritics, finalPartialDiacritics];
+    return [finalNoDiacritics, finalPartialDiacritics]
   }
 }

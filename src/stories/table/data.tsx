@@ -2,28 +2,28 @@
 function randomDate(start: Date, end: Date) {
   return new Date(
     start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  );
+  )
 }
 
 function formatDate(date: Date) {
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+  const day = date.getDate().toString().padStart(2, "0")
+  const month = (date.getMonth() + 1).toString().padStart(2, "0")
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}`
 }
 
 export interface SegmentData {
-  index: number;
-  maSegment: string;
-  tenSegment: string;
-  loaiKichBan: string;
-  dichVu: string;
-  quyMoUocTinh: number;
-  tinhKhaDung: string;
-  trangThai: string;
-  ngayTao: string;
-  hoanTat: string;
-  nguoiDuyet: string;
+  index: number
+  maSegment: string
+  tenSegment: string
+  loaiKichBan: string
+  dichVu: string
+  quyMoUocTinh: number
+  tinhKhaDung: string
+  trangThai: string
+  ngayTao: string
+  hoanTat: string
+  nguoiDuyet: string
 }
 
 export function getData(): SegmentData[] {
@@ -38,7 +38,7 @@ export function getData(): SegmentData[] {
     "REPORTS_145",
     "DASHBOARD_189",
     "SETTINGS_205",
-  ];
+  ]
   const tenSegments = [
     "Thời gian đăng nhập APP Ví cuối cùng >",
     "Đổi mật khẩu cho tài khoản Ví",
@@ -50,7 +50,7 @@ export function getData(): SegmentData[] {
     "Quản lý thông tin cá nhân",
     "Xác thực giao dịch",
     "Thay đổi thông tin liên hệ",
-  ];
+  ]
   const loaiKichBans = [
     "Chạy hàng ngày",
     "Chạy hàng tuần",
@@ -62,7 +62,7 @@ export function getData(): SegmentData[] {
     "Chạy hàng dịp đặc biệt",
     "Chạy hàng kỷ niệm",
     "Chạy theo lịch trình",
-  ];
+  ]
   const dichVus = [
     "Taxi",
     "Thức ăn",
@@ -74,9 +74,9 @@ export function getData(): SegmentData[] {
     "Điện thoại",
     "Máy tính",
     "Camera",
-  ];
-  const tinhKhaDungs = ["Đang tính toán", "Sẵn sàng"];
-  const trangThais = ["Đã tạo", "Hoạt động", "Khóa", "Hết hạn"];
+  ]
+  const tinhKhaDungs = ["Đang tính toán", "Sẵn sàng"]
+  const trangThais = ["Đã tạo", "Hoạt động", "Khóa", "Hết hạn"]
   const nguoiDuyets = [
     "hoant6",
     "devgirl",
@@ -94,19 +94,19 @@ export function getData(): SegmentData[] {
     "InnovativeArtist",
     "DigitalCreator",
     "MasterOfDesign",
-  ];
+  ]
 
-  const data: SegmentData[] = [];
-  const startDate = new Date(2024, 9, 29);
-  const endDate = new Date(2025, 1, 5);
+  const data: SegmentData[] = []
+  const startDate = new Date(2024, 9, 29)
+  const endDate = new Date(2025, 1, 5)
 
   for (let i = 0; i < 100; i++) {
-    const randomIndex = i % maSegments.length;
-    const ngayTaoDate = randomDate(startDate, endDate);
+    const randomIndex = i % maSegments.length
+    const ngayTaoDate = randomDate(startDate, endDate)
     const hoanTatDate = randomDate(
       ngayTaoDate,
       new Date(ngayTaoDate.getTime() + 5 * 24 * 60 * 60 * 1000)
-    );
+    )
 
     data.push({
       index: i + 1,
@@ -121,8 +121,8 @@ export function getData(): SegmentData[] {
       ngayTao: formatDate(ngayTaoDate),
       hoanTat: formatDate(hoanTatDate),
       nguoiDuyet: nguoiDuyets[Math.floor(Math.random() * nguoiDuyets.length)],
-    });
+    })
   }
 
-  return data;
+  return data
 }

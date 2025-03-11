@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import React from "react";
+import { cn } from "@/lib/utils"
+import React from "react"
 
 const VARIANTS = {
   search: "/images/empty-states/search.svg",
@@ -7,14 +7,14 @@ const VARIANTS = {
   disconnected: "/images/empty-states/disconnected.svg",
   "empty-data": "/images/empty-states/empty-data.svg",
   maintain: "/images/empty-states/maintain.svg",
-} as const;
+} as const
 
-type VariantKey = keyof typeof VARIANTS;
+type VariantKey = keyof typeof VARIANTS
 
 export interface EmptyStateProps extends React.ComponentProps<"div"> {
-  variant?: VariantKey;
-  title?: string;
-  description?: string;
+  variant?: VariantKey
+  title?: string
+  description?: string
 }
 
 const getDefaultContent = (variant: VariantKey) => {
@@ -39,10 +39,10 @@ const getDefaultContent = (variant: VariantKey) => {
       title: "Đang bảo trì",
       description: "Chúng tôi sẽ sớm trở lại với những cải tiến mới",
     },
-  };
+  }
 
-  return content[variant];
-};
+  return content[variant]
+}
 
 function EmptyState({
   variant = "empty-data",
@@ -52,14 +52,14 @@ function EmptyState({
   children,
   ...props
 }: EmptyStateProps) {
-  const defaultContent = getDefaultContent(variant);
-  const displayTitle = title || defaultContent.title;
-  const displayDescription = description || defaultContent.description;
+  const defaultContent = getDefaultContent(variant)
+  const displayTitle = title || defaultContent.title
+  const displayDescription = description || defaultContent.description
 
   return (
     <div
       data-slot="empty-state"
-      className={cn("w-full mx-auto text-center p-6 rounded-lg", className)}
+      className={cn("mx-auto w-full rounded-lg p-6 text-center", className)}
       {...props}
     >
       <div className="flex items-center justify-center">
@@ -81,9 +81,9 @@ function EmptyState({
         </p>
       )}
 
-      {children && <div className="flex justify-center mt-6">{children}</div>}
+      {children && <div className="mt-6 flex justify-center">{children}</div>}
     </div>
-  );
+  )
 }
 
-export { EmptyState };
+export { EmptyState }

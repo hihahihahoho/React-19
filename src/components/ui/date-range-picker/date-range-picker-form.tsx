@@ -1,35 +1,35 @@
-"use client";
+"use client"
 
-import { isBefore } from "date-fns";
+import { isBefore } from "date-fns"
 import {
   ControllerProps,
   FieldPath,
   FieldValues,
   useWatch,
-} from "react-hook-form";
-import { FormField } from "../form/form";
-import { useZodSchema } from "../form/zod-schema-context";
+} from "react-hook-form"
+import { FormField } from "../form/form"
+import { useZodSchema } from "../form/zod-schema-context"
 import {
   DateRangePicker,
   DateRangePickerProps,
   OnValueChangeDateRangePicker,
-} from "./date-range-picker"; // <-- Update import to your actual path
+} from "./date-range-picker" // <-- Update import to your actual path
 
 type JsonSchemaType = {
-  isRequired: boolean;
-  description?: string;
-};
+  isRequired: boolean
+  description?: string
+}
 
 type JsonDescriptionType = {
-  minDate?: Date;
-  maxDate?: Date;
-  minRange?: number;
-  maxRange?: number;
-};
+  minDate?: Date
+  maxDate?: Date
+  minRange?: number
+  maxRange?: number
+}
 
 export interface DateRangePickerFormProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends ControllerProps<TFieldValues, TName>,
     Omit<
       DateRangePickerProps,
@@ -38,7 +38,7 @@ export interface DateRangePickerFormProps<
 
 const DateRangePickerForm = <
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 >({
   name,
   control,
@@ -47,12 +47,12 @@ const DateRangePickerForm = <
   const fieldValue = useWatch({
     control,
     name: name,
-  });
+  })
 
-  const { getJsonSchema } = useZodSchema();
-  const { isRequired, description }: JsonSchemaType = getJsonSchema(name);
+  const { getJsonSchema } = useZodSchema()
+  const { isRequired, description }: JsonSchemaType = getJsonSchema(name)
 
-  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}");
+  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}")
 
   return (
     <FormField
@@ -60,13 +60,13 @@ const DateRangePickerForm = <
       control={control}
       render={({ field: { onChange, ...field } }) => {
         const handleClear = () => {
-          onChange(undefined);
-          props.formComposition?.onClear?.();
-        };
+          onChange(undefined)
+          props.formComposition?.onClear?.()
+        }
 
         const handleValueChange = (newRange: OnValueChangeDateRangePicker) => {
-          onChange(newRange);
-        };
+          onChange(newRange)
+        }
 
         return (
           <DateRangePicker
@@ -82,15 +82,15 @@ const DateRangePickerForm = <
                   jsonDescription.minDate &&
                   isBefore(date, jsonDescription.minDate)
                 ) {
-                  return true;
+                  return true
                 }
                 if (
                   jsonDescription.maxDate &&
                   isBefore(jsonDescription.maxDate, date)
                 ) {
-                  return true;
+                  return true
                 }
-                return false;
+                return false
               },
               ...props.calendarProps,
             }}
@@ -100,12 +100,12 @@ const DateRangePickerForm = <
               onClear: handleClear,
             }}
           />
-        );
+        )
       }}
     />
-  );
-};
+  )
+}
 
-DateRangePickerForm.displayName = "DateRangePickerForm";
+DateRangePickerForm.displayName = "DateRangePickerForm"
 
-export { DateRangePickerForm };
+export { DateRangePickerForm }

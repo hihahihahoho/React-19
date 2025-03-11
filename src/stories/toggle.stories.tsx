@@ -1,5 +1,5 @@
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import type { Meta, StoryObj } from "@storybook/react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import type { Meta, StoryObj } from "@storybook/react"
 
 // Meta Configuration
 
@@ -7,10 +7,10 @@ const meta = {
   title: "Base/ToggleGroup",
   component: ToggleGroup,
   parameters: {},
-} satisfies Meta<typeof ToggleGroup>;
+} satisfies Meta<typeof ToggleGroup>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /** Default ToggleGroup with Toggles inside */
 export const Default: Story = {
@@ -26,7 +26,7 @@ export const Default: Story = {
     variant: "default", // Default variant
     size: "default", // Default size
   },
-};
+}
 
 /** Outline Variant ToggleGroup with Toggles */
 export const Outline: Story = {
@@ -42,7 +42,7 @@ export const Outline: Story = {
     variant: "outline", // Outline variant
     size: "default", // Default size
   },
-};
+}
 
 /** Large Size ToggleGroup with Toggles */
 export const Large: Story = {
@@ -58,7 +58,7 @@ export const Large: Story = {
     variant: "default", // Default variant
     size: "lg", // Large size
   },
-};
+}
 
 /** Small Size ToggleGroup with Toggles */
 export const Small: Story = {
@@ -74,7 +74,7 @@ export const Small: Story = {
     variant: "default", // Default variant
     size: "sm", // Small size
   },
-};
+}
 
 /** Demo Variant - Outline with Large Size */
 export const DemoOutlineLarge: Story = {
@@ -90,7 +90,7 @@ export const DemoOutlineLarge: Story = {
     variant: "outline", // Outline variant
     size: "lg", // Large size
   },
-};
+}
 /** Demo Variant - Default with Medium Size */
 export const DemoDefaultMedium: Story = {
   render: (args) => (
@@ -105,4 +105,4 @@ export const DemoDefaultMedium: Story = {
     variant: "default", // Default variant
     size: "default", // Default size
   },
-};
+}

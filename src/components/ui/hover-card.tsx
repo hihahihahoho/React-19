@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import * as HoverCardPrimitive from "@radix-ui/react-hover-card";
-import * as React from "react";
+import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const HoverCard = HoverCardPrimitive.Root;
+const HoverCard = HoverCardPrimitive.Root
 
-const HoverCardTrigger = HoverCardPrimitive.Trigger;
+const HoverCardTrigger = HoverCardPrimitive.Trigger
 
 function HoverCardContent({
   className,
@@ -26,7 +26,7 @@ function HoverCardContent({
       )}
       {...props}
     />
-  );
+  )
 }
 
-export { HoverCard, HoverCardContent, HoverCardTrigger };
+export { HoverCard, HoverCardContent, HoverCardTrigger }

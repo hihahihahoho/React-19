@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { Textarea } from "@/components/ui/textarea/textarea";
-import { TextareaForm } from "@/components/ui/textarea/textarea-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { Textarea } from "@/components/ui/textarea/textarea"
+import { TextareaForm } from "@/components/ui/textarea/textarea-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
 import {
   AlertCircle,
   Check,
   FileText,
   MessageSquare,
   Pencil,
-} from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "lucide-react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * Textarea component allows users to enter multi-line text.
@@ -90,17 +90,17 @@ They are useful for collecting longer form content and support various states, s
       </div>
     ),
   ],
-} satisfies Meta<typeof Textarea>;
+} satisfies Meta<typeof Textarea>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Basic examples of textareas with different configurations.
  */
 export const BasicExamples: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{ label: "Default Textarea" }}
         placeholder="Enter your comments here..."
@@ -126,14 +126,14 @@ export const BasicExamples: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Textareas with different states (disabled, read-only).
  */
 export const TextareaStates: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{ label: "Default" }}
         placeholder="Regular textarea"
@@ -160,14 +160,14 @@ export const TextareaStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Textareas with different form composition variations.
  */
 export const WithFormComposition: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{
           label: "Feedback",
@@ -208,14 +208,14 @@ export const WithFormComposition: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Textareas with different icon configurations.
  */
 export const WithIcons: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{
           label: "Comment",
@@ -246,14 +246,14 @@ export const WithIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Textarea fields with prefix and suffix elements.
  */
 export const WithPrefixAndSuffix: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{
           label: "Comment",
@@ -294,14 +294,14 @@ export const WithPrefixAndSuffix: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Auto-resizing textareas with different configurations.
  */
 export const AutoResize: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{
           label: "Auto-resize (default)",
@@ -335,14 +335,14 @@ export const AutoResize: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Character counting in textareas.
  */
 export const CharacterCounting: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{
           label: "Tweet",
@@ -378,7 +378,7 @@ export const CharacterCounting: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Form with textarea validation using react-hook-form and zod.
@@ -394,7 +394,7 @@ export const WithFormValidation: Story = {
         .string()
         .min(20, "Description must be at least 20 characters"),
       summary: z.string().max(100, "Summary must not exceed 100 characters"),
-    });
+    })
 
     function FormExample() {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -404,14 +404,14 @@ export const WithFormValidation: Story = {
           description: "",
           summary: "",
         },
-      });
+      })
 
       const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        console.log(values)
         alert(
           "Form submitted successfully!\n" + JSON.stringify(values, null, 2)
-        );
-      };
+        )
+      }
 
       return (
         <ZodSchemaProvider schema={formSchema}>
@@ -457,10 +457,10 @@ export const WithFormValidation: Story = {
             </form>
           </Form>
         </ZodSchemaProvider>
-      );
+      )
     }
 
-    return <FormExample />;
+    return <FormExample />
   },
   parameters: {
     docs: {
@@ -470,14 +470,14 @@ export const WithFormValidation: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Textareas with different variant styles.
  */
 export const VariantStyles: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{
           label: "Default style",
@@ -519,14 +519,14 @@ export const VariantStyles: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Textarea fields with label positioning.
  */
 export const LabelPositioning: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Textarea
         formComposition={{
           label: "Vertical label (default)",
@@ -565,7 +565,7 @@ export const LabelPositioning: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive showcase of all textarea variants and features.
@@ -703,7 +703,7 @@ export const CompleteShowcase: Story = {
           <Textarea
             formComposition={{
               label: "Success state",
-              iconLeft: <Check className="text-green-500 size-4" />,
+              iconLeft: <Check className="size-4 text-green-500" />,
               description: "Input value is valid",
             }}
             defaultValue="This is a valid comment that meets all our requirements."
@@ -711,7 +711,7 @@ export const CompleteShowcase: Story = {
           <Textarea
             formComposition={{
               label: "Error state",
-              iconLeft: <AlertCircle className="text-red-500 size-4" />,
+              iconLeft: <AlertCircle className="size-4 text-red-500" />,
               customError: "Comment is too short",
             }}
             defaultValue="Too short"
@@ -728,7 +728,7 @@ export const CompleteShowcase: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props.
@@ -759,4 +759,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}

@@ -1,12 +1,12 @@
-import { Badge } from "@/components/ui/badge/badge";
+import { Badge } from "@/components/ui/badge/badge"
 import {
   DataRow,
   DataRowLabel,
   DataRowValue,
   DataRowWrapper,
-} from "@/components/ui/data-row";
-import type { Meta, StoryObj } from "@storybook/react";
-import { Edit, ExternalLink, Github, Mail, Phone } from "lucide-react";
+} from "@/components/ui/data-row"
+import type { Meta, StoryObj } from "@storybook/react"
+import { Edit, ExternalLink, Github, Mail, Phone } from "lucide-react"
 
 /**
  * DataRow components provide a structured layout for displaying label-value pairs,
@@ -45,15 +45,15 @@ They organize content in a responsive grid that adapts to different screen sizes
   },
   decorators: [
     (Story) => (
-      <div className="flex items-center justify-center w-full max-w-3xl p-6 bg-white rounded-lg shadow-sm">
+      <div className="flex w-full max-w-3xl items-center justify-center rounded-lg bg-white p-6 shadow-sm">
         <Story />
       </div>
     ),
   ],
-} satisfies Meta<typeof DataRow>;
+} satisfies Meta<typeof DataRow>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Basic usage of DataRow components to display information in a structured format.
@@ -83,7 +83,7 @@ export const Basic: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DataRow components with icons to provide visual cues for different types of information.
@@ -122,7 +122,7 @@ export const WithIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DataRow components with interactive elements like buttons or links.
@@ -167,7 +167,7 @@ export const WithInteractiveElements: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Nested DataRow components for organizing complex hierarchical information.
@@ -219,7 +219,7 @@ export const NestedDataRows: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DataRow components styled differently to match various UI contexts.
@@ -227,7 +227,7 @@ export const NestedDataRows: Story = {
 export const StyledVariants: Story = {
   render: () => (
     <div className="space-y-8">
-      <DataRowWrapper className="px-4 rounded-lg bg-gray-50">
+      <DataRowWrapper className="rounded-lg bg-gray-50 px-4">
         <DataRow>
           <DataRowLabel className="text-gray-600">Name</DataRowLabel>
           <DataRowValue>John Doe</DataRowValue>
@@ -238,7 +238,7 @@ export const StyledVariants: Story = {
         </DataRow>
       </DataRowWrapper>
 
-      <DataRowWrapper className="px-4 border rounded-lg">
+      <DataRowWrapper className="rounded-lg border px-4">
         <DataRow className="border-b-0">
           <DataRowLabel className="font-bold">Product</DataRowLabel>
           <DataRowValue>Premium Plan</DataRowValue>
@@ -251,7 +251,7 @@ export const StyledVariants: Story = {
         </DataRow>
       </DataRowWrapper>
 
-      <DataRowWrapper className="px-4 rounded-lg bg-blue-50">
+      <DataRowWrapper className="rounded-lg bg-blue-50 px-4">
         <DataRow className="border-b border-blue-100">
           <DataRowLabel className="text-blue-700">Status</DataRowLabel>
           <DataRowValue className="font-medium">Active</DataRowValue>
@@ -271,7 +271,7 @@ export const StyledVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DataRow components with longer content handling.
@@ -310,7 +310,7 @@ export const WithLongContent: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DataRow customized for different content types.
@@ -333,7 +333,7 @@ export const ContentVariants: Story = {
       <DataRow>
         <DataRowLabel>Lists</DataRowLabel>
         <DataRowValue>
-          <ul className="list-disc list-inside">
+          <ul className="list-inside list-disc">
             <li>First item</li>
             <li>Second item</li>
             <li>Third item</li>
@@ -356,7 +356,7 @@ export const ContentVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Responsive behavior of DataRow components at different viewport sizes.
@@ -364,7 +364,7 @@ export const ContentVariants: Story = {
 export const Responsive: Story = {
   render: () => (
     <div className="space-y-8">
-      <div className="mb-4 text-sm text-center text-gray-500">
+      <div className="mb-4 text-center text-sm text-gray-500">
         Resize the browser window to see how the grid adapts
       </div>
       <DataRowWrapper>
@@ -393,7 +393,7 @@ export const Responsive: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of a complete form display using DataRow components.
@@ -456,7 +456,7 @@ export const ProfileExample: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props.
@@ -481,7 +481,7 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive showcase of all DataRow features and use cases.
@@ -525,7 +525,7 @@ export const CompleteShowcase: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Custom Styling</h3>
-        <DataRowWrapper className="px-4 rounded bg-gray-50">
+        <DataRowWrapper className="rounded bg-gray-50 px-4">
           <DataRow className="border-gray-200">
             <DataRowLabel className="text-gray-600">Status</DataRowLabel>
             <DataRowValue className="font-medium text-green-600">
@@ -546,7 +546,7 @@ export const CompleteShowcase: Story = {
             <DataRowLabel>Profile</DataRowLabel>
             <DataRowValue className="flex items-center justify-between">
               <span>Public</span>
-              <button className="px-2 py-1 text-xs bg-gray-100 rounded hover:bg-gray-200">
+              <button className="rounded bg-gray-100 px-2 py-1 text-xs hover:bg-gray-200">
                 Change
               </button>
             </DataRowValue>
@@ -583,7 +583,7 @@ export const CompleteShowcase: Story = {
             <DataRowLabel>Description</DataRowLabel>
             <DataRowValue>
               <p className="mb-2">Senior Developer with expertise in:</p>
-              <ul className="text-sm list-disc list-inside">
+              <ul className="list-inside list-disc text-sm">
                 <li>Frontend development</li>
                 <li>API design</li>
                 <li>Performance optimization</li>
@@ -602,4 +602,4 @@ export const CompleteShowcase: Story = {
       },
     },
   },
-};
+}

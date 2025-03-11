@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Drawer as DrawerPrimitive } from "vaul";
+import * as React from "react"
+import { Drawer as DrawerPrimitive } from "vaul"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 function Drawer({
   shouldScaleBackground = true,
@@ -15,16 +15,16 @@ function Drawer({
       shouldScaleBackground={shouldScaleBackground}
       {...props}
     />
-  );
+  )
 }
 
-const DrawerTrigger = DrawerPrimitive.Trigger;
+const DrawerTrigger = DrawerPrimitive.Trigger
 
-const DrawerPortal = DrawerPrimitive.Portal;
+const DrawerPortal = DrawerPrimitive.Portal
 
-const DrawerNestedRoot = DrawerPrimitive.NestedRoot;
+const DrawerNestedRoot = DrawerPrimitive.NestedRoot
 
-const DrawerClose = DrawerPrimitive.Close;
+const DrawerClose = DrawerPrimitive.Close
 
 function DrawerOverlay({
   className,
@@ -36,7 +36,7 @@ function DrawerOverlay({
       className={cn("fixed inset-0 z-50 bg-black/80", className)}
       {...props}
     />
-  );
+  )
 }
 
 function DrawerContent({
@@ -52,16 +52,16 @@ function DrawerContent({
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background max-h-[90%]",
+          "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto max-h-[90%] flex-col rounded-t-[10px] border bg-background",
           className
         )}
         {...props}
       >
-        <div className="mx-auto mt-4 min-h-2 h-2 w-[100px] rounded-full bg-muted" />
+        <div className="mx-auto mt-4 h-2 min-h-2 w-[100px] rounded-full bg-muted" />
         <div className="overflow-y-auto">{children}</div>
       </DrawerPrimitive.Content>
     </DrawerPortal>
-  );
+  )
 }
 
 function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -71,7 +71,7 @@ function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
       {...props}
     />
-  );
+  )
 }
 
 function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
@@ -81,7 +81,7 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("mt-auto flex flex-col gap-2 p-4", className)}
       {...props}
     />
-  );
+  )
 }
 
 function DrawerTitle({
@@ -97,7 +97,7 @@ function DrawerTitle({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function DrawerDescription({
@@ -110,7 +110,7 @@ function DrawerDescription({
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
-  );
+  )
 }
 
 export {
@@ -125,4 +125,4 @@ export {
   DrawerPortal,
   DrawerTitle,
   DrawerTrigger,
-};
+}

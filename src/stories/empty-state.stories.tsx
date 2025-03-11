@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/ui/empty-state/empty-state";
-import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "@/components/ui/button"
+import { EmptyState } from "@/components/ui/empty-state/empty-state"
+import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {
   title: "BASE/Empty State",
@@ -49,16 +49,16 @@ an error occurs, or a specific state needs to be communicated.
   },
   decorators: [
     (Story) => (
-      <div className="p-6 flex items-center justify-center">
+      <div className="flex items-center justify-center p-6">
         <Story />
       </div>
     ),
   ],
   tags: ["autodocs"],
-} satisfies Meta<typeof EmptyState>;
+} satisfies Meta<typeof EmptyState>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
@@ -72,7 +72,7 @@ export const Default: Story = {
       },
     },
   },
-};
+}
 
 export const SearchResults: Story = {
   args: {
@@ -87,7 +87,7 @@ export const SearchResults: Story = {
       },
     },
   },
-};
+}
 
 export const APIFailure: Story = {
   args: {
@@ -102,7 +102,7 @@ export const APIFailure: Story = {
       },
     },
   },
-};
+}
 
 export const Disconnected: Story = {
   args: {
@@ -117,7 +117,7 @@ export const Disconnected: Story = {
       },
     },
   },
-};
+}
 
 export const Maintenance: Story = {
   args: {
@@ -133,7 +133,7 @@ export const Maintenance: Story = {
       },
     },
   },
-};
+}
 
 export const WithAction: Story = {
   render: (args) => (
@@ -153,7 +153,7 @@ export const WithAction: Story = {
       },
     },
   },
-};
+}
 
 export const CustomStyling: Story = {
   args: {
@@ -169,11 +169,11 @@ export const CustomStyling: Story = {
       },
     },
   },
-};
+}
 
 export const AllVariants: Story = {
   render: () => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+    <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2">
       <EmptyState variant="search" />
       <EmptyState variant="api-fail" />
       <EmptyState variant="disconnected" />
@@ -189,4 +189,4 @@ export const AllVariants: Story = {
       },
     },
   },
-};
+}

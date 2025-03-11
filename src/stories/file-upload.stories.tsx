@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button } from "@/components/ui/button";
-import { FileUpload } from "@/components/ui/file-upload/file-upload";
-import { FileUploadForm } from "@/components/ui/file-upload/file-upload-form";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { zodFile } from "@/lib/zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { Button } from "@/components/ui/button"
+import { FileUpload } from "@/components/ui/file-upload/file-upload"
+import { FileUploadForm } from "@/components/ui/file-upload/file-upload-form"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { zodFile } from "@/lib/zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * FileUpload component allows users to upload files with preview functionality and validation.
@@ -78,15 +78,15 @@ FileUpload component allows users to upload files with drag-and-drop functionali
   },
   decorators: [
     (Story) => (
-      <div className="w-[600px] max-w-[80vw] mx-auto">
+      <div className="mx-auto w-[600px] max-w-[80vw]">
         <Story />
       </div>
     ),
   ],
-} satisfies Meta<typeof FileUpload>;
+} satisfies Meta<typeof FileUpload>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Basic file upload component with default configuration.
@@ -105,7 +105,7 @@ export const Basic: Story = {
       },
     },
   },
-};
+}
 
 /**
  * File upload component in list display mode.
@@ -125,7 +125,7 @@ export const ListDisplay: Story = {
       },
     },
   },
-};
+}
 
 /**
  * File upload component limited to a single file.
@@ -145,7 +145,7 @@ export const SingleFileUpload: Story = {
       },
     },
   },
-};
+}
 
 /**
  * File upload component with custom accepted file types.
@@ -168,7 +168,7 @@ export const CustomFileTypes: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Disabled file upload component.
@@ -188,7 +188,7 @@ export const Disabled: Story = {
       },
     },
   },
-};
+}
 
 /**
  * File upload component with form composition properties.
@@ -212,15 +212,15 @@ export const WithFormComposition: Story = {
       },
     },
   },
-};
+}
 
 /**
  * File upload component with form integration example using react-hook-form and zod validation.
  */
 export const WithFormIntegration: Story = {
   render: () => {
-    const MAX_FILE_SIZE = 3000000; // 3MB
-    const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
+    const MAX_FILE_SIZE = 3000000 // 3MB
+    const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"]
 
     const formSchema = z.object({
       files: zodFile({
@@ -228,18 +228,18 @@ export const WithFormIntegration: Story = {
         maxFileSize: MAX_FILE_SIZE,
         length: { min: 1, max: 3 },
       }),
-    });
+    })
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
         files: [],
       },
-    });
+    })
 
     function onSubmit(data: z.infer<typeof formSchema>) {
-      console.log("Submitted files:", data.files);
-      alert(`Submitted ${data.files.length} files`);
+      console.log("Submitted files:", data.files)
+      alert(`Submitted ${data.files.length} files`)
     }
 
     return (
@@ -272,7 +272,7 @@ export const WithFormIntegration: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -282,20 +282,20 @@ export const WithFormIntegration: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive form example with multiple file upload fields.
  */
 export const CompleteFormExample: Story = {
   render: () => {
-    const MAX_FILE_SIZE = 3000000; // 3MB
-    const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"];
+    const MAX_FILE_SIZE = 3000000 // 3MB
+    const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"]
     const ACCEPTED_DOCUMENT_TYPES = [
       "application/pdf",
       "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    ];
+    ]
 
     const formSchema = z.object({
       profilePhoto: zodFile({
@@ -313,7 +313,7 @@ export const CompleteFormExample: Story = {
         maxFileSize: MAX_FILE_SIZE,
         length: { min: 0, max: 10 },
       }).optional(),
-    });
+    })
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -322,11 +322,11 @@ export const CompleteFormExample: Story = {
         documents: [],
         galleryImages: [],
       },
-    });
+    })
 
     function onSubmit(data: z.infer<typeof formSchema>) {
-      console.log("Form submitted:", data);
-      alert("Form submitted successfully! Check console for details.");
+      console.log("Form submitted:", data)
+      alert("Form submitted successfully! Check console for details.")
     }
 
     return (
@@ -384,7 +384,7 @@ export const CompleteFormExample: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -394,7 +394,7 @@ export const CompleteFormExample: Story = {
       },
     },
   },
-};
+}
 
 /**
  * File upload with predefined values, demonstrating how to handle existing files.
@@ -406,11 +406,11 @@ export const WithPredefinedFiles: Story = {
       [],
       "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
       { type: "image/jpeg" }
-    );
+    )
 
     const samplePdf = new File([], "sample-document.pdf", {
       type: "application/pdf",
-    });
+    })
 
     return (
       <div className="w-full space-y-6">
@@ -433,7 +433,7 @@ export const WithPredefinedFiles: Story = {
           }}
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -443,21 +443,21 @@ export const WithPredefinedFiles: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Form example similar to the FormDemo component in the project.
  */
 export const FormDemoExample: Story = {
   render: () => {
-    const MAX_FILE_SIZE = 3000000; // 3MB
+    const MAX_FILE_SIZE = 3000000 // 3MB
     const ACCEPTED_IMAGE_TYPES = [
       "image/jpeg",
       "image/jpg",
       "image/png",
       "application/pdf",
-    ];
-    const ACCEPTED_PDF_TYPES = ["application/pdf"];
+    ]
+    const ACCEPTED_PDF_TYPES = ["application/pdf"]
 
     // Define the schema similar to FormDemo.tsx
     const FormSchema = z.object({
@@ -471,7 +471,7 @@ export const FormDemoExample: Story = {
         maxFileSize: MAX_FILE_SIZE,
         length: { min: 1, max: 5 },
       }),
-    });
+    })
 
     // Setup the form with default values similar to FormDemo.tsx
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -487,11 +487,11 @@ export const FormDemoExample: Story = {
           ),
         ],
       },
-    });
+    })
 
     function onSubmit(data: z.infer<typeof FormSchema>) {
-      console.log("Form data:", data);
-      alert("Form submitted! Check console for details.");
+      console.log("Form data:", data)
+      alert("Form submitted! Check console for details.")
     }
 
     return (
@@ -538,7 +538,7 @@ export const FormDemoExample: Story = {
                 type="reset"
                 variant="secondary"
                 onClick={() => {
-                  form.reset();
+                  form.reset()
                 }}
               >
                 Reset Form
@@ -547,7 +547,7 @@ export const FormDemoExample: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -557,7 +557,7 @@ export const FormDemoExample: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Display variants comparison showing grid and list views side by side.
@@ -569,13 +569,13 @@ export const DisplayVariantsComparison: Story = {
       [],
       "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
       { type: "image/jpeg" }
-    );
+    )
 
     const sampleFile2 = new File([], "document.pdf", {
       type: "application/pdf",
-    });
+    })
 
-    const sampleFiles = [sampleFile1, sampleFile2];
+    const sampleFiles = [sampleFile1, sampleFile2]
 
     return (
       <div className="w-full space-y-8">
@@ -599,7 +599,7 @@ export const DisplayVariantsComparison: Story = {
           }}
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -609,4 +609,4 @@ export const DisplayVariantsComparison: Story = {
       },
     },
   },
-};
+}

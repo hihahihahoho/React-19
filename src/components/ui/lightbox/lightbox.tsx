@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react";
+import { cn } from "@/lib/utils"
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from "lucide-react"
 import {
   AnimatePresence,
   motion,
@@ -7,92 +7,92 @@ import {
   useMotionValue,
   useMotionValueEvent,
   useTransform,
-} from "motion/react";
-import React, { useCallback, useEffect } from "react";
-import { createPortal } from "react-dom";
-import { RemoveScroll } from "react-remove-scroll";
-import { FreeMode, Keyboard, Navigation, Thumbs, Zoom } from "swiper/modules";
-import { Swiper, SwiperRef, SwiperSlide } from "swiper/react";
-import { Swiper as SwiperType } from "swiper/types";
-import { Button } from "../button";
+} from "motion/react"
+import React, { useCallback, useEffect } from "react"
+import { createPortal } from "react-dom"
+import { RemoveScroll } from "react-remove-scroll"
+import { FreeMode, Keyboard, Navigation, Thumbs, Zoom } from "swiper/modules"
+import { Swiper, SwiperRef, SwiperSlide } from "swiper/react"
+import { Swiper as SwiperType } from "swiper/types"
+import { Button } from "../button"
 
-const LightboxIdContext = React.createContext<string | undefined>(undefined);
-const MotionButton = motion(Button);
+const LightboxIdContext = React.createContext<string | undefined>(undefined)
+const MotionButton = motion(Button)
 
 export const LightboxContext = ({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) => {
-  const id = React.useId(); // Generate a unique id for each component
+  const id = React.useId() // Generate a unique id for each component
 
   return (
     <LightboxIdContext.Provider value={id}>
       {children}
     </LightboxIdContext.Provider>
-  );
-};
+  )
+}
 
 export const useLightBoxId = () => {
-  const context = React.useContext(LightboxIdContext);
+  const context = React.useContext(LightboxIdContext)
   if (!context) {
-    throw new Error("useLightBoxId must be used within a LightboxContext");
+    throw new Error("useLightBoxId must be used within a LightboxContext")
   }
-  return context;
-};
+  return context
+}
 
 export type LightBoxImageType = {
-  src: string;
-  thumb?: string;
-  alt?: string;
-};
+  src: string
+  thumb?: string
+  alt?: string
+}
 
 type LightboxItemProps = React.HTMLAttributes<HTMLDivElement> &
   Omit<LightBoxImageType, "thumb"> & {
-    index: number;
-    selectedIndex: number;
-    onSelect: (index: number) => void;
-  };
+    index: number
+    selectedIndex: number
+    onSelect: (index: number) => void
+  }
 
 const LightboxItem = React.forwardRef<HTMLDivElement, LightboxItemProps>(
   ({ className, src, index, selectedIndex, onSelect, ...props }, ref) => {
-    const id = useLightBoxId();
-    const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
-    const imageRef = React.useRef<HTMLImageElement | null>(null);
+    const id = useLightBoxId()
+    const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 })
+    const imageRef = React.useRef<HTMLImageElement | null>(null)
 
     React.useEffect(() => {
-      if (!src) return;
+      if (!src) return
 
-      let checkInterval: NodeJS.Timeout | null = null;
-      const img = new Image();
-      img.src = src;
+      let checkInterval: NodeJS.Timeout | null = null
+      const img = new Image()
+      img.src = src
 
       const checkDimensions = () => {
         if (img.naturalWidth > 0 && img.naturalHeight > 0) {
-          setDimensions({ width: img.naturalWidth, height: img.naturalHeight });
-          console.log("Image dimensions:", img.naturalWidth, img.naturalHeight);
+          setDimensions({ width: img.naturalWidth, height: img.naturalHeight })
+          console.log("Image dimensions:", img.naturalWidth, img.naturalHeight)
 
           if (checkInterval) {
-            clearInterval(checkInterval);
-            checkInterval = null;
+            clearInterval(checkInterval)
+            checkInterval = null
           }
         }
-      };
+      }
 
-      checkInterval = setInterval(checkDimensions, 10);
+      checkInterval = setInterval(checkDimensions, 10)
 
       return () => {
         if (checkInterval) {
-          clearInterval(checkInterval);
+          clearInterval(checkInterval)
         }
-      };
-    }, [src]);
+      }
+    }, [src])
 
     return (
       <div
         ref={ref}
         className={cn(
-          "thumbnail-item cursor-zoom-in aspect-square relative overflow-hidden",
+          "thumbnail-item relative aspect-square cursor-zoom-in overflow-hidden",
           className
         )}
         {...props}
@@ -101,7 +101,7 @@ const LightboxItem = React.forwardRef<HTMLDivElement, LightboxItemProps>(
           layoutId={`${id}-image-${index}`}
           src={src}
           ref={imageRef}
-          className="absolute z-10 object-cover w-full h-full col-start-1 row-start-1 rounded-lg pointer-events-none"
+          className="pointer-events-none absolute z-10 col-start-1 row-start-1 h-full w-full rounded-lg object-cover"
           transition={{
             duration: selectedIndex === index ? 0.3 : 0,
           }}
@@ -110,26 +110,26 @@ const LightboxItem = React.forwardRef<HTMLDivElement, LightboxItemProps>(
         <img
           alt=""
           src={src}
-          className="relative z-0 object-cover w-full h-full col-start-1 row-start-1 rounded-lg"
+          className="relative z-0 col-start-1 row-start-1 h-full w-full rounded-lg object-cover"
           onClick={() => onSelect(index)}
         />
       </div>
-    );
+    )
   }
-);
+)
 
-LightboxItem.displayName = "LightboxItem";
+LightboxItem.displayName = "LightboxItem"
 
 type LightboxRootProps = {
-  images: LightBoxImageType[];
-  defaultOpen?: boolean;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  defaultIndex?: number;
-  index?: number;
-  onIndexChange?: (index: number) => void;
-  dragCloseThreshold?: number;
-};
+  images: LightBoxImageType[]
+  defaultOpen?: boolean
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  defaultIndex?: number
+  index?: number
+  onIndexChange?: (index: number) => void
+  dragCloseThreshold?: number
+}
 
 const LightboxRoot = ({
   images,
@@ -141,69 +141,68 @@ const LightboxRoot = ({
   onIndexChange,
   dragCloseThreshold = 100,
 }: LightboxRootProps) => {
-  const id = useLightBoxId();
-  const [scope, animate] = useAnimate();
+  const id = useLightBoxId()
+  const [scope, animate] = useAnimate()
 
   const [thumbsSwiper, setThumbsSwiper] = React.useState<SwiperType | null>(
     null
-  );
+  )
 
   // Internal state for uncontrolled mode
-  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen);
-  const [uncontrolledIndex, setUncontrolledIndex] =
-    React.useState(defaultIndex);
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
+  const [uncontrolledIndex, setUncontrolledIndex] = React.useState(defaultIndex)
 
   // Determine if we're in controlled mode
-  const isOpenControlled = controlledOpen !== undefined;
-  const isIndexControlled = controlledIndex !== undefined;
+  const isOpenControlled = controlledOpen !== undefined
+  const isIndexControlled = controlledIndex !== undefined
 
   // Use controlled or uncontrolled values
-  const open = isOpenControlled ? controlledOpen : uncontrolledOpen;
-  const selectedIndex = isIndexControlled ? controlledIndex : uncontrolledIndex;
+  const open = isOpenControlled ? controlledOpen : uncontrolledOpen
+  const selectedIndex = isIndexControlled ? controlledIndex : uncontrolledIndex
 
   // Handler functions that work in both controlled and uncontrolled modes
   const handleOpenChange = useCallback(
     (newOpen: boolean) => {
       if (!isOpenControlled) {
-        setUncontrolledOpen(newOpen);
+        setUncontrolledOpen(newOpen)
       }
-      onOpenChange?.(newOpen);
+      onOpenChange?.(newOpen)
     },
     [isOpenControlled, onOpenChange]
-  );
+  )
 
   const handleIndexChange = useCallback(
     (newIndex: number) => {
       if (!isIndexControlled) {
-        setUncontrolledIndex(newIndex);
+        setUncontrolledIndex(newIndex)
       }
-      onIndexChange?.(newIndex);
+      onIndexChange?.(newIndex)
     },
     [isIndexControlled, onIndexChange]
-  );
+  )
 
-  const y = useMotionValue(0);
+  const y = useMotionValue(0)
   const opacity = useTransform(
     y,
     [-dragCloseThreshold * 1, 0, dragCloseThreshold * 1],
     [0, 1, 0]
-  );
-  const ref = React.useRef<SwiperRef | null>(null);
-  const [scale, setScale] = React.useState(1);
+  )
+  const ref = React.useRef<SwiperRef | null>(null)
+  const [scale, setScale] = React.useState(1)
 
   // Keyboard event handler
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && open) {
-        event.preventDefault();
-        event.stopPropagation();
-        handleOpenChange(false);
+        event.preventDefault()
+        event.stopPropagation()
+        handleOpenChange(false)
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [open, handleOpenChange]);
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [open, handleOpenChange])
 
   useMotionValueEvent(y, "change", () => {
     if (open) {
@@ -213,35 +212,35 @@ const LightboxRoot = ({
         {
           duration: 0,
         }
-      );
+      )
     }
-  });
+  })
   React.useEffect(() => {
     if (!open) {
-      setThumbsSwiper(null);
+      setThumbsSwiper(null)
     }
-  }, [open]);
+  }, [open])
 
   return createPortal(
     <AnimatePresence>
       {open && (
         <RemoveScroll>
           <motion.div
-            className="fixed inset-0 z-50 text-white pointer-events-auto"
+            className="pointer-events-auto fixed inset-0 z-50 text-white"
             initial={false}
             animate="animate"
             exit="exit"
           >
             <motion.div
               ref={scope}
-              className="absolute inset-0 top-0 left-0 bg-black cursor-pointer backdrop bg-opacity-80 backdrop-blur-lg"
+              className="backdrop absolute inset-0 left-0 top-0 cursor-pointer bg-black bg-opacity-80 backdrop-blur-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => handleOpenChange(false)}
             ></motion.div>
-            <div className="relative z-10 flex flex-col h-full pointer-events-none">
+            <div className="pointer-events-none relative z-10 flex h-full flex-col">
               <motion.div
                 initial={{ opacity: 0 }}
                 transition={{
@@ -250,7 +249,7 @@ const LightboxRoot = ({
                 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="flex items-center gap-2 p-4 md:py-6 md:px-8"
+                className="flex items-center gap-2 p-4 md:px-8 md:py-6"
               >
                 <div className="flex-1 truncate">
                   {images[selectedIndex].src.split("/").pop()}
@@ -261,10 +260,10 @@ const LightboxRoot = ({
                   iconOnly
                   variant="ghost"
                   className={cn(
-                    "bg-transparent rounded-full backdrop-blur-lg [&_svg]:text-white hover:bg-black/60"
+                    "rounded-full bg-transparent backdrop-blur-lg hover:bg-black/60 [&_svg]:text-white"
                   )}
                   onClick={() => {
-                    ref.current?.swiper.zoom.toggle();
+                    ref.current?.swiper.zoom.toggle()
                   }}
                 >
                   {scale === 1 ? (
@@ -277,15 +276,15 @@ const LightboxRoot = ({
                   size={"lg"}
                   iconOnly
                   variant="ghost"
-                  className="bg-transparent rounded-full backdrop-blur-lg hover:bg-black/60 [&_svg]:text-white"
+                  className="rounded-full bg-transparent backdrop-blur-lg hover:bg-black/60 [&_svg]:text-white"
                   onClick={() => {
-                    handleOpenChange(false);
+                    handleOpenChange(false)
                   }}
                 >
                   <X className="!size-6" />
                 </Button>
               </motion.div>
-              <div className="relative flex-1 overflow-y-auto pointer-events-auto">
+              <div className="pointer-events-auto relative flex-1 overflow-y-auto">
                 <MotionButton
                   initial={{ opacity: 0 }}
                   transition={{
@@ -297,14 +296,14 @@ const LightboxRoot = ({
                   size={"lg"}
                   iconOnly
                   variant="ghost"
-                  className="absolute top-0 bottom-0 right-4 md:right-20 m-auto md:size-14 rounded-full bg-black/80 backdrop-blur-lg z-20 hover:bg-black/60 disabled:!pointer-events-auto disabled:cursor-not-allowed disabled:!opacity-50"
+                  className="absolute bottom-0 right-4 top-0 z-20 m-auto rounded-full bg-black/80 backdrop-blur-lg hover:bg-black/60 disabled:!pointer-events-auto disabled:cursor-not-allowed disabled:!opacity-50 md:right-20 md:size-14"
                   disabled={selectedIndex === images.length - 1}
                   onClick={() => {
-                    ref.current?.swiper.slideNext();
+                    ref.current?.swiper.slideNext()
                   }}
                 >
                   <ChevronRight
-                    className="md:!size-12 !text-white"
+                    className="!text-white md:!size-12"
                     strokeWidth="1"
                   />
                 </MotionButton>
@@ -319,14 +318,14 @@ const LightboxRoot = ({
                   size={"lg"}
                   iconOnly
                   variant="ghost"
-                  className="absolute top-0 bottom-0 left-4 md:left-20 m-auto md:size-14 rounded-full bg-black/80 backdrop-blur-lg z-20 hover:bg-black/60 disabled:!pointer-events-auto disabled:cursor-not-allowed disabled:!opacity-50"
+                  className="absolute bottom-0 left-4 top-0 z-20 m-auto rounded-full bg-black/80 backdrop-blur-lg hover:bg-black/60 disabled:!pointer-events-auto disabled:cursor-not-allowed disabled:!opacity-50 md:left-20 md:size-14"
                   disabled={selectedIndex === 0}
                   onClick={() => {
-                    ref.current?.swiper.slidePrev();
+                    ref.current?.swiper.slidePrev()
                   }}
                 >
                   <ChevronLeft
-                    className="md:!size-12 !text-white"
+                    className="!text-white md:!size-12"
                     strokeWidth="1"
                   />
                 </MotionButton>
@@ -341,13 +340,13 @@ const LightboxRoot = ({
                   }}
                   thumbs={{ swiper: thumbsSwiper }}
                   modules={[Zoom, Thumbs, Keyboard]}
-                  className="w-full h-full"
+                  className="h-full w-full"
                   onSlideChangeTransitionEnd={(swiper) => {
-                    handleIndexChange(swiper.activeIndex);
+                    handleIndexChange(swiper.activeIndex)
                   }}
                   initialSlide={selectedIndex}
                   onZoomChange={(_swiper, scale) => {
-                    setScale(scale);
+                    setScale(scale)
                   }}
                   keyboard={true}
                 >
@@ -359,7 +358,7 @@ const LightboxRoot = ({
                       >
                         <motion.div
                           className={cn(
-                            "flex items-center justify-center w-fit h-full",
+                            "flex h-full w-fit items-center justify-center",
                             scale === 1
                               ? "pointer-events-auto"
                               : "pointer-events-none"
@@ -374,14 +373,14 @@ const LightboxRoot = ({
                           }}
                           onDragEnd={(_e, { offset }) => {
                             if (Math.abs(offset.y) > dragCloseThreshold) {
-                              handleOpenChange(false);
+                              handleOpenChange(false)
                             }
                           }}
                           style={{ y }}
                           onClick={(e) => e.stopPropagation()}
                         >
                           <motion.div
-                            className="flex items-center h-full max-h-full pointer-events-auto w-fit"
+                            className="pointer-events-auto flex h-full max-h-full w-fit items-center"
                             layoutId={`${id}-image-${i}`}
                             transition={{
                               duration: selectedIndex === i ? 0.3 : 0,
@@ -408,11 +407,11 @@ const LightboxRoot = ({
                 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: "100%" }}
-                className="max-w-full mx-auto"
+                className="mx-auto max-w-full"
               >
                 <Swiper
                   onSwiper={setThumbsSwiper}
-                  className="!h-auto p-4 pointer-events-auto"
+                  className="pointer-events-auto !h-auto p-4"
                   slidesPerView={"auto"}
                   freeMode={true}
                   watchSlidesProgress={true}
@@ -425,15 +424,15 @@ const LightboxRoot = ({
                   {images.map((image, i) => (
                     <SwiperSlide
                       key={i}
-                      className="w-[100px] [&.swiper-slide-thumb-active_.img-wraper]:ring-border [&.swiper-slide-thumb-active_.img-wraper]:ring-1 overflow-hidden"
+                      className="w-[100px] overflow-hidden [&.swiper-slide-thumb-active_.img-wraper]:ring-1 [&.swiper-slide-thumb-active_.img-wraper]:ring-border"
                     >
                       <div className="p-2">
-                        <div className="aspect-square img-wraper ring-transparent rounded-xl ring-offset-1">
+                        <div className="img-wraper aspect-square rounded-xl ring-transparent ring-offset-1">
                           <img
                             onClick={(e) => e.stopPropagation()}
                             src={image.thumb || image.src}
                             alt={image.alt || ""}
-                            className="object-cover w-full h-full rounded-xl"
+                            className="h-full w-full rounded-xl object-cover"
                           />
                         </div>
                       </div>
@@ -447,7 +446,7 @@ const LightboxRoot = ({
       )}
     </AnimatePresence>,
     document.body
-  );
-};
+  )
+}
 
-export { LightboxRoot as Lightbox, LightboxItem };
+export { LightboxRoot as Lightbox, LightboxItem }

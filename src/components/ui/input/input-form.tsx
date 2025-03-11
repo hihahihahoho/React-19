@@ -1,24 +1,24 @@
-import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
-import { FormField } from "../form/form";
-import { useZodSchema } from "../form/zod-schema-context";
-import { Input, InputProps } from "./input";
+import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
+import { FormField } from "../form/form"
+import { useZodSchema } from "../form/zod-schema-context"
+import { Input, InputProps } from "./input"
 
 export interface InputFormProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends ControllerProps<TFieldValues, TName>,
     Omit<InputProps, "defaultValue" | "name"> {}
 
 const InputForm = <
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 >({
   name,
   control,
   ...props
 }: Omit<InputFormProps<TFieldValues, TName>, "render">) => {
-  const { getJsonSchema } = useZodSchema();
-  const { isRequired } = getJsonSchema(name);
+  const { getJsonSchema } = useZodSchema()
+  const { isRequired } = getJsonSchema(name)
   return (
     <FormField
       name={name}
@@ -26,24 +26,24 @@ const InputForm = <
       render={({ field: { value, onChange, ...field } }) => {
         const handleClear = () => {
           if (props.type === "file") {
-            onChange(null);
+            onChange(null)
           } else {
-            onChange("");
+            onChange("")
           }
-          props.formComposition?.onClear?.();
-        };
+          props.formComposition?.onClear?.()
+        }
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           if (props.type === "file") {
-            const { files } = e.target;
+            const { files } = e.target
             onChange({
               target: { value: files },
-            });
+            })
           } else {
-            const { value } = e.target;
-            onChange(value);
+            const { value } = e.target
+            onChange(value)
           }
-        };
+        }
         return (
           <Input
             {...field}
@@ -56,12 +56,12 @@ const InputForm = <
               onClear: handleClear,
             }}
           />
-        );
+        )
       }}
     />
-  );
-};
+  )
+}
 
-InputForm.displayName = "InputForm";
+InputForm.displayName = "InputForm"
 
-export { InputForm };
+export { InputForm }

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,15 +10,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   Lightbox,
   LightboxContext,
   LightBoxImageType,
   LightboxItem,
-} from "@/components/ui/lightbox/lightbox";
-import { LightBoxImageGrid } from "@/components/ui/lightbox/lightbox-custom";
-import { useState } from "react";
+} from "@/components/ui/lightbox/lightbox"
+import { LightBoxImageGrid } from "@/components/ui/lightbox/lightbox-custom"
+import { useState } from "react"
 
 const meta = {
   title: "Base/Lightbox",
@@ -26,11 +26,11 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof Lightbox>;
+} satisfies Meta<typeof Lightbox>
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 const lightboxItems: LightBoxImageType[] = [
   {
     src: "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
@@ -64,24 +64,24 @@ const lightboxItems: LightBoxImageType[] = [
     src: "https://swiperjs.com/demos/images/nature-9.jpg",
     alt: "Image 9",
   },
-];
+]
 
 export const Default: Story = {
   args: {
     images: lightboxItems,
   },
   render: () => {
-    return <LightBoxImageGrid images={lightboxItems} />;
+    return <LightBoxImageGrid images={lightboxItems} />
   },
-};
+}
 
 export const InsideDialog: Story = {
   args: {
     images: lightboxItems,
   },
   render: () => {
-    const [index, setIndex] = useState(0);
-    const [open, setOpen] = useState(false);
+    const [index, setIndex] = useState(0)
+    const [open, setOpen] = useState(false)
     return (
       <Dialog>
         <DialogTrigger asChild>
@@ -104,8 +104,8 @@ export const InsideDialog: Story = {
                   index={i}
                   selectedIndex={index}
                   onSelect={() => {
-                    setIndex(i);
-                    setOpen(true);
+                    setIndex(i)
+                    setOpen(true)
                   }}
                 />
               ))}
@@ -124,17 +124,17 @@ export const InsideDialog: Story = {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    );
+    )
   },
-};
+}
 
 export const Custom: Story = {
   args: {
     images: lightboxItems,
   },
   render: () => {
-    const [index, setIndex] = useState(0);
-    const [open, setOpen] = useState(false);
+    const [index, setIndex] = useState(0)
+    const [open, setOpen] = useState(false)
     return (
       <LightboxContext>
         <div className="grid grid-cols-3 gap-2 overflow-hidden md:grid-cols-8">
@@ -145,8 +145,8 @@ export const Custom: Story = {
               index={i}
               selectedIndex={index}
               onSelect={() => {
-                setIndex(i);
-                setOpen(true);
+                setIndex(i)
+                setOpen(true)
               }}
             />
           ))}
@@ -159,6 +159,6 @@ export const Custom: Story = {
           images={lightboxItems}
         ></Lightbox>
       </LightboxContext>
-    );
+    )
   },
-};
+}

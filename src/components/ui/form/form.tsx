@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { cn } from "@/lib/utils";
-import * as LabelPrimitive from "@radix-ui/react-label";
-import { Slot, Slottable } from "@radix-ui/react-slot";
-import { cva, VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { cn } from "@/lib/utils"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { Slot, Slottable } from "@radix-ui/react-slot"
+import { cva, VariantProps } from "class-variance-authority"
+import * as React from "react"
 import {
   Controller,
   ControllerProps,
@@ -12,13 +12,13 @@ import {
   FieldValues,
   FormProvider,
   useFormContext,
-} from "react-hook-form";
-import { buttonVariants } from "../button";
-import { CloseCircle } from "../custom-icons";
-import { Label } from "../label";
+} from "react-hook-form"
+import { buttonVariants } from "../button"
+import { CloseCircle } from "../custom-icons"
+import { Label } from "../label"
 
-const Form = FormProvider;
-const compositionClass = " items-center relative flex-shrink-0 flex";
+const Form = FormProvider
+const compositionClass = " items-center relative flex-shrink-0 flex"
 
 // Define your variants as before
 const inputSizeVariants = cva("", {
@@ -87,25 +87,25 @@ const inputSizeVariants = cva("", {
       className: "min-h-[38px]",
     },
   ],
-});
+})
 
 const inputContainerVariants = cva(
-  "outline-none flex w-full rounded-lg bg-transparent ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 cursor-text px-3 gap-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 ",
+  "flex w-full cursor-text gap-2 rounded-lg bg-transparent px-3 outline-none ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default: "border border-input shadow-sm dark:bg-neutral-900",
         white: "bg-background",
         ghost:
-          "!border-0 !ring-offset-0 !ring-0 !shadow-none rounded-none bg-transparent",
+          "rounded-none !border-0 bg-transparent !shadow-none !ring-0 !ring-offset-0",
         empty:
-          "!border-0 !ring-offset-0 !ring-0 !shadow-none rounded-none bg-transparent p-0 !block",
-        inline: "border-none shadow-none bg-transparent px-0 h-full",
+          "!block rounded-none !border-0 bg-transparent p-0 !shadow-none !ring-0 !ring-offset-0",
+        inline: "h-full border-none bg-transparent px-0 shadow-none",
       },
       focusWithin: {
-        true: "focus-within:ring-[3px] focus-within:ring-ring/20 transition-shadow focus-within:border-ring",
+        true: "transition-shadow focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/20",
         false:
-          "focus-visible:ring-[3px] focus-visible:ring-ring/20 transition-shadow focus-visible:border-ring",
+          "transition-shadow focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20",
       },
     },
     defaultVariants: {
@@ -113,21 +113,21 @@ const inputContainerVariants = cva(
       variant: "default",
     },
   }
-);
+)
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
-  name: TName;
-};
+  name: TName
+}
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
-);
+)
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -135,31 +135,31 @@ const FormField = <
     <FormFieldContext.Provider value={{ name: props.name }}>
       <Controller {...props} />
     </FormFieldContext.Provider>
-  );
-};
+  )
+}
 
 const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext);
+  const fieldContext = React.useContext(FormFieldContext)
   const { getFieldState, formState } = useFormContext() || {
     getFieldState: () => ({}),
-  };
+  }
 
-  const fieldState = getFieldState(fieldContext.name, formState);
+  const fieldState = getFieldState(fieldContext.name, formState)
 
   return {
     name: fieldContext.name,
     ...fieldState,
-  };
-};
+  }
+}
 
 function FormItem({ className, ...props }: React.ComponentProps<"div">) {
-  const id = React.useId();
+  const id = React.useId()
   const contextValue = {
     id,
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
-  };
+  }
 
   return (
     <FormItemContext.Provider value={contextValue}>
@@ -169,22 +169,22 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
         {...props}
       />
     </FormItemContext.Provider>
-  );
+  )
 }
 
 type FormItemContextValue = {
-  id: string;
-  formItemId: string;
-  formDescriptionId: string;
-  formMessageId: string;
-};
+  id: string
+  formItemId: string
+  formDescriptionId: string
+  formMessageId: string
+}
 
 const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue
-);
+)
 
 function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
-  const { formDescriptionId } = React.useContext(FormItemContext);
+  const { formDescriptionId } = React.useContext(FormItemContext)
 
   return (
     <p
@@ -193,7 +193,7 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
       className={cn("text-[0.8rem] text-muted-foreground", className)}
       {...props}
     />
-  );
+  )
 }
 
 function FormMessage({
@@ -201,9 +201,9 @@ function FormMessage({
   children,
   ...props
 }: React.ComponentProps<"p">) {
-  const { error } = useFormField();
-  const { formMessageId } = React.useContext(FormItemContext);
-  const body = error?.message || children;
+  const { error } = useFormField()
+  const { formMessageId } = React.useContext(FormItemContext)
+  const body = error?.message || children
 
   return body ? (
     <p
@@ -214,22 +214,22 @@ function FormMessage({
     >
       {body}
     </p>
-  ) : null;
+  ) : null
 }
 
 export const FormContext = React.createContext<{
-  labelPosition: "vertical" | "horizontal";
-  isFocused?: boolean;
-  size?: VariantProps<typeof inputSizeVariants>["size"];
+  labelPosition: "vertical" | "horizontal"
+  isFocused?: boolean
+  size?: VariantProps<typeof inputSizeVariants>["size"]
 }>({
   labelPosition: "vertical",
   isFocused: false,
-});
+})
 
 export interface FormWrapperProps {
-  labelPosition?: "vertical" | "horizontal";
-  children?: React.ReactNode;
-  isFocused?: boolean;
+  labelPosition?: "vertical" | "horizontal"
+  children?: React.ReactNode
+  isFocused?: boolean
 }
 
 function FormWrapper({
@@ -244,8 +244,8 @@ function FormWrapper({
       <div
         data-slot="form-wrapper"
         className={cn(
-          "form-wrapper-class grid gap-y-1.5 text-sm items-start",
-          labelPosition === "horizontal" && "md:grid-cols-12 gap-x-6",
+          "form-wrapper-class grid items-start gap-y-1.5 text-sm",
+          labelPosition === "horizontal" && "gap-x-6 md:grid-cols-12",
           isFocused && "isFocused",
           className
         )}
@@ -254,7 +254,7 @@ function FormWrapper({
         {children}
       </div>
     </FormContext.Provider>
-  );
+  )
 }
 
 function FormLabelWrapper({
@@ -262,13 +262,13 @@ function FormLabelWrapper({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const { labelPosition, size } = React.useContext(FormContext);
+  const { labelPosition, size } = React.useContext(FormContext)
 
   return (
     <div
       data-slot="form-label-wrapper"
       className={cn(
-        "flex items-center label-class",
+        "label-class flex items-center",
         labelPosition === "horizontal" &&
           inputSizeVariants({ size, isMinHeightNormal: true }),
         className
@@ -277,12 +277,12 @@ function FormLabelWrapper({
     >
       {children}
     </div>
-  );
+  )
 }
 
 interface FormLabelProps
   extends React.ComponentProps<typeof LabelPrimitive.Root> {
-  requiredSymbol?: boolean;
+  requiredSymbol?: boolean
 }
 
 function FormLabel({
@@ -291,8 +291,8 @@ function FormLabel({
   requiredSymbol,
   ...props
 }: FormLabelProps) {
-  const { error } = useFormField();
-  const { formItemId } = React.useContext(FormItemContext);
+  const { error } = useFormField()
+  const { formItemId } = React.useContext(FormItemContext)
 
   return (
     <Label
@@ -306,13 +306,13 @@ function FormLabel({
         <span className="w-2 text-center text-destructive">*</span>
       )}
     </Label>
-  );
+  )
 }
 
 function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
-  const { error } = useFormField();
+  const { error } = useFormField()
   const { formItemId, formDescriptionId, formMessageId } =
-    React.useContext(FormItemContext);
+    React.useContext(FormItemContext)
 
   return (
     <Slot
@@ -324,13 +324,13 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
       aria-invalid={!!error}
       {...props}
     />
-  );
+  )
 }
 
 function FormControlButton({ ...props }: React.ComponentProps<"button">) {
-  const { error } = useFormField();
+  const { error } = useFormField()
   const { formItemId, formDescriptionId, formMessageId } =
-    React.useContext(FormItemContext);
+    React.useContext(FormItemContext)
 
   return (
     <button
@@ -344,52 +344,52 @@ function FormControlButton({ ...props }: React.ComponentProps<"button">) {
           : `${formDescriptionId} ${formMessageId}`
       }
     />
-  );
+  )
 }
 
 export interface FormCompositionProps
   extends VariantProps<typeof inputContainerVariants>,
     VariantProps<typeof inputSizeVariants>,
     FormWrapperProps {
-  className?: string;
-  prefix?: React.ReactNode;
-  suffix?: React.ReactNode;
-  iconLeft?: string | React.ReactNode;
-  iconRight?: string | React.ReactNode;
+  className?: string
+  prefix?: React.ReactNode
+  suffix?: React.ReactNode
+  iconLeft?: string | React.ReactNode
+  iconRight?: string | React.ReactNode
   prefixNotFocusInput?: {
-    order?: number;
-    element: React.ReactNode;
-  };
+    order?: number
+    element: React.ReactNode
+  }
   suffixNotFocusInput?: {
-    order?: number;
-    element: React.ReactNode;
-  };
-  isFocused?: boolean;
-  hasValue?: boolean;
-  inputClear?: boolean;
-  isMinHeight?: boolean;
-  onClear?: () => void;
-  onClick?: (e: React.MouseEvent) => void;
-  onFormCompositionClick?: () => void;
-  children?: React.ReactNode;
-  clearWhenNotFocus?: boolean;
-  suffixOutside?: React.ReactNode;
-  prefixOutside?: React.ReactNode;
-  disabled?: boolean;
-  asChild?: boolean;
-  showErrorMsg?: boolean;
-  description?: React.ReactNode;
-  label?: React.ReactNode;
-  readonly?: boolean;
-  styleButton?: boolean;
-  subDescription?: React.ReactNode;
-  requiredSymbol?: boolean;
+    order?: number
+    element: React.ReactNode
+  }
+  isFocused?: boolean
+  hasValue?: boolean
+  inputClear?: boolean
+  isMinHeight?: boolean
+  onClear?: () => void
+  onClick?: (e: React.MouseEvent) => void
+  onFormCompositionClick?: () => void
+  children?: React.ReactNode
+  clearWhenNotFocus?: boolean
+  suffixOutside?: React.ReactNode
+  prefixOutside?: React.ReactNode
+  disabled?: boolean
+  asChild?: boolean
+  showErrorMsg?: boolean
+  description?: React.ReactNode
+  label?: React.ReactNode
+  readonly?: boolean
+  styleButton?: boolean
+  subDescription?: React.ReactNode
+  requiredSymbol?: boolean
   layout?: {
-    leftColClass: string;
-    rightColClass: string;
-  };
-  ref?: React.RefObject<HTMLDivElement | null>;
-  customError?: React.ReactNode;
+    leftColClass: string
+    rightColClass: string
+  }
+  ref?: React.RefObject<HTMLDivElement | null>
+  customError?: React.ReactNode
 }
 
 function FormComposition({
@@ -432,15 +432,15 @@ function FormComposition({
   const defaultLayout = {
     leftColClass: "md:col-span-4 -md:min-h-0",
     rightColClass: "md:col-span-8",
-  };
-  const newLayout = { ...defaultLayout, ...layout };
-  const Comp = asChild ? Slot : "div";
+  }
+  const newLayout = { ...defaultLayout, ...layout }
+  const Comp = asChild ? Slot : "div"
 
   const handleClick = (e: React.MouseEvent) => {
-    if (disabled) return;
-    onClick?.(e);
-    onFormCompositionClick?.();
-  };
+    if (disabled) return
+    onClick?.(e)
+    onFormCompositionClick?.()
+  }
 
   return (
     <FormItem>
@@ -456,7 +456,7 @@ function FormComposition({
         )}
         <div
           className={cn(
-            "max-w-full min-w-0 grid",
+            "grid min-w-0 max-w-full",
             labelPosition === "horizontal" && newLayout.rightColClass
           )}
         >
@@ -524,12 +524,12 @@ function FormComposition({
                     title="Clear"
                     tabIndex={-1}
                     onMouseDown={(e) => {
-                      e.preventDefault();
-                      onClear?.();
+                      e.preventDefault()
+                      onClear?.()
                     }}
                     className={cn(
                       compositionClass,
-                      "opacity-70 cursor-pointer focus:outline-none -mr-1",
+                      "-mr-1 cursor-pointer opacity-70 focus:outline-none",
                       inputSizeVariants({ size, isMinHeight: true })
                     )}
                   >
@@ -578,7 +578,7 @@ function FormComposition({
           <div className="flex gap-2">
             <div className="space-y-1">
               {description && (
-                <FormDescription className="flex-1 mt-1.5">
+                <FormDescription className="mt-1.5 flex-1">
                   {description}
                 </FormDescription>
               )}
@@ -589,7 +589,7 @@ function FormComposition({
             </div>
 
             {subDescription && (
-              <div className="text-[0.8rem] text-muted-foreground ml-auto mt-1.5">
+              <div className="ml-auto mt-1.5 text-[0.8rem] text-muted-foreground">
                 {subDescription}
               </div>
             )}
@@ -597,7 +597,7 @@ function FormComposition({
         </div>
       </FormWrapper>
     </FormItem>
-  );
+  )
 }
 
 function FormSuffixOutside({
@@ -614,7 +614,7 @@ function FormSuffixOutside({
     >
       {children}
     </div>
-  );
+  )
 }
 function FormPrefixOutside({
   children,
@@ -630,7 +630,7 @@ function FormPrefixOutside({
     >
       {children}
     </div>
-  );
+  )
 }
 
 export {
@@ -648,4 +648,4 @@ export {
   FormPrefixOutside,
   FormSuffixOutside,
   FormWrapper,
-};
+}

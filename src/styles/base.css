@@ -63,12 +63,12 @@ body {
 }
 
 .column-left-shadow {
-  @apply absolute top-0 -right-4 w-4 h-full dark:border-l;
+  @apply absolute -right-4 top-0 h-full w-4 dark:border-l;
   box-shadow: inset 8px 1px 12px -11px rgba(0, 0, 0, 0.2);
 }
 
 .column-right-shadow {
-  @apply absolute top-0 -left-4 w-4 h-full dark:border-r;
+  @apply absolute -left-4 top-0 h-full w-4 dark:border-r;
   box-shadow: inset -8px 1px 12px -11px rgba(0, 0, 0, 0.2);
 }
 .dark {
@@ -103,7 +103,7 @@ body {
   }
 }
 .column-pin-backdrop {
-  @apply absolute w-full h-full top-0 left-0 bottom-0 z-[-1] bg-background dark:bg-card/80 backdrop-blur;
+  @apply absolute bottom-0 left-0 top-0 z-[-1] h-full w-full bg-background backdrop-blur dark:bg-card/80;
 }
 
 @layer base {

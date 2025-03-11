@@ -1,31 +1,31 @@
-import { useLocaleDateConfig } from "@/hooks/use-date-locale-config";
-import { SegmentDateId } from "@/lib/locale-date";
-import { format, getDaysInMonth, isValid, parse } from "date-fns";
-import React, { useEffect, useRef, useState } from "react";
-import { useDateGroupContext } from "./date-time-input-group";
+import { useLocaleDateConfig } from "@/hooks/use-date-locale-config"
+import { SegmentDateId } from "@/lib/locale-date"
+import { format, getDaysInMonth, isValid, parse } from "date-fns"
+import React, { useEffect, useRef, useState } from "react"
+import { useDateGroupContext } from "./date-time-input-group"
 
 function isStringNumber(value: string) {
-  return /^-?\d+(\.\d+)?$/.test(value);
+  return /^-?\d+(\.\d+)?$/.test(value)
 }
 
 function handleZeroValue(val: string): string {
-  return parseInt(val) === 0 ? val.slice(1) + "1" : val;
+  return parseInt(val) === 0 ? val.slice(1) + "1" : val
 }
 
-export type Granularity = "date" | "time" | "datetime";
+export type Granularity = "date" | "time" | "datetime"
 
 interface DateSegmentProps {
-  value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
-  maxLength: number;
-  maxValue: number;
-  id: string; // For accessibility
-  label: string; // For accessibility
-  resetKey: number;
-  segmentRefCallback?: (node: HTMLDivElement | null) => void;
-  disabled?: boolean;
-  readonly?: boolean;
+  value: string
+  onChange: (value: string) => void
+  placeholder: string
+  maxLength: number
+  maxValue: number
+  id: string // For accessibility
+  label: string // For accessibility
+  resetKey: number
+  segmentRefCallback?: (node: HTMLDivElement | null) => void
+  disabled?: boolean
+  readonly?: boolean
 }
 
 function DateSegment({
@@ -41,221 +41,221 @@ function DateSegment({
   disabled,
   readonly,
 }: DateSegmentProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const dateGroup = useDateGroupContext();
+  const ref = useRef<HTMLDivElement>(null)
+  const dateGroup = useDateGroupContext()
 
-  const [isFocused, setIsFocused] = useState(false);
-  const [inputValue, setInputValue] = useState(value);
-  const [isOverwriteMode, setIsOverwriteMode] = useState(true);
+  const [isFocused, setIsFocused] = useState(false)
+  const [inputValue, setInputValue] = useState(value)
+  const [isOverwriteMode, setIsOverwriteMode] = useState(true)
 
   useEffect(() => {
-    const node = ref.current;
+    const node = ref.current
     if (dateGroup && node) {
-      dateGroup.registerSegment(node);
+      dateGroup.registerSegment(node)
 
       return () => {
-        dateGroup.unregisterSegment(node);
-      };
+        dateGroup.unregisterSegment(node)
+      }
     }
-  }, [dateGroup]);
+  }, [dateGroup])
 
   useEffect(() => {
     if (segmentRefCallback) {
-      segmentRefCallback(ref.current);
+      segmentRefCallback(ref.current)
       return () => {
-        segmentRefCallback(null);
-      };
+        segmentRefCallback(null)
+      }
     }
-  }, [segmentRefCallback]);
+  }, [segmentRefCallback])
 
   useEffect(() => {
     if (!isFocused) {
-      setInputValue(value);
+      setInputValue(value)
     }
-  }, [value, isFocused]);
+  }, [value, isFocused])
 
   useEffect(() => {
     if (resetKey > 0) {
-      setInputValue("");
+      setInputValue("")
     }
-  }, [resetKey]);
+  }, [resetKey])
 
   const focusNextSegment = () => {
     if (dateGroup && ref.current) {
-      dateGroup.moveFocus(ref.current, 1);
+      dateGroup.moveFocus(ref.current, 1)
     }
-  };
+  }
   const focusPrevSegment = () => {
     if (dateGroup && ref.current) {
-      dateGroup.moveFocus(ref.current, -1);
+      dateGroup.moveFocus(ref.current, -1)
     }
-  };
+  }
 
   const handleBeforeInput = (e: React.FormEvent<HTMLDivElement>) => {
-    const event = e as unknown as InputEvent;
+    const event = e as unknown as InputEvent
     if (!/^\d+$/.test(event.data || "")) {
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault()
+      e.stopPropagation()
     }
-  };
+  }
 
   const handleNumberInput = (e: React.KeyboardEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const newDigit = e.key;
+    e.preventDefault()
+    e.stopPropagation()
+    const newDigit = e.key
 
     if (isOverwriteMode) {
-      setInputValue(newDigit);
-      setIsOverwriteMode(false);
+      setInputValue(newDigit)
+      setIsOverwriteMode(false)
 
       if (parseInt(newDigit) * 10 > maxValue) {
-        onChange(newDigit);
-        focusNextSegment();
+        onChange(newDigit)
+        focusNextSegment()
       } else {
-        onChange(newDigit);
+        onChange(newDigit)
       }
-      return;
+      return
     }
 
-    const newValue = inputValue + newDigit;
+    const newValue = inputValue + newDigit
 
     if (newValue.length > maxLength) {
-      setInputValue(newDigit);
-      onChange(newDigit);
-      focusNextSegment();
-      return;
+      setInputValue(newDigit)
+      onChange(newDigit)
+      focusNextSegment()
+      return
     }
 
-    const combinedNum = parseInt(newValue);
+    const combinedNum = parseInt(newValue)
 
     if (maxLength === 2) {
       if (combinedNum > maxValue) {
-        setInputValue(newDigit);
-        onChange(newDigit);
-        focusNextSegment();
-        return;
+        setInputValue(newDigit)
+        onChange(newDigit)
+        focusNextSegment()
+        return
       }
       // If single digit *10 is out of range => auto-advance
       if (combinedNum.toString().length === 1 && combinedNum * 10 > maxValue) {
-        setInputValue(newDigit);
-        onChange(newDigit);
-        focusNextSegment();
-        return;
+        setInputValue(newDigit)
+        onChange(newDigit)
+        focusNextSegment()
+        return
       }
 
-      setInputValue(newValue);
-      onChange(newValue);
+      setInputValue(newValue)
+      onChange(newValue)
 
       if (newValue.length === maxLength) {
-        focusNextSegment();
+        focusNextSegment()
       }
     } else {
       // For "year" or other lengths
       if (newValue.length <= maxLength && combinedNum <= maxValue) {
-        setInputValue(newValue);
-        onChange(newValue);
+        setInputValue(newValue)
+        onChange(newValue)
         if (newValue.length === maxLength) {
-          focusNextSegment();
+          focusNextSegment()
         }
       } else {
-        setInputValue(newDigit);
-        onChange(newDigit);
-        focusNextSegment();
+        setInputValue(newDigit)
+        onChange(newDigit)
+        focusNextSegment()
       }
     }
-  };
+  }
 
   // Key handling
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled || readonly) return;
-    e.stopPropagation();
+    if (disabled || readonly) return
+    e.stopPropagation()
     if (e.key === "Tab") {
-      setIsOverwriteMode(true);
-      return;
+      setIsOverwriteMode(true)
+      return
     }
     if (/^\d$/.test(e.key)) {
-      handleNumberInput(e);
-      return;
+      handleNumberInput(e)
+      return
     }
 
     switch (e.key) {
       case "ArrowUp": {
-        e.preventDefault();
-        const nextVal = Math.min((parseInt(inputValue) || 0) + 1, maxValue);
+        e.preventDefault()
+        const nextVal = Math.min((parseInt(inputValue) || 0) + 1, maxValue)
         const valStr =
           maxLength === 2
             ? nextVal.toString().padStart(2, "0")
-            : nextVal.toString();
-        setInputValue(valStr);
-        onChange(valStr);
-        break;
+            : nextVal.toString()
+        setInputValue(valStr)
+        onChange(valStr)
+        break
       }
       case "ArrowDown": {
-        e.preventDefault();
-        const nextVal = Math.max((parseInt(inputValue) || 0) - 1, 0);
+        e.preventDefault()
+        const nextVal = Math.max((parseInt(inputValue) || 0) - 1, 0)
         const valStr =
           maxLength === 2
             ? nextVal.toString().padStart(2, "0")
-            : nextVal.toString();
-        setInputValue(valStr);
-        onChange(valStr);
-        break;
+            : nextVal.toString()
+        setInputValue(valStr)
+        onChange(valStr)
+        break
       }
       case "Backspace":
-        e.preventDefault();
+        e.preventDefault()
         if (inputValue.length > 0) {
-          const newVal = inputValue.slice(0, -1);
-          setInputValue(newVal);
-          onChange(newVal);
+          const newVal = inputValue.slice(0, -1)
+          setInputValue(newVal)
+          onChange(newVal)
         } else {
           // Already empty => jump to previous
-          focusPrevSegment();
+          focusPrevSegment()
         }
-        setIsOverwriteMode(false);
-        break;
+        setIsOverwriteMode(false)
+        break
       case "Delete":
-        e.preventDefault();
-        setInputValue("");
-        onChange("");
-        setIsOverwriteMode(true);
-        break;
+        e.preventDefault()
+        setInputValue("")
+        onChange("")
+        setIsOverwriteMode(true)
+        break
       case "ArrowLeft":
-        e.preventDefault();
-        focusPrevSegment();
-        break;
+        e.preventDefault()
+        focusPrevSegment()
+        break
       case "ArrowRight":
-        e.preventDefault();
-        focusNextSegment();
-        break;
+        e.preventDefault()
+        focusNextSegment()
+        break
       default:
-        e.preventDefault();
-        break;
+        e.preventDefault()
+        break
     }
-  };
+  }
 
   const handleFocus = () => {
-    setIsFocused(true);
-    setIsOverwriteMode(true);
-  };
+    setIsFocused(true)
+    setIsOverwriteMode(true)
+  }
   const handleBlur = () => {
-    setIsFocused(false);
-    setIsOverwriteMode(true);
-  };
+    setIsFocused(false)
+    setIsOverwriteMode(true)
+  }
 
-  const displayValue = isFocused ? inputValue : value;
+  const displayValue = isFocused ? inputValue : value
   const paddedValue =
     (id.includes("year") && displayValue
       ? displayValue.padStart(4, "0")
       : displayValue
-      ? displayValue.padStart(maxLength, "0")
-      : placeholder) || placeholder;
+        ? displayValue.padStart(maxLength, "0")
+        : placeholder) || placeholder
 
   return (
     <div>
       <div
         ref={ref}
         role="spinbutton"
-        className={`relative caret-transparent select-none tabular-nums px-[1px] outline-none rounded-md cursor-text text-center ${
+        className={`relative cursor-text select-none rounded-md px-[1px] text-center tabular-nums caret-transparent outline-none ${
           !displayValue && "text-muted-foreground"
         } ${isFocused ? "bg-primary/20" : "hover:bg-primary/20"}`}
         id={id}
@@ -275,22 +275,22 @@ function DateSegment({
         {paddedValue}
       </div>
     </div>
-  );
+  )
 }
 
 export interface DateTimeInputProps {
-  locale?: string;
-  value?: Date;
-  defaultValue?: Date;
-  onValueChange?: (value: Date | undefined | "invalid") => void;
-  granularity?: Granularity;
-  disabled?: boolean;
-  readonly?: boolean;
+  locale?: string
+  value?: Date
+  defaultValue?: Date
+  onValueChange?: (value: Date | undefined | "invalid") => void
+  granularity?: Granularity
+  disabled?: boolean
+  readonly?: boolean
 }
 
 export interface DateTimeInputHandle {
-  focus: () => void;
-  clear: () => void;
+  focus: () => void
+  clear: () => void
 }
 
 const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
@@ -306,67 +306,67 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
     }: DateTimeInputProps,
     ref
   ) {
-    const uid = React.useId();
-    const dateGroup = useDateGroupContext();
-    const localeConfig = useLocaleDateConfig(locale);
+    const uid = React.useId()
+    const dateGroup = useDateGroupContext()
+    const localeConfig = useLocaleDateConfig(locale)
 
-    const [resetKey, setResetKey] = useState(0);
+    const [resetKey, setResetKey] = useState(0)
 
     const [day, setDay] = useState(
       isValid(value) ? format(value || "", "d") : ""
-    );
+    )
     const [month, setMonth] = useState(
       isValid(value) ? format(value || "", "M") : ""
-    );
+    )
     const [year, setYear] = useState(
       isValid(value) ? format(value || "", "yyyy") : ""
-    );
+    )
     const [hour, setHour] = useState(
       isValid(value) ? format(value || "", "H") : ""
-    );
+    )
     const [minute, setMinute] = useState(
       isValid(value) ? format(value || "", "m") : ""
-    );
+    )
 
-    const segmentRefs = useRef<HTMLDivElement[]>([]);
+    const segmentRefs = useRef<HTMLDivElement[]>([])
 
     const segmentRefCallback = (node: HTMLDivElement | null) => {
       if (node) {
         if (!segmentRefs.current.includes(node)) {
-          segmentRefs.current.push(node);
+          segmentRefs.current.push(node)
         }
       } else {
-        segmentRefs.current = segmentRefs.current.filter((el) => el !== node);
+        segmentRefs.current = segmentRefs.current.filter((el) => el !== node)
       }
-    };
+    }
 
     useEffect(() => {
       if (!value && defaultValue) {
         if (granularity !== "time") {
-          setDay(format(defaultValue, "d"));
-          setMonth(format(defaultValue, "M"));
-          setYear(format(defaultValue, "yyyy"));
+          setDay(format(defaultValue, "d"))
+          setMonth(format(defaultValue, "M"))
+          setYear(format(defaultValue, "yyyy"))
         }
         if (granularity !== "date") {
-          setHour(format(defaultValue, "H"));
-          setMinute(format(defaultValue, "m"));
+          setHour(format(defaultValue, "H"))
+          setMinute(format(defaultValue, "m"))
         }
       }
-    }, [value, defaultValue, granularity]);
+    }, [value, defaultValue, granularity])
 
     useEffect(() => {
       if (value) {
         if (granularity !== "time") {
-          setDay(format(value, "d"));
-          setMonth(format(value, "M"));
-          setYear(format(value, "yyyy"));
+          setDay(format(value, "d"))
+          setMonth(format(value, "M"))
+          setYear(format(value, "yyyy"))
         }
         if (granularity !== "date") {
-          setHour(format(value, "H"));
-          setMinute(format(value, "m"));
+          setHour(format(value, "H"))
+          setMinute(format(value, "m"))
         }
       }
-    }, [value, granularity]);
+    }, [value, granularity])
 
     function updateFinalValue(
       d: string,
@@ -375,101 +375,101 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       h: string,
       min: string
     ) {
-      let parsed: Date | null = null;
+      let parsed: Date | null = null
       if (granularity === "date") {
         const str = `${y.padStart(4, "0")}-${m.padStart(2, "0")}-${d.padStart(
           2,
           "0"
-        )}`;
-        parsed = parse(str, "yyyy-MM-dd", new Date());
+        )}`
+        parsed = parse(str, "yyyy-MM-dd", new Date())
       } else if (granularity === "time") {
-        const str = `${h.padStart(2, "0")}:${min.padStart(2, "0")}`;
-        parsed = parse(str, "HH:mm", new Date());
+        const str = `${h.padStart(2, "0")}:${min.padStart(2, "0")}`
+        parsed = parse(str, "HH:mm", new Date())
       } else {
         // datetime
         const dateStr = `${y.padStart(4, "0")}-${m.padStart(
           2,
           "0"
-        )}-${d.padStart(2, "0")}`;
-        const timeStr = `${h.padStart(2, "0")}:${min.padStart(2, "0")}`;
-        parsed = parse(`${dateStr} ${timeStr}`, "yyyy-MM-dd HH:mm", new Date());
+        )}-${d.padStart(2, "0")}`
+        const timeStr = `${h.padStart(2, "0")}:${min.padStart(2, "0")}`
+        parsed = parse(`${dateStr} ${timeStr}`, "yyyy-MM-dd HH:mm", new Date())
       }
       if (parsed && isValid(parsed)) {
-        onValueChange?.(parsed);
+        onValueChange?.(parsed)
       } else {
         if (d || m || y || h || min) {
-          onValueChange?.("invalid");
+          onValueChange?.("invalid")
         } else {
-          onValueChange?.(undefined);
+          onValueChange?.(undefined)
         }
       }
     }
 
     function getSegmentDateIds(): SegmentDateId[] {
-      const ids: SegmentDateId[] = [];
+      const ids: SegmentDateId[] = []
       if (granularity !== "time") {
-        ids.push(...localeConfig.segments.map((s) => s.id));
+        ids.push(...localeConfig.segments.map((s) => s.id))
       }
       if (granularity !== "date") {
-        ids.push("hour", "minute");
+        ids.push("hour", "minute")
       }
-      return ids;
+      return ids
     }
 
     function getSegmentConfig(id: SegmentDateId) {
       switch (id) {
         case "day": {
-          const yInt = parseInt(year);
-          const mInt = parseInt(month);
+          const yInt = parseInt(year)
+          const mInt = parseInt(month)
           if (isNaN(yInt) || isNaN(mInt)) {
-            return { maxLength: 2, maxValue: 31 };
+            return { maxLength: 2, maxValue: 31 }
           }
           const days = getDaysInMonth(
             parse(`${yInt}-${mInt}-01`, "yyyy-MM-dd", new Date())
-          );
-          return { maxLength: 2, maxValue: days };
+          )
+          return { maxLength: 2, maxValue: days }
         }
         case "month":
-          return { maxLength: 2, maxValue: 12 };
+          return { maxLength: 2, maxValue: 12 }
         case "year":
-          return { maxLength: 4, maxValue: 9999 };
+          return { maxLength: 4, maxValue: 9999 }
         case "hour":
-          return { maxLength: 2, maxValue: 23 };
+          return { maxLength: 2, maxValue: 23 }
         case "minute":
-          return { maxLength: 2, maxValue: 59 };
+          return { maxLength: 2, maxValue: 59 }
         default:
-          return { maxLength: 2, maxValue: 99 };
+          return { maxLength: 2, maxValue: 99 }
       }
     }
 
     function getSegmentMeta(id: SegmentDateId) {
-      const dateSeg = localeConfig.segments.find((s) => s.id === id);
+      const dateSeg = localeConfig.segments.find((s) => s.id === id)
       if (dateSeg)
-        return { placeholder: dateSeg.placeholder, label: dateSeg.label };
+        return { placeholder: dateSeg.placeholder, label: dateSeg.label }
 
       if (id === "hour") {
-        return { placeholder: "hh", label: "Hour" };
+        return { placeholder: "hh", label: "Hour" }
       }
       if (id === "minute") {
-        return { placeholder: "mm", label: "Minute" };
+        return { placeholder: "mm", label: "Minute" }
       }
-      return { placeholder: "", label: "" };
+      return { placeholder: "", label: "" }
     }
 
     function getSegmentValue(id: SegmentDateId) {
       switch (id) {
         case "day":
-          return day;
+          return day
         case "month":
-          return month;
+          return month
         case "year":
-          return year;
+          return year
         case "hour":
-          return hour;
+          return hour
         case "minute":
-          return minute;
+          return minute
         default:
-          return "";
+          return ""
       }
     }
 
@@ -478,122 +478,122 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
         m = month,
         y = year,
         h = hour,
-        min = minute;
+        min = minute
 
       switch (id) {
         case "day":
-          d = handleZeroValue(newVal);
-          setDay(d);
-          break;
+          d = handleZeroValue(newVal)
+          setDay(d)
+          break
         case "month":
-          m = handleZeroValue(newVal);
-          setMonth(m);
+          m = handleZeroValue(newVal)
+          setMonth(m)
           {
-            const yInt = parseInt(y);
-            const mInt = parseInt(m);
+            const yInt = parseInt(y)
+            const mInt = parseInt(m)
             if (!isNaN(yInt) && !isNaN(mInt)) {
               const dim = getDaysInMonth(
                 parse(`${yInt}-${mInt}-01`, "yyyy-MM-dd", new Date())
-              );
+              )
               if (parseInt(d) > dim) {
-                d = String(dim);
-                setDay(d);
+                d = String(dim)
+                setDay(d)
               }
             }
           }
-          break;
+          break
         case "year":
-          y = handleZeroValue(newVal);
-          setYear(y);
+          y = handleZeroValue(newVal)
+          setYear(y)
           {
-            const yInt = parseInt(y);
-            const mInt = parseInt(m);
+            const yInt = parseInt(y)
+            const mInt = parseInt(m)
             if (!isNaN(yInt) && !isNaN(mInt)) {
               const dim2 = getDaysInMonth(
                 parse(`${yInt}-${mInt}-01`, "yyyy-MM-dd", new Date())
-              );
+              )
               if (parseInt(d) > dim2) {
-                d = String(dim2);
-                setDay(d);
+                d = String(dim2)
+                setDay(d)
               }
             }
           }
-          break;
+          break
         case "hour":
-          h = newVal;
-          setHour(h);
-          break;
+          h = newVal
+          setHour(h)
+          break
         case "minute":
-          min = newVal;
-          setMinute(min);
-          break;
+          min = newVal
+          setMinute(min)
+          break
       }
 
-      updateFinalValue(d, m, y, h, min);
+      updateFinalValue(d, m, y, h, min)
     }
 
-    const segmentDateIds = getSegmentDateIds();
+    const segmentDateIds = getSegmentDateIds()
 
     React.useImperativeHandle(ref, () => ({
       focus: () => {
         if (dateGroup) {
           // Use the new group context function instead
-          dateGroup.focusFirstEmptySegment();
+          dateGroup.focusFirstEmptySegment()
         } else if (segmentRefs.current.length > 0) {
           // Fallback for when not in a group
-          let firstUneditedSegment: HTMLDivElement | null = null;
+          let firstUneditedSegment: HTMLDivElement | null = null
           for (let i = 0; i < segmentRefs.current.length; i++) {
-            const segment = segmentRefs.current[i];
+            const segment = segmentRefs.current[i]
             if (!isStringNumber(segment.textContent || "")) {
-              firstUneditedSegment = segment;
-              break;
+              firstUneditedSegment = segment
+              break
             }
           }
           if (firstUneditedSegment) {
-            firstUneditedSegment.focus();
+            firstUneditedSegment.focus()
           } else {
             const lastSegment =
-              segmentRefs.current[segmentRefs.current.length - 1];
-            lastSegment.focus();
+              segmentRefs.current[segmentRefs.current.length - 1]
+            lastSegment.focus()
           }
         }
       },
       clear: () => {
-        setDay("");
-        setMonth("");
-        setYear("");
-        setHour("");
-        setMinute("");
-        onValueChange?.(undefined);
+        setDay("")
+        setMonth("")
+        setYear("")
+        setHour("")
+        setMinute("")
+        onValueChange?.(undefined)
 
-        setResetKey((k) => k + 1);
+        setResetKey((k) => k + 1)
       },
-    }));
+    }))
 
     return (
       <div
-        className="flex gap-[1px] mx-[-1px] select-none"
+        className="mx-[-1px] flex select-none gap-[1px]"
         aria-label="Date/Time Input"
       >
         {segmentDateIds.map((segId, index) => {
-          const segmentValue = getSegmentValue(segId);
-          const { maxLength, maxValue } = getSegmentConfig(segId);
-          const { placeholder, label } = getSegmentMeta(segId);
+          const segmentValue = getSegmentValue(segId)
+          const { maxLength, maxValue } = getSegmentConfig(segId)
+          const { placeholder, label } = getSegmentMeta(segId)
 
-          let sep: string | undefined;
-          const dateConfig = localeConfig;
+          let sep: string | undefined
+          const dateConfig = localeConfig
 
           if (segId === "hour" && index < segmentDateIds.length - 1) {
-            sep = ":";
+            sep = ":"
           } else if (
             (segId === "day" || segId === "month" || segId === "year") &&
             index < segmentDateIds.length - 1
           ) {
-            const nextSegId = segmentDateIds[index + 1];
+            const nextSegId = segmentDateIds[index + 1]
             if (["day", "month", "year"].includes(nextSegId)) {
-              sep = dateConfig.separator ?? "/";
+              sep = dateConfig.separator ?? "/"
             } else {
-              sep = ",";
+              sep = ","
             }
           }
 
@@ -618,11 +618,11 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
                 </span>
               )}
             </React.Fragment>
-          );
+          )
         })}
       </div>
-    );
+    )
   }
-);
+)
 
-export { DateTimeInput };
+export { DateTimeInput }

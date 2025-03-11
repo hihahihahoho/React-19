@@ -1,24 +1,24 @@
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
-import { PopoverContentProps } from "@radix-ui/react-popover";
-import * as React from "react";
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { cn } from "@/lib/utils"
+import { PopoverContentProps } from "@radix-ui/react-popover"
+import * as React from "react"
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "../drawer";
-import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+} from "../drawer"
+import { Popover, PopoverContent, PopoverTrigger } from "../popover"
 
 interface SelectPopoverProps {
-  open?: boolean;
-  setOpen?: (open: boolean) => void;
-  children: React.ReactNode;
-  triggerContent: React.ReactNode;
-  popoverWidthFull?: boolean;
-  popoverContentProps?: PopoverContentProps;
-  label?: React.ReactNode;
+  open?: boolean
+  setOpen?: (open: boolean) => void
+  children: React.ReactNode
+  triggerContent: React.ReactNode
+  popoverWidthFull?: boolean
+  popoverContentProps?: PopoverContentProps
+  label?: React.ReactNode
 }
 
 function SelectPopover({
@@ -30,7 +30,7 @@ function SelectPopover({
   popoverWidthFull = true,
   popoverContentProps,
 }: SelectPopoverProps) {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery("(min-width: 768px)")
 
   return (
     <>
@@ -62,7 +62,7 @@ function SelectPopover({
         </Drawer>
       )}
     </>
-  );
+  )
 }
 
-export { SelectPopover };
+export { SelectPopover }

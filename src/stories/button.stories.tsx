@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "@/components/ui/button"
+import type { Meta, StoryObj } from "@storybook/react"
 import {
   AlertCircle,
   Bell,
@@ -11,7 +11,7 @@ import {
   Save,
   Settings,
   Trash,
-} from "lucide-react";
+} from "lucide-react"
 
 /**
  * Button component provides interactive elements for user actions.
@@ -111,10 +111,10 @@ They come in various styles, sizes, and can include icons or loading states.
       </div>
     ),
   ],
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Button>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * The standard button variations with different colors and styles.
@@ -139,7 +139,7 @@ export const BasicVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Buttons in different sizes to fit various UI contexts.
@@ -161,7 +161,7 @@ export const SizeVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Showcase of buttons with icons positioned on the left side.
@@ -188,7 +188,7 @@ export const WithLeftIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Showcase of buttons with icons positioned on the right side.
@@ -216,7 +216,7 @@ export const WithRightIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Buttons with icons on both sides for enhanced visual communication.
@@ -247,7 +247,7 @@ export const WithIconsOnBothSides: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Icon-only buttons for compact UI elements.
@@ -284,7 +284,7 @@ export const IconOnly: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Rounded buttons for a softer, more modern appearance.
@@ -316,7 +316,7 @@ export const RoundedButtons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Buttons in loading state to indicate processing.
@@ -344,7 +344,7 @@ export const LoadingStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Disabled buttons to indicate unavailable actions.
@@ -372,7 +372,7 @@ export const DisabledStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Combined examples showing various button configurations.
@@ -408,4 +408,4 @@ export const CombinedExamples: Story = {
       },
     },
   },
-};
+}

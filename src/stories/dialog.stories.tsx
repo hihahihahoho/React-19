@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { FormDemo } from "./forms/FormDemo";
+} from "@/components/ui/dialog"
+import { FormDemo } from "./forms/FormDemo"
 
 const meta = {
   title: "Base/Dialog",
@@ -18,11 +18,11 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof Dialog>;
+} satisfies Meta<typeof Dialog>
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 export const Default: Story = {
   render: () => {
     return (
@@ -45,6 +45,6 @@ export const Default: Story = {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    );
+    )
   },
-};
+}

@@ -1,5 +1,5 @@
 // data-table-context.tsx
-"use client";
+"use client"
 
 import {
   ColumnDef,
@@ -10,7 +10,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from "@tanstack/react-table"
 import {
   createContext,
   useContext,
@@ -18,27 +18,27 @@ import {
   type Dispatch,
   type ReactNode,
   type SetStateAction,
-} from "react";
+} from "react"
 
 interface DataTableContextProps<TData> {
-  table: Table<TData>;
-  sorting: SortingState;
-  setSorting: Dispatch<SetStateAction<SortingState>>;
-  columnPinning: ColumnPinningState;
-  setColumnPinning: Dispatch<SetStateAction<ColumnPinningState>>;
-  rowSelection: Record<string, boolean>;
-  setRowSelection: Dispatch<SetStateAction<Record<string, boolean>>>;
-  currentPage: number;
-  totalPages: number;
-  defaultPinLeft: string[];
-  fixedPinRight: string[];
-  fixedPinLeft: string[];
-  handlePageChange: (page: number) => void;
+  table: Table<TData>
+  sorting: SortingState
+  setSorting: Dispatch<SetStateAction<SortingState>>
+  columnPinning: ColumnPinningState
+  setColumnPinning: Dispatch<SetStateAction<ColumnPinningState>>
+  rowSelection: Record<string, boolean>
+  setRowSelection: Dispatch<SetStateAction<Record<string, boolean>>>
+  currentPage: number
+  totalPages: number
+  defaultPinLeft: string[]
+  fixedPinRight: string[]
+  fixedPinLeft: string[]
+  handlePageChange: (page: number) => void
 }
 
 const DataTableContext = createContext<DataTableContextProps<any>>(
   {} as DataTableContextProps<any>
-);
+)
 
 function DataTableProvider<TData, TValue>({
   children,
@@ -48,19 +48,19 @@ function DataTableProvider<TData, TValue>({
   fixedPinRight = ["actions-column"],
   fixedPinLeft = ["index"],
 }: {
-  children?: ReactNode;
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  defaultPinLeft?: string[];
-  fixedPinRight?: string[];
-  fixedPinLeft?: string[];
+  children?: ReactNode
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  defaultPinLeft?: string[]
+  fixedPinRight?: string[]
+  fixedPinLeft?: string[]
 }) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([])
   const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({
     left: [...defaultPinLeft, ...fixedPinLeft],
     right: [...fixedPinRight],
-  });
-  const [rowSelection, setRowSelection] = useState({});
+  })
+  const [rowSelection, setRowSelection] = useState({})
 
   const table = useReactTable<TData>({
     data,
@@ -82,14 +82,14 @@ function DataTableProvider<TData, TValue>({
       size: "auto" as unknown as number,
       maxSize: 200,
     },
-  });
+  })
 
-  const currentPage = table.getState().pagination.pageIndex + 1;
-  const totalPages = table.getPageCount();
+  const currentPage = table.getState().pagination.pageIndex + 1
+  const totalPages = table.getPageCount()
 
   const handlePageChange = (page: number) => {
-    table.setPageIndex(page - 1);
-  };
+    table.setPageIndex(page - 1)
+  }
 
   return (
     <DataTableContext.Provider
@@ -111,9 +111,9 @@ function DataTableProvider<TData, TValue>({
     >
       {children}
     </DataTableContext.Provider>
-  );
+  )
 }
 
-const useDataTable = () => useContext(DataTableContext);
+const useDataTable = () => useContext(DataTableContext)
 
-export { DataTableProvider, useDataTable };
+export { DataTableProvider, useDataTable }

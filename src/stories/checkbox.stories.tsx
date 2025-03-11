@@ -1,16 +1,16 @@
-import { Badge } from "@/components/ui/badge/badge";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { Checkbox } from "@/components/ui/selection-controls/checkbox";
-import { CheckboxForm } from "@/components/ui/selection-controls/checkbox-form";
-import { CheckboxGroupForm } from "@/components/ui/selection-controls/checkbox-group-form";
-import { SelectionGroup } from "@/components/ui/selection-controls/selection-group";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { Badge } from "@/components/ui/badge/badge"
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { Checkbox } from "@/components/ui/selection-controls/checkbox"
+import { CheckboxForm } from "@/components/ui/selection-controls/checkbox-form"
+import { CheckboxGroupForm } from "@/components/ui/selection-controls/checkbox-group-form"
+import { SelectionGroup } from "@/components/ui/selection-controls/selection-group"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * Checkbox component allows users to select one or multiple items from a list.
@@ -75,10 +75,10 @@ They can be used individually or in groups and support various states like check
       </div>
     ),
   ],
-} satisfies Meta<typeof Checkbox>;
+} satisfies Meta<typeof Checkbox>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * The basic checkbox variants showing different states.
@@ -103,7 +103,7 @@ export const BasicVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Checkboxes with different label positions and styles.
@@ -161,7 +161,7 @@ export const LabelVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of checkboxes in a list with different states.
@@ -174,19 +174,19 @@ export const CheckboxList: Story = {
       { id: "3", label: "Monthly newsletter", checked: true },
       { id: "4", label: "Marketing emails", checked: false, disabled: true },
       { id: "5", label: "Product updates", checked: false },
-    ];
+    ]
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [items, setItems] = useState(options);
+    const [items, setItems] = useState(options)
 
     const handleCheckedChange = (id: string, checked: boolean) => {
       setItems((prevItems) =>
         prevItems.map((item) => (item.id === id ? { ...item, checked } : item))
-      );
-    };
+      )
+    }
 
     return (
-      <div className="p-4 space-y-2 border rounded-lg w-72">
+      <div className="w-72 space-y-2 rounded-lg border p-4">
         <h3 className="mb-3 font-medium">Notification Settings</h3>
         {items.map((item) => (
           <SelectionGroup
@@ -205,7 +205,7 @@ export const CheckboxList: Story = {
           </SelectionGroup>
         ))}
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -215,7 +215,7 @@ export const CheckboxList: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Checkbox group organized within a Form component.
@@ -226,7 +226,7 @@ export const CheckboxGroupExample: Story = {
       notificationPreferences: z
         .array(z.string())
         .min(2, { message: "Please select at least 2 notification channels" }),
-    });
+    })
 
     function CheckboxGroupFormExample() {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -234,14 +234,14 @@ export const CheckboxGroupExample: Story = {
         defaultValues: {
           notificationPreferences: ["email"],
         },
-      });
+      })
 
       const onSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log(data);
+        console.log(data)
         alert(
           `Selected preferences: ${data.notificationPreferences.join(", ")}`
-        );
-      };
+        )
+      }
 
       const items = [
         { value: "email", label: "Email" },
@@ -249,14 +249,14 @@ export const CheckboxGroupExample: Story = {
         { value: "push", label: "Push notifications" },
         { value: "in_app", label: "In-app notifications" },
         { value: "none", label: "None", disabled: true },
-      ];
+      ]
 
       return (
         <ZodSchemaProvider schema={formSchema}>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="p-4 space-y-6 border rounded-lg w-96"
+              className="w-96 space-y-6 rounded-lg border p-4"
             >
               <CheckboxGroupForm
                 control={form.control}
@@ -275,10 +275,10 @@ export const CheckboxGroupExample: Story = {
             </form>
           </Form>
         </ZodSchemaProvider>
-      );
+      )
     }
 
-    return <CheckboxGroupFormExample />;
+    return <CheckboxGroupFormExample />
   },
   parameters: {
     docs: {
@@ -288,16 +288,16 @@ export const CheckboxGroupExample: Story = {
       },
     },
   },
-};
+}
 /**
  * Examples of using checkboxes in different layouts.
  */
 export const LayoutVariants: Story = {
   render: () => (
-    <div className="space-y-8 w-96">
+    <div className="w-96 space-y-8">
       <div>
         <h3 className="mb-2 text-sm font-medium">Vertical Layout</h3>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="space-y-2 rounded-lg border p-4">
           <SelectionGroup control={<Checkbox />}>Option 1</SelectionGroup>
           <SelectionGroup control={<Checkbox />}>Option 2</SelectionGroup>
           <SelectionGroup control={<Checkbox />}>Option 3</SelectionGroup>
@@ -306,7 +306,7 @@ export const LayoutVariants: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Horizontal Layout</h3>
-        <div className="flex flex-wrap gap-6 p-4 border rounded-lg">
+        <div className="flex flex-wrap gap-6 rounded-lg border p-4">
           <SelectionGroup control={<Checkbox />}>Option A</SelectionGroup>
           <SelectionGroup control={<Checkbox />}>Option B</SelectionGroup>
           <SelectionGroup control={<Checkbox />}>Option C</SelectionGroup>
@@ -315,7 +315,7 @@ export const LayoutVariants: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Grid Layout</h3>
-        <div className="grid grid-cols-2 gap-2 p-4 border rounded-lg">
+        <div className="grid grid-cols-2 gap-2 rounded-lg border p-4">
           <SelectionGroup control={<Checkbox />}>Category 1</SelectionGroup>
           <SelectionGroup control={<Checkbox />}>Category 2</SelectionGroup>
           <SelectionGroup control={<Checkbox />}>Category 3</SelectionGroup>
@@ -332,7 +332,7 @@ export const LayoutVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Controlled checkbox example with indeterminate state.
@@ -350,26 +350,26 @@ export const IndeterminateExample: Story = {
       { id: "option1", label: "Option 1", checked: false },
       { id: "option2", label: "Option 2", checked: false },
       { id: "option3", label: "Option 3", checked: false },
-    ]);
+    ])
 
     // Determine the state of the parent checkbox
-    const allChecked = options.every((option) => option.checked);
-    const someChecked = options.some((option) => option.checked);
+    const allChecked = options.every((option) => option.checked)
+    const someChecked = options.some((option) => option.checked)
 
     const handleParentChange = (checked: boolean) => {
-      setOptions(options.map((option) => ({ ...option, checked })));
-    };
+      setOptions(options.map((option) => ({ ...option, checked })))
+    }
 
     const handleChildChange = (id: string, checked: boolean) => {
       setOptions(
         options.map((option) =>
           option.id === id ? { ...option, checked } : option
         )
-      );
-    };
+      )
+    }
 
     return (
-      <div className="p-4 space-y-3 border rounded-lg w-72">
+      <div className="w-72 space-y-3 rounded-lg border p-4">
         <SelectionGroup
           control={
             <Checkbox
@@ -382,7 +382,7 @@ export const IndeterminateExample: Story = {
           <span className="font-medium">Select All Options</span>
         </SelectionGroup>
 
-        <div className="pl-3 ml-6 space-y-2 border-l">
+        <div className="ml-6 space-y-2 border-l pl-3">
           {options.map((option) => (
             <SelectionGroup
               key={option.id}
@@ -400,7 +400,7 @@ export const IndeterminateExample: Story = {
           ))}
         </div>
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -410,7 +410,7 @@ export const IndeterminateExample: Story = {
       },
     },
   },
-};
+}
 /**
  * Complex form with validation using CheckboxForm and react-hook-form.
  */
@@ -423,7 +423,7 @@ export const WithFormValidation: Story = {
       preferences: z.array(z.string()).min(1, {
         message: "Please select at least one preference.",
       }),
-    });
+    })
 
     function FormValidationExample() {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -432,23 +432,23 @@ export const WithFormValidation: Story = {
           acceptTerms: false,
           preferences: [],
         },
-      });
+      })
 
       const onSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log(data);
+        console.log(data)
         alert(
           `Form submitted with:\nTerms Accepted: ${
             data.acceptTerms
           }\nPreferences: ${data.preferences.join(", ")}`
-        );
-      };
+        )
+      }
 
       return (
         <ZodSchemaProvider schema={formSchema}>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="p-6 space-y-6 border rounded-lg w-96"
+              className="w-96 space-y-6 rounded-lg border p-6"
             >
               <CheckboxGroupForm
                 control={form.control}
@@ -486,10 +486,10 @@ export const WithFormValidation: Story = {
             </form>
           </Form>
         </ZodSchemaProvider>
-      );
+      )
     }
 
-    return <FormValidationExample />;
+    return <FormValidationExample />
   },
   parameters: {
     docs: {
@@ -499,15 +499,15 @@ export const WithFormValidation: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Custom styled checkboxes for different visual appearances.
  */
 export const CustomStyledCheckboxes: Story = {
   render: () => (
-    <div className="space-y-6 w-80">
-      <div className="p-4 space-y-3 border rounded-lg">
+    <div className="w-80 space-y-6">
+      <div className="space-y-3 rounded-lg border p-4">
         <h3 className="mb-2 text-sm font-medium">Feature Selection</h3>
 
         <SelectionGroup
@@ -550,7 +550,7 @@ export const CustomStyledCheckboxes: Story = {
         </SelectionGroup>
       </div>
 
-      <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900">
+      <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
         <SelectionGroup
           control={
             <Checkbox className="h-5 w-5 rounded-full data-[state=checked]:bg-primary" />
@@ -568,7 +568,7 @@ export const CustomStyledCheckboxes: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive showcase of all checkbox variants and use cases.
@@ -578,7 +578,7 @@ export const CompleteShowcase: Story = {
     <div className="grid w-full max-w-2xl gap-6">
       <div>
         <h3 className="mb-2 text-sm font-medium">Basic States</h3>
-        <div className="flex flex-wrap gap-6 p-4 border rounded-lg">
+        <div className="flex flex-wrap gap-6 rounded-lg border p-4">
           <SelectionGroup control={<Checkbox />}>Unchecked</SelectionGroup>
           <SelectionGroup control={<Checkbox defaultChecked />}>
             Checked
@@ -594,7 +594,7 @@ export const CompleteShowcase: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">With Status Indicators</h3>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="space-y-2 rounded-lg border p-4">
           <SelectionGroup control={<Checkbox defaultChecked />}>
             Verified Option
           </SelectionGroup>
@@ -609,7 +609,7 @@ export const CompleteShowcase: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Common Use Cases</h3>
-        <div className="p-4 space-y-4 border rounded-lg">
+        <div className="space-y-4 rounded-lg border p-4">
           <SelectionGroup control={<Checkbox />}>
             Subscribe to newsletter
           </SelectionGroup>
@@ -647,7 +647,7 @@ export const CompleteShowcase: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Card variant of SelectionGroup for more prominent selection options.
@@ -655,17 +655,17 @@ export const CompleteShowcase: Story = {
 export const CardVariants: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [selected, setSelected] = useState<string[]>(["option2"]);
+    const [selected, setSelected] = useState<string[]>(["option2"])
 
     const handleToggle = (value: string) => {
       setSelected((prev) =>
         prev.includes(value)
           ? prev.filter((item) => item !== value)
           : [...prev, value]
-      );
-    };
+      )
+    }
 
-    const isSelected = (value: string) => selected.includes(value);
+    const isSelected = (value: string) => selected.includes(value)
 
     return (
       <div className="grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
@@ -741,7 +741,7 @@ export const CardVariants: Story = {
           </div>
         </SelectionGroup>
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -751,7 +751,7 @@ export const CardVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props.
@@ -775,4 +775,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}

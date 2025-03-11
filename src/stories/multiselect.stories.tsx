@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { MultiSelect } from "@/components/ui/select/multiselect";
-import { MultiSelectForm } from "@/components/ui/select/multiselect-form";
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { MultiSelect } from "@/components/ui/select/multiselect"
+import { MultiSelectForm } from "@/components/ui/select/multiselect-form"
 import {
   SelectGroup,
   SelectItems,
-} from "@/components/ui/select/select-interface";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
+} from "@/components/ui/select/select-interface"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
-} from "@tanstack/react-query";
+} from "@tanstack/react-query"
 import {
   AlertTriangleIcon,
   ArrowDownIcon,
@@ -36,10 +36,10 @@ import {
   TimerIcon,
   User,
   ZapIcon,
-} from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * MultiSelect component allows users to choose multiple values from a list of options.
@@ -105,20 +105,20 @@ They are useful when you want to allow multiple selections from a set of options
   },
   decorators: [
     (Story) => {
-      const queryClient = new QueryClient();
+      const queryClient = new QueryClient()
       return (
         <QueryClientProvider client={queryClient}>
-          <div className="w-[384px] max-w-[80vw] mx-auto">
+          <div className="mx-auto w-[384px] max-w-[80vw]">
             <Story />
           </div>
         </QueryClientProvider>
-      );
+      )
     },
   ],
-} satisfies Meta<typeof MultiSelect>;
+} satisfies Meta<typeof MultiSelect>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 // Sample options
 const fruitOptions: SelectItems[] = [
@@ -128,7 +128,7 @@ const fruitOptions: SelectItems[] = [
   { value: "strawberry", label: "Strawberry" },
   { value: "grape", label: "Grape" },
   { value: "watermelon", label: "Watermelon" },
-];
+]
 
 // Grouped options
 const groupedOptions: SelectGroup[] = [
@@ -148,7 +148,7 @@ const groupedOptions: SelectGroup[] = [
       { value: "cucumber", label: "Cucumber" },
     ],
   },
-];
+]
 
 /**
  * Basic example of a multiselect component.
@@ -169,7 +169,7 @@ export const Basic: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example with grouped options.
@@ -190,14 +190,14 @@ export const GroupedOptions: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of different multiselect states.
  */
 export const MultiSelectStates: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <MultiSelect
         options={fruitOptions}
         formComposition={{
@@ -244,14 +244,14 @@ export const MultiSelectStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of multiselects with different label positions.
  */
 export const LabelPositioning: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <MultiSelect
         options={fruitOptions}
         formComposition={{
@@ -293,7 +293,7 @@ export const LabelPositioning: Story = {
       },
     },
   },
-};
+}
 
 /**
  * MultiSelect with colored badges.
@@ -352,7 +352,7 @@ export const ColoredBadges: Story = {
         label: "Cyan",
         badgeProps: { variant: "cyan" },
       },
-    ];
+    ]
 
     // Category options with assigned colors and icons
     const categoryOptions: SelectItems[] = [
@@ -392,10 +392,10 @@ export const ColoredBadges: Story = {
         icon: <BanIcon className="size-4" />,
         badgeProps: { variant: "orange" },
       },
-    ];
+    ]
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <MultiSelect
           options={colorOptions}
           formComposition={{
@@ -416,7 +416,7 @@ export const ColoredBadges: Story = {
           defaultValue={["urgent", "work"]}
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -426,7 +426,7 @@ export const ColoredBadges: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of MultiSelect with button variant styling.
@@ -458,7 +458,7 @@ export const ButtonVariant: Story = {
         icon: <ArrowDownIcon className="size-4" />,
         badgeProps: { variant: "green" },
       },
-    ];
+    ]
 
     const statusOptions: SelectItems[] = [
       {
@@ -485,7 +485,7 @@ export const ButtonVariant: Story = {
         icon: <CheckCircleIcon className="size-4" />,
         badgeProps: { variant: "green" },
       },
-    ];
+    ]
 
     const labelOptions: SelectItems[] = [
       {
@@ -512,10 +512,10 @@ export const ButtonVariant: Story = {
         icon: <FileTextIcon className="size-4" />,
         badgeProps: { variant: "default" },
       },
-    ];
+    ]
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <h3 className="text-sm font-medium">Basic button variants</h3>
         <div className="flex flex-wrap gap-2">
           <MultiSelect
@@ -595,7 +595,7 @@ export const ButtonVariant: Story = {
           />
         </div>
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -605,7 +605,7 @@ export const ButtonVariant: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of multiselects with icons.
@@ -638,10 +638,10 @@ export const WithIcons: Story = {
         label: "Japan",
         icon: <Flag className="text-red-600" />,
       },
-    ];
+    ]
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <MultiSelect
           options={countryOptions}
           formComposition={{
@@ -651,7 +651,7 @@ export const WithIcons: Story = {
           placeholder="Select countries"
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -660,7 +660,7 @@ export const WithIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of badge overflow behavior (specific to MultiSelect).
@@ -679,14 +679,14 @@ export const BadgeOverflow: Story = {
       { value: "ruby", label: "Ruby" },
       { value: "go", label: "Go" },
       { value: "rust", label: "Rust" },
-    ];
+    ]
 
-    const [maxBadges, setMaxBadges] = useState(3);
+    const [maxBadges, setMaxBadges] = useState(3)
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium">
+          <label className="mb-2 block text-sm font-medium">
             Max badges to show: {maxBadges}
           </label>
           <input
@@ -718,7 +718,7 @@ export const BadgeOverflow: Story = {
           ]}
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -728,7 +728,7 @@ export const BadgeOverflow: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of a multiselect in a form with pre-fetched data.
@@ -740,23 +740,23 @@ export const MultiSelectInFormWithFetchedData: Story = {
       countries: z
         .array(z.string())
         .min(1, "Please select at least one country"),
-    });
+    })
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
         countries: [],
       },
-    });
+    })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
       // Display selected values
       const selectedCountries = countryOptions
         .filter((c) => values.countries.includes(c.value))
         .map((c) => c.label)
-        .join(", ");
+        .join(", ")
 
-      alert(`Form submitted!\nCountries: ${selectedCountries || "None"}`);
+      alert(`Form submitted!\nCountries: ${selectedCountries || "None"}`)
     }
 
     // Fetch countries data once when the component mounts
@@ -765,32 +765,32 @@ export const MultiSelectInFormWithFetchedData: Story = {
       queryFn: async () => {
         const response = await fetch(
           "https://restcountries.com/v3.1/all?fields=name,flags,cca2"
-        );
+        )
 
         if (!response.ok) {
-          throw new Error("Failed to fetch countries");
+          throw new Error("Failed to fetch countries")
         }
 
-        const data = await response.json();
+        const data = await response.json()
         // Sort countries alphabetically by name
         return data.sort((a: any, b: any) =>
           a.name.common.localeCompare(b.name.common)
-        );
+        )
       },
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000, // Data remains fresh for 5 minutes
-    });
+    })
 
     // Transform API data into select options
     const countryOptions: SelectItems[] = useMemo(() => {
-      if (!data) return [];
+      if (!data) return []
 
       return data.map((country: any) => ({
         value: country.cca2,
         label: country.name.common,
         icon: country.flags?.svg || country.flags?.png,
-      }));
-    }, [data]);
+      }))
+    }, [data])
 
     return (
       <ZodSchemaProvider schema={formSchema}>
@@ -837,7 +837,7 @@ export const MultiSelectInFormWithFetchedData: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -847,35 +847,35 @@ export const MultiSelectInFormWithFetchedData: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example with server-side data fetching and debounce (standalone).
  */
 export const ServerSideFetching: Story = {
   render: function ServerSideExample() {
-    const [search, setSearch] = useState("");
-    const [debouncedSearch, setDebouncedSearch] = useState("");
-    const [isTyping, setIsTyping] = useState(false);
+    const [search, setSearch] = useState("")
+    const [debouncedSearch, setDebouncedSearch] = useState("")
+    const [isTyping, setIsTyping] = useState(false)
     const [selectedCountryCodes, setSelectedCountryCodes] = useState<string[]>(
       []
-    );
+    )
 
     // Debounce the search input
     useEffect(() => {
       // Set typing state to true whenever search changes
       if (search) {
-        setIsTyping(true);
+        setIsTyping(true)
       }
 
       const timer = setTimeout(() => {
-        setDebouncedSearch(search);
+        setDebouncedSearch(search)
         // Only set typing to false after debounce completes
-        setIsTyping(false);
-      }, 300);
+        setIsTyping(false)
+      }, 300)
 
-      return () => clearTimeout(timer);
-    }, [search]);
+      return () => clearTimeout(timer)
+    }, [search])
 
     // Fetch country list based on search term
     const { data, isLoading: isLoadingResults } = useQuery({
@@ -883,37 +883,37 @@ export const ServerSideFetching: Story = {
       queryFn: async () => {
         const url = debouncedSearch
           ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
-          : "https://restcountries.com/v3.1/all?fields=name,flags,cca2";
+          : "https://restcountries.com/v3.1/all?fields=name,flags,cca2"
 
-        const response = await fetch(url);
+        const response = await fetch(url)
 
         if (!response.ok) {
           if (response.status === 404) {
-            return [];
+            return []
           }
-          throw new Error("Network response was not ok");
+          throw new Error("Network response was not ok")
         }
 
-        const data = await response.json();
-        return debouncedSearch ? data : data.slice(0, 10);
+        const data = await response.json()
+        return debouncedSearch ? data : data.slice(0, 10)
       },
       refetchOnWindowFocus: false,
-    });
+    })
 
     // Show loading state when typing or when API is loading
-    const isLoading = isTyping || isLoadingResults;
+    const isLoading = isTyping || isLoadingResults
 
     // Memoize country options to avoid recreation on each render
     const countryOptions = useMemo(() => {
-      if (!data) return [];
+      if (!data) return []
 
       return data.map((country: any) => ({
         value: country.cca2,
         label: country.name.common,
         icon: country.flags?.svg || country.flags?.png,
         keywords: [country.name.common, country.cca2],
-      }));
-    }, [data]);
+      }))
+    }, [data])
 
     return (
       <MultiSelect
@@ -937,12 +937,12 @@ export const ServerSideFetching: Story = {
           commandInputProps: {
             value: search,
             onValueChange: (value) => {
-              setSearch(value);
+              setSearch(value)
             },
           },
         }}
       />
-    );
+    )
   },
   parameters: {
     docs: {
@@ -952,57 +952,57 @@ export const ServerSideFetching: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example with server-side data fetching in a form.
  */
 export const ServerSideFetchingInForm: Story = {
   render: function ServerSideFormExample() {
-    const [search, setSearch] = useState("");
-    const [debouncedSearch, setDebouncedSearch] = useState("");
-    const [isTyping, setIsTyping] = useState(false);
+    const [search, setSearch] = useState("")
+    const [debouncedSearch, setDebouncedSearch] = useState("")
+    const [isTyping, setIsTyping] = useState(false)
 
     // Form setup
     const formSchema = z.object({
       countries: z
         .array(z.string())
         .min(1, "Please select at least one country"),
-    });
+    })
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
         countries: ["US", "CA"], // Default to US and Canada
       },
-    });
+    })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
       // Get country names from codes
       const countryNames = formSelectedCountries
         .map((c: any) => c.label)
-        .join(", ");
+        .join(", ")
 
       alert(
         `Selected countries: ${countryNames || values.countries.join(", ")}`
-      );
+      )
     }
 
     // Debounce the search input
     useEffect(() => {
       // Set typing state to true whenever search changes
       if (search) {
-        setIsTyping(true);
+        setIsTyping(true)
       }
 
       const timer = setTimeout(() => {
-        setDebouncedSearch(search);
+        setDebouncedSearch(search)
         // Only set typing to false after debounce completes
-        setIsTyping(false);
-      }, 300);
+        setIsTyping(false)
+      }, 300)
 
-      return () => clearTimeout(timer);
-    }, [search]);
+      return () => clearTimeout(timer)
+    }, [search])
 
     // Fetch country list based on search term
     const { data, isLoading: isLoadingResults } = useQuery({
@@ -1010,62 +1010,62 @@ export const ServerSideFetchingInForm: Story = {
       queryFn: async () => {
         const url = debouncedSearch
           ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
-          : "https://restcountries.com/v3.1/all?fields=name,flags,cca2";
+          : "https://restcountries.com/v3.1/all?fields=name,flags,cca2"
 
-        const response = await fetch(url);
+        const response = await fetch(url)
 
         if (!response.ok) {
           if (response.status === 404) {
-            return [];
+            return []
           }
-          throw new Error("Network response was not ok");
+          throw new Error("Network response was not ok")
         }
 
-        const data = await response.json();
-        return debouncedSearch ? data : data.slice(0, 10);
+        const data = await response.json()
+        return debouncedSearch ? data : data.slice(0, 10)
       },
       refetchOnWindowFocus: false,
-    });
+    })
 
     // Fetch specific country details for form's selected values
     const { data: formSelectedCountryData } = useQuery({
       queryKey: ["selectedCountries", form.watch("countries")],
       queryFn: async () => {
-        const countryCodes = form.watch("countries");
-        if (!countryCodes || countryCodes.length === 0) return [];
+        const countryCodes = form.watch("countries")
+        if (!countryCodes || countryCodes.length === 0) return []
 
         // Create comma-separated list of country codes
-        const codes = countryCodes.join(",");
+        const codes = countryCodes.join(",")
 
         const response = await fetch(
           `https://restcountries.com/v3.1/alpha?codes=${codes}`
-        );
+        )
 
         if (!response.ok) {
-          throw new Error("Failed to fetch selected countries");
+          throw new Error("Failed to fetch selected countries")
         }
 
-        const data = await response.json();
-        return data;
+        const data = await response.json()
+        return data
       },
       enabled: form.watch("countries")?.length > 0,
       refetchOnWindowFocus: false,
-    });
+    })
 
     // Show loading state when typing or when API is loading
-    const isLoading = isTyping || isLoadingResults;
+    const isLoading = isTyping || isLoadingResults
 
     // Memoize country options to avoid recreation on each render
     const countryOptions = useMemo(() => {
-      if (!data) return [];
+      if (!data) return []
 
       return data.map((country: any) => ({
         value: country.cca2,
         label: country.name.common,
         icon: country.flags?.svg || country.flags?.png,
         keywords: [country.name.common, country.cca2],
-      }));
-    }, [data]);
+      }))
+    }, [data])
 
     // Create display values for selected countries
     const formSelectedCountries = useMemo(() => {
@@ -1075,14 +1075,14 @@ export const ServerSideFetchingInForm: Story = {
         .map((code) =>
           countryOptions.find((option: any) => option.value === code)
         )
-        .filter(Boolean);
+        .filter(Boolean)
 
       // If all selected countries are in current options, use those
       if (
         selectedFromCurrent.length === form.watch("countries").length &&
         selectedFromCurrent.every(Boolean)
       ) {
-        return selectedFromCurrent as SelectItems[];
+        return selectedFromCurrent as SelectItems[]
       }
 
       // Otherwise, use the separately fetched data
@@ -1091,12 +1091,12 @@ export const ServerSideFetchingInForm: Story = {
           value: country.cca2,
           label: country.name.common,
           icon: country.flags?.svg || country.flags?.png,
-        }));
+        }))
       }
 
       // Return empty array if still loading
-      return [];
-    }, [form, countryOptions, formSelectedCountryData]);
+      return []
+    }, [form, countryOptions, formSelectedCountryData])
 
     return (
       <ZodSchemaProvider schema={formSchema}>
@@ -1125,7 +1125,7 @@ export const ServerSideFetchingInForm: Story = {
                 commandInputProps: {
                   value: search,
                   onValueChange: (value) => {
-                    setSearch(value);
+                    setSearch(value)
                   },
                 },
               }}
@@ -1144,7 +1144,7 @@ export const ServerSideFetchingInForm: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -1154,4 +1154,4 @@ export const ServerSideFetchingInForm: Story = {
       },
     },
   },
-};
+}

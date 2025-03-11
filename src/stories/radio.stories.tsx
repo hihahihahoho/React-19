@@ -1,21 +1,21 @@
-import { Badge } from "@/components/ui/badge/badge";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
+import { Badge } from "@/components/ui/badge/badge"
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import {
   RadioGroup,
   RadioGroupItem,
-} from "@/components/ui/selection-controls/radio-group";
+} from "@/components/ui/selection-controls/radio-group"
 import {
   ItemRadioType,
   RadioGroupForm,
-} from "@/components/ui/selection-controls/radio-group-form";
-import { SelectionGroup } from "@/components/ui/selection-controls/selection-group";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "@/components/ui/selection-controls/radio-group-form"
+import { SelectionGroup } from "@/components/ui/selection-controls/selection-group"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * Radio buttons allow users to select one option from a set.
@@ -81,23 +81,23 @@ Unlike checkboxes, radio buttons enforce a single selection within a group and c
       </div>
     ),
   ],
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof RadioGroup>;
+export default meta
+type Story = StoryObj<typeof RadioGroup>
 
 const itemsRadio: ItemRadioType[] = [
   { value: "radioDisabled", label: "Radio disabled", disabled: true },
   { value: "include", label: "Include" },
   { value: "exclude", label: "Exclude" },
   { value: "pending", label: "Pending", disabled: true },
-];
+]
 
 const FormSchema = z.object({
   radioGroupDemo: z.enum(["include", "exclude", "pending", "radioDisabled"], {
     required_error: "You need to select an option.",
   }),
-});
+})
 
 const RadioFormDemo = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -105,12 +105,12 @@ const RadioFormDemo = () => {
     defaultValues: {
       radioGroupDemo: "radioDisabled",
     },
-  });
+  })
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data);
-    alert(`Selected option: ${data.radioGroupDemo}`);
-  };
+    console.log(data)
+    alert(`Selected option: ${data.radioGroupDemo}`)
+  }
 
   return (
     <ZodSchemaProvider schema={FormSchema}>
@@ -129,8 +129,8 @@ const RadioFormDemo = () => {
         </form>
       </Form>
     </ZodSchemaProvider>
-  );
-};
+  )
+}
 
 /**
  * Basic radio button variants showing different states.
@@ -140,7 +140,7 @@ export const BasicVariants: Story = {
     <div className="flex flex-wrap items-center gap-6">
       <RadioGroup defaultValue="include">
         {itemsRadio.map((item) => {
-          const { value, ...props } = item;
+          const { value, ...props } = item
           return (
             <SelectionGroup
               key={value}
@@ -148,7 +148,7 @@ export const BasicVariants: Story = {
             >
               {item.label}
             </SelectionGroup>
-          );
+          )
         })}
       </RadioGroup>
     </div>
@@ -161,7 +161,7 @@ export const BasicVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Default radio group configuration with automatic layout.
@@ -170,7 +170,7 @@ export const Default: Story = {
   render: () => (
     <RadioGroup defaultValue="radioDisabled">
       {itemsRadio.map((item) => {
-        const { value, ...props } = item;
+        const { value, ...props } = item
         return (
           <SelectionGroup
             key={value}
@@ -178,7 +178,7 @@ export const Default: Story = {
           >
             {item.label}
           </SelectionGroup>
-        );
+        )
       })}
     </RadioGroup>
   ),
@@ -189,7 +189,7 @@ export const Default: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Radio buttons with different label positions and styles.
@@ -258,7 +258,7 @@ export const LabelVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Complete form with validation using RadioGroupForm and react-hook-form.
@@ -273,17 +273,17 @@ export const CompleteForm: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of radio buttons in different layouts.
  */
 export const LayoutVariants: Story = {
   render: () => (
-    <div className="space-y-8 w-96">
+    <div className="w-96 space-y-8">
       <div>
         <h3 className="mb-2 text-sm font-medium">Vertical Layout</h3>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="space-y-2 rounded-lg border p-4">
           <RadioGroup defaultValue="vertical1">
             <SelectionGroup control={<RadioGroupItem value="vertical1" />}>
               Option 1
@@ -300,7 +300,7 @@ export const LayoutVariants: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Horizontal Layout</h3>
-        <div className="p-4 border rounded-lg">
+        <div className="rounded-lg border p-4">
           <RadioGroup defaultValue="horizontal1" className="flex gap-6">
             <SelectionGroup control={<RadioGroupItem value="horizontal1" />}>
               Option A
@@ -317,7 +317,7 @@ export const LayoutVariants: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Grid Layout</h3>
-        <div className="p-4 border rounded-lg">
+        <div className="rounded-lg border p-4">
           <RadioGroup defaultValue="grid1" className="grid grid-cols-2 gap-2">
             <SelectionGroup control={<RadioGroupItem value="grid1" />}>
               Category 1
@@ -344,7 +344,7 @@ export const LayoutVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Controlled radio group example with state management.
@@ -352,16 +352,16 @@ export const LayoutVariants: Story = {
 export const ControlledExample: Story = {
   render: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [value, setValue] = useState("radio2");
+    const [value, setValue] = useState("radio2")
 
     const options = [
       { value: "radio1", label: "Option 1", description: "First choice" },
       { value: "radio2", label: "Option 2", description: "Second choice" },
       { value: "radio3", label: "Option 3", description: "Third choice" },
-    ];
+    ]
 
     return (
-      <div className="p-4 space-y-3 border rounded-lg w-80">
+      <div className="w-80 space-y-3 rounded-lg border p-4">
         <h3 className="text-sm font-medium">Select an option</h3>
         <RadioGroup
           value={value}
@@ -386,7 +386,7 @@ export const ControlledExample: Story = {
           Currently selected: <span className="font-medium">{value}</span>
         </div>
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -396,7 +396,7 @@ export const ControlledExample: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Advanced form with complex validation using RadioGroupForm and ZodSchemaProvider.
@@ -410,7 +410,7 @@ export const AdvancedForm: Story = {
       contactPreference: z.enum(["email", "phone", "mail"], {
         required_error: "Please select how you'd like to be contacted",
       }),
-    });
+    })
 
     function AdvancedFormExample() {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -419,14 +419,14 @@ export const AdvancedForm: Story = {
           subscriptionPlan: "free",
           contactPreference: undefined,
         },
-      });
+      })
 
       const onSubmit = (data: z.infer<typeof formSchema>) => {
-        console.log(data);
+        console.log(data)
         alert(
           `Form submitted with:\nPlan: ${data.subscriptionPlan}\nContact Preference: ${data.contactPreference}`
-        );
-      };
+        )
+      }
 
       const subscriptionPlans = [
         {
@@ -444,20 +444,20 @@ export const AdvancedForm: Story = {
           label: "Enterprise Plan",
           description: "Full feature set for organizations",
         },
-      ];
+      ]
 
       const contactMethods = [
         { value: "email", label: "Email" },
         { value: "phone", label: "Phone" },
         { value: "mail", label: "Mail", disabled: true },
-      ];
+      ]
 
       return (
         <ZodSchemaProvider schema={formSchema}>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="p-4 space-y-6 border rounded-lg w-96"
+              className="w-96 space-y-6 rounded-lg border p-4"
             >
               <RadioGroupForm
                 control={form.control}
@@ -499,10 +499,10 @@ export const AdvancedForm: Story = {
             </form>
           </Form>
         </ZodSchemaProvider>
-      );
+      )
     }
 
-    return <AdvancedFormExample />;
+    return <AdvancedFormExample />
   },
   parameters: {
     docs: {
@@ -512,22 +512,22 @@ export const AdvancedForm: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Custom styled radio buttons for different visual appearances.
  */
 export const CustomStyledRadios: Story = {
   render: () => (
-    <div className="space-y-6 w-80">
-      <div className="p-4 space-y-3 border rounded-lg">
+    <div className="w-80 space-y-6">
+      <div className="space-y-3 rounded-lg border p-4">
         <h3 className="mb-2 text-sm font-medium">Payment Methods</h3>
         <RadioGroup defaultValue="credit">
           <SelectionGroup
             control={
               <RadioGroupItem
                 value="credit"
-                className="text-blue-500 border-blue-500"
+                className="border-blue-500 text-blue-500"
               />
             }
           >
@@ -543,7 +543,7 @@ export const CustomStyledRadios: Story = {
             control={
               <RadioGroupItem
                 value="paypal"
-                className="text-purple-500 border-purple-500"
+                className="border-purple-500 text-purple-500"
               />
             }
           >
@@ -559,7 +559,7 @@ export const CustomStyledRadios: Story = {
             control={
               <RadioGroupItem
                 value="bank"
-                className="text-green-500 border-green-500"
+                className="border-green-500 text-green-500"
               />
             }
           >
@@ -573,15 +573,15 @@ export const CustomStyledRadios: Story = {
         </RadioGroup>
       </div>
 
-      <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900">
+      <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
         <RadioGroup defaultValue="large" className="space-y-2">
           <SelectionGroup
-            control={<RadioGroupItem value="large" className="w-5 h-5" />}
+            control={<RadioGroupItem value="large" className="h-5 w-5" />}
           >
             <span className="font-medium">Large radio style</span>
           </SelectionGroup>
           <SelectionGroup
-            control={<RadioGroupItem value="small" className="w-3 h-3" />}
+            control={<RadioGroupItem value="small" className="h-3 w-3" />}
           >
             <span className="font-medium">Small radio style</span>
           </SelectionGroup>
@@ -596,7 +596,7 @@ export const CustomStyledRadios: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Card variant of SelectionGroup for more prominent radio options.
@@ -666,7 +666,7 @@ export const CardVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive showcase of all radio button variants and use cases.
@@ -676,7 +676,7 @@ export const CompleteShowcase: Story = {
     <div className="grid w-full max-w-2xl gap-6">
       <div>
         <h3 className="mb-2 text-sm font-medium">Basic States</h3>
-        <div className="p-4 border rounded-lg">
+        <div className="rounded-lg border p-4">
           <RadioGroup defaultValue="checked">
             <div className="flex flex-wrap gap-6">
               <SelectionGroup control={<RadioGroupItem value="unchecked" />}>
@@ -702,23 +702,23 @@ export const CompleteShowcase: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">Common Use Cases</h3>
-        <div className="p-4 space-y-4 border rounded-lg">
+        <div className="space-y-4 rounded-lg border p-4">
           <h4 className="text-sm font-medium">Shipping Options</h4>
           <RadioGroup defaultValue="standard">
             <SelectionGroup control={<RadioGroupItem value="standard" />}>
-              <div className="flex justify-between w-full">
+              <div className="flex w-full justify-between">
                 <span>Standard Shipping</span>
                 <span className="font-medium">Free</span>
               </div>
             </SelectionGroup>
             <SelectionGroup control={<RadioGroupItem value="express" />}>
-              <div className="flex justify-between w-full">
+              <div className="flex w-full justify-between">
                 <span>Express Shipping</span>
                 <span className="font-medium">$9.99</span>
               </div>
             </SelectionGroup>
             <SelectionGroup control={<RadioGroupItem value="overnight" />}>
-              <div className="flex justify-between w-full">
+              <div className="flex w-full justify-between">
                 <span>Overnight Shipping</span>
                 <span className="font-medium">$19.99</span>
               </div>
@@ -729,7 +729,7 @@ export const CompleteShowcase: Story = {
 
       <div>
         <h3 className="mb-2 text-sm font-medium">With Icons</h3>
-        <div className="p-4 space-y-2 border rounded-lg">
+        <div className="space-y-2 rounded-lg border p-4">
           <RadioGroup defaultValue="card" className="space-y-2">
             <SelectionGroup control={<RadioGroupItem value="card" />}>
               <div className="flex items-center">
@@ -762,7 +762,7 @@ export const CompleteShowcase: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props.
@@ -794,4 +794,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}

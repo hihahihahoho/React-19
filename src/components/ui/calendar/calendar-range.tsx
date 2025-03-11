@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { cn } from "@/lib/utils"
 import {
   addDays,
   differenceInDays,
@@ -15,45 +15,45 @@ import {
   startOfMonth,
   subDays,
   subMonths,
-} from "date-fns";
-import { ArrowRightIcon, CalendarIcon, Check } from "lucide-react";
-import * as React from "react";
-import { Button } from "../button";
-import { Calendar, CalendarProps } from "../calendar/calendar";
+} from "date-fns"
+import { ArrowRightIcon, CalendarIcon, Check } from "lucide-react"
+import * as React from "react"
+import { Button } from "../button"
+import { Calendar, CalendarProps } from "../calendar/calendar"
 import {
   DateTimeInput,
   DateTimeInputHandle,
-} from "../date-time-input/date-time-input";
-import { DateGroup } from "../date-time-input/date-time-input-group";
-import { FormComposition } from "../form/form";
-import { Separator } from "../separator";
+} from "../date-time-input/date-time-input"
+import { DateGroup } from "../date-time-input/date-time-input-group"
+import { FormComposition } from "../form/form"
+import { Separator } from "../separator"
 
 export interface DateRange {
-  from?: Date;
-  to?: Date;
+  from?: Date
+  to?: Date
 }
 
 export type CalendarRangeProps = CalendarProps & {
   /**
    * The currently selected date range.
    */
-  selectedRange?: DateRange;
+  selectedRange?: DateRange
 
   /**
    * Callback that is invoked whenever the user selects or updates the date range.
    */
-  onConfirm?: (range: DateRange | undefined) => void;
-  onValueChange?: (value: DateRange | undefined) => void;
-  showConfirmButton?: boolean;
+  onConfirm?: (range: DateRange | undefined) => void
+  onValueChange?: (value: DateRange | undefined) => void
+  showConfirmButton?: boolean
 
   /**
    * Callback that is invoked whenever the component requests to be closed
    */
-  onClose?: () => void;
-  setOpen?: (open: boolean) => void;
-  minRange?: number;
-  maxRange?: number;
-};
+  onClose?: () => void
+  setOpen?: (open: boolean) => void
+  minRange?: number
+  maxRange?: number
+}
 
 const CalendarRange: React.FC<CalendarRangeProps> = ({
   selectedRange,
@@ -67,32 +67,32 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
   localeString,
   ...props
 }) => {
-  const [isSelecting, setIsSelecting] = React.useState(false);
-  const [hoverDate, setHoverDate] = React.useState<Date | undefined>(undefined);
+  const [isSelecting, setIsSelecting] = React.useState(false)
+  const [hoverDate, setHoverDate] = React.useState<Date | undefined>(undefined)
   const [month, setMonth] = React.useState<Date>(
     selectedRange?.to || new Date()
-  );
+  )
   const [draftRange, setDraftRange] = React.useState<DateRange | undefined>(
     selectedRange
-  );
+  )
 
   // Separate state for the input values, initialized from draftRange
   const [inputFrom, setInputFrom] = React.useState<Date | undefined>(
     selectedRange?.from
-  );
+  )
   const [inputTo, setInputTo] = React.useState<Date | undefined>(
     selectedRange?.to
-  );
+  )
 
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-  const isNotSmallScreen = useMediaQuery("(min-width: 480px)");
+  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const isNotSmallScreen = useMediaQuery("(min-width: 480px)")
 
-  const DateTimeInputFromRef = React.useRef<DateTimeInputHandle>(null);
-  const DateTimeInputToRef = React.useRef<DateTimeInputHandle>(null);
+  const DateTimeInputFromRef = React.useRef<DateTimeInputHandle>(null)
+  const DateTimeInputToRef = React.useRef<DateTimeInputHandle>(null)
 
   // --- Preset date ranges ---
   const presetRanges = React.useMemo(() => {
-    const today = new Date();
+    const today = new Date()
     const allRanges = {
       today: {
         label: "Hôm nay",
@@ -124,128 +124,128 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
         from: startOfMonth(subMonths(today, 1)),
         to: endOfMonth(subMonths(today, 1)),
       },
-    };
+    }
 
     // Filter ranges based on minRange and maxRange
     return Object.fromEntries(
       Object.entries(allRanges).filter(([, range]) => {
         // Use differenceInDays from date-fns
-        const daysDifference = differenceInDays(range.to, range.from) + 1;
+        const daysDifference = differenceInDays(range.to, range.from) + 1
 
         const meetsMinRange =
-          minRange === undefined || daysDifference >= minRange;
+          minRange === undefined || daysDifference >= minRange
         const meetsMaxRange =
-          maxRange === undefined || daysDifference <= maxRange;
+          maxRange === undefined || daysDifference <= maxRange
 
-        return meetsMinRange && meetsMaxRange;
+        return meetsMinRange && meetsMaxRange
       })
-    );
-  }, [minRange, maxRange]);
+    )
+  }, [minRange, maxRange])
 
   // --- Handler for date selection ---
   const handleDateSelect = (newDate: Date | undefined) => {
-    if (!newDate || !isValid(newDate)) return;
+    if (!newDate || !isValid(newDate)) return
 
     if (!isSelecting) {
       const newRange = {
         from: newDate,
         to: undefined,
-      };
-      setDraftRange(newRange);
-      onValueChange?.(newRange); // Apply onValueChange here
-      setInputFrom(newDate);
-      setInputTo(undefined);
-      setIsSelecting(true);
+      }
+      setDraftRange(newRange)
+      onValueChange?.(newRange) // Apply onValueChange here
+      setInputFrom(newDate)
+      setInputTo(undefined)
+      setIsSelecting(true)
     } else {
       if (draftRange?.from) {
-        const firstDate = draftRange.from;
-        const isNewDateBefore = isBefore(newDate, firstDate);
+        const firstDate = draftRange.from
+        const isNewDateBefore = isBefore(newDate, firstDate)
         const [fromDate, toDate] = isNewDateBefore
           ? [newDate, firstDate]
-          : [firstDate, newDate];
+          : [firstDate, newDate]
 
         const newRange = {
           from: fromDate,
           to: toDate,
-        };
-        setDraftRange(newRange);
-        onValueChange?.(newRange); // Apply onValueChange here
-        setInputFrom(fromDate);
-        setInputTo(toDate);
-        setIsSelecting(false);
-        setHoverDate(undefined);
+        }
+        setDraftRange(newRange)
+        onValueChange?.(newRange) // Apply onValueChange here
+        setInputFrom(fromDate)
+        setInputTo(toDate)
+        setIsSelecting(false)
+        setHoverDate(undefined)
       }
     }
-  };
+  }
 
   const handleDayMouseEnter = (date: Date | undefined) => {
     if (isSelecting) {
-      setHoverDate(date || undefined);
+      setHoverDate(date || undefined)
     }
-  };
+  }
 
   const handleDayMouseLeave = () => {
     if (isSelecting) {
-      setHoverDate(undefined);
+      setHoverDate(undefined)
     }
-  };
+  }
 
   const rangeMiddleModifier = React.useMemo(() => {
-    if (!isSelecting) return undefined;
+    if (!isSelecting) return undefined
 
-    const fromDate = draftRange?.from;
-    const hDate = hoverDate;
+    const fromDate = draftRange?.from
+    const hDate = hoverDate
     if (fromDate && hDate) {
-      const isHoverBefore = isBefore(hDate, fromDate);
-      const start = isHoverBefore ? addDays(hDate, 1) : addDays(fromDate, 1);
-      const end = isHoverBefore ? subDays(fromDate, 1) : subDays(hDate, 1);
-      if (isAfter(start, end)) return undefined;
-      return { from: start, to: end };
+      const isHoverBefore = isBefore(hDate, fromDate)
+      const start = isHoverBefore ? addDays(hDate, 1) : addDays(fromDate, 1)
+      const end = isHoverBefore ? subDays(fromDate, 1) : subDays(hDate, 1)
+      if (isAfter(start, end)) return undefined
+      return { from: start, to: end }
     }
-    return undefined;
-  }, [isSelecting, draftRange?.from, hoverDate]);
+    return undefined
+  }, [isSelecting, draftRange?.from, hoverDate])
 
   const adjustedRangeStart = React.useMemo(() => {
     if (isSelecting && draftRange?.from && hoverDate) {
       if (isBefore(hoverDate, draftRange.from)) {
-        return hoverDate;
+        return hoverDate
       }
     }
-    return draftRange?.from;
-  }, [isSelecting, draftRange?.from, hoverDate]);
+    return draftRange?.from
+  }, [isSelecting, draftRange?.from, hoverDate])
 
   const adjustedRangeEnd = React.useMemo(() => {
     if (isSelecting && draftRange?.from && hoverDate) {
       if (isBefore(hoverDate, draftRange.from)) {
-        return draftRange.from;
+        return draftRange.from
       }
-      return hoverDate;
+      return hoverDate
     }
-    return draftRange?.to;
-  }, [isSelecting, draftRange?.from, draftRange?.to, hoverDate]);
+    return draftRange?.to
+  }, [isSelecting, draftRange?.from, draftRange?.to, hoverDate])
 
   const fullRangeMiddleModifier = React.useMemo(() => {
-    if (isSelecting) return undefined;
+    if (isSelecting) return undefined
 
-    const fromDate = draftRange?.from;
-    const toDate = draftRange?.to;
+    const fromDate = draftRange?.from
+    const toDate = draftRange?.to
     if (fromDate && toDate) {
-      const start = addDays(fromDate, 1);
-      const end = subDays(toDate, 1);
-      if (isAfter(start, end)) return undefined;
-      return { from: start, to: end };
+      const start = addDays(fromDate, 1)
+      const end = subDays(toDate, 1)
+      if (isAfter(start, end)) return undefined
+      return { from: start, to: end }
     }
-    return undefined;
-  }, [isSelecting, draftRange?.from, draftRange?.to]);
+    return undefined
+  }, [isSelecting, draftRange?.from, draftRange?.to])
 
   const selectedRangeModifier = React.useMemo(() => {
-    const fromDate = draftRange?.from;
-    const toDate = draftRange?.to;
+    const fromDate = draftRange?.from
+    const toDate = draftRange?.to
     if (fromDate && toDate) {
-      return { from: fromDate, to: toDate };
+      return { from: fromDate, to: toDate }
     }
-    return undefined;
-  }, [draftRange]);
+    return undefined
+  }, [draftRange])
 
   const finalModifiers = React.useMemo(() => {
     // Case 1: When actively selecting with mouse
@@ -254,37 +254,37 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
         range_start: adjustedRangeStart,
         range_end: adjustedRangeEnd,
         range_middle: rangeMiddleModifier,
-      };
+      }
     }
 
     // Case 2: When both input fields have valid dates
     if (inputFrom && inputTo && isValid(inputFrom) && isValid(inputTo)) {
-      const normalizedFrom = startOfDay(inputFrom);
-      const normalizedTo = endOfDay(inputTo);
+      const normalizedFrom = startOfDay(inputFrom)
+      const normalizedTo = endOfDay(inputTo)
 
       // Handle case where dates might be in wrong order
       const [start, end] = isAfter(normalizedFrom, normalizedTo)
         ? [normalizedTo, normalizedFrom]
-        : [normalizedFrom, normalizedTo];
+        : [normalizedFrom, normalizedTo]
 
       return {
         range_start: start,
         range_end: end,
         range_middle: { from: start, to: end },
         selected: { from: start, to: end },
-      };
+      }
     }
 
     // Case 3: When only one input has a valid date
     if (inputFrom && isValid(inputFrom)) {
       return {
         range_start: startOfDay(inputFrom),
-      };
+      }
     }
     if (inputTo && isValid(inputTo)) {
       return {
         range_end: endOfDay(inputTo),
-      };
+      }
     }
 
     // Case 4: Fallback to selected range if it exists
@@ -294,10 +294,10 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
         range_end: selectedRangeModifier.to,
         range_middle: fullRangeMiddleModifier,
         selected: selectedRangeModifier,
-      };
+      }
     }
 
-    return {};
+    return {}
   }, [
     isSelecting,
     adjustedRangeStart,
@@ -307,126 +307,126 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
     fullRangeMiddleModifier,
     inputFrom,
     inputTo,
-  ]);
+  ])
 
   const handlePresetSelect = (range: DateRange) => {
-    setDraftRange(range);
-    onValueChange?.(range); // Apply onValueChange here
-    setInputFrom(range.from);
-    setInputTo(range.to);
-    setIsSelecting(false);
-    setHoverDate(undefined);
-  };
+    setDraftRange(range)
+    onValueChange?.(range) // Apply onValueChange here
+    setInputFrom(range.from)
+    setInputTo(range.to)
+    setIsSelecting(false)
+    setHoverDate(undefined)
+  }
 
   const areDateRangesEqual = (
     range1: DateRange | undefined,
     range2: DateRange | undefined
   ) => {
     if (!range1?.from || !range1?.to || !range2?.from || !range2?.to) {
-      return false;
+      return false
     }
     return (
       isEqual(startOfDay(range1.from), startOfDay(range2.from)) &&
       isEqual(endOfDay(range1.to), endOfDay(range2.to))
-    );
-  };
+    )
+  }
 
   const handleConfirm = () => {
-    onConfirm?.(draftRange);
-    onClose?.();
-    setOpen?.(false);
-  };
+    onConfirm?.(draftRange)
+    onClose?.()
+    setOpen?.(false)
+  }
 
   const handleCancel = () => {
-    setDraftRange(selectedRange);
-    onValueChange?.(selectedRange); // Apply onValueChange here
-    setInputFrom(selectedRange?.from);
-    setInputTo(selectedRange?.to);
-    setIsSelecting(false);
-    setHoverDate(undefined);
-    onClose?.();
-    setOpen?.(false);
-  };
+    setDraftRange(selectedRange)
+    onValueChange?.(selectedRange) // Apply onValueChange here
+    setInputFrom(selectedRange?.from)
+    setInputTo(selectedRange?.to)
+    setIsSelecting(false)
+    setHoverDate(undefined)
+    onClose?.()
+    setOpen?.(false)
+  }
 
   // --- Input change handler (LIVE update) ---
   const handleInputChange = React.useCallback(
     (value: Date | "invalid" | undefined, type: "from" | "to") => {
       // Update input state immediately
-      setIsSelecting(false);
-      setHoverDate(undefined);
+      setIsSelecting(false)
+      setHoverDate(undefined)
 
       if (type === "from") {
-        setInputFrom(value === "invalid" ? undefined : value);
+        setInputFrom(value === "invalid" ? undefined : value)
       } else {
-        setInputTo(value === "invalid" ? undefined : value);
+        setInputTo(value === "invalid" ? undefined : value)
       }
 
       // Update draftRange *only if* the new value is valid
       if (value !== "invalid" && isValid(value)) {
         // Calculate the updated range outside of setDraftRange
-        const updatedRange = { ...(draftRange || {}) };
+        const updatedRange = { ...(draftRange || {}) }
         if (type === "from") {
-          updatedRange.from = value;
+          updatedRange.from = value
         } else {
-          updatedRange.to = value;
+          updatedRange.to = value
         }
 
         // Check for date order and create final range
-        let finalRange = updatedRange;
+        let finalRange = updatedRange
         if (
           updatedRange.from &&
           updatedRange.to &&
           isAfter(updatedRange.from, updatedRange.to)
         ) {
-          finalRange = { from: updatedRange.to, to: updatedRange.from };
+          finalRange = { from: updatedRange.to, to: updatedRange.from }
         }
 
         // Call onValueChange with the correct updated range
-        onValueChange?.(finalRange);
+        onValueChange?.(finalRange)
 
         // Update state with the same value
-        setDraftRange(finalRange);
+        setDraftRange(finalRange)
       }
     },
     [onValueChange, draftRange]
-  );
+  )
 
   const handleInputBlur = React.useCallback(() => {
     // Swap input values if needed, on blur
     if (inputFrom && inputTo && isAfter(inputFrom, inputTo)) {
-      setInputFrom(inputTo);
-      setInputTo(inputFrom);
+      setInputFrom(inputTo)
+      setInputTo(inputFrom)
 
       // update draft only on blur.
-      const newRange = { from: inputTo, to: inputFrom };
-      setDraftRange(newRange);
-      onValueChange?.(newRange); // Apply onValueChange here
+      const newRange = { from: inputTo, to: inputFrom }
+      setDraftRange(newRange)
+      onValueChange?.(newRange) // Apply onValueChange here
     }
 
-    setIsSelecting(false);
-  }, [inputFrom, inputTo, onValueChange]);
+    setIsSelecting(false)
+  }, [inputFrom, inputTo, onValueChange])
 
   // Add this new useEffect
   React.useEffect(() => {
     if (!isSelecting && inputFrom && isValid(inputFrom)) {
       if (isDesktop) {
-        setMonth(inputFrom);
+        setMonth(inputFrom)
       }
     }
     if (!isSelecting && inputTo && isValid(inputTo)) {
       if (!isDesktop) {
-        setMonth(inputTo);
+        setMonth(inputTo)
       }
     }
-  }, [inputFrom, inputTo, isSelecting, isDesktop]);
+  }, [inputFrom, inputTo, isSelecting, isDesktop])
 
   const renderPresetButtons = () => {
     return (
       <div
         className={cn(
-          "space-y-1 w-[160px] py-3 px-2",
+          "w-[160px] space-y-1 px-2 py-3",
           !isDesktop &&
-            "flex gap-1 space-y-0 w-full whitespace-nowrap overflow-x-auto border-b"
+            "flex w-full gap-1 space-y-0 overflow-x-auto whitespace-nowrap border-b"
         )}
       >
         {Object.entries(presetRanges).map(([key, preset]) => (
@@ -434,7 +434,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
             key={key}
             variant={isDesktop ? "ghost" : "secondary"}
             className={cn(
-              "w-full flex-1 min-w-min p-2 h-auto",
+              "h-auto w-full min-w-min flex-1 p-2",
               isDesktop ? "justify-between" : "w-auto",
               areDateRangesEqual(draftRange, {
                 from: preset.from,
@@ -456,15 +456,15 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
           </Button>
         ))}
       </div>
-    );
-  };
+    )
+  }
 
   const calendarContent = (
     <div className={cn("flex gap-0", !isDesktop && "flex-col")}>
       {renderPresetButtons()}
       <Separator
         orientation="vertical"
-        className={cn(isDesktop ? "self-stretch h-auto" : "hidden")}
+        className={cn(isDesktop ? "h-auto self-stretch" : "hidden")}
       />
       <div className="relative flex-1">
         <Calendar
@@ -479,17 +479,17 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
           modifiers={finalModifiers}
           localeString={localeString}
         />
-        <div className="sticky bottom-0 flex items-center gap-4 p-4 border-t -md:flex-col backdrop-blur-xl">
-          <div className="flex items-center justify-center flex-1 gap-2">
+        <div className="sticky bottom-0 flex items-center gap-4 border-t p-4 backdrop-blur-xl -md:flex-col">
+          <div className="flex flex-1 items-center justify-center gap-2">
             <FormComposition
               iconRight={<CalendarIcon />}
               showErrorMsg={false}
               onFormCompositionClick={() => {
-                DateTimeInputFromRef.current?.focus();
+                DateTimeInputFromRef.current?.focus()
               }}
               className="min-w-[144px]"
             >
-              <div className="flex items-center flex-1 h-full">
+              <div className="flex h-full flex-1 items-center">
                 <DateGroup onBlurWithin={handleInputBlur}>
                   <DateTimeInput
                     value={inputFrom}
@@ -500,16 +500,16 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
                 </DateGroup>
               </div>
             </FormComposition>
-            <ArrowRightIcon className="text-muted-foreground size-4" />
+            <ArrowRightIcon className="size-4 text-muted-foreground" />
             <FormComposition
               iconRight={<CalendarIcon />}
               showErrorMsg={false}
               onFormCompositionClick={() => {
-                DateTimeInputToRef.current?.focus();
+                DateTimeInputToRef.current?.focus()
               }}
               className="min-w-[144px]"
             >
-              <div className="flex items-center flex-1 h-full">
+              <div className="flex h-full flex-1 items-center">
                 <DateGroup onBlurWithin={handleInputBlur}>
                   <DateTimeInput
                     value={inputTo}
@@ -532,8 +532,8 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
         </div>
       </div>
     </div>
-  );
-  return calendarContent;
-};
+  )
+  return calendarContent
+}
 
-export { CalendarRange };
+export { CalendarRange }

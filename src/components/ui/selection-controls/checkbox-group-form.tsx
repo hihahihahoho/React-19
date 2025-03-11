@@ -1,34 +1,34 @@
-import { cn } from "@/lib/utils";
-import { CheckboxProps } from "@radix-ui/react-checkbox";
+import { cn } from "@/lib/utils"
+import { CheckboxProps } from "@radix-ui/react-checkbox"
 import {
   ControllerProps,
   FieldPath,
   FieldValues,
   useFormContext,
-} from "react-hook-form";
-import { FormComposition, FormCompositionProps, FormField } from "../form/form";
-import { useZodSchema } from "../form/zod-schema-context";
-import { Checkbox } from "./checkbox";
-import { SelectionGroup, SelectionGroupProps } from "./selection-group";
+} from "react-hook-form"
+import { FormComposition, FormCompositionProps, FormField } from "../form/form"
+import { useZodSchema } from "../form/zod-schema-context"
+import { Checkbox } from "./checkbox"
+import { SelectionGroup, SelectionGroupProps } from "./selection-group"
 
 export type ItemCheckboxType = CheckboxProps & {
-  label: React.ReactNode;
-  value: string;
-};
+  label: React.ReactNode
+  value: string
+}
 
 export interface CheckboxFormProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<ControllerProps<TFieldValues, TName>, "render"> {
-  formComposition?: FormCompositionProps;
-  selectionGroup?: SelectionGroupProps;
-  items: ItemCheckboxType[];
-  className?: string;
+  formComposition?: FormCompositionProps
+  selectionGroup?: SelectionGroupProps
+  items: ItemCheckboxType[]
+  className?: string
 }
 
 const CheckboxGroupForm = <
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 >({
   name,
   control,
@@ -38,16 +38,16 @@ const CheckboxGroupForm = <
   className,
   ...props
 }: CheckboxFormProps<TFieldValues, TName>) => {
-  const { control: contextControl } = useFormContext<TFieldValues>();
-  const { getJsonSchema } = useZodSchema();
-  const { isRequired } = getJsonSchema(name);
+  const { control: contextControl } = useFormContext<TFieldValues>()
+  const { getJsonSchema } = useZodSchema()
+  const { isRequired } = getJsonSchema(name)
 
   return (
     <FormField<TFieldValues, TName>
       name={name}
       control={control || contextControl}
       render={({ field }) => {
-        const value = (field.value || []) as string[];
+        const value = (field.value || []) as string[]
 
         return (
           <FormComposition
@@ -56,9 +56,9 @@ const CheckboxGroupForm = <
             isMinHeight
             variant="empty"
           >
-            <div className={cn("grid grid-cols-2 gap-2 mt-2", className)}>
+            <div className={cn("mt-2 grid grid-cols-2 gap-2", className)}>
               {items.map((item) => {
-                const { label, ...checkboxProps } = item;
+                const { label, ...checkboxProps } = item
                 return (
                   <SelectionGroup
                     key={item.value}
@@ -69,8 +69,8 @@ const CheckboxGroupForm = <
                         onCheckedChange={(checked) => {
                           const newValue = checked
                             ? [...value, item.value]
-                            : value.filter((val) => val !== item.value);
-                          field.onChange(newValue);
+                            : value.filter((val) => val !== item.value)
+                          field.onChange(newValue)
                         }}
                       />
                     }
@@ -78,17 +78,17 @@ const CheckboxGroupForm = <
                   >
                     {label}
                   </SelectionGroup>
-                );
+                )
               })}
             </div>
           </FormComposition>
-        );
+        )
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
-CheckboxGroupForm.displayName = "CheckboxGroupForm";
+CheckboxGroupForm.displayName = "CheckboxGroupForm"
 
-export { CheckboxGroupForm };
+export { CheckboxGroupForm }

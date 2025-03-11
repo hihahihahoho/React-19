@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button } from "@/components/ui/button";
-import { DatePicker } from "@/components/ui/datepicker/datepicker";
-import { DatePickerForm } from "@/components/ui/datepicker/datepicker-form";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { zodDate } from "@/lib/zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
-import { addDays, addMonths, format, subDays } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { Button } from "@/components/ui/button"
+import { DatePicker } from "@/components/ui/datepicker/datepicker"
+import { DatePickerForm } from "@/components/ui/datepicker/datepicker-form"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { zodDate } from "@/lib/zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
+import { addDays, addMonths, format, subDays } from "date-fns"
+import { CalendarIcon } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * DatePicker component allows users to select a date with a calendar interface.
@@ -79,10 +79,10 @@ They can be used to input dates in forms or as standalone components.
       </div>
     ),
   ],
-} satisfies Meta<typeof DatePicker>;
+} satisfies Meta<typeof DatePicker>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Basic example of a datepicker component.
@@ -102,7 +102,7 @@ export const Basic: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of different datepicker states.
@@ -110,10 +110,10 @@ export const Basic: Story = {
 export const DatePickerStates: Story = {
   render: () => {
     // Today's date for reference
-    const today = new Date();
+    const today = new Date()
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <DatePicker
           formComposition={{
             label: "Default",
@@ -157,7 +157,7 @@ export const DatePickerStates: Story = {
           editable
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -167,14 +167,14 @@ export const DatePickerStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of datepickers with different label positions.
  */
 export const LabelPositioning: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <DatePicker
         formComposition={{
           label: "Vertical label (default)",
@@ -213,14 +213,14 @@ export const LabelPositioning: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Editable datepicker examples.
  */
 export const EditableDatePicker: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <DatePicker
         formComposition={{
           label: "Date only",
@@ -258,17 +258,17 @@ export const EditableDatePicker: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DatePicker with date restrictions.
  */
 export const DateRestrictions: Story = {
   render: () => {
-    const today = new Date();
+    const today = new Date()
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <DatePicker
           formComposition={{
             label: "Future dates only",
@@ -298,14 +298,14 @@ export const DateRestrictions: Story = {
           }}
           calendarProps={{
             disabled: (date) => {
-              const day = date.getDay();
-              return day === 0 || day === 6;
+              const day = date.getDay()
+              return day === 0 || day === 6
             },
           }}
           placeholder="Select weekday"
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -315,14 +315,14 @@ export const DateRestrictions: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DatePicker with custom icons.
  */
 export const WithCustomIcon: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <DatePicker
         formComposition={{
           label: "Event Date",
@@ -340,20 +340,20 @@ export const WithCustomIcon: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of a controlled datepicker.
  */
 export const ControlledDatePicker: Story = {
   render: () => {
-    const [date, setDate] = useState<Date | undefined>(new Date());
+    const [date, setDate] = useState<Date | undefined>(new Date())
     const [dateString, setDateString] = useState<string>(
       format(new Date(), "PPP")
-    );
+    )
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <DatePicker
           formComposition={{
             label: "Controlled DatePicker",
@@ -361,10 +361,8 @@ export const ControlledDatePicker: Story = {
           }}
           value={date}
           onValueChange={(newDate) => {
-            setDate(newDate);
-            setDateString(
-              newDate ? format(newDate, "PPP") : "No date selected"
-            );
+            setDate(newDate)
+            setDateString(newDate ? format(newDate, "PPP") : "No date selected")
           }}
         />
 
@@ -374,13 +372,13 @@ export const ControlledDatePicker: Story = {
           </p>
         </div>
 
-        <div className="flex gap-2 mt-4">
+        <div className="mt-4 flex gap-2">
           <Button
             size="sm"
             onClick={() => {
-              const newDate = date ? addDays(date, 1) : new Date();
-              setDate(newDate);
-              setDateString(format(newDate, "PPP"));
+              const newDate = date ? addDays(date, 1) : new Date()
+              setDate(newDate)
+              setDateString(format(newDate, "PPP"))
             }}
           >
             Next Day
@@ -390,9 +388,9 @@ export const ControlledDatePicker: Story = {
             size="sm"
             variant="outline"
             onClick={() => {
-              const newDate = date ? subDays(date, 1) : new Date();
-              setDate(newDate);
-              setDateString(format(newDate, "PPP"));
+              const newDate = date ? subDays(date, 1) : new Date()
+              setDate(newDate)
+              setDateString(format(newDate, "PPP"))
             }}
           >
             Previous Day
@@ -402,15 +400,15 @@ export const ControlledDatePicker: Story = {
             size="sm"
             variant="destructive"
             onClick={() => {
-              setDate(undefined);
-              setDateString("No date selected");
+              setDate(undefined)
+              setDateString("No date selected")
             }}
           >
             Clear
           </Button>
         </div>
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -420,7 +418,7 @@ export const ControlledDatePicker: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of a datepicker in a form with validation.
@@ -428,7 +426,7 @@ export const ControlledDatePicker: Story = {
 export const DatePickerInForm: Story = {
   render: function FormExample() {
     // Form setup
-    const today = new Date();
+    const today = new Date()
     const formSchema = z.object({
       eventDate: zodDate({
         required_error: "Please select an event date",
@@ -441,7 +439,7 @@ export const DatePickerInForm: Story = {
         maxDate: subDays(today, 1),
       }),
       optionalDate: zodDate().optional(),
-    });
+    })
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -450,7 +448,7 @@ export const DatePickerInForm: Story = {
         birthDate: undefined,
         optionalDate: undefined,
       },
-    });
+    })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
       alert(
@@ -458,7 +456,7 @@ export const DatePickerInForm: Story = {
           `Event Date: ${values.eventDate ? format(values.eventDate, "PPP") : "None"}\n` +
           `Birth Date: ${values.birthDate ? format(values.birthDate, "PPP") : "None"}\n` +
           `Optional Date: ${values.optionalDate ? format(values.optionalDate, "PPP") : "None"}`
-      );
+      )
     }
 
     return (
@@ -516,7 +514,7 @@ export const DatePickerInForm: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -526,17 +524,17 @@ export const DatePickerInForm: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DatePicker with different locales.
  */
 export const LocalizedDatePicker: Story = {
   render: () => {
-    const today = new Date();
+    const today = new Date()
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <DatePicker
           formComposition={{
             label: "Browser Default",
@@ -595,7 +593,7 @@ export const LocalizedDatePicker: Story = {
           locale="vi"
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -605,4 +603,4 @@ export const LocalizedDatePicker: Story = {
       },
     },
   },
-};
+}

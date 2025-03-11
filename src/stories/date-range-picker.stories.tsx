@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   DateRangePicker,
   OnValueChangeDateRangePicker,
-} from "@/components/ui/date-range-picker/date-range-picker";
-import { DateRangePickerForm } from "@/components/ui/date-range-picker/date-range-picker-form";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { zodDateRange } from "@/lib/zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
-import { addDays, addMonths, format, getDay } from "date-fns";
-import { Calendar } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "@/components/ui/date-range-picker/date-range-picker"
+import { DateRangePickerForm } from "@/components/ui/date-range-picker/date-range-picker-form"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { zodDateRange } from "@/lib/zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
+import { addDays, addMonths, format, getDay } from "date-fns"
+import { Calendar } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * DateRangePicker component allows users to select a date range with a calendar interface.
@@ -77,10 +77,10 @@ They can be used to input date ranges in forms or as standalone components.
       </div>
     ),
   ],
-} satisfies Meta<typeof DateRangePicker>;
+} satisfies Meta<typeof DateRangePicker>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Basic example of a date range picker component.
@@ -100,7 +100,7 @@ export const Basic: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of different date range picker states.
@@ -108,10 +108,10 @@ export const Basic: Story = {
 export const DateRangePickerStates: Story = {
   render: () => {
     // Today's date for reference
-    const today = new Date();
+    const today = new Date()
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <DateRangePicker
           formComposition={{
             label: "Default",
@@ -148,7 +148,7 @@ export const DateRangePickerStates: Story = {
           placeholder="Choose your stay dates"
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -158,14 +158,14 @@ export const DateRangePickerStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of date range pickers with different label positions.
  */
 export const LabelPositioning: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <DateRangePicker
         formComposition={{
           label: "Vertical label (default)",
@@ -205,17 +205,17 @@ export const LabelPositioning: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DateRangePicker with different calendar constraints.
  */
 export const DateRangeRestrictions: Story = {
   render: () => {
-    const today = new Date();
+    const today = new Date()
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <DateRangePicker
           formComposition={{
             label: "Future dates only",
@@ -245,8 +245,8 @@ export const DateRangeRestrictions: Story = {
           }}
           calendarProps={{
             disabled: (date) => {
-              const day = getDay(date);
-              return day === 0 || day === 6;
+              const day = getDay(date)
+              return day === 0 || day === 6
             },
           }}
           placeholder="Select weekday range"
@@ -264,7 +264,7 @@ export const DateRangeRestrictions: Story = {
           placeholder="Select 3-7 day period"
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -274,14 +274,14 @@ export const DateRangeRestrictions: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DateRangePicker with custom icons.
  */
 export const WithCustomIcon: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <DateRangePicker
         formComposition={{
           label: "Vacation Period",
@@ -299,41 +299,41 @@ export const WithCustomIcon: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of a controlled date range picker.
  */
 export const ControlledDateRangePicker: Story = {
   render: () => {
-    const today = new Date();
+    const today = new Date()
     const [dateRange, setDateRange] = useState<
       { from: Date; to: Date } | undefined
     >({
       from: today,
       to: addDays(today, 7),
-    });
+    })
 
     const formatDateRange = (range?: { from?: Date; to?: Date }) => {
-      if (!range) return "No date range selected";
-      const fromStr = range.from ? format(range.from, "PP") : "...";
-      const toStr = range.to ? format(range.to, "PP") : "...";
-      return `${fromStr} to ${toStr}`;
-    };
+      if (!range) return "No date range selected"
+      const fromStr = range.from ? format(range.from, "PP") : "..."
+      const toStr = range.to ? format(range.to, "PP") : "..."
+      return `${fromStr} to ${toStr}`
+    }
 
     const handleDateRangeChange = (value: OnValueChangeDateRangePicker) => {
       if (!value) {
-        setDateRange(undefined);
-        return;
+        setDateRange(undefined)
+        return
       }
 
       if (value.from && value.to) {
-        setDateRange({ from: value.from, to: value.to });
+        setDateRange({ from: value.from, to: value.to })
       }
-    };
+    }
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <DateRangePicker
           formComposition={{
             label: "Controlled Date Range Picker",
@@ -358,14 +358,14 @@ export const ControlledDateRangePicker: Story = {
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="mt-4 flex flex-wrap gap-2">
           <Button
             size="sm"
             onClick={() => {
               // This week
-              const start = today;
-              const end = addDays(today, 6);
-              setDateRange({ from: start, to: end });
+              const start = today
+              const end = addDays(today, 6)
+              setDateRange({ from: start, to: end })
             }}
           >
             This Week
@@ -375,9 +375,9 @@ export const ControlledDateRangePicker: Story = {
             size="sm"
             onClick={() => {
               // Next week
-              const start = addDays(today, 7);
-              const end = addDays(today, 13);
-              setDateRange({ from: start, to: end });
+              const start = addDays(today, 7)
+              const end = addDays(today, 13)
+              setDateRange({ from: start, to: end })
             }}
           >
             Next Week
@@ -387,9 +387,9 @@ export const ControlledDateRangePicker: Story = {
             size="sm"
             onClick={() => {
               // This month
-              const start = today;
-              const end = addDays(addMonths(today, 1), -1);
-              setDateRange({ from: start, to: end });
+              const start = today
+              const end = addDays(addMonths(today, 1), -1)
+              setDateRange({ from: start, to: end })
             }}
           >
             This Month
@@ -404,7 +404,7 @@ export const ControlledDateRangePicker: Story = {
           </Button>
         </div>
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -414,7 +414,7 @@ export const ControlledDateRangePicker: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of a date range picker with confirmation button.
@@ -440,7 +440,7 @@ export const WithConfirmation: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of a date range picker in a form with validation.
@@ -448,7 +448,7 @@ export const WithConfirmation: Story = {
 export const DateRangePickerInForm: Story = {
   render: function FormExample() {
     // Form setup
-    const today = new Date();
+    const today = new Date()
     const formSchema = z.object({
       bookingPeriod: zodDateRange({
         required_error: "Please select a booking period",
@@ -461,7 +461,7 @@ export const DateRangePickerInForm: Story = {
         minDate: subYears(today, 10),
         maxDate: today,
       }).optional(),
-    });
+    })
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -472,19 +472,19 @@ export const DateRangePickerInForm: Story = {
         },
         pastExperience: undefined,
       },
-    });
+    })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
       const formatRange = (range?: { from?: Date; to?: Date }) => {
-        if (!range?.from || !range?.to) return "None";
-        return `${format(range.from, "PPP")} to ${format(range.to, "PPP")}`;
-      };
+        if (!range?.from || !range?.to) return "None"
+        return `${format(range.from, "PPP")} to ${format(range.to, "PPP")}`
+      }
 
       alert(
         `Form submitted!\n\n` +
           `Booking Period: ${formatRange(values.bookingPeriod)}\n` +
           `Past Experience: ${formatRange(values.pastExperience)}`
-      );
+      )
     }
 
     return (
@@ -532,7 +532,7 @@ export const DateRangePickerInForm: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -542,18 +542,18 @@ export const DateRangePickerInForm: Story = {
       },
     },
   },
-};
+}
 
 /**
  * DateRangePicker with different locales.
  */
 export const LocalizedDateRangePicker: Story = {
   render: () => {
-    const today = new Date();
-    const nextWeek = addDays(today, 7);
+    const today = new Date()
+    const nextWeek = addDays(today, 7)
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <DateRangePicker
           formComposition={{
             label: "Browser Default",
@@ -606,7 +606,7 @@ export const LocalizedDateRangePicker: Story = {
           }}
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -616,9 +616,9 @@ export const LocalizedDateRangePicker: Story = {
       },
     },
   },
-};
+}
 
 // Helper function to subtract years for the past experience example
 function subYears(date: Date, years: number) {
-  return new Date(date.getFullYear() - years, date.getMonth(), date.getDate());
+  return new Date(date.getFullYear() - years, date.getMonth(), date.getDate())
 }

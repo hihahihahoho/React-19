@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import * as ToastPrimitives from "@radix-ui/react-toast";
-import { cva, type VariantProps } from "class-variance-authority";
-import { X } from "lucide-react";
-import * as React from "react";
+import * as ToastPrimitives from "@radix-ui/react-toast"
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const ToastProvider = ToastPrimitives.Provider;
+const ToastProvider = ToastPrimitives.Provider
 
 function ToastViewport({
   className,
@@ -17,12 +17,12 @@ function ToastViewport({
     <ToastPrimitives.Viewport
       data-slot="toast-viewport"
       className={cn(
-        "fixed top-0 z-[100] flex max-h-screen -sm:right-0 w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+        "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px] -sm:right-0",
         className
       )}
       {...props}
     />
-  );
+  )
 }
 
 const toastVariants = cva(
@@ -39,7 +39,7 @@ const toastVariants = cva(
       variant: "default",
     },
   }
-);
+)
 
 function Toast({
   className,
@@ -53,7 +53,7 @@ function Toast({
       className={cn(toastVariants({ variant }), className)}
       {...props}
     />
-  );
+  )
 }
 
 function ToastAction({
@@ -69,7 +69,7 @@ function ToastAction({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function ToastClose({
@@ -88,7 +88,7 @@ function ToastClose({
     >
       <X className="h-4 w-4" />
     </ToastPrimitives.Close>
-  );
+  )
 }
 
 function ToastTitle({
@@ -98,10 +98,10 @@ function ToastTitle({
   return (
     <ToastPrimitives.Title
       data-slot="toast-title"
-      className={cn("text-sm font-semibold flex gap-2 items-center", className)}
+      className={cn("flex items-center gap-2 text-sm font-semibold", className)}
       {...props}
     />
-  );
+  )
 }
 
 function ToastDescription({
@@ -114,11 +114,11 @@ function ToastDescription({
       className={cn("text-sm opacity-90", className)}
       {...props}
     />
-  );
+  )
 }
 
-type ToastProps = React.ComponentProps<typeof Toast>;
-type ToastActionElement = React.ReactElement<typeof ToastAction>;
+type ToastProps = React.ComponentProps<typeof Toast>
+type ToastActionElement = React.ReactElement<typeof ToastAction>
 
 export {
   Toast,
@@ -130,4 +130,4 @@ export {
   ToastViewport,
   type ToastActionElement,
   type ToastProps,
-};
+}

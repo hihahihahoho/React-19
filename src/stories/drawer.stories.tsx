@@ -1,6 +1,6 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Drawer,
   DrawerContent,
@@ -8,8 +8,8 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer";
-import { FormDemo } from "./forms/FormDemo";
+} from "@/components/ui/drawer"
+import { FormDemo } from "./forms/FormDemo"
 
 const meta = {
   title: "Base/Drawer",
@@ -17,11 +17,11 @@ const meta = {
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof Drawer>;
+} satisfies Meta<typeof Drawer>
 
-export default meta;
+export default meta
 
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => (
@@ -40,4 +40,4 @@ export const Default: Story = {
       </DrawerContent>
     </Drawer>
   ),
-};
+}

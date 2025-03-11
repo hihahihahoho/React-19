@@ -1,20 +1,20 @@
-import { useMergedRef } from "@/hooks/use-merge-ref";
-import { getNodeText } from "@/lib/get-node-text";
-import { cn, lowercaseFirstChar } from "@/lib/utils";
-import React, { useCallback, useRef, useState } from "react";
+import { useMergedRef } from "@/hooks/use-merge-ref"
+import { getNodeText } from "@/lib/get-node-text"
+import { cn, lowercaseFirstChar } from "@/lib/utils"
+import React, { useCallback, useRef, useState } from "react"
 import {
   FormComposition,
   FormCompositionProps,
   FormControl,
-} from "../form/form";
+} from "../form/form"
 
-export type OnValueChangeInput = React.ComponentProps<"input">["value"];
-export type OnValueFileChangeInput = FileList | null;
+export type OnValueChangeInput = React.ComponentProps<"input">["value"]
+export type OnValueFileChangeInput = FileList | null
 
 export interface InputProps extends React.ComponentProps<"input"> {
-  formComposition?: FormCompositionProps;
-  onValueChange?: (value: OnValueChangeInput) => void;
-  onValueFileChange?: (value: OnValueFileChangeInput) => void;
+  formComposition?: FormCompositionProps
+  onValueChange?: (value: OnValueChangeInput) => void
+  onValueFileChange?: (value: OnValueFileChangeInput) => void
 }
 
 function Input({
@@ -30,62 +30,62 @@ function Input({
   ref,
   ...props
 }: InputProps) {
-  const internalRef = useRef<HTMLInputElement>(null);
-  const mergedRef = useMergedRef(ref, internalRef);
-  const [isFocused, setIsFocused] = useState(false);
-  const [hasValueInteral, setHasValueInteral] = useState(false);
+  const internalRef = useRef<HTMLInputElement>(null)
+  const mergedRef = useMergedRef(ref, internalRef)
+  const [isFocused, setIsFocused] = useState(false)
+  const [hasValueInteral, setHasValueInteral] = useState(false)
 
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      setIsFocused(true);
-      onFocus?.(e);
+      setIsFocused(true)
+      onFocus?.(e)
     },
     [onFocus]
-  );
+  )
 
   const handleBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
-      setIsFocused(false);
-      onBlur?.(e);
+      setIsFocused(false)
+      onBlur?.(e)
     },
     [onBlur]
-  );
+  )
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value: newValue, files } = e.target;
-      setHasValueInteral(Boolean(newValue && newValue.toString().length));
+      const { value: newValue, files } = e.target
+      setHasValueInteral(Boolean(newValue && newValue.toString().length))
       if (type === "file") {
-        onValueFileChange?.(files);
+        onValueFileChange?.(files)
       } else {
-        onValueChange?.(newValue);
+        onValueChange?.(newValue)
       }
-      onChange?.(e);
+      onChange?.(e)
     },
     [type, onChange, onValueChange, onValueFileChange]
-  );
+  )
 
   const handleClear = useCallback(() => {
     if (internalRef.current) {
-      internalRef.current.value = "";
-      internalRef.current.focus();
+      internalRef.current.value = ""
+      internalRef.current.focus()
     }
-    setHasValueInteral(false);
+    setHasValueInteral(false)
 
     if (type === "file") {
-      onValueFileChange?.(null);
+      onValueFileChange?.(null)
     } else {
-      onValueChange?.("");
+      onValueChange?.("")
     }
-    console.log(formComposition);
-    formComposition?.onClear?.();
-  }, [onValueChange, formComposition, type, onValueFileChange]);
+    console.log(formComposition)
+    formComposition?.onClear?.()
+  }, [onValueChange, formComposition, type, onValueFileChange])
 
-  const currentValue = props.value || props.defaultValue || hasValueInteral;
+  const currentValue = props.value || props.defaultValue || hasValueInteral
   const hasValue =
     type === "file"
       ? Boolean(internalRef.current?.files?.length)
-      : Boolean(currentValue && currentValue.toString().length);
+      : Boolean(currentValue && currentValue.toString().length)
 
   return (
     <FormComposition
@@ -102,7 +102,7 @@ function Input({
         <input
           data-slot="input"
           className={cn(
-            "flex-grow bg-transparent border-none focus:outline-none focus:ring-0 placeholder:text-muted-foreground h-full w-full file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
+            "h-full w-full flex-grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0",
             type === "file" && "h-auto self-center",
             className
           )}
@@ -120,7 +120,7 @@ function Input({
         />
       </FormControl>
     </FormComposition>
-  );
+  )
 }
 
-export { Input };
+export { Input }

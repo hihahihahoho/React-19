@@ -1,5 +1,5 @@
-import { Badge } from "@/components/ui/badge/badge";
-import type { Meta, StoryObj } from "@storybook/react";
+import { Badge } from "@/components/ui/badge/badge"
+import type { Meta, StoryObj } from "@storybook/react"
 import {
   AlertCircle,
   AlertTriangle,
@@ -15,7 +15,7 @@ import {
   Star,
   Tag,
   Trash,
-} from "lucide-react";
+} from "lucide-react"
 
 /**
  * Badge component displays short information, statuses, or categories.
@@ -121,10 +121,10 @@ They can include icons, display text, and have interactive elements like tooltip
       </div>
     ),
   ],
-} satisfies Meta<typeof Badge>;
+} satisfies Meta<typeof Badge>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * The standard badge variations with different colors and styles.
@@ -147,7 +147,7 @@ export const BasicVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Color variants for various contexts like success, warning, info, and error.
@@ -177,7 +177,7 @@ export const ColorVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Showcase of all available color variants for badges.
@@ -213,7 +213,7 @@ export const AllColorVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Badges in different sizes to fit various UI contexts.
@@ -234,7 +234,7 @@ export const SizeVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Showcase of badges with icons positioned on the left side.
@@ -264,7 +264,7 @@ export const WithLeftIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Showcase of badges with icons positioned on the right side.
@@ -295,7 +295,7 @@ export const WithRightIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Badges with icons on both sides for enhanced visual communication.
@@ -340,7 +340,7 @@ export const WithIconsOnBothSides: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Badges with clear buttons for dismissible tags or filters.
@@ -384,7 +384,7 @@ export const WithClearButtons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Badges with tooltips to provide additional information or context.
@@ -429,7 +429,7 @@ export const WithTooltips: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Combined showcase demonstrating different badge sizes with icons.
@@ -492,7 +492,7 @@ export const SizesWithIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive showcase of all badge variants, sizes, and features.
@@ -616,7 +616,7 @@ export const CompleteShowcase: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props.
@@ -640,7 +640,7 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example showing how to use badges with both icons and clear functionality.
@@ -689,4 +689,4 @@ export const WithIconsAndClear: Story = {
       },
     },
   },
-};
+}

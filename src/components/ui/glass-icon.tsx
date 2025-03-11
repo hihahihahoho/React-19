@@ -1,9 +1,9 @@
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const glassIconWraperVariants = cva(" relative", {
+const glassIconWraperVariants = cva("relative", {
   variants: {
     size: {
       sm: "size-12",
@@ -13,15 +13,15 @@ const glassIconWraperVariants = cva(" relative", {
   defaultVariants: {
     size: "sm",
   },
-});
+})
 
 const glassIconVariants = cva(
-  "flex items-center justify-center backdrop-blur-md from-white/80 to-white/0 rounded-lg bg-gradient-to-tr z-[1] absolute text-white ring-1 ring-white/40 dark:ring-white/20 ring-inset",
+  "absolute z-[1] flex items-center justify-center rounded-lg bg-gradient-to-tr from-white/80 to-white/0 text-white ring-1 ring-inset ring-white/40 backdrop-blur-md dark:ring-white/20",
   {
     variants: {
       variant: {
-        default: "size-[34px] bottom-[3px] left-[3px]",
-        card: "w-[30px] h-[42px] bottom-[3px] left-[7px]",
+        default: "bottom-[3px] left-[3px] size-[34px]",
+        card: "bottom-[3px] left-[7px] h-[42px] w-[30px]",
       },
       size: {
         sm: "[&_svg]:size-6",
@@ -36,16 +36,16 @@ const glassIconVariants = cva(
       {
         variant: "default",
         size: "lg",
-        className: "size-[52px] ring-2 rounded-xl",
+        className: "size-[52px] rounded-xl ring-2",
       },
       {
         variant: "card",
         size: "lg",
-        className: "w-[45px] h-[64px] ring-2",
+        className: "h-[64px] w-[45px] ring-2",
       },
     ],
   }
-);
+)
 
 const glassIconColorVariants = {
   blue: "bg-blue-500 dark:bg-blue-600",
@@ -58,13 +58,13 @@ const glassIconColorVariants = {
   cyan: "bg-cyan-500 dark:bg-cyan-600",
   emerald: "bg-emerald-500 dark:bg-emerald-600",
   gray: "bg-primary dark:bg-primary/30",
-};
+}
 
 const glassIconBackgroundVariants = cva("absolute z-[0] rounded-lg", {
   variants: {
     variant: {
-      default: "size-[34px] absolute top-[4px] right-[5px] rotate-[15deg]",
-      card: "w-[30px] h-[34px] top-[7px] right-[6px] rotate-[15deg]",
+      default: "absolute right-[5px] top-[4px] size-[34px] rotate-[15deg]",
+      card: "right-[6px] top-[7px] h-[34px] w-[30px] rotate-[15deg]",
     },
     size: {
       sm: "",
@@ -81,21 +81,21 @@ const glassIconBackgroundVariants = cva("absolute z-[0] rounded-lg", {
     {
       variant: "default",
       size: "lg",
-      className: "size-[52px] rounded-xl top-[6px] right-[8px]",
+      className: "right-[8px] top-[6px] size-[52px] rounded-xl",
     },
     {
       variant: "card",
       size: "lg",
-      className: "w-[45px] h-[52px] top-[8px] right-[12px]",
+      className: "right-[12px] top-[8px] h-[52px] w-[45px]",
     },
   ],
-});
+})
 
 export interface GlassIconProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof glassIconVariants> {
-  backgroundClassName?: string;
-  color?: keyof typeof glassIconColorVariants;
+  backgroundClassName?: string
+  color?: keyof typeof glassIconColorVariants
 }
 
 function GlassIcon({
@@ -139,7 +139,7 @@ function GlassIcon({
         )}
       />
     </div>
-  );
+  )
 }
 
-export { GlassIcon, glassIconColorVariants, glassIconVariants };
+export { GlassIcon, glassIconColorVariants, glassIconVariants }

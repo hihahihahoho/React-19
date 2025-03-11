@@ -1,26 +1,26 @@
-import { cn } from "@/lib/utils";
-import React from "react";
+import { cn } from "@/lib/utils"
+import React from "react"
 import {
   Lightbox,
   LightboxContext,
   LightBoxImageType,
   LightboxItem,
-} from "./lightbox";
+} from "./lightbox"
 
 const LightBoxImageGrid = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
-    images: LightBoxImageType[];
+    images: LightBoxImageType[]
   }
 >(({ className, images, ...props }, ref) => {
-  const [index, setIndex] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
+  const [index, setIndex] = React.useState(0)
+  const [open, setOpen] = React.useState(false)
   return (
     <LightboxContext>
       <div
         ref={ref}
         className={cn(
-          "grid grid-cols-3 md:grid-cols-6 gap-2 overflow-hidden",
+          "grid grid-cols-3 gap-2 overflow-hidden md:grid-cols-6",
           className
         )}
         {...props}
@@ -32,8 +32,8 @@ const LightBoxImageGrid = React.forwardRef<
             index={i}
             selectedIndex={index}
             onSelect={() => {
-              setIndex(i);
-              setOpen(true);
+              setIndex(i)
+              setOpen(true)
             }}
           />
         ))}
@@ -46,8 +46,8 @@ const LightBoxImageGrid = React.forwardRef<
         images={images}
       ></Lightbox>
     </LightboxContext>
-  );
-});
-LightBoxImageGrid.displayName = "LightBoxImageGrid";
+  )
+})
+LightBoxImageGrid.displayName = "LightBoxImageGrid"
 
-export { LightBoxImageGrid };
+export { LightBoxImageGrid }

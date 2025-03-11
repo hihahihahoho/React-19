@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import * as SheetPrimitive from "@radix-ui/react-dialog";
-import { cva, type VariantProps } from "class-variance-authority";
-import { X } from "lucide-react";
-import * as React from "react";
+import * as SheetPrimitive from "@radix-ui/react-dialog"
+import { cva, type VariantProps } from "class-variance-authority"
+import { X } from "lucide-react"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const Sheet = SheetPrimitive.Root;
-const SheetTrigger = SheetPrimitive.Trigger;
-const SheetClose = SheetPrimitive.Close;
-const SheetPortal = SheetPrimitive.Portal;
+const Sheet = SheetPrimitive.Root
+const SheetTrigger = SheetPrimitive.Trigger
+const SheetClose = SheetPrimitive.Close
+const SheetPortal = SheetPrimitive.Portal
 
 function SheetOverlay({
   className,
@@ -20,12 +20,12 @@ function SheetOverlay({
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         className
       )}
       {...props}
     />
-  );
+  )
 }
 
 const sheetVariants = cva(
@@ -45,7 +45,7 @@ const sheetVariants = cva(
       side: "right",
     },
   }
-);
+)
 
 interface SheetContentProps
   extends React.ComponentProps<typeof SheetPrimitive.Content>,
@@ -72,7 +72,7 @@ function SheetContent({
         {children}
       </SheetPrimitive.Content>
     </SheetPortal>
-  );
+  )
 }
 
 function SheetHeader({
@@ -88,7 +88,7 @@ function SheetHeader({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function SheetFooter({
@@ -104,7 +104,7 @@ function SheetFooter({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function SheetTitle({
@@ -117,7 +117,7 @@ function SheetTitle({
       className={cn("text-lg font-semibold text-foreground", className)}
       {...props}
     />
-  );
+  )
 }
 
 function SheetDescription({
@@ -130,7 +130,7 @@ function SheetDescription({
       className={cn("text-sm text-muted-foreground", className)}
       {...props}
     />
-  );
+  )
 }
 
 export {
@@ -144,4 +144,4 @@ export {
   SheetPortal,
   SheetTitle,
   SheetTrigger,
-};
+}

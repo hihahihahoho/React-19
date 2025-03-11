@@ -1,66 +1,66 @@
-import { ChevronRight } from "lucide-react";
-import "photoswipe/dist/photoswipe.css";
-import React from "react";
-import { Gallery, Item } from "react-photoswipe-gallery";
+import { ChevronRight } from "lucide-react"
+import "photoswipe/dist/photoswipe.css"
+import React from "react"
+import { Gallery, Item } from "react-photoswipe-gallery"
 
 // Define type for gallery images - making width and height optional as we'll detect them dynamically
 type GalleryImageType = {
-  src: string;
-  thumbnail?: string;
-  width?: string | number;
-  height?: string | number;
-  alt?: string;
-};
+  src: string
+  thumbnail?: string
+  width?: string | number
+  height?: string | number
+  alt?: string
+}
 
 function GalleryItem({
   image,
   index,
 }: {
-  image: GalleryImageType;
-  index: number;
+  image: GalleryImageType
+  index: number
 }) {
   // State to track dynamically loaded dimensions
   const [dimensions, setDimensions] = React.useState({
     width: image.width || 0,
     height: image.height || 0,
-  });
+  })
 
   // Dynamically detect image dimensions
   React.useEffect(() => {
-    if (!image.src) return;
+    if (!image.src) return
 
     // Skip if dimensions are already provided
     if (image.width && image.height) {
       setDimensions({
         width: Number(image.width),
         height: Number(image.height),
-      });
-      return;
+      })
+      return
     }
 
-    let checkInterval: NodeJS.Timeout | null = null;
-    const img = new Image();
-    img.src = image.src;
+    let checkInterval: NodeJS.Timeout | null = null
+    const img = new Image()
+    img.src = image.src
 
     const checkDimensions = () => {
       if (img.naturalWidth > 0 && img.naturalHeight > 0) {
-        setDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+        setDimensions({ width: img.naturalWidth, height: img.naturalHeight })
 
         if (checkInterval) {
-          clearInterval(checkInterval);
-          checkInterval = null;
+          clearInterval(checkInterval)
+          checkInterval = null
         }
       }
-    };
+    }
 
-    checkInterval = setInterval(checkDimensions, 10);
+    checkInterval = setInterval(checkDimensions, 10)
 
     return () => {
       if (checkInterval) {
-        clearInterval(checkInterval);
+        clearInterval(checkInterval)
       }
-    };
-  }, [image.src, image.width, image.height]);
+    }
+  }, [image.src, image.width, image.height])
 
   return (
     <Item
@@ -76,11 +76,11 @@ function GalleryItem({
           onClick={open}
           src={image.thumbnail || image.src}
           alt={image.alt || ""}
-          className="object-cover w-full h-full rounded-md aspect-square"
+          className="aspect-square h-full w-full rounded-md object-cover"
         />
       )}
     </Item>
-  );
+  )
 }
 
 function PhotoSwipe({
@@ -99,7 +99,7 @@ function PhotoSwipe({
     },
   ],
 }: {
-  images?: GalleryImageType[];
+  images?: GalleryImageType[]
 }) {
   return (
     <Gallery
@@ -113,7 +113,7 @@ function PhotoSwipe({
         ))}
       </div>
     </Gallery>
-  );
+  )
 }
 
-export { PhotoSwipe };
+export { PhotoSwipe }

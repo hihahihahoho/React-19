@@ -1,15 +1,15 @@
-"use client";
+"use client"
 
-import { type DialogProps } from "@radix-ui/react-dialog";
-import { Command as CommandPrimitive } from "cmdk";
-import * as React from "react";
+import { type DialogProps } from "@radix-ui/react-dialog"
+import { Command as CommandPrimitive } from "cmdk"
+import * as React from "react"
 
-import { getNodeText } from "@/lib/get-node-text";
-import { transliterateVietnamese } from "@/lib/transliterate-vietnamese";
-import { cn } from "@/lib/utils";
-import { LoaderCircle } from "lucide-react";
-import { Dialog, DialogContent } from "./dialog";
-import { CommandPrimitiveInput } from "./input/command-primitive-input";
+import { getNodeText } from "@/lib/get-node-text"
+import { transliterateVietnamese } from "@/lib/transliterate-vietnamese"
+import { cn } from "@/lib/utils"
+import { LoaderCircle } from "lucide-react"
+import { Dialog, DialogContent } from "./dialog"
+import { CommandPrimitiveInput } from "./input/command-primitive-input"
 
 function Command({
   className,
@@ -24,23 +24,23 @@ function Command({
       )}
       {...props}
     />
-  );
+  )
 }
 
 interface CommandDialogProps extends DialogProps {
-  empty?: React.ReactNode;
+  empty?: React.ReactNode
 }
 
 function CommandDialog({ children, ...props }: CommandDialogProps) {
   return (
     <Dialog {...props}>
-      <DialogContent className="p-0 overflow-hidden shadow-lg">
+      <DialogContent className="overflow-hidden p-0 shadow-lg">
         <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
           {children}
         </Command>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
 function CommandInput({
@@ -50,7 +50,7 @@ function CommandInput({
     <div className="border-b" cmdk-input-wrapper="">
       <CommandPrimitiveInput data-slot="command-input" {...props} />
     </div>
-  );
+  )
 }
 
 function CommandList({
@@ -66,7 +66,7 @@ function CommandList({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function CommandEmpty(
@@ -75,10 +75,10 @@ function CommandEmpty(
   return (
     <CommandPrimitive.Empty
       data-slot="command-empty"
-      className="py-6 text-sm text-center"
+      className="py-6 text-center text-sm"
       {...props}
     />
-  );
+  )
 }
 
 function CommandLoading({
@@ -88,12 +88,12 @@ function CommandLoading({
   return (
     <CommandPrimitive.Loading
       data-slot="command-loading"
-      className={cn("py-6 text-sm text-center", className)}
+      className={cn("py-6 text-center text-sm", className)}
       {...props}
     >
       <LoaderCircle className="mx-auto animate-spin" size={20} />
     </CommandPrimitive.Loading>
-  );
+  )
 }
 
 function CommandGroup({
@@ -104,12 +104,12 @@ function CommandGroup({
     <CommandPrimitive.Group
       data-slot="command-group"
       className={cn(
-        "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground empty:p-0",
+        "overflow-hidden p-1 text-foreground empty:p-0 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground",
         className
       )}
       {...props}
     />
-  );
+  )
 }
 
 function CommandSeparator({
@@ -122,7 +122,7 @@ function CommandSeparator({
       className={cn("-mx-1 h-px bg-border", className)}
       {...props}
     />
-  );
+  )
 }
 
 function CommandItem({
@@ -131,19 +131,18 @@ function CommandItem({
   keywords,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Item> & {
-  value?: string;
-  keywords?: string[];
+  value?: string
+  keywords?: string[]
 }) {
-  const childrenText = getNodeText(props.children);
-  const newchildrenText = transliterateVietnamese(childrenText);
-  const newKeywords =
-    keywords?.flatMap((i) => transliterateVietnamese(i)) || [];
+  const childrenText = getNodeText(props.children)
+  const newchildrenText = transliterateVietnamese(childrenText)
+  const newKeywords = keywords?.flatMap((i) => transliterateVietnamese(i)) || []
   const allkeywords = [
     newchildrenText,
     transliterateVietnamese(value ? value : ""),
     value ? value : "",
     ...newKeywords,
-  ].flat();
+  ].flat()
   return (
     <CommandPrimitive.Item
       data-slot="command-item"
@@ -155,7 +154,7 @@ function CommandItem({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function CommandShortcut({
@@ -171,7 +170,7 @@ function CommandShortcut({
       )}
       {...props}
     />
-  );
+  )
 }
 
 export {
@@ -185,4 +184,4 @@ export {
   CommandLoading,
   CommandSeparator,
   CommandShortcut,
-};
+}

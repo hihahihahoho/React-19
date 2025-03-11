@@ -1,17 +1,17 @@
-"use client";
+"use client"
 
-import { ChevronLeft } from "lucide-react";
-import * as React from "react";
-import { DayPicker, DropdownNavProps, DropdownProps } from "react-day-picker";
+import { ChevronLeft } from "lucide-react"
+import * as React from "react"
+import { DayPicker, DropdownNavProps, DropdownProps } from "react-day-picker"
 
-import { cn } from "@/lib/utils";
-import { vi } from "react-day-picker/locale";
-import { buttonVariants } from "../button";
-import { Select } from "../select/select";
+import { cn } from "@/lib/utils"
+import { vi } from "react-day-picker/locale"
+import { buttonVariants } from "../button"
+import { Select } from "../select/select"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
-  localeString?: string;
-};
+  localeString?: string
+}
 
 function Calendar({
   className,
@@ -28,9 +28,9 @@ function Calendar({
       target: {
         value: String(_value),
       },
-    } as React.ChangeEvent<HTMLSelectElement>;
-    _e(_event);
-  };
+    } as React.ChangeEvent<HTMLSelectElement>
+    _e(_event)
+  }
   return (
     <DayPicker
       locale={
@@ -49,13 +49,13 @@ function Calendar({
           // changed from nav_button
           buttonVariants({
             variant: "outline",
-            className: "size-8 p-0 min-w-7 absolute left-3",
+            className: "absolute left-3 size-8 min-w-7 p-0",
           })
         ),
         button_next: cn(
           buttonVariants({
             variant: "outline",
-            className: "size-8 p-0 min-w-7 absolute right-3",
+            className: "absolute right-3 size-8 min-w-7 p-0",
           })
         ), // changed from nav_button_next
         month_grid: "w-full border-collapse border-0 space-y-1", // changed from table
@@ -65,7 +65,7 @@ function Calendar({
         week: "flex w-full mt-2", // changed from row
         day_button: cn(
           // cell is now day
-          "size-9 text-center text-sm p-0 relative [&:has([aria-selected].range-end)]:rounded-r-md [&:has([aria-selected].outside)]:bg-primary/50 [&:has([aria-selected])]:bg-primary first:[&:has([aria-selected])]:rounded-l-md focus-within:relative focus-within:z-20 min-w-0"
+          "relative size-9 min-w-0 p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-primary first:[&:has([aria-selected])]:rounded-l-md [&:has([aria-selected].outside)]:bg-primary/50 [&:has([aria-selected].range-end)]:rounded-r-md"
         ),
         day: "border-0 p-0 hover:bg-accent rounded-md size-9 last:rounded-r-md first:rounded-l-md [&:has(+_.invisible[aria-selected])]:rounded-r-md", // changed from cell
         range_middle:
@@ -94,7 +94,7 @@ function Calendar({
             <div className="flex w-full items-center justify-center gap-2 [&>span]:text-sm [&>span]:font-medium">
               {props.children}
             </div>
-          );
+          )
         },
         MonthsDropdown: (props: DropdownProps) => {
           return props.options ? (
@@ -114,7 +114,7 @@ function Calendar({
               value={String((props.value as number) + 1)}
               onValueChange={(value) => {
                 if (props.onChange && value) {
-                  handleCalendarChange(parseInt(value) - 1, props.onChange);
+                  handleCalendarChange(parseInt(value) - 1, props.onChange)
                 }
               }}
               formComposition={{
@@ -125,7 +125,7 @@ function Calendar({
             />
           ) : (
             <></>
-          );
+          )
         },
         YearsDropdown: (props: DropdownProps) => {
           return props.options ? (
@@ -140,7 +140,7 @@ function Calendar({
               value={String(props.value)}
               onValueChange={(value) => {
                 if (props.onChange && value) {
-                  handleCalendarChange(value, props.onChange);
+                  handleCalendarChange(value, props.onChange)
                 }
               }}
               formComposition={{
@@ -151,14 +151,14 @@ function Calendar({
             />
           ) : (
             <></>
-          );
+          )
         },
       }}
       fixedWeeks
       {...props}
     />
-  );
+  )
 }
-Calendar.displayName = "Calendar";
+Calendar.displayName = "Calendar"
 
-export { Calendar };
+export { Calendar }

@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import { cn } from "@/lib/utils";
-import { cva } from "class-variance-authority";
-import { useRef } from "react";
-import { Button } from "../button";
-import { EmptyState } from "../empty-state/empty-state";
-import { ScrollAreaTable } from "../scroll-area";
-import { DataTableCell } from "./data-table-cell";
-import { useDataTable } from "./data-table-context";
-import { FloatingHeader } from "./data-table-floating-header";
-import { DataTableHeaderCell } from "./data-table-header-cell";
-import { DataTablePagination } from "./data-table-pagination";
-import { DataTableSelection } from "./data-table-selection";
-import { HeaderRefsProvider } from "./header-ref-context";
-import { Table, TableBody, TableCell, TableHeader, TableRow } from "./table";
+import { cn } from "@/lib/utils"
+import { cva } from "class-variance-authority"
+import { useRef } from "react"
+import { Button } from "../button"
+import { EmptyState } from "../empty-state/empty-state"
+import { ScrollAreaTable } from "../scroll-area"
+import { DataTableCell } from "./data-table-cell"
+import { useDataTable } from "./data-table-context"
+import { FloatingHeader } from "./data-table-floating-header"
+import { DataTableHeaderCell } from "./data-table-header-cell"
+import { DataTablePagination } from "./data-table-pagination"
+import { DataTableSelection } from "./data-table-selection"
+import { HeaderRefsProvider } from "./header-ref-context"
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "./table"
 
 const tableVariants = cva("", {
   variants: {
@@ -25,12 +25,12 @@ const tableVariants = cva("", {
   defaultVariants: {
     variant: "default",
   },
-});
+})
 
 interface DataTableProps {
-  variant?: "default" | "rounded";
-  fixedHeaderOffset?: string;
-  emptyState?: React.ReactNode;
+  variant?: "default" | "rounded"
+  fixedHeaderOffset?: string
+  emptyState?: React.ReactNode
 }
 
 export function DataTable({
@@ -38,11 +38,11 @@ export function DataTable({
   fixedHeaderOffset,
   emptyState,
 }: DataTableProps) {
-  const { table } = useDataTable();
-  const tableRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLTableSectionElement>(null);
-  const mainScrollRef = useRef<HTMLDivElement>(null);
-  const scrollBarAreaRef = useRef<HTMLDivElement>(null);
+  const { table } = useDataTable()
+  const tableRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLTableSectionElement>(null)
+  const mainScrollRef = useRef<HTMLDivElement>(null)
+  const scrollBarAreaRef = useRef<HTMLDivElement>(null)
 
   if (table.getRowModel().rows?.length <= 0)
     return (
@@ -51,14 +51,14 @@ export function DataTable({
           <Button>Tải lại</Button>
         </EmptyState>
       )
-    );
+    )
 
   return (
     <HeaderRefsProvider>
       <div className="w-full" ref={tableRef}>
         <div className="relative">
           {variant === "rounded" && (
-            <div className="absolute top-0 left-0 z-[50] w-full h-full border rounded-xl pointer-events-none"></div>
+            <div className="pointer-events-none absolute left-0 top-0 z-[50] h-full w-full rounded-xl border"></div>
           )}
           <FloatingHeader
             mainScrollRef={mainScrollRef}
@@ -111,7 +111,7 @@ export function DataTable({
               </Table>
             </ScrollAreaTable>
           </div>
-          <div className="sticky bottom-0 z-30 border-t mt-[-1px] bg-card/90 backdrop-blur">
+          <div className="sticky bottom-0 z-30 mt-[-1px] border-t bg-card/90 backdrop-blur">
             <div ref={scrollBarAreaRef} />
             {table.getRowModel().rows?.length > 0 && <DataTablePagination />}
           </div>
@@ -119,5 +119,5 @@ export function DataTable({
         </div>
       </div>
     </HeaderRefsProvider>
-  );
+  )
 }

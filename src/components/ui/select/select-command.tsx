@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
-import { Check, CheckCheck } from "lucide-react";
-import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
-import { Badge } from "../badge/badge";
+import { cn } from "@/lib/utils"
+import { Check, CheckCheck } from "lucide-react"
+import React from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
+import { Badge } from "../badge/badge"
 import {
   Command,
   CommandEmpty,
@@ -12,18 +12,18 @@ import {
   CommandList,
   CommandLoading,
   CommandSeparator,
-} from "../command";
-import { Checkbox } from "../selection-controls/checkbox";
-import { Separator } from "../separator";
-import { SelectGroup, SelectItems } from "./select-interface";
+} from "../command"
+import { Checkbox } from "../selection-controls/checkbox"
+import { Separator } from "../separator"
+import { SelectGroup, SelectItems } from "./select-interface"
 
 function isSelectGroup(item: SelectItems | SelectGroup): item is SelectGroup {
-  return (item as SelectGroup).options !== undefined;
+  return (item as SelectGroup).options !== undefined
 }
 
 export function modifyItems(options: SelectItems[] | SelectGroup[] = []) {
   if (!options || options.length === 0) {
-    return [{ heading: undefined, options: [], isMultiSelect: false }];
+    return [{ heading: undefined, options: [], isMultiSelect: false }]
   }
 
   return isSelectGroup(options[0])
@@ -34,29 +34,29 @@ export function modifyItems(options: SelectItems[] | SelectGroup[] = []) {
           options: options as SelectItems[],
           isMultiSelect: false,
         },
-      ];
+      ]
 }
 
 export function flatItems(options: SelectItems[] | SelectGroup[] = []) {
   if (!options || options.length === 0) {
-    return [];
+    return []
   }
-  return modifyItems(options).flatMap((item) => item.options);
+  return modifyItems(options).flatMap((item) => item.options)
 }
 export interface SelectCommandProps
   extends Omit<React.ComponentProps<typeof Command>, "onSelect"> {
-  onSelect?: (selected: SelectItems) => void;
-  selected?: string[];
-  setSelected?: (selected: string[]) => void;
-  defaultSelect?: string[];
-  items?: SelectItems[] | SelectGroup[];
-  isCheckAll?: boolean;
-  allMultiSelect?: boolean;
-  showSearch?: boolean;
-  commandWrapper?: boolean;
-  loading?: boolean;
-  minItemsToShowSearch?: number; // if have more than this number of items, show search, this should override showSearch
-  commandInputProps?: React.ComponentProps<typeof CommandInput>;
+  onSelect?: (selected: SelectItems) => void
+  selected?: string[]
+  setSelected?: (selected: string[]) => void
+  defaultSelect?: string[]
+  items?: SelectItems[] | SelectGroup[]
+  isCheckAll?: boolean
+  allMultiSelect?: boolean
+  showSearch?: boolean
+  commandWrapper?: boolean
+  loading?: boolean
+  minItemsToShowSearch?: number // if have more than this number of items, show search, this should override showSearch
+  commandInputProps?: React.ComponentProps<typeof CommandInput>
 }
 
 function SelectCommand({
@@ -74,59 +74,59 @@ function SelectCommand({
   commandInputProps,
   ...props
 }: SelectCommandProps) {
-  const flattenItems = flatItems(items);
-  const modifyItemsNew = modifyItems(items);
-  const Comp = commandWrapper ? Command : React.Fragment;
+  const flattenItems = flatItems(items)
+  const modifyItemsNew = modifyItems(items)
+  const Comp = commandWrapper ? Command : React.Fragment
 
-  const isControlled = selectedProp !== undefined;
+  const isControlled = selectedProp !== undefined
 
   const [uncontrolledSelected, setUncontrolledSelected] =
-    React.useState<string[]>(defaultSelect);
+    React.useState<string[]>(defaultSelect)
 
-  const selected = isControlled ? selectedProp! : uncontrolledSelected;
+  const selected = isControlled ? selectedProp! : uncontrolledSelected
 
   const handleSetSelected = React.useCallback(
     (newValues: string[]) => {
       if (isControlled) {
-        setSelectedProp?.(newValues);
+        setSelectedProp?.(newValues)
       } else {
-        setUncontrolledSelected(newValues);
+        setUncontrolledSelected(newValues)
       }
     },
     [isControlled, setSelectedProp]
-  );
-  const uniqueId = React.useId();
+  )
+  const uniqueId = React.useId()
 
   const toggleOption = (item: SelectItems) => {
-    const isSelected = selected.includes(item.value);
+    const isSelected = selected.includes(item.value)
     const updated = isSelected
       ? selected.filter((val) => val !== item.value)
-      : [...selected, item.value];
+      : [...selected, item.value]
 
-    handleSetSelected(updated);
-  };
+    handleSetSelected(updated)
+  }
 
   const isAllSelected = flattenItems
     .filter((item) => !item.disabled)
-    .every((item) => selected.includes(item.value));
+    .every((item) => selected.includes(item.value))
   const toggleAll = () => {
     const selectedDisabledItems = flattenItems
       .filter((item) => item.disabled && selected.includes(item.value))
-      .map((item) => item.value);
+      .map((item) => item.value)
 
     if (isAllSelected) {
-      handleSetSelected(selectedDisabledItems);
+      handleSetSelected(selectedDisabledItems)
     } else {
       const enabledItems = flattenItems
         .filter((item) => !item.disabled)
-        .map((item) => item.value);
-      handleSetSelected([...selectedDisabledItems, ...enabledItems]);
+        .map((item) => item.value)
+      handleSetSelected([...selectedDisabledItems, ...enabledItems])
     }
-  };
+  }
 
   const compProps = commandWrapper
     ? { defaultValue: selected.at(-1), ...props }
-    : {};
+    : {}
 
   return (
     <Comp {...compProps}>
@@ -170,10 +170,10 @@ function SelectCommand({
                   <React.Fragment key={uniqueId + groupIndex}>
                     <CommandGroup heading={heading}>
                       {options.map((option) => {
-                        const isSelected = selected.includes(option.value);
+                        const isSelected = selected.includes(option.value)
                         const BadgeComp = option?.badgeProps?.variant
                           ? Badge
-                          : React.Fragment;
+                          : React.Fragment
 
                         return (
                           <CommandItem
@@ -181,16 +181,16 @@ function SelectCommand({
                             key={uniqueId + option.value}
                             value={option.value}
                             onSelect={() => {
-                              onSelect?.(option);
+                              onSelect?.(option)
                               if (isMultiSelect || allMultiSelect) {
-                                toggleOption(option);
-                                return;
+                                toggleOption(option)
+                                return
                               }
-                              handleSetSelected([option.value]);
+                              handleSetSelected([option.value])
                             }}
                           >
-                            <div className="flex items-center gap-3 flex-1 -md:text-base  [&_svg]:shrink-0">
-                              <div className="flex items-center flex-1 gap-2">
+                            <div className="flex flex-1 items-center gap-3 -md:text-base [&_svg]:shrink-0">
+                              <div className="flex flex-1 items-center gap-2">
                                 <BadgeComp
                                   {...(option?.badgeProps?.variant
                                     ? {
@@ -211,7 +211,7 @@ function SelectCommand({
                                       <div
                                         className={cn(
                                           !option?.badgeProps?.variant &&
-                                            "[&_svg]:text-muted-foreground [&_svg]:size-4 -md:[&_svg]:size-5"
+                                            "[&_svg]:size-4 [&_svg]:text-muted-foreground -md:[&_svg]:size-5"
                                         )}
                                       >
                                         {option.icon}
@@ -237,7 +237,7 @@ function SelectCommand({
                               )}
                             </div>
                           </CommandItem>
-                        );
+                        )
                       })}
                     </CommandGroup>
                     {groupIndex < modifyItemsNew.length - 1 && (
@@ -250,7 +250,7 @@ function SelectCommand({
         )}
       </CommandList>
     </Comp>
-  );
+  )
 }
 
-export { isSelectGroup, SelectCommand };
+export { isSelectGroup, SelectCommand }

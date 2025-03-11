@@ -1,19 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { Select } from "@/components/ui/select/select";
-import { SelectForm } from "@/components/ui/select/select-form";
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { Select } from "@/components/ui/select/select"
+import { SelectForm } from "@/components/ui/select/select-form"
 import {
   SelectGroup,
   SelectItems,
-} from "@/components/ui/select/select-interface";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
+} from "@/components/ui/select/select-interface"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
-} from "@tanstack/react-query";
+} from "@tanstack/react-query"
 import {
   Flag,
   GlobeIcon,
@@ -21,10 +21,10 @@ import {
   MailIcon,
   MapPinIcon,
   PhoneIcon,
-} from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * Select component allows users to choose a single value from a list of options.
@@ -85,20 +85,20 @@ They are useful when you have a list of options but want to save space by showin
   },
   decorators: [
     (Story) => {
-      const queryClient = new QueryClient();
+      const queryClient = new QueryClient()
       return (
         <QueryClientProvider client={queryClient}>
-          <div className="w-[384px] max-w-[80vw] mx-auto">
+          <div className="mx-auto w-[384px] max-w-[80vw]">
             <Story />
           </div>
         </QueryClientProvider>
-      );
+      )
     },
   ],
-} satisfies Meta<typeof Select>;
+} satisfies Meta<typeof Select>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 // Sample options
 const fruitOptions: SelectItems[] = [
@@ -108,7 +108,7 @@ const fruitOptions: SelectItems[] = [
   { value: "strawberry", label: "Strawberry" },
   { value: "grape", label: "Grape" },
   { value: "watermelon", label: "Watermelon" },
-];
+]
 
 // Grouped options
 const groupedOptions: SelectGroup[] = [
@@ -128,7 +128,7 @@ const groupedOptions: SelectGroup[] = [
       { value: "cucumber", label: "Cucumber" },
     ],
   },
-];
+]
 
 /**
  * Basic example of a select component.
@@ -148,7 +148,7 @@ export const Basic: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example with grouped options.
@@ -169,14 +169,14 @@ export const GroupedOptions: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of different select states.
  */
 export const SelectStates: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Select
         options={fruitOptions}
         formComposition={{
@@ -223,14 +223,14 @@ export const SelectStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of selects with different label positions.
  */
 export const LabelPositioning: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Select
         options={fruitOptions}
         formComposition={{
@@ -272,7 +272,7 @@ export const LabelPositioning: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Examples of selects with icons.
@@ -305,10 +305,10 @@ export const WithIcons: Story = {
         label: "Japan",
         icon: <Flag className="text-red-600" />,
       },
-    ];
+    ]
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <Select
           options={countryOptions}
           formComposition={{
@@ -342,7 +342,7 @@ export const WithIcons: Story = {
           placeholder="How should we contact you?"
         />
       </div>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -351,7 +351,7 @@ export const WithIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example of a select in a form with pre-fetched data.
@@ -361,21 +361,21 @@ export const SelectInFormWithFetchedData: Story = {
     // Form setup
     const FormSchema = z.object({
       country: z.string().min(1, "Please select a country"),
-    });
+    })
 
     const form = useForm<z.infer<typeof FormSchema>>({
       resolver: zodResolver(FormSchema),
       defaultValues: {
         country: "",
       },
-    });
+    })
 
     function onSubmit(values: z.infer<typeof FormSchema>) {
       // Display the selected values
       const countryName = countryOptions.find(
         (c) => c.value === values.country
-      )?.label;
-      alert(`Form submitted!\nCountry: ${countryName || values.country}`);
+      )?.label
+      alert(`Form submitted!\nCountry: ${countryName || values.country}`)
     }
 
     // Fetch countries data once when the component mounts
@@ -384,32 +384,32 @@ export const SelectInFormWithFetchedData: Story = {
       queryFn: async () => {
         const response = await fetch(
           "https://restcountries.com/v3.1/all?fields=name,flags,cca2"
-        );
+        )
 
         if (!response.ok) {
-          throw new Error("Failed to fetch countries");
+          throw new Error("Failed to fetch countries")
         }
 
-        const data = await response.json();
+        const data = await response.json()
         // Sort countries alphabetically by name
         return data.sort((a: any, b: any) =>
           a.name.common.localeCompare(b.name.common)
-        );
+        )
       },
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000, // Data remains fresh for 5 minutes
-    });
+    })
 
     // Transform API data into select options
     const countryOptions: SelectItems[] = useMemo(() => {
-      if (!data) return [];
+      if (!data) return []
 
       return data.map((country: any) => ({
         value: country.cca2,
         label: country.name.common,
         icon: country.flags?.svg || country.flags?.png,
-      }));
-    }, [data]);
+      }))
+    }, [data])
 
     return (
       <ZodSchemaProvider schema={FormSchema}>
@@ -455,7 +455,7 @@ export const SelectInFormWithFetchedData: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -465,35 +465,35 @@ export const SelectInFormWithFetchedData: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example with server-side data fetching and debounce (standalone).
  */
 export const ServerSideFetchingOnSearch: Story = {
   render: function ServerSideExample() {
-    const [search, setSearch] = useState("");
-    const [debouncedSearch, setDebouncedSearch] = useState("");
-    const [isTyping, setIsTyping] = useState(false);
+    const [search, setSearch] = useState("")
+    const [debouncedSearch, setDebouncedSearch] = useState("")
+    const [isTyping, setIsTyping] = useState(false)
     const [selectedCountryCode, setSelectedCountryCode] = useState<
       string | undefined
-    >();
+    >()
 
     // Debounce the search input
     useEffect(() => {
       // Set typing state to true whenever search changes
       if (search) {
-        setIsTyping(true);
+        setIsTyping(true)
       }
 
       const timer = setTimeout(() => {
-        setDebouncedSearch(search);
+        setDebouncedSearch(search)
         // Only set typing to false after debounce completes
-        setIsTyping(false);
-      }, 300);
+        setIsTyping(false)
+      }, 300)
 
-      return () => clearTimeout(timer);
-    }, [search]);
+      return () => clearTimeout(timer)
+    }, [search])
 
     // Fetch country list based on search term
     const { data, isLoading: isLoadingResults } = useQuery({
@@ -501,67 +501,67 @@ export const ServerSideFetchingOnSearch: Story = {
       queryFn: async () => {
         const url = debouncedSearch
           ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
-          : "https://restcountries.com/v3.1/all?fields=name,flags,cca2";
+          : "https://restcountries.com/v3.1/all?fields=name,flags,cca2"
 
-        const response = await fetch(url);
+        const response = await fetch(url)
 
         if (!response.ok) {
           if (response.status === 404) {
-            return [];
+            return []
           }
-          throw new Error("Network response was not ok");
+          throw new Error("Network response was not ok")
         }
 
-        const data = await response.json();
-        return debouncedSearch ? data : data.slice(0, 10);
+        const data = await response.json()
+        return debouncedSearch ? data : data.slice(0, 10)
       },
       refetchOnWindowFocus: false,
-    });
+    })
 
     // Show loading state when typing or when API is loading
-    const isLoading = isTyping || isLoadingResults;
+    const isLoading = isTyping || isLoadingResults
 
     // Fetch specific country details for the selected value
     const { data: selectedCountryData, isLoading: isLoadingSelectedCountry } =
       useQuery({
         queryKey: ["country", selectedCountryCode],
         queryFn: async () => {
-          if (!selectedCountryCode) return null;
+          if (!selectedCountryCode) return null
 
           const response = await fetch(
             `https://restcountries.com/v3.1/alpha/${selectedCountryCode}`
-          );
+          )
 
           if (!response.ok) {
-            throw new Error("Failed to fetch country details");
+            throw new Error("Failed to fetch country details")
           }
 
-          const data = await response.json();
-          return data[0];
+          const data = await response.json()
+          return data[0]
         },
         enabled: !!selectedCountryCode,
         refetchOnWindowFocus: false,
-      });
+      })
 
     // Memoize country options to avoid recreation on each render
     const countryOptions = useMemo(() => {
-      if (!data) return [];
+      if (!data) return []
 
       return data.map((country: any) => ({
         value: country.cca2,
         label: country.name.common,
         icon: country.flags?.svg || country.flags?.png,
         keywords: [country.name.common, country.cca2],
-      }));
-    }, [data]);
+      }))
+    }, [data])
 
     // Create display value for standalone select
     const customSelectedCountry = useMemo(() => {
       // If we have the country in the current search results, use that
       const fromResults = countryOptions.find(
         (option: any) => option.value === selectedCountryCode
-      );
-      if (fromResults) return fromResults;
+      )
+      if (fromResults) return fromResults
 
       // Otherwise use the separately fetched data
       if (selectedCountryData) {
@@ -570,12 +570,12 @@ export const ServerSideFetchingOnSearch: Story = {
           label: selectedCountryData.name.common,
           icon:
             selectedCountryData.flags?.svg || selectedCountryData.flags?.png,
-        };
+        }
       }
 
       // Return nothing if we're still loading or have no data
-      return undefined;
-    }, [selectedCountryCode, countryOptions, selectedCountryData]);
+      return undefined
+    }, [selectedCountryCode, countryOptions, selectedCountryData])
 
     return (
       <Select
@@ -592,7 +592,7 @@ export const ServerSideFetchingOnSearch: Story = {
         }}
         placeholder="Search for a country"
         onValueChange={(value) => {
-          setSelectedCountryCode(value);
+          setSelectedCountryCode(value)
         }}
         customDisplayValue={customSelectedCountry}
         selectCommandProps={{
@@ -601,12 +601,12 @@ export const ServerSideFetchingOnSearch: Story = {
           commandInputProps: {
             value: search,
             onValueChange: (value) => {
-              setSearch(value);
+              setSearch(value)
             },
           },
         }}
       />
-    );
+    )
   },
   parameters: {
     docs: {
@@ -616,51 +616,51 @@ export const ServerSideFetchingOnSearch: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example with server-side data fetching in a form.
  */
 export const ServerSideFetchingOnSearchInForm: Story = {
   render: function ServerSideFormExample() {
-    const [search, setSearch] = useState("");
-    const [debouncedSearch, setDebouncedSearch] = useState("");
-    const [isTyping, setIsTyping] = useState(false);
+    const [search, setSearch] = useState("")
+    const [debouncedSearch, setDebouncedSearch] = useState("")
+    const [isTyping, setIsTyping] = useState(false)
 
     // Form setup
     const FormSchema = z.object({
       country: z.string().min(1, "Please select a country"),
-    });
+    })
 
     const form = useForm<z.infer<typeof FormSchema>>({
       resolver: zodResolver(FormSchema),
       defaultValues: {
         country: "VN", // Vietnam
       },
-    });
+    })
 
     const onSubmit = (values: z.infer<typeof FormSchema>) => {
       const countryName =
         countryOptions.find((c: any) => c.value === values.country)?.label ||
-        formSelectedCountry?.label;
-      alert(`Selected country: ${countryName || values.country}`);
-    };
+        formSelectedCountry?.label
+      alert(`Selected country: ${countryName || values.country}`)
+    }
 
     // Debounce the search input
     useEffect(() => {
       // Set typing state to true whenever search changes
       if (search) {
-        setIsTyping(true);
+        setIsTyping(true)
       }
 
       const timer = setTimeout(() => {
-        setDebouncedSearch(search);
+        setDebouncedSearch(search)
         // Only set typing to false after debounce completes
-        setIsTyping(false);
-      }, 300);
+        setIsTyping(false)
+      }, 300)
 
-      return () => clearTimeout(timer);
-    }, [search]);
+      return () => clearTimeout(timer)
+    }, [search])
 
     // Fetch country list based on search term
     const { data, isLoading: isLoadingResults } = useQuery({
@@ -668,68 +668,68 @@ export const ServerSideFetchingOnSearchInForm: Story = {
       queryFn: async () => {
         const url = debouncedSearch
           ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
-          : "https://restcountries.com/v3.1/all?fields=name,flags,cca2";
+          : "https://restcountries.com/v3.1/all?fields=name,flags,cca2"
 
-        const response = await fetch(url);
+        const response = await fetch(url)
 
         if (!response.ok) {
           if (response.status === 404) {
-            return [];
+            return []
           }
-          throw new Error("Network response was not ok");
+          throw new Error("Network response was not ok")
         }
 
-        const data = await response.json();
-        return debouncedSearch ? data : data.slice(0, 10);
+        const data = await response.json()
+        return debouncedSearch ? data : data.slice(0, 10)
       },
       refetchOnWindowFocus: false,
-    });
+    })
 
     // Show loading state when typing or when API is loading
-    const isLoading = isTyping || isLoadingResults;
+    const isLoading = isTyping || isLoadingResults
 
     // Fetch specific country details for form's selected value
     const { data: formSelectedCountryData, isLoading: isLoadingFormCountry } =
       useQuery({
         queryKey: ["country", form.watch("country")],
         queryFn: async () => {
-          const countryCode = form.watch("country");
-          if (!countryCode) return null;
+          const countryCode = form.watch("country")
+          if (!countryCode) return null
 
           const response = await fetch(
             `https://restcountries.com/v3.1/alpha/${countryCode}`
-          );
+          )
 
           if (!response.ok) {
-            throw new Error("Failed to fetch country details");
+            throw new Error("Failed to fetch country details")
           }
 
-          const data = await response.json();
-          return data[0];
+          const data = await response.json()
+          return data[0]
         },
         enabled: !!form.watch("country"),
         refetchOnWindowFocus: false,
-      });
+      })
 
     // Memoize country options to avoid recreation on each render
     const countryOptions = useMemo(() => {
-      if (!data) return [];
+      if (!data) return []
 
       return data.map((country: any) => ({
         value: country.cca2,
         label: country.name.common,
         icon: country.flags?.svg || country.flags?.png,
         keywords: [country.name.common, country.cca2],
-      }));
-    }, [data]);
+      }))
+    }, [data])
 
     // Create display value for form select
     const formSelectedCountry = useMemo(() => {
       // Check if the selected country is in the current options
       const fromResults = countryOptions.find(
         (option: any) => option.value === form.watch("country")
-      );
-      if (fromResults) return fromResults;
+      )
+      if (fromResults) return fromResults
 
       // Otherwise use the separately fetched data
       if (formSelectedCountryData) {
@@ -739,12 +739,12 @@ export const ServerSideFetchingOnSearchInForm: Story = {
           icon:
             formSelectedCountryData.flags?.svg ||
             formSelectedCountryData.flags?.png,
-        };
+        }
       }
 
       // Return nothing if we're still loading or have no data
-      return undefined;
-    }, [form, countryOptions, formSelectedCountryData]);
+      return undefined
+    }, [form, countryOptions, formSelectedCountryData])
 
     return (
       <ZodSchemaProvider schema={FormSchema}>
@@ -774,7 +774,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
                 commandInputProps: {
                   value: search,
                   onValueChange: (value) => {
-                    setSearch(value);
+                    setSearch(value)
                   },
                 },
               }}
@@ -795,7 +795,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
           </form>
         </Form>
       </ZodSchemaProvider>
-    );
+    )
   },
   parameters: {
     docs: {
@@ -805,7 +805,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Interactive example with all available props.
@@ -832,4 +832,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}

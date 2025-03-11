@@ -3,28 +3,28 @@ import {
   FieldPath,
   FieldValues,
   useWatch,
-} from "react-hook-form";
-import { FormField } from "../form/form";
-import { useZodSchema } from "../form/zod-schema-context";
+} from "react-hook-form"
+import { FormField } from "../form/form"
+import { useZodSchema } from "../form/zod-schema-context"
 import {
   InputNumber,
   InputNumberProps,
   OnValueChangeInputNumber,
-} from "./input-number";
+} from "./input-number"
 
 type JsonSchemaType = {
-  isRequired: boolean;
-};
+  isRequired: boolean
+}
 
 export interface InputNumberFormProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends ControllerProps<TFieldValues, TName>,
     Omit<InputNumberProps, "defaultValue" | "name"> {}
 
 const InputNumberForm = <
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 >({
   name,
   control,
@@ -33,10 +33,10 @@ const InputNumberForm = <
   const fieldValue = useWatch({
     control,
     name: name,
-  });
+  })
 
-  const { getJsonSchema } = useZodSchema();
-  const { isRequired }: JsonSchemaType = getJsonSchema(name);
+  const { getJsonSchema } = useZodSchema()
+  const { isRequired }: JsonSchemaType = getJsonSchema(name)
 
   return (
     <FormField
@@ -44,13 +44,13 @@ const InputNumberForm = <
       control={control}
       render={({ field: { onChange, ...field } }) => {
         const handleClear = () => {
-          onChange(undefined);
-          props.formComposition?.onClear?.();
-        };
+          onChange(undefined)
+          props.formComposition?.onClear?.()
+        }
 
         const handleChange = (e: OnValueChangeInputNumber) => {
-          onChange(e.unMaskedValue);
-        };
+          onChange(e.unMaskedValue)
+        }
         return (
           <InputNumber
             {...field}
@@ -63,12 +63,12 @@ const InputNumberForm = <
               onClear: handleClear,
             }}
           />
-        );
+        )
       }}
     />
-  );
-};
+  )
+}
 
-InputNumberForm.displayName = "InputNumberForm";
+InputNumberForm.displayName = "InputNumberForm"
 
-export { InputNumberForm };
+export { InputNumberForm }

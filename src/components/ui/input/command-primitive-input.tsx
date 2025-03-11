@@ -1,16 +1,16 @@
-import { cn } from "@/lib/utils";
-import { Command } from "cmdk";
-import { Search } from "lucide-react";
-import * as React from "react";
+import { cn } from "@/lib/utils"
+import { Command } from "cmdk"
+import { Search } from "lucide-react"
+import * as React from "react"
 import {
   FormComposition,
   FormCompositionProps,
   FormControl,
-} from "../form/form";
+} from "../form/form"
 
 export interface CommandPrimitiveInputProps
   extends React.ComponentProps<typeof Command.Input> {
-  formComposition?: FormCompositionProps;
+  formComposition?: FormCompositionProps
 }
 
 function CommandPrimitiveInput({
@@ -22,30 +22,30 @@ function CommandPrimitiveInput({
   onValueChange,
   ...props
 }: CommandPrimitiveInputProps) {
-  const [isFocused, setIsFocused] = React.useState(false);
+  const [isFocused, setIsFocused] = React.useState(false)
   const [inputValue, setInputValue] = React.useState<string>(
     value?.toString() || ""
-  );
+  )
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    setIsFocused(true);
-    onFocus?.(e);
-  };
+    setIsFocused(true)
+    onFocus?.(e)
+  }
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    setIsFocused(false);
-    onBlur?.(e);
-  };
+    setIsFocused(false)
+    onBlur?.(e)
+  }
 
   const handelValueChange = (value: string) => {
-    setInputValue(value);
-    onValueChange?.(value);
-  };
+    setInputValue(value)
+    onValueChange?.(value)
+  }
 
   const handleClear = () => {
-    setInputValue("");
-    onValueChange?.("");
-  };
+    setInputValue("")
+    onValueChange?.("")
+  }
 
   return (
     <FormComposition
@@ -64,7 +64,7 @@ function CommandPrimitiveInput({
         <Command.Input
           {...props}
           className={cn(
-            "flex-grow bg-transparent border-none focus:outline-none focus:ring-0 placeholder:text-muted-foreground h-full w-full",
+            "h-full w-full flex-grow border-none bg-transparent placeholder:text-muted-foreground focus:outline-none focus:ring-0",
             className
           )}
           value={inputValue}
@@ -74,7 +74,7 @@ function CommandPrimitiveInput({
         />
       </FormControl>
     </FormComposition>
-  );
+  )
 }
 
-export { CommandPrimitiveInput };
+export { CommandPrimitiveInput }

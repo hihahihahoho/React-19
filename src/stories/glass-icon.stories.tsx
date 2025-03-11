@@ -1,5 +1,5 @@
-import { GlassIcon, glassIconColorVariants } from "@/components/ui/glass-icon";
-import type { Meta, StoryObj } from "@storybook/react";
+import { GlassIcon, glassIconColorVariants } from "@/components/ui/glass-icon"
+import type { Meta, StoryObj } from "@storybook/react"
 import {
   AlarmClock,
   AlignLeft,
@@ -15,7 +15,7 @@ import {
   Star,
   UploadCloud,
   User,
-} from "lucide-react";
+} from "lucide-react"
 
 /**
  * GlassIcon component creates stylish glass-effect icons with background shadows.
@@ -91,10 +91,10 @@ These icons feature a frosted glass effect with subtle backgrounds and shadows.
       </div>
     ),
   ],
-} satisfies Meta<typeof GlassIcon>;
+} satisfies Meta<typeof GlassIcon>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Basic examples showing different variants and sizes of glass icons.
@@ -127,7 +127,7 @@ export const BasicVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Standard-sized glass icons with different background colors.
@@ -169,7 +169,7 @@ export const ColorVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Card-style glass icons with different background colors.
@@ -211,7 +211,7 @@ export const CardVariants: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Large-sized glass icons for greater visual impact.
@@ -241,7 +241,7 @@ export const LargeSizes: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Example showing custom colors using backgroundClassName.
@@ -265,7 +265,7 @@ export const CustomColors: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props.
@@ -285,4 +285,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}

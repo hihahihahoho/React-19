@@ -1,31 +1,31 @@
-import { isBefore } from "date-fns";
+import { isBefore } from "date-fns"
 import {
   ControllerProps,
   FieldPath,
   FieldValues,
   useWatch,
-} from "react-hook-form";
-import { FormField } from "../form/form";
-import { useZodSchema } from "../form/zod-schema-context";
+} from "react-hook-form"
+import { FormField } from "../form/form"
+import { useZodSchema } from "../form/zod-schema-context"
 import {
   DatePicker,
   DatePickerProps,
   OnValueChangeDatePicker,
-} from "./datepicker";
+} from "./datepicker"
 
 type JsonSchemaType = {
-  isRequired: boolean;
-  description?: string;
-};
+  isRequired: boolean
+  description?: string
+}
 
 type JsonDescriptionType = {
-  minDate?: Date;
-  maxDate?: Date;
-};
+  minDate?: Date
+  maxDate?: Date
+}
 
 export interface DatePickerFormProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends ControllerProps<TFieldValues, TName>,
     Omit<
       DatePickerProps,
@@ -34,7 +34,7 @@ export interface DatePickerFormProps<
 
 const DatePickerForm = <
   TFieldValues extends FieldValues,
-  TName extends FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues>,
 >({
   name,
   control,
@@ -43,24 +43,24 @@ const DatePickerForm = <
   const fieldValue = useWatch({
     control,
     name: name,
-  });
-  const { getJsonSchema } = useZodSchema();
-  const { isRequired, description }: JsonSchemaType = getJsonSchema(name);
+  })
+  const { getJsonSchema } = useZodSchema()
+  const { isRequired, description }: JsonSchemaType = getJsonSchema(name)
 
-  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}");
+  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}")
   return (
     <FormField
       name={name}
       control={control}
       render={({ field: { onChange, ...field } }) => {
         const handleClear = () => {
-          onChange(undefined);
-          props.formComposition?.onClear?.();
-        };
+          onChange(undefined)
+          props.formComposition?.onClear?.()
+        }
 
         const handleValueChange = (newDate: OnValueChangeDatePicker) => {
-          onChange(newDate);
-        };
+          onChange(newDate)
+        }
 
         return (
           <DatePicker
@@ -74,15 +74,15 @@ const DatePickerForm = <
                   jsonDescription.minDate &&
                   isBefore(date, jsonDescription.minDate)
                 ) {
-                  return true;
+                  return true
                 }
                 if (
                   jsonDescription.maxDate &&
                   isBefore(jsonDescription.maxDate, date)
                 ) {
-                  return true;
+                  return true
                 }
-                return false;
+                return false
               },
             }}
             formComposition={{
@@ -91,12 +91,12 @@ const DatePickerForm = <
               onClear: handleClear,
             }}
           />
-        );
+        )
       }}
     />
-  );
-};
+  )
+}
 
-DatePickerForm.displayName = "DatePickerForm";
+DatePickerForm.displayName = "DatePickerForm"
 
-export { DatePickerForm };
+export { DatePickerForm }

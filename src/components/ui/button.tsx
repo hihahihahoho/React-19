@@ -1,12 +1,12 @@
-import { Slot, Slottable } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { Slot, Slottable } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils"
+import { Loader2 } from "lucide-react"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-lg text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer",
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -26,10 +26,10 @@ const buttonVariants = cva(
         true: "rounded-full",
       },
       disabled: {
-        true: "opacity-50 pointer-events-none",
+        true: "pointer-events-none opacity-50",
       },
       size: {
-        xs: "h-6 min-w-6 px-2 py-1 text-xs gap-1",
+        xs: "h-6 min-w-6 gap-1 px-2 py-1 text-xs",
         default: "h-9 min-w-9 px-4 py-2",
         sm: "h-8 min-w-8 px-3",
         lg: "h-10 min-w-10 rounded-xl px-8",
@@ -45,16 +45,16 @@ const buttonVariants = cva(
       iconOnly: false,
     },
   }
-);
+)
 
 export interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "disabled">,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-  btnEventClick?: () => void;
-  iconLeft?: string | React.ReactNode;
-  iconRight?: string | React.ReactNode;
-  isLoading?: boolean;
+  asChild?: boolean
+  btnEventClick?: () => void
+  iconLeft?: string | React.ReactNode
+  iconRight?: string | React.ReactNode
+  isLoading?: boolean
 }
 
 function Button({
@@ -71,7 +71,7 @@ function Button({
   disabled,
   ...props
 }: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot : "button"
 
   return (
     <Comp
@@ -96,7 +96,7 @@ function Button({
       <Slottable>{props.children}</Slottable>
       {iconRight && iconRight}
     </Comp>
-  );
+  )
 }
 
-export { Button, buttonVariants };
+export { Button, buttonVariants }

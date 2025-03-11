@@ -1,22 +1,22 @@
-"use client";
+"use client"
 
-import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
-import { Check, ChevronRight, Circle } from "lucide-react";
-import * as React from "react";
+import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
+import { Check, ChevronRight, Circle } from "lucide-react"
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const ContextMenu = ContextMenuPrimitive.Root;
+const ContextMenu = ContextMenuPrimitive.Root
 
-const ContextMenuTrigger = ContextMenuPrimitive.Trigger;
+const ContextMenuTrigger = ContextMenuPrimitive.Trigger
 
-const ContextMenuGroup = ContextMenuPrimitive.Group;
+const ContextMenuGroup = ContextMenuPrimitive.Group
 
-const ContextMenuPortal = ContextMenuPrimitive.Portal;
+const ContextMenuPortal = ContextMenuPrimitive.Portal
 
-const ContextMenuSub = ContextMenuPrimitive.Sub;
+const ContextMenuSub = ContextMenuPrimitive.Sub
 
-const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup;
+const ContextMenuRadioGroup = ContextMenuPrimitive.RadioGroup
 
 function ContextMenuSubTrigger({
   className,
@@ -24,7 +24,7 @@ function ContextMenuSubTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
-  inset?: boolean;
+  inset?: boolean
 }) {
   return (
     <ContextMenuPrimitive.SubTrigger
@@ -37,9 +37,9 @@ function ContextMenuSubTrigger({
       {...props}
     >
       {children}
-      <ChevronRight className="w-4 h-4 ml-auto" />
+      <ChevronRight className="ml-auto h-4 w-4" />
     </ContextMenuPrimitive.SubTrigger>
-  );
+  )
 }
 
 function ContextMenuSubContent({
@@ -55,7 +55,7 @@ function ContextMenuSubContent({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function ContextMenuContent({
@@ -73,7 +73,7 @@ function ContextMenuContent({
         {...props}
       />
     </ContextMenuPrimitive.Portal>
-  );
+  )
 }
 
 function ContextMenuItem({
@@ -81,7 +81,7 @@ function ContextMenuItem({
   inset,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Item> & {
-  inset?: boolean;
+  inset?: boolean
 }) {
   return (
     <ContextMenuPrimitive.Item
@@ -93,7 +93,7 @@ function ContextMenuItem({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function ContextMenuCheckboxItem({
@@ -114,12 +114,12 @@ function ContextMenuCheckboxItem({
     >
       <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
         <ContextMenuPrimitive.ItemIndicator>
-          <Check className="w-4 h-4" />
+          <Check className="h-4 w-4" />
         </ContextMenuPrimitive.ItemIndicator>
       </span>
       {children}
     </ContextMenuPrimitive.CheckboxItem>
-  );
+  )
 }
 
 function ContextMenuRadioItem({
@@ -138,12 +138,12 @@ function ContextMenuRadioItem({
     >
       <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
         <ContextMenuPrimitive.ItemIndicator>
-          <Circle className="w-4 h-4 fill-current" />
+          <Circle className="h-4 w-4 fill-current" />
         </ContextMenuPrimitive.ItemIndicator>
       </span>
       {children}
     </ContextMenuPrimitive.RadioItem>
-  );
+  )
 }
 
 function ContextMenuLabel({
@@ -151,7 +151,7 @@ function ContextMenuLabel({
   inset,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Label> & {
-  inset?: boolean;
+  inset?: boolean
 }) {
   return (
     <ContextMenuPrimitive.Label
@@ -163,7 +163,7 @@ function ContextMenuLabel({
       )}
       {...props}
     />
-  );
+  )
 }
 
 function ContextMenuSeparator({
@@ -176,7 +176,7 @@ function ContextMenuSeparator({
       className={cn("-mx-1 my-1 h-px bg-border", className)}
       {...props}
     />
-  );
+  )
 }
 
 function ContextMenuShortcut({
@@ -192,7 +192,7 @@ function ContextMenuShortcut({
       )}
       {...props}
     />
-  );
+  )
 }
 
 export {
@@ -211,4 +211,4 @@ export {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-};
+}

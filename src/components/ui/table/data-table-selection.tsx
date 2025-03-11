@@ -1,16 +1,16 @@
-import { CheckCheck, XCircle } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
-import { Button } from "../button";
-import { useDataTable } from "./data-table-context";
+import { CheckCheck, XCircle } from "lucide-react"
+import { AnimatePresence, motion } from "motion/react"
+import { Button } from "../button"
+import { useDataTable } from "./data-table-context"
 
 export function DataTableSelection() {
-  const { table } = useDataTable();
+  const { table } = useDataTable()
   return (
     <AnimatePresence>
       {table.getSelectedRowModel().rows.length > 0 && (
-        <div className="sticky left-0 right-0 z-30 flex items-center justify-center mb-4 text-xs pointer-events-none bottom-24">
+        <div className="pointer-events-none sticky bottom-24 left-0 right-0 z-30 mb-4 flex items-center justify-center text-xs">
           <motion.div
-            className="flex flex-wrap items-center gap-2 px-4 py-3 border pointer-events-auto rounded-xl bg-card/90 backdrop-blur -sm:flex-col"
+            className="pointer-events-auto flex flex-wrap items-center gap-2 rounded-xl border bg-card/90 px-4 py-3 backdrop-blur -sm:flex-col"
             initial={{
               opacity: 0,
               y: 20,
@@ -35,7 +35,7 @@ export function DataTableSelection() {
                 onClick={() => {
                   table?.getToggleAllRowsSelectedHandler()?.({
                     target: { checked: true },
-                  });
+                  })
                 }}
                 size={"xs"}
                 variant={"outline"}
@@ -47,7 +47,7 @@ export function DataTableSelection() {
                 onClick={() => {
                   table?.getToggleAllRowsSelectedHandler()?.({
                     target: { checked: false },
-                  });
+                  })
                 }}
                 size={"xs"}
                 variant={"outline"}
@@ -60,5 +60,5 @@ export function DataTableSelection() {
         </div>
       )}
     </AnimatePresence>
-  );
+  )
 }

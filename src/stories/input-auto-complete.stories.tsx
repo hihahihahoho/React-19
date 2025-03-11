@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { InputAutoComplete } from "@/components/ui/input/input-auto-complete";
-import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
-import { Globe, Map, Search } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { InputAutoComplete } from "@/components/ui/input/input-auto-complete"
+import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
+import { Globe, Map, Search } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * InputAutoComplete component provides search functionality with autocomplete suggestions.
@@ -89,10 +89,10 @@ It supports two modes: "default" (free typing with suggestions) and "select" (on
       </div>
     ),
   ],
-} satisfies Meta<typeof InputAutoComplete>;
+} satisfies Meta<typeof InputAutoComplete>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 // Sample data for autocomplete options
 const countryOptions = [
@@ -110,7 +110,7 @@ const countryOptions = [
   { value: "China", icon: "https://flagsapi.com/CN/flat/64.png" },
   { value: "India", icon: "https://flagsapi.com/IN/flat/64.png" },
   { value: "Brazil", icon: "https://flagsapi.com/BR/flat/64.png" },
-];
+]
 
 const cityOptions = [
   { value: "New York City" },
@@ -123,7 +123,7 @@ const cityOptions = [
   { value: "Seattle" },
   { value: "Miami" },
   { value: "Denver" },
-];
+]
 
 const fruitOptions = {
   heading: "Fruits",
@@ -134,7 +134,7 @@ const fruitOptions = {
     { value: "Grape" },
     { value: "Kiwi" },
   ],
-};
+}
 
 const vegetableOptions = {
   heading: "Vegetables",
@@ -145,7 +145,7 @@ const vegetableOptions = {
     { value: "Potato" },
     { value: "Onion" },
   ],
-};
+}
 
 /**
  * Basic usage of the InputAutoComplete component.
@@ -165,14 +165,14 @@ export const Basic: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Shows different modes of operation for InputAutoComplete.
  */
 export const Modes: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <InputAutoComplete
         options={countryOptions}
         formComposition={{
@@ -202,14 +202,14 @@ export const Modes: Story = {
       },
     },
   },
-};
+}
 
 /**
  * InputAutoComplete with icons for better visual context.
  */
 export const WithIcons: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <InputAutoComplete
         options={countryOptions}
         formComposition={{
@@ -236,14 +236,14 @@ export const WithIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * InputAutoComplete with minimum character requirements.
  */
 export const MinCharToSearch: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <InputAutoComplete
         options={countryOptions}
         formComposition={{
@@ -273,7 +273,7 @@ export const MinCharToSearch: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Demonstrates loading state.
@@ -297,7 +297,7 @@ export const LoadingState: Story = {
       },
     },
   },
-};
+}
 
 /**
  * InputAutoComplete with grouped options.
@@ -320,7 +320,7 @@ export const GroupedOptions: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Custom initial state display.
@@ -336,8 +336,8 @@ export const CustomInitialState: Story = {
       placeholder="Type to search"
       minCharToSearch={2}
       initialState={
-        <div className="p-4 text-sm text-center">
-          <Search className="inline-block mb-2 size-5 text-muted-foreground" />
+        <div className="p-4 text-center text-sm">
+          <Search className="mb-2 inline-block size-5 text-muted-foreground" />
           <p>Type at least 2 characters to search for countries</p>
         </div>
       }
@@ -351,7 +351,7 @@ export const CustomInitialState: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Form integration with validation.
@@ -363,10 +363,10 @@ export const WithFormValidation: Story = {
       city: z.string().min(1, "Please select a city"),
       favoriteFood: z.string().optional(),
       readOnlyValue: z.string().optional(),
-    });
+    })
 
     function FormExample() {
-      const [isSubmitted, setIsSubmitted] = useState(false);
+      const [isSubmitted, setIsSubmitted] = useState(false)
       const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -375,18 +375,18 @@ export const WithFormValidation: Story = {
           favoriteFood: "Apple",
           readOnlyValue: "This field is read-only",
         },
-      });
+      })
 
       const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 3000);
-      };
+        console.log(values)
+        setIsSubmitted(true)
+        setTimeout(() => setIsSubmitted(false), 3000)
+      }
 
       const handleReset = () => {
-        form.reset();
-        setIsSubmitted(false);
-      };
+        form.reset()
+        setIsSubmitted(false)
+      }
 
       return (
         <ZodSchemaProvider schema={formSchema}>
@@ -464,17 +464,17 @@ export const WithFormValidation: Story = {
               </div>
 
               {isSubmitted && (
-                <div className="p-3 text-sm text-green-800 border border-green-200 rounded bg-green-50">
+                <div className="rounded border border-green-200 bg-green-50 p-3 text-sm text-green-800">
                   Form submitted successfully!
                 </div>
               )}
             </form>
           </Form>
         </ZodSchemaProvider>
-      );
+      )
     }
 
-    return <FormExample />;
+    return <FormExample />
   },
   parameters: {
     docs: {
@@ -484,7 +484,7 @@ export const WithFormValidation: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive showcase of InputAutoComplete features.
@@ -588,7 +588,7 @@ export const CompleteShowcase: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with configurable props.
@@ -615,4 +615,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}

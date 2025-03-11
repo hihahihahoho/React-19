@@ -1,5 +1,5 @@
 // alert-dialog-container.tsx
-"use client";
+"use client"
 
 import {
   AlertDialog,
@@ -9,11 +9,11 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog/alert-dialog"; // Adjust the import path accordingly
-import { useAlertDialog } from "@/hooks/use-alert-dialog"; // Adjust the import path accordingly
+} from "@/components/ui/alert-dialog/alert-dialog" // Adjust the import path accordingly
+import { useAlertDialog } from "@/hooks/use-alert-dialog" // Adjust the import path accordingly
 
 export function AlertDialogContainer() {
-  const { dialogs, dismiss } = useAlertDialog();
+  const { dialogs, dismiss } = useAlertDialog()
 
   return (
     <>
@@ -23,7 +23,7 @@ export function AlertDialogContainer() {
             key={id}
             open={open}
             onOpenChange={(open) => {
-              if (!open) dismiss(id);
+              if (!open) dismiss(id)
             }}
             {...props}
           >
@@ -47,5 +47,5 @@ export function AlertDialogContainer() {
         )
       )}
     </>
-  );
+  )
 }

@@ -1,38 +1,38 @@
-import { Button } from "@/components/ui/button";
-import { DateRangePickerForm } from "@/components/ui/date-range-picker/date-range-picker-form";
-import { DatePickerForm } from "@/components/ui/datepicker/datepicker-form";
-import { FileUploadForm } from "@/components/ui/file-upload/file-upload-form";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { InputNumberForm } from "@/components/ui/input-number/input-number-form";
-import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form";
-import { InputForm } from "@/components/ui/input/input-form";
-import { MultiSelectForm } from "@/components/ui/select/multiselect-form";
-import { SelectForm } from "@/components/ui/select/select-form";
-import { CheckboxForm } from "@/components/ui/selection-controls/checkbox-form";
+import { Button } from "@/components/ui/button"
+import { DateRangePickerForm } from "@/components/ui/date-range-picker/date-range-picker-form"
+import { DatePickerForm } from "@/components/ui/datepicker/datepicker-form"
+import { FileUploadForm } from "@/components/ui/file-upload/file-upload-form"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { InputNumberForm } from "@/components/ui/input-number/input-number-form"
+import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form"
+import { InputForm } from "@/components/ui/input/input-form"
+import { MultiSelectForm } from "@/components/ui/select/multiselect-form"
+import { SelectForm } from "@/components/ui/select/select-form"
+import { CheckboxForm } from "@/components/ui/selection-controls/checkbox-form"
 import {
   CheckboxGroupForm,
   ItemCheckboxType,
-} from "@/components/ui/selection-controls/checkbox-group-form";
+} from "@/components/ui/selection-controls/checkbox-group-form"
 import {
   ItemRadioType,
   RadioGroupForm,
-} from "@/components/ui/selection-controls/radio-group-form";
-import { TextareaForm } from "@/components/ui/textarea/textarea-form";
-import { ACCEPTED_PDF_TYPES, FORMAT_DATE } from "@/lib/const";
-import { zodDate, zodDateRange, zodFile, zodRequiredString } from "@/lib/zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { parse } from "date-fns";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "@/components/ui/selection-controls/radio-group-form"
+import { TextareaForm } from "@/components/ui/textarea/textarea-form"
+import { ACCEPTED_PDF_TYPES, FORMAT_DATE } from "@/lib/const"
+import { zodDate, zodDateRange, zodFile, zodRequiredString } from "@/lib/zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { parse } from "date-fns"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-const MAX_FILE_SIZE = 3000000; // 3MB
+const MAX_FILE_SIZE = 3000000 // 3MB
 const ACCEPTED_IMAGE_TYPES = [
   "image/jpeg",
   "image/jpg",
   "image/png",
   "application/pdf",
-];
+]
 
 const itemsCheckbox: ItemCheckboxType[] = [
   {
@@ -60,7 +60,7 @@ const itemsCheckbox: ItemCheckboxType[] = [
     label: "Documents",
     disabled: true,
   },
-] as const;
+] as const
 
 const itemsRadioGroup: ItemRadioType[] = [
   {
@@ -71,7 +71,7 @@ const itemsRadioGroup: ItemRadioType[] = [
     value: "exclude",
     label: "Loại trừ",
   },
-];
+]
 
 const FormSchema = z.object({
   username: zodRequiredString("Please enter your username."),
@@ -114,7 +114,7 @@ const FormSchema = z.object({
   checkbox_term: z.boolean().refine((val) => val === true, {
     message: "Please read and accept the terms and conditions",
   }),
-});
+})
 
 function FormDemo() {
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -143,32 +143,32 @@ function FormDemo() {
       checkbox_group: ["recents", "home"],
       radio_group: "include",
     },
-  });
+  })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    console.log(data)
   }
 
   const handleChangeInput = () => {
     form.setValue("username", "test('should first', () => { second })", {
       shouldValidate: true,
-    });
-  };
+    })
+  }
 
   const handleIncrease = () => {
     form.setValue("money", (form.getValues("money") || 0) + 1000, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
-    });
-  };
+    })
+  }
 
   return (
     <ZodSchemaProvider schema={FormSchema}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 w-full max-w-[760px] mx-auto"
+          className="mx-auto w-full max-w-[760px] space-y-6"
         >
           <InputForm
             control={form.control}
@@ -415,7 +415,7 @@ function FormDemo() {
               type="reset"
               variant="secondary"
               onClick={() => {
-                form.reset();
+                form.reset()
               }}
             >
               Reset Form
@@ -424,6 +424,6 @@ function FormDemo() {
         </form>
       </Form>
     </ZodSchemaProvider>
-  );
+  )
 }
-export { FormDemo };
+export { FormDemo }

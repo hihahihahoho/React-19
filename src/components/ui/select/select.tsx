@@ -1,32 +1,32 @@
-import { getNodeText } from "@/lib/get-node-text";
-import { cn, lowercaseFirstChar } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
-import React, { useCallback, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
+import { getNodeText } from "@/lib/get-node-text"
+import { cn, lowercaseFirstChar } from "@/lib/utils"
+import { ChevronDown } from "lucide-react"
+import React, { useCallback, useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
 import {
   FormComposition,
   FormCompositionProps,
   FormControlButton,
-} from "../form/form";
-import { flatItems, SelectCommand, SelectCommandProps } from "./select-command";
-import { SelectGroup, SelectItems } from "./select-interface";
-import { SelectPopover } from "./select-popover";
+} from "../form/form"
+import { flatItems, SelectCommand, SelectCommandProps } from "./select-command"
+import { SelectGroup, SelectItems } from "./select-interface"
+import { SelectPopover } from "./select-popover"
 
-export type OnValueChangeSelect = string | undefined;
+export type OnValueChangeSelect = string | undefined
 
 export interface SelectProps extends React.ComponentProps<"button"> {
-  placeholder?: string | React.ReactNode;
-  options?: SelectItems[] | SelectGroup[];
-  value?: OnValueChangeSelect;
-  defaultValue?: OnValueChangeSelect;
-  disabled?: boolean;
-  formComposition?: FormCompositionProps;
-  onValueChange?: (value: OnValueChangeSelect) => void;
-  onFocus?: React.FocusEventHandler<HTMLButtonElement>;
-  onBlur?: React.FocusEventHandler<HTMLButtonElement>;
-  readonly?: boolean;
-  selectCommandProps?: SelectCommandProps;
-  customDisplayValue?: SelectItems;
+  placeholder?: string | React.ReactNode
+  options?: SelectItems[] | SelectGroup[]
+  value?: OnValueChangeSelect
+  defaultValue?: OnValueChangeSelect
+  disabled?: boolean
+  formComposition?: FormCompositionProps
+  onValueChange?: (value: OnValueChangeSelect) => void
+  onFocus?: React.FocusEventHandler<HTMLButtonElement>
+  onBlur?: React.FocusEventHandler<HTMLButtonElement>
+  readonly?: boolean
+  selectCommandProps?: SelectCommandProps
+  customDisplayValue?: SelectItems
 }
 
 function Select({
@@ -44,31 +44,31 @@ function Select({
   customDisplayValue,
   ...props
 }: SelectProps) {
-  const [open, setOpen] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
   const [internalValue, setInternalValue] =
-    useState<OnValueChangeSelect>(defaultValue);
+    useState<OnValueChangeSelect>(defaultValue)
 
-  const flattenItems = flatItems(options);
+  const flattenItems = flatItems(options)
 
   const handleValueChange = useCallback(
     (newValue: OnValueChangeSelect) => {
-      setInternalValue(newValue);
-      onValueChange?.(newValue);
+      setInternalValue(newValue)
+      onValueChange?.(newValue)
     },
     [onValueChange]
-  );
+  )
 
   const handleClear = useCallback(() => {
-    handleValueChange(undefined);
-    formComposition?.onClear?.();
-  }, [formComposition, handleValueChange]);
+    handleValueChange(undefined)
+    formComposition?.onClear?.()
+  }, [formComposition, handleValueChange])
 
-  const currentValue = value !== undefined ? value : internalValue;
-  const hasValue = Boolean(currentValue);
+  const currentValue = value !== undefined ? value : internalValue
+  const hasValue = Boolean(currentValue)
   const selectedOption =
     customDisplayValue ||
-    flattenItems.find((item) => item.value === currentValue);
+    flattenItems.find((item) => item.value === currentValue)
 
   return (
     <SelectPopover
@@ -93,16 +93,16 @@ function Select({
             data-slot="select"
             disabled={disabled}
             onFocus={(e) => {
-              setIsFocused(true);
-              onFocus?.(e);
+              setIsFocused(true)
+              onFocus?.(e)
             }}
             onBlur={(e) => {
-              setIsFocused(false);
-              onBlur?.(e);
+              setIsFocused(false)
+              onBlur?.(e)
             }}
             {...props}
           >
-            <div className={cn("flex items-center h-full flex-1")}>
+            <div className={cn("flex h-full flex-1 items-center")}>
               <div className="line-clamp-1">
                 {selectedOption?.label || value || selectedOption?.value ? (
                   <div className="flex items-center gap-2">
@@ -145,11 +145,11 @@ function Select({
         selected={[currentValue || ""]}
         setSelected={(values) => handleValueChange(values[0])}
         onSelect={() => {
-          setOpen(false);
+          setOpen(false)
         }}
       />
     </SelectPopover>
-  );
+  )
 }
 
-export { Select };
+export { Select }

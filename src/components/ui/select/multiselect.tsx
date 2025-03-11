@@ -1,39 +1,39 @@
-import { cn } from "@/lib/utils";
-import { ChevronDown } from "lucide-react";
-import * as React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
-import { OverflowBadgeGroup } from "../badge/overflow-badge-group";
+import { cn } from "@/lib/utils"
+import { ChevronDown } from "lucide-react"
+import * as React from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
+import { OverflowBadgeGroup } from "../badge/overflow-badge-group"
 import {
   FormComposition,
   FormCompositionProps,
   FormControlButton,
-} from "../form/form";
-import { Separator } from "../separator";
-import { flatItems, SelectCommand, SelectCommandProps } from "./select-command";
-import { SelectGroup, SelectItems } from "./select-interface";
-import { SelectPopover } from "./select-popover";
+} from "../form/form"
+import { Separator } from "../separator"
+import { flatItems, SelectCommand, SelectCommandProps } from "./select-command"
+import { SelectGroup, SelectItems } from "./select-interface"
+import { SelectPopover } from "./select-popover"
 
 export interface MultiSelectProps
   extends Omit<React.ComponentProps<"button">, "value"> {
-  placeholder?: string | React.ReactNode;
-  placeholderColor?: string;
-  options?: SelectItems[] | SelectGroup[];
-  value?: string[] | null;
-  defaultValue?: string[];
-  className?: string;
-  badgeClassName?: string;
-  badgeMeasureClassName?: string;
-  overflowMeasureClassName?: string;
-  disabled?: boolean;
-  formComposition?: FormCompositionProps;
-  maxShownBadges?: number;
-  minShownBadges?: number;
-  onValueChange?: (value: string[]) => void;
-  readonly?: boolean;
-  showClear?: boolean;
-  selectCommandProps?: SelectCommandProps;
-  customDisplayValue?: SelectItems[];
-  variant?: "default" | "button";
+  placeholder?: string | React.ReactNode
+  placeholderColor?: string
+  options?: SelectItems[] | SelectGroup[]
+  value?: string[] | null
+  defaultValue?: string[]
+  className?: string
+  badgeClassName?: string
+  badgeMeasureClassName?: string
+  overflowMeasureClassName?: string
+  disabled?: boolean
+  formComposition?: FormCompositionProps
+  maxShownBadges?: number
+  minShownBadges?: number
+  onValueChange?: (value: string[]) => void
+  readonly?: boolean
+  showClear?: boolean
+  selectCommandProps?: SelectCommandProps
+  customDisplayValue?: SelectItems[]
+  variant?: "default" | "button"
 }
 
 function MultiSelect({
@@ -56,41 +56,41 @@ function MultiSelect({
   variant = "default",
   ...props
 }: MultiSelectProps) {
-  const [open, setOpen] = React.useState(false);
-  const [isFocused, setIsFocused] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
+  const [isFocused, setIsFocused] = React.useState(false)
   const [internalValue, setInternalValue] =
-    React.useState<string[]>(defaultValue);
+    React.useState<string[]>(defaultValue)
 
-  const flattenItems = flatItems(options);
+  const flattenItems = flatItems(options)
   const currentValue = React.useMemo(
     () => (value !== undefined ? value || [] : internalValue),
     [value, internalValue]
-  );
-  const hasValue = currentValue.length > 0;
+  )
+  const hasValue = currentValue.length > 0
 
   const handleValueChange = React.useCallback(
     (newOptions: string[]) => {
-      setInternalValue(newOptions);
-      onValueChange?.(newOptions);
+      setInternalValue(newOptions)
+      onValueChange?.(newOptions)
     },
     [onValueChange]
-  );
+  )
 
   const handleClear = React.useCallback(() => {
-    handleValueChange([]);
-    formComposition?.onClear?.();
-  }, [formComposition, handleValueChange]);
+    handleValueChange([])
+    formComposition?.onClear?.()
+  }, [formComposition, handleValueChange])
 
   const handleRemove = React.useCallback(
     (optionValue: string) => {
-      const newOptions = currentValue.filter((v) => v !== optionValue);
-      handleValueChange(newOptions);
+      const newOptions = currentValue.filter((v) => v !== optionValue)
+      handleValueChange(newOptions)
     },
     [currentValue, handleValueChange]
-  );
+  )
   const currentItems =
     customDisplayValue ||
-    flattenItems.filter((item) => currentValue.includes(item.value));
+    flattenItems.filter((item) => currentValue.includes(item.value))
 
   return (
     <SelectPopover
@@ -114,7 +114,7 @@ function MultiSelect({
                 {formComposition?.prefix}
                 {currentValue.length > 0 && (
                   <Separator
-                    className="self-stretch h-auto"
+                    className="h-auto self-stretch"
                     orientation="vertical"
                   />
                 )}
@@ -146,7 +146,7 @@ function MultiSelect({
                   return {
                     key: optionValue.value,
                     content: (
-                      <div className="flex items-center gap-1 max-w-[90px] overflow-hidden text-ellipsis">
+                      <div className="flex max-w-[90px] items-center gap-1 overflow-hidden text-ellipsis">
                         {optionValue?.icon &&
                           (typeof optionValue.icon === "string" ? (
                             <Avatar size={"xs"}>
@@ -167,7 +167,7 @@ function MultiSelect({
                     removeButton: !optionValue?.disabled,
                     onRemove: () => handleRemove(optionValue.value),
                     badgeProps: optionValue?.badgeProps,
-                  };
+                  }
                 })}
                 maxShownItems={maxShownBadges}
                 minShowItems={minShownBadges}
@@ -183,7 +183,7 @@ function MultiSelect({
             ) : variant !== "button" ? (
               <div
                 className={cn(
-                  "w-full h-full flex items-center",
+                  "flex h-full w-full items-center",
                   placeholderColor
                 )}
               >
@@ -204,9 +204,9 @@ function MultiSelect({
         allMultiSelect={true}
       />
     </SelectPopover>
-  );
+  )
 }
 
-MultiSelect.displayName = "MultiSelect";
+MultiSelect.displayName = "MultiSelect"
 
-export { MultiSelect };
+export { MultiSelect }

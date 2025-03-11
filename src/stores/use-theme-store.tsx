@@ -1,11 +1,11 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
 
 type ThemeState = {
-  theme: "light" | "dark";
-  toggleTheme: () => void;
-  setTheme: (theme: "light" | "dark") => void;
-};
+  theme: "light" | "dark"
+  toggleTheme: () => void
+  setTheme: (theme: "light" | "dark") => void
+}
 
 export const useThemeStore = create<ThemeState>()(
   persist(
@@ -21,10 +21,10 @@ export const useThemeStore = create<ThemeState>()(
       name: "theme-storage",
     }
   )
-);
+)
 
 // Optional: Initialize theme based on system preference
 export const initializeTheme = () => {
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  useThemeStore.getState().setTheme(prefersDark ? "dark" : "light");
-};
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+  useThemeStore.getState().setTheme(prefersDark ? "dark" : "light")
+}

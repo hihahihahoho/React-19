@@ -1,8 +1,8 @@
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react";
-import * as React from "react";
-import { ButtonProps, buttonVariants } from "./button";
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { cn } from "@/lib/utils"
+import { ChevronLeft, ChevronRight, Ellipsis } from "lucide-react"
+import * as React from "react"
+import { ButtonProps, buttonVariants } from "./button"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -13,9 +13,9 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
       className={cn("mx-auto flex justify-center", className)}
       {...props}
     />
-  );
+  )
 }
-Pagination.displayName = "Pagination";
+Pagination.displayName = "Pagination"
 
 function PaginationContent({
   className,
@@ -27,24 +27,24 @@ function PaginationContent({
       className={cn("flex flex-row items-center gap-1", className)}
       {...props}
     />
-  );
+  )
 }
-PaginationContent.displayName = "PaginationContent";
+PaginationContent.displayName = "PaginationContent"
 
 function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li data-slot="pagination-item" className={cn("", className)} {...props} />
-  );
+  )
 }
-PaginationItem.displayName = "PaginationItem";
+PaginationItem.displayName = "PaginationItem"
 
 type PaginationLinkProps = {
-  isActive?: boolean;
-  disabled?: boolean;
-  title?: React.ReactNode;
+  isActive?: boolean
+  disabled?: boolean
+  title?: React.ReactNode
 } & Pick<ButtonProps, "size"> &
   Pick<ButtonProps, "iconOnly"> &
-  React.ComponentProps<"a">;
+  React.ComponentProps<"a">
 
 function PaginationLink({
   className,
@@ -70,9 +70,9 @@ function PaginationLink({
       )}
       {...props}
     />
-  );
+  )
 }
-PaginationLink.displayName = "PaginationLink";
+PaginationLink.displayName = "PaginationLink"
 
 function PaginationPrevious({
   className,
@@ -91,9 +91,9 @@ function PaginationPrevious({
       <ChevronLeft />
       {title && <span>{title}</span>}
     </PaginationLink>
-  );
+  )
 }
-PaginationPrevious.displayName = "PaginationPrevious";
+PaginationPrevious.displayName = "PaginationPrevious"
 
 function PaginationNext({
   className,
@@ -112,9 +112,9 @@ function PaginationNext({
       {title && <span>{title}</span>}
       <ChevronRight />
     </PaginationLink>
-  );
+  )
 }
-PaginationNext.displayName = "PaginationNext";
+PaginationNext.displayName = "PaginationNext"
 
 function PaginationEllipsis({
   className,
@@ -130,20 +130,20 @@ function PaginationEllipsis({
       <Ellipsis className="size-4" />
       <span className="sr-only">Trang khác</span>
     </span>
-  );
+  )
 }
-PaginationEllipsis.displayName = "PaginationEllipsis";
+PaginationEllipsis.displayName = "PaginationEllipsis"
 
 export type CombinedPaginationProps = {
-  currentPage: number;
-  totalPages: number;
-  numberPageShow?: number;
-  onPageChange?: (page: number) => void;
-  onPreviousClick?: () => void;
-  onNextClick?: () => void;
-  className?: string;
-  size?: ButtonProps["size"];
-};
+  currentPage: number
+  totalPages: number
+  numberPageShow?: number
+  onPageChange?: (page: number) => void
+  onPreviousClick?: () => void
+  onNextClick?: () => void
+  className?: string
+  size?: ButtonProps["size"]
+}
 
 function CombinedPagination({
   currentPage,
@@ -154,57 +154,51 @@ function CombinedPagination({
   className,
   size,
 }: CombinedPaginationProps) {
-  const isDesktop = useMediaQuery("(min-width: 640px)");
-  const defaultSize = !isDesktop ? "sm" : size || "default";
-  type PageItem = number | "ellipsis";
+  const isDesktop = useMediaQuery("(min-width: 640px)")
+  const defaultSize = !isDesktop ? "sm" : size || "default"
+  type PageItem = number | "ellipsis"
 
   const getPageNumbers = (): PageItem[] => {
-    const maxItems = 5;
+    const maxItems = 5
 
     if (totalPages <= maxItems) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
+      return Array.from({ length: totalPages }, (_, i) => i + 1)
     }
 
-    const firstPage = 1;
-    const lastPage = totalPages;
+    const firstPage = 1
+    const lastPage = totalPages
 
     if (currentPage <= 3) {
-      return [1, 2, 3, "ellipsis", lastPage];
+      return [1, 2, 3, "ellipsis", lastPage]
     } else if (currentPage >= totalPages - 2) {
-      return [
-        firstPage,
-        "ellipsis",
-        totalPages - 2,
-        totalPages - 1,
-        totalPages,
-      ];
+      return [firstPage, "ellipsis", totalPages - 2, totalPages - 1, totalPages]
     } else {
-      return [firstPage, "ellipsis", currentPage, "ellipsis", lastPage];
+      return [firstPage, "ellipsis", currentPage, "ellipsis", lastPage]
     }
-  };
+  }
 
   const handlePrevious = (e: React.MouseEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (currentPage > 1) {
-      onPageChange?.(currentPage - 1);
-      onPreviousClick?.();
+      onPageChange?.(currentPage - 1)
+      onPreviousClick?.()
     }
-  };
+  }
 
   const handleNext = (e: React.MouseEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (currentPage < totalPages) {
-      onPageChange?.(currentPage + 1);
-      onNextClick?.();
+      onPageChange?.(currentPage + 1)
+      onNextClick?.()
     }
-  };
+  }
 
   const handlePageClick = (page: PageItem) => (e: React.MouseEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (typeof page === "number") {
-      onPageChange?.(page);
+      onPageChange?.(page)
     }
-  };
+  }
 
   return (
     <Pagination className={cn("select-none", className)}>
@@ -247,7 +241,7 @@ function CombinedPagination({
         </PaginationItem>
       </PaginationContent>
     </Pagination>
-  );
+  )
 }
 
 export {
@@ -259,4 +253,4 @@ export {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-};
+}

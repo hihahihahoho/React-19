@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from "react"
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -9,17 +9,17 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
       className={cn("w-full caption-bottom text-sm", className)}
       {...props}
     />
-  );
+  )
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b text-muted-foreground", className)}
+      className={cn("text-muted-foreground [&_tr]:border-b", className)}
       {...props}
     />
-  );
+  )
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
@@ -29,7 +29,7 @@ function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
       className={cn("[&_tr:last-child]:border-0", className)}
       {...props}
     />
-  );
+  )
 }
 
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
@@ -42,7 +42,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
       )}
       {...props}
     />
-  );
+  )
 }
 
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
@@ -55,7 +55,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
       )}
       {...props}
     />
-  );
+  )
 }
 
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
@@ -68,7 +68,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
       )}
       {...props}
     />
-  );
+  )
 }
 
 function TableCell({ className, ...props }: React.ComponentProps<"td">) {
@@ -76,12 +76,12 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
     <td
       data-slot="table-cell"
       className={cn(
-        "p-2 align-middle [&:first-child:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] h-14 relative [&_button]:mx-auto",
+        "relative h-14 p-2 align-middle [&:first-child:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px] [&_button]:mx-auto",
         className
       )}
       {...props}
     />
-  );
+  )
 }
 
 function TableCaption({
@@ -94,7 +94,7 @@ function TableCaption({
       className={cn("mt-4 text-sm text-muted-foreground", className)}
       {...props}
     />
-  );
+  )
 }
 
 export {
@@ -106,4 +106,4 @@ export {
   TableHead,
   TableHeader,
   TableRow,
-};
+}

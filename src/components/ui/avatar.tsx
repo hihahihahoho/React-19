@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
-import { cn } from "@/lib/utils";
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
+import { cn } from "@/lib/utils"
+import * as AvatarPrimitive from "@radix-ui/react-avatar"
+import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react"
 
 const avatarVariants = cva(
   "relative flex shrink-0 overflow-hidden rounded-full",
@@ -20,7 +20,7 @@ const avatarVariants = cva(
       size: "default",
     },
   }
-);
+)
 
 export interface AvatarProps
   extends React.ComponentProps<typeof AvatarPrimitive.Root>,
@@ -33,9 +33,9 @@ function Avatar({ className, size, ...props }: AvatarProps) {
       className={cn(avatarVariants({ size, className }))}
       {...props}
     />
-  );
+  )
 }
-Avatar.displayName = AvatarPrimitive.Root.displayName;
+Avatar.displayName = AvatarPrimitive.Root.displayName
 
 function AvatarImage({
   className,
@@ -47,9 +47,9 @@ function AvatarImage({
       className={cn("aspect-square h-full w-full object-cover", className)}
       {...props}
     />
-  );
+  )
 }
-AvatarImage.displayName = AvatarPrimitive.Image.displayName;
+AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
 function AvatarFallback({
   className,
@@ -64,8 +64,8 @@ function AvatarFallback({
       )}
       {...props}
     />
-  );
+  )
 }
-AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
+AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
-export { Avatar, AvatarFallback, AvatarImage };
+export { Avatar, AvatarFallback, AvatarImage }

@@ -1,21 +1,21 @@
-"use client";
+"use client"
 
-import { useToast } from "@/hooks/use-toast";
-import { ACCEPTED_IMAGE_TYPES } from "@/lib/const";
-import { formatFileSize } from "@/lib/file-size";
-import { cn } from "@/lib/utils";
-import { AlignLeft, CloudUpload, Image, Music, Play, X } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "../button";
-import { CloseCircle } from "../custom-icons";
+import { useToast } from "@/hooks/use-toast"
+import { ACCEPTED_IMAGE_TYPES } from "@/lib/const"
+import { formatFileSize } from "@/lib/file-size"
+import { cn } from "@/lib/utils"
+import { AlignLeft, CloudUpload, Image, Music, Play, X } from "lucide-react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Button } from "../button"
+import { CloseCircle } from "../custom-icons"
 import {
   FormComposition,
   FormCompositionProps,
   FormControl,
-} from "../form/form";
-import { GlassIcon } from "../glass-icon";
+} from "../form/form"
+import { GlassIcon } from "../glass-icon"
 
-type TAccept = string;
+type TAccept = string
 
 const fileIcon = {
   image: (
@@ -38,35 +38,35 @@ const fileIcon = {
       <AlignLeft />
     </GlassIcon>
   ),
-};
+}
 
 export interface FileUploadProps
   extends Omit<
     React.ComponentProps<"input">,
     "value" | "accept" | "defaultValue"
   > {
-  onFileChange?: (files: FileList) => void;
-  maxFiles?: number;
-  display?: "grid" | "list";
-  accept?: TAccept[];
-  buttonLabel?: string;
-  maxFileSize?: number;
-  disabled?: boolean;
-  value?: File[];
-  defaultValue?: File[];
-  formComposition?: FormCompositionProps;
+  onFileChange?: (files: FileList) => void
+  maxFiles?: number
+  display?: "grid" | "list"
+  accept?: TAccept[]
+  buttonLabel?: string
+  maxFileSize?: number
+  disabled?: boolean
+  value?: File[]
+  defaultValue?: File[]
+  formComposition?: FormCompositionProps
 }
 
 interface FileWithMeta {
-  id: string;
-  file: File;
+  id: string
+  file: File
 }
 
-const MAX_FILE_SIZE = 500000; // 500
+const MAX_FILE_SIZE = 500000 // 500
 
 const generateFileId = (file: File) => {
-  return `${file.name}-${file.size}-${file.lastModified}`;
-};
+  return `${file.name}-${file.size}-${file.lastModified}`
+}
 function FileUpload({
   onFileChange,
   maxFiles = 5,
@@ -79,103 +79,103 @@ function FileUpload({
   defaultValue,
   ...props
 }: FileUploadProps) {
-  const { toast } = useToast();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [isDragOver, setIsDragOver] = useState(false);
-  const isControlled = value !== undefined;
-  const isMultipleAllowed = maxFiles > 1;
-  const acceptString = accept.map((type) => `${type.split("/")[1]}`).join(",");
+  const { toast } = useToast()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [isDragOver, setIsDragOver] = useState(false)
+  const isControlled = value !== undefined
+  const isMultipleAllowed = maxFiles > 1
+  const acceptString = accept.map((type) => `${type.split("/")[1]}`).join(",")
 
   const [internalFiles, setInternalFiles] = useState<FileWithMeta[]>(() => {
     const initial = (value || defaultValue || []).map((file) => ({
       id: generateFileId(file),
       file,
-    }));
-    return initial;
-  });
+    }))
+    return initial
+  })
 
   const previewUrls = useMemo(() => {
     return internalFiles.reduce(
       (acc, file) => {
-        let previewUrl = null;
+        let previewUrl = null
         if (file.file) {
           if (file.file.type.startsWith("image/")) {
             if (file.file.size > 0) {
-              previewUrl = URL.createObjectURL(file.file);
+              previewUrl = URL.createObjectURL(file.file)
             } else {
-              previewUrl = file.file.name;
+              previewUrl = file.file.name
             }
           }
         }
-        acc[file.id] = previewUrl;
-        return acc;
+        acc[file.id] = previewUrl
+        return acc
       },
       {} as Record<string, string | null>
-    );
-  }, [internalFiles]);
+    )
+  }, [internalFiles])
 
   useEffect(() => {
     if (isControlled) {
       const newFiles = (value || []).map((file) => ({
         id: generateFileId(file),
         file,
-      }));
-      setInternalFiles(newFiles);
+      }))
+      setInternalFiles(newFiles)
     }
-  }, [value, isControlled]);
+  }, [value, isControlled])
 
   useEffect(() => {
     return () => {
       Object.values(previewUrls)
         .filter((url): url is string => url !== null)
-        .forEach(URL.revokeObjectURL);
-    };
-  }, [previewUrls]);
+        .forEach(URL.revokeObjectURL)
+    }
+  }, [previewUrls])
 
   const syncInput = useCallback(
     (files: File[]) => {
-      if (!inputRef.current) return;
-      const dt = new DataTransfer();
-      files.forEach((file) => dt.items.add(file));
-      inputRef.current.files = dt.files;
-      onFileChange?.(dt.files);
+      if (!inputRef.current) return
+      const dt = new DataTransfer()
+      files.forEach((file) => dt.items.add(file))
+      inputRef.current.files = dt.files
+      onFileChange?.(dt.files)
     },
     [onFileChange]
-  );
+  )
 
   const validateFile = useCallback(
     (file: File) => {
-      const errors = [];
+      const errors = []
       if (!accept.includes(file.type)) {
-        errors.push(`File ${file.name} không đúng định dạng cho phép`);
+        errors.push(`File ${file.name} không đúng định dạng cho phép`)
       }
       if (file.size > maxFileSize) {
         errors.push(
           `File ${file.name} vượt quá kích thước tối đa (${formatFileSize(
             maxFileSize
           )})`
-        );
+        )
       }
-      return errors;
+      return errors
     },
     [accept, maxFileSize]
-  );
+  )
 
   const handleFiles = useCallback(
     (newFiles: FileList) => {
-      let filesArray = Array.from(newFiles);
+      let filesArray = Array.from(newFiles)
 
       if (!isMultipleAllowed && filesArray.length > 1) {
-        filesArray = filesArray.slice(0, 1); // Take only the first file if multiple not allowed
+        filesArray = filesArray.slice(0, 1) // Take only the first file if multiple not allowed
       }
-      const validFiles: File[] = [];
-      const errors: string[] = [];
-      const duplicates: string[] = [];
+      const validFiles: File[] = []
+      const errors: string[] = []
+      const duplicates: string[] = []
 
       // Get current files list
       const currentFiles = isControlled
         ? value || []
-        : internalFiles.map((f) => f.file);
+        : internalFiles.map((f) => f.file)
 
       filesArray.forEach((file) => {
         // Check for duplicates
@@ -184,21 +184,21 @@ function FileUpload({
             existingFile.name === file.name &&
             existingFile.size === file.size &&
             existingFile.lastModified === file.lastModified
-        );
+        )
 
         if (isDuplicate) {
-          duplicates.push(file.name);
-          return;
+          duplicates.push(file.name)
+          return
         }
 
         // Validate other criteria
-        const fileErrors = validateFile(file);
+        const fileErrors = validateFile(file)
         if (fileErrors.length > 0) {
-          errors.push(...fileErrors);
+          errors.push(...fileErrors)
         } else {
-          validFiles.push(file);
+          validFiles.push(file)
         }
-      });
+      })
 
       // Show duplicate error
       if (duplicates.length > 0) {
@@ -206,13 +206,13 @@ function FileUpload({
           variant: "destructive",
           title: "File trùng lặp",
           description: (
-            <ul className="text-xs list-disc list-inside">
+            <ul className="list-inside list-disc text-xs">
               {duplicates.map((name, index) => (
                 <li key={index}>Đã tồn tại file: {name}</li>
               ))}
             </ul>
           ),
-        });
+        })
       }
 
       // Show validation errors
@@ -221,34 +221,34 @@ function FileUpload({
           variant: "destructive",
           title: "Không thể tải lên một số file",
           description: (
-            <ul className="text-xs list-disc list-inside">
+            <ul className="list-inside list-disc text-xs">
               {errors.map((error, index) => (
                 <li key={index}>{error}</li>
               ))}
             </ul>
           ),
-        });
+        })
       }
 
       // Process valid files
       if (validFiles.length > 0) {
-        let updatedFiles: File[];
+        let updatedFiles: File[]
         if (maxFiles === 1) {
-          updatedFiles = validFiles;
+          updatedFiles = validFiles
         } else {
-          updatedFiles = [...currentFiles, ...validFiles].slice(0, maxFiles);
+          updatedFiles = [...currentFiles, ...validFiles].slice(0, maxFiles)
         }
 
         const newFilesWithMeta = updatedFiles.map((file) => ({
           id: generateFileId(file),
           file,
-        }));
+        }))
 
         if (isControlled) {
-          syncInput(updatedFiles);
+          syncInput(updatedFiles)
         } else {
-          setInternalFiles(newFilesWithMeta);
-          syncInput(updatedFiles);
+          setInternalFiles(newFilesWithMeta)
+          syncInput(updatedFiles)
         }
       }
     },
@@ -262,40 +262,40 @@ function FileUpload({
       toast,
       isMultipleAllowed,
     ]
-  );
+  )
 
   const removeFile = useCallback(
     (id: string) => {
-      const updatedFiles = internalFiles.filter((f) => f.id !== id);
+      const updatedFiles = internalFiles.filter((f) => f.id !== id)
       if (isControlled) {
-        syncInput(updatedFiles.map((f) => f.file));
+        syncInput(updatedFiles.map((f) => f.file))
       } else {
-        setInternalFiles(updatedFiles);
-        syncInput(updatedFiles.map((f) => f.file));
+        setInternalFiles(updatedFiles)
+        syncInput(updatedFiles.map((f) => f.file))
       }
     },
     [internalFiles, isControlled, syncInput]
-  );
+  )
 
   const handleDrag = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(e.type === "dragover");
-  }, []);
+    e.preventDefault()
+    setIsDragOver(e.type === "dragover")
+  }, [])
 
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
-      e.preventDefault();
-      handleFiles(e.dataTransfer.files);
-      setIsDragOver(false);
+      e.preventDefault()
+      handleFiles(e.dataTransfer.files)
+      setIsDragOver(false)
     },
     [handleFiles]
-  );
+  )
 
   return (
     <FormComposition
       data-slot="file-upload"
       {...formComposition}
-      className="p-0 border-0 flex-col !ring-0 !shadow-none"
+      className="flex-col border-0 p-0 !shadow-none !ring-0"
       variant="ghost"
       isMinHeight
     >
@@ -308,7 +308,7 @@ function FileUpload({
           inputRef.current?.click()
         }
         className={cn(
-          "transition-all p-3 min-h-[126px] border-dashed border rounded-xl items-center justify-center w-full",
+          "min-h-[126px] w-full items-center justify-center rounded-xl border border-dashed p-3 transition-all",
           isDragOver && "ring-2 ring-primary ring-offset-2",
           (internalFiles.length < maxFiles || maxFiles === 1) &&
             "cursor-pointer"
@@ -330,7 +330,7 @@ function FileUpload({
           display === "grid" ? (
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {internalFiles.map((fileMeta) => (
-                <div key={fileMeta.id} className="relative group">
+                <div key={fileMeta.id} className="group relative">
                   <div
                     className="h-[100px] cursor-default"
                     onClick={(e) => e.stopPropagation()}
@@ -339,13 +339,13 @@ function FileUpload({
                       <img
                         src={previewUrls[fileMeta.id] || ""}
                         alt={fileMeta.file.name}
-                        className="object-cover w-full h-full border rounded-lg"
+                        className="h-full w-full rounded-lg border object-cover"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = "none";
+                          ;(e.target as HTMLImageElement).style.display = "none"
                         }}
                       />
                     ) : (
-                      <div className="flex flex-col items-center justify-center w-full h-full gap-2 px-3 rounded-lg bg-secondary">
+                      <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg bg-secondary px-3">
                         {fileMeta.file.type.startsWith("image/")
                           ? fileIcon.image
                           : fileMeta.file.type.startsWith("audio/")
@@ -353,7 +353,7 @@ function FileUpload({
                             : fileMeta.file.type.startsWith("video/")
                               ? fileIcon.video
                               : fileIcon.other}
-                        <div className="w-full text-xs text-muted-foreground space-y-[2px] text-center">
+                        <div className="w-full space-y-[2px] text-center text-xs text-muted-foreground">
                           <div className="truncate">{fileMeta.file.name}</div>
                           <div className="">
                             {fileMeta.file.type.split("/")[1].toUpperCase()} -
@@ -368,17 +368,17 @@ function FileUpload({
                     variant="ghost"
                     isRounded
                     iconOnly
-                    className="absolute min-w-0 text-white border-0 size-5 top-1 right-1 bg-black/60 backdrop-blur"
+                    className="absolute right-1 top-1 size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      removeFile(fileMeta.id);
+                      e.stopPropagation()
+                      removeFile(fileMeta.id)
                     }}
                     iconLeft={<X />}
                   />
                 </div>
               ))}
               {(internalFiles.length < maxFiles || maxFiles === 1) && (
-                <div className="h-[100px] rounded-lg border border-dashed flex items-center justify-center flex-col gap-3">
+                <div className="flex h-[100px] flex-col items-center justify-center gap-3 rounded-lg border border-dashed">
                   <GlassIcon>
                     <CloudUpload />
                   </GlassIcon>
@@ -395,7 +395,7 @@ function FileUpload({
           ) : (
             <div className="grid gap-3">
               {(internalFiles.length < maxFiles || maxFiles === 1) && (
-                <div className="flex items-center gap-2 text-xs text-muted-foreground min-h-6">
+                <div className="flex min-h-6 items-center gap-2 text-xs text-muted-foreground">
                   <CloudUpload />
                   <div className="flex-1">
                     {maxFiles === 1 ? (
@@ -413,20 +413,20 @@ function FileUpload({
               {internalFiles.map((fileMeta) => (
                 <div
                   key={fileMeta.id}
-                  className="flex items-center min-w-0 gap-3 p-2 rounded-lg cursor-default bg-secondary"
+                  className="flex min-w-0 cursor-default items-center gap-3 rounded-lg bg-secondary p-2"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {previewUrls[fileMeta.id] ? (
                     <img
                       src={previewUrls[fileMeta.id] || ""}
                       alt={fileMeta.file.name}
-                      className="object-cover border rounded-lg size-12"
+                      className="size-12 rounded-lg border object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none";
+                        ;(e.target as HTMLImageElement).style.display = "none"
                       }}
                     />
                   ) : (
-                    <div className="flex items-center justify-center size-12">
+                    <div className="flex size-12 items-center justify-center">
                       {fileMeta.file.type.startsWith("image/")
                         ? fileIcon.image
                         : fileMeta.file.type.startsWith("audio/")
@@ -437,7 +437,7 @@ function FileUpload({
                     </div>
                   )}
                   <div className="grid flex-1 gap-1">
-                    <div className="text-sm truncate">{fileMeta.file.name}</div>
+                    <div className="truncate text-sm">{fileMeta.file.name}</div>
                     <div className="text-xs text-muted-foreground">
                       {fileMeta.file.type.split("/")[1].toUpperCase()} -{" "}
                       {formatFileSize(fileMeta.file.size)}
@@ -447,10 +447,10 @@ function FileUpload({
                     variant="ghost"
                     isRounded
                     iconOnly
-                    className="min-w-0 border-0 size-8 opacity-70 hover:opacity-100"
+                    className="size-8 min-w-0 border-0 opacity-70 hover:opacity-100"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      removeFile(fileMeta.id);
+                      e.stopPropagation()
+                      removeFile(fileMeta.id)
                     }}
                   >
                     <CloseCircle className="!size-5" />
@@ -464,7 +464,7 @@ function FileUpload({
             <GlassIcon>
               <CloudUpload />
             </GlassIcon>
-            <div className="space-y-1 text-xs text-center text-muted-foreground">
+            <div className="space-y-1 text-center text-xs text-muted-foreground">
               <div className="">
                 <span className="text-primary">Tải lên</span> hoặc kéo thả vào
                 đây
@@ -479,7 +479,7 @@ function FileUpload({
         )}
       </div>
     </FormComposition>
-  );
+  )
 }
 
-export { FileUpload };
+export { FileUpload }

@@ -1,25 +1,25 @@
-import { cn } from "@/lib/utils";
-import { RadioGroupItemProps } from "@radix-ui/react-radio-group";
-import { ControllerProps, FieldPath, FieldValues } from "react-hook-form";
-import { FormComposition, FormCompositionProps, FormField } from "../form/form";
+import { cn } from "@/lib/utils"
+import { RadioGroupItemProps } from "@radix-ui/react-radio-group"
+import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
+import { FormComposition, FormCompositionProps, FormField } from "../form/form"
 
-import { useZodSchema } from "../form/zod-schema-context";
-import { RadioGroup, RadioGroupItem } from "./radio-group";
-import { SelectionGroup, SelectionGroupProps } from "./selection-group";
+import { useZodSchema } from "../form/zod-schema-context"
+import { RadioGroup, RadioGroupItem } from "./radio-group"
+import { SelectionGroup, SelectionGroupProps } from "./selection-group"
 
 export type ItemRadioType = RadioGroupItemProps & {
-  label: React.ReactNode;
-  value: string;
-};
+  label: React.ReactNode
+  value: string
+}
 
 export interface RadioGroupFormProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends Omit<ControllerProps<TFieldValues, TName>, "render"> {
-  formComposition?: FormCompositionProps;
-  selectionGroup?: SelectionGroupProps;
-  items: ItemRadioType[];
-  className?: string;
+  formComposition?: FormCompositionProps
+  selectionGroup?: SelectionGroupProps
+  items: ItemRadioType[]
+  className?: string
 }
 
 const RadioGroupForm = <
@@ -34,8 +34,8 @@ const RadioGroupForm = <
   items,
   ...props
 }: RadioGroupFormProps<TFieldValues, TName>) => {
-  const { getJsonSchema } = useZodSchema();
-  const { isRequired } = getJsonSchema(name);
+  const { getJsonSchema } = useZodSchema()
+  const { isRequired } = getJsonSchema(name)
   return (
     <FormField
       control={control}
@@ -49,12 +49,12 @@ const RadioGroupForm = <
         >
           <RadioGroup
             {...props}
-            className={cn("grid grid-cols-2 gap-2 mt-2", className)}
+            className={cn("mt-2 grid grid-cols-2 gap-2", className)}
             value={field.value}
             onValueChange={field.onChange}
           >
             {items.map((item) => {
-              const { label, ...props } = item;
+              const { label, ...props } = item
               return (
                 <SelectionGroup
                   key={item.value}
@@ -63,15 +63,15 @@ const RadioGroupForm = <
                 >
                   <div className="z-10">{label}</div>
                 </SelectionGroup>
-              );
+              )
             })}
           </RadioGroup>
         </FormComposition>
       )}
     />
-  );
-};
+  )
+}
 
-RadioGroupForm.displayName = "RadioGroupForm";
+RadioGroupForm.displayName = "RadioGroupForm"
 
-export { RadioGroupForm };
+export { RadioGroupForm }

@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form/form";
-import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context";
-import { Input } from "@/components/ui/input/input";
-import { InputForm } from "@/components/ui/input/input-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "@/components/ui/button"
+import { Form } from "@/components/ui/form/form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { Input } from "@/components/ui/input/input"
+import { InputForm } from "@/components/ui/input/input-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { Meta, StoryObj } from "@storybook/react"
 import {
   AlertCircle,
   Check,
@@ -16,9 +16,9 @@ import {
   Phone,
   Search,
   User,
-} from "lucide-react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+} from "lucide-react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
 /**
  * Input component allows users to enter text or other data in a form.
@@ -104,17 +104,17 @@ They can include various types, validation states, and additional elements like 
       </div>
     ),
   ],
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof Input>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 /**
  * Basic examples of different input types.
  */
 export const BasicTypes: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input formComposition={{ label: "Text" }} placeholder="Enter text" />
       <Input
         type="email"
@@ -140,14 +140,14 @@ export const BasicTypes: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Inputs with different states (disabled, read-only).
  */
 export const InputStates: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         formComposition={{ label: "Default" }}
         placeholder="Regular input"
@@ -174,14 +174,14 @@ export const InputStates: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Inputs with different form composition variations.
  */
 export const WithFormComposition: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         formComposition={{
           label: "Username",
@@ -225,14 +225,14 @@ export const WithFormComposition: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Inputs with different icon configurations.
  */
 export const WithIcons: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         formComposition={{
           label: "Search",
@@ -273,14 +273,14 @@ export const WithIcons: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Input fields with prefix and suffix elements.
  */
 export const WithPrefixAndSuffix: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         formComposition={{
           label: "Amount",
@@ -323,14 +323,14 @@ export const WithPrefixAndSuffix: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Input fields with clearable values.
  */
 export const WithClearButton: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         formComposition={{
           label: "Username",
@@ -369,14 +369,14 @@ export const WithClearButton: Story = {
       },
     },
   },
-};
+}
 
 /**
  * File input examples.
  */
 export const FileInputs: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         type="file"
         formComposition={{
@@ -410,7 +410,7 @@ export const FileInputs: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Form with input validation using react-hook-form and zod.
@@ -421,7 +421,7 @@ export const WithFormValidation: Story = {
       username: z.string().min(3, "Username must be at least 3 characters"),
       email: z.string().email("Invalid email address"),
       password: z.string().min(8, "Password must be at least 8 characters"),
-    });
+    })
 
     function FormExample() {
       const form = useForm<z.infer<typeof formSchema>>({
@@ -431,14 +431,14 @@ export const WithFormValidation: Story = {
           email: "",
           password: "",
         },
-      });
+      })
 
       const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+        console.log(values)
         alert(
           "Form submitted successfully!\n" + JSON.stringify(values, null, 2)
-        );
-      };
+        )
+      }
 
       return (
         <ZodSchemaProvider schema={formSchema}>
@@ -485,10 +485,10 @@ export const WithFormValidation: Story = {
             </form>
           </Form>
         </ZodSchemaProvider>
-      );
+      )
     }
 
-    return <FormExample />;
+    return <FormExample />
   },
   parameters: {
     docs: {
@@ -498,14 +498,14 @@ export const WithFormValidation: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Various input field types for different data formats.
  */
 export const VariousInputTypes: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         type="tel"
         formComposition={{
@@ -543,14 +543,14 @@ export const VariousInputTypes: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Inputs with different variant styles.
  */
 export const VariantStyles: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         formComposition={{
           label: "Default style",
@@ -591,14 +591,14 @@ export const VariantStyles: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Input fields with label positioning.
  */
 export const LabelPositioning: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <Input
         formComposition={{
           label: "Vertical label (default)",
@@ -637,7 +637,7 @@ export const LabelPositioning: Story = {
       },
     },
   },
-};
+}
 
 /**
  * A comprehensive showcase of all input variants and features.
@@ -768,7 +768,7 @@ export const CompleteShowcase: Story = {
           <Input
             formComposition={{
               label: "Success state",
-              iconLeft: <Check className="text-green-500 size-4" />,
+              iconLeft: <Check className="size-4 text-green-500" />,
               description: "Input value is valid",
             }}
             defaultValue="valid@email.com"
@@ -777,7 +777,7 @@ export const CompleteShowcase: Story = {
           <Input
             formComposition={{
               label: "Error state",
-              iconLeft: <AlertCircle className="text-red-500 size-4" />,
+              iconLeft: <AlertCircle className="size-4 text-red-500" />,
               customError: "Invalid input value",
             }}
             defaultValue="invalid-value"
@@ -794,7 +794,7 @@ export const CompleteShowcase: Story = {
       },
     },
   },
-};
+}
 
 /**
  * Fully interactive example with all available props.
@@ -823,4 +823,4 @@ export const Interactive: Story = {
       },
     },
   },
-};
+}
