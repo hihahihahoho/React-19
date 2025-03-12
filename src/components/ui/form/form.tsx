@@ -90,7 +90,7 @@ const inputSizeVariants = cva("", {
 })
 
 const inputContainerVariants = cva(
-  "flex w-full cursor-text gap-2 rounded-lg bg-transparent px-3 outline-none ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "box-content flex w-full cursor-text gap-2 rounded-lg bg-transparent px-3 outline-none ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {

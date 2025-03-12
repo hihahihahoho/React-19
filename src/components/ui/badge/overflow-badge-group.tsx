@@ -28,7 +28,7 @@ function OverflowBadgeGroup({
   className,
   badgeMeasureClassName = "measured-badge",
   overflowMeasureClassName = "measured-plus",
-  overflowState,
+  overflowState = "collapse",
   badgeProps,
   ...props
 }: OverflowBadgeGroupProps) {
@@ -47,7 +47,7 @@ function OverflowBadgeGroup({
       data-slot="overflow-badge-group"
       className={cn(
         "relative flex h-full w-full items-center gap-1 overflow-hidden whitespace-nowrap",
-        overflowState === "collapse" ? "flex-nowrap" : "flex-wrap py-1",
+        overflowState === "collapse" ? "flex-nowrap" : "flex-wrap py-[3px]",
         className
       )}
       {...props}

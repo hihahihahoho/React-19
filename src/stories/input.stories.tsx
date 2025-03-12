@@ -3,6 +3,7 @@ import { Form } from "@/components/ui/form/form"
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import { Input } from "@/components/ui/input/input"
 import { InputForm } from "@/components/ui/input/input-form"
+import { InputTag } from "@/components/ui/input/input-tag"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react"
 import {
@@ -115,6 +116,13 @@ type Story = StoryObj<typeof meta>
 export const BasicTypes: Story = {
   render: () => (
     <div className="flex w-full flex-col gap-4">
+      <InputTag
+        formComposition={{
+          label: "Username",
+          description: "Enter your username or email",
+        }}
+        placeholder="Username"
+      />
       <Input formComposition={{ label: "Text" }} placeholder="Enter text" />
       <Input
         type="email"
@@ -236,7 +244,7 @@ export const WithIcons: Story = {
       <Input
         formComposition={{
           label: "Search",
-          iconLeft: <Search />,
+          iconLeft: <Search className="size-4" />,
         }}
         placeholder="Search..."
         type="search"
@@ -244,7 +252,7 @@ export const WithIcons: Story = {
       <Input
         formComposition={{
           label: "Email",
-          iconLeft: <Mail />,
+          iconLeft: <Mail className="size-4" />,
         }}
         placeholder="example@domain.com"
         type="email"
@@ -252,7 +260,7 @@ export const WithIcons: Story = {
       <Input
         formComposition={{
           label: "Password",
-          iconLeft: <Lock />,
+          iconLeft: <Lock className="size-4" />,
         }}
         placeholder="Enter password"
         type="password"
@@ -260,7 +268,7 @@ export const WithIcons: Story = {
       <Input
         formComposition={{
           label: "Username",
-          iconRight: <User />,
+          iconRight: <User className="size-4" />,
         }}
         placeholder="Enter username"
       />
@@ -342,7 +350,7 @@ export const WithClearButton: Story = {
       <Input
         formComposition={{
           label: "Search",
-          iconLeft: <Search />,
+          iconLeft: <Search className="size-4" />,
           inputClear: true,
         }}
         placeholder="Search..."
@@ -352,7 +360,7 @@ export const WithClearButton: Story = {
       <Input
         formComposition={{
           label: "Email",
-          iconLeft: <Mail />,
+          iconLeft: <Mail className="size-4" />,
           inputClear: true,
           description: "Click the × to clear",
         }}
@@ -389,7 +397,7 @@ export const FileInputs: Story = {
         formComposition={{
           label: "Profile picture",
           description: "JPG, PNG or GIF (max. 1MB)",
-          iconLeft: <FileText />,
+          iconLeft: <FileText className="size-4" />,
         }}
         accept="image/*"
       />
@@ -452,7 +460,7 @@ export const WithFormValidation: Story = {
                 control={form.control}
                 formComposition={{
                   label: "Username",
-                  iconLeft: <User />,
+                  iconLeft: <User className="size-4" />,
                 }}
                 placeholder="Enter username"
               />
@@ -463,7 +471,7 @@ export const WithFormValidation: Story = {
                 type="email"
                 formComposition={{
                   label: "Email",
-                  iconLeft: <Mail />,
+                  iconLeft: <Mail className="size-4" />,
                 }}
                 placeholder="example@domain.com"
               />
@@ -474,7 +482,7 @@ export const WithFormValidation: Story = {
                 type="password"
                 formComposition={{
                   label: "Password",
-                  iconLeft: <Lock />,
+                  iconLeft: <Lock className="size-4" />,
                 }}
                 placeholder="Enter password"
               />
@@ -510,7 +518,7 @@ export const VariousInputTypes: Story = {
         type="tel"
         formComposition={{
           label: "Phone Number",
-          iconLeft: <Phone />,
+          iconLeft: <Phone className="size-4" />,
         }}
         placeholder="(123) 456-7890"
       />
@@ -519,7 +527,7 @@ export const VariousInputTypes: Story = {
         type="url"
         formComposition={{
           label: "Website",
-          iconLeft: <Globe />,
+          iconLeft: <Globe className="size-4" />,
         }}
         placeholder="https://example.com"
       />
@@ -528,7 +536,7 @@ export const VariousInputTypes: Story = {
         type="search"
         formComposition={{
           label: "Search",
-          iconLeft: <Search />,
+          iconLeft: <Search className="size-4" />,
           inputClear: true,
         }}
         placeholder="Search..."
@@ -698,7 +706,7 @@ export const CompleteShowcase: Story = {
           <Input
             formComposition={{
               label: "Search",
-              iconLeft: <Search />,
+              iconLeft: <Search className="size-4" />,
             }}
             type="search"
             placeholder="Search..."
@@ -706,7 +714,7 @@ export const CompleteShowcase: Story = {
           <Input
             formComposition={{
               label: "Email",
-              iconRight: <Mail />,
+              iconRight: <Mail className="size-4" />,
             }}
             type="email"
             placeholder="example@domain.com"
@@ -714,8 +722,8 @@ export const CompleteShowcase: Story = {
           <Input
             formComposition={{
               label: "Information",
-              iconLeft: <Info />,
-              iconRight: <Check />,
+              iconLeft: <Info className="size-4" />,
+              iconRight: <Check className="size-4" />,
             }}
             placeholder="Enter information"
           />
@@ -809,7 +817,7 @@ export const Interactive: Story = {
       label: "Interactive Input",
       description: "This is a customizable input field",
       inputClear: true,
-      iconLeft: <User />,
+      iconLeft: <User className="size-4" />,
       variant: "default",
       size: "default",
       labelPosition: "vertical",
