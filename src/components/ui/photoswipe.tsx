@@ -1,4 +1,3 @@
-import { ChevronRight } from "lucide-react"
 import "photoswipe/dist/photoswipe.css"
 import React from "react"
 import { Gallery, Item } from "react-photoswipe-gallery"
@@ -102,11 +101,7 @@ function PhotoSwipe({
   images?: GalleryImageType[]
 }) {
   return (
-    <Gallery
-      options={{
-        arrowNextSVG: <ChevronRight />,
-      }}
-    >
+    <Gallery>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
         {images.map((image, index) => (
           <GalleryItem key={index} image={image} index={index} />

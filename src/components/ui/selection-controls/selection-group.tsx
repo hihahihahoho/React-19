@@ -31,7 +31,6 @@ export interface SelectionGroupProps
   control?: React.ReactNode
 }
 
-// Updated component without forwardRef
 function SelectionGroup({
   control,
   variant,

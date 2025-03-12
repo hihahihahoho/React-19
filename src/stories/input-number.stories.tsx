@@ -193,7 +193,7 @@ export const WithCustomization: Story = {
         formComposition={{
           label: "Amount",
           prefix: <span className="text-muted-foreground">$</span>,
-          iconLeft: <DollarSign className="size-4" />,
+          iconLeft: <DollarSign />,
         }}
         placeholder="Enter amount"
         defaultValue={1250}
@@ -204,7 +204,7 @@ export const WithCustomization: Story = {
         formComposition={{
           label: "Percentage",
           suffix: <span className="text-muted-foreground">%</span>,
-          iconRight: <Percent className="size-4" />,
+          iconRight: <Percent />,
         }}
         placeholder="Enter percentage"
         defaultValue={85}
@@ -287,7 +287,7 @@ export const InputStates: Story = {
         formComposition={{
           label: "With Error",
           customError: "Value must be positive",
-          iconLeft: <Hash className="size-4" />,
+          iconLeft: <Hash />,
         }}
         placeholder="Enter number"
         defaultValue={-100}
@@ -356,7 +356,7 @@ export const WithFormValidation: Story = {
                 maskitoOptions={{ precision: 2 }}
                 formComposition={{
                   label: "Price ($)",
-                  iconLeft: <DollarSign className="size-4" />,
+                  iconLeft: <DollarSign />,
                 }}
                 placeholder="Enter price"
               />
@@ -366,7 +366,7 @@ export const WithFormValidation: Story = {
                 control={form.control}
                 formComposition={{
                   label: "Quantity",
-                  iconLeft: <Hash className="size-4" />,
+                  iconLeft: <Hash />,
                 }}
                 placeholder="Enter quantity"
               />
@@ -377,7 +377,7 @@ export const WithFormValidation: Story = {
                 formComposition={{
                   label: "Discount",
                   suffix: <span className="text-muted-foreground">%</span>,
-                  iconLeft: <Percent className="size-4" />,
+                  iconLeft: <Percent />,
                 }}
                 placeholder="Enter discount"
               />
@@ -421,7 +421,7 @@ export const Interactive: Story = {
       label: "Interactive Number Input",
       description: "Try changing the controls in the panel below",
       inputClear: true,
-      iconLeft: <Calculator className="size-4" />,
+      iconLeft: <Calculator />,
       variant: "default",
     },
   },

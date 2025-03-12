@@ -51,6 +51,7 @@ const badgeVariants = cva(
         zinc: "bg-zinc-600/10 text-zinc-700 hover:bg-zinc-600/20 dark:bg-white/5 dark:text-zinc-400 dark:hover:bg-white/10",
       },
       size: {
+        xs: "min-h-5 px-2 py-0.5 text-xs",
         sm: "min-h-6 px-2.5 py-0.5 text-xs",
         md: "min-h-7 px-2.5 py-0.5 text-xs",
         lg: "rounded-4 min-h-8 px-4 py-1 text-sm",
@@ -61,8 +62,10 @@ const badgeVariants = cva(
     },
 
     compoundVariants: [
+      { hasLeftIcon: true, size: "xs", className: "pl-1" },
       { hasLeftIcon: true, size: "sm", className: "pl-1.5" },
       { hasLeftIcon: true, size: ["md", "lg"], className: "pl-2" },
+      { hasRightIcon: true, size: "xs", className: "pr-1" },
       { hasRightIcon: true, size: "sm", className: "pr-2" },
       { hasRightIcon: true, size: ["md", "lg"], className: "pr-2" },
       { clearBtn: true, size: ["md", "lg"], className: "pr-1.5" },

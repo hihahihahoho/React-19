@@ -24,9 +24,9 @@ const compositionClass = " items-center relative flex-shrink-0 flex"
 const inputSizeVariants = cva("", {
   variants: {
     size: {
-      sm: "",
-      default: "",
-      lg: "",
+      sm: "[&_.form-icon_svg]:size-4",
+      default: "[&_.form-icon_svg]:size-4",
+      lg: "[&_.form-icon_svg]:size-5",
     },
     isMinHeight: {
       true: "",
@@ -90,7 +90,7 @@ const inputSizeVariants = cva("", {
 })
 
 const inputContainerVariants = cva(
-  "flex w-full cursor-text gap-2 rounded-lg bg-transparent px-3 outline-none ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "flex w-full cursor-text gap-2 rounded-lg bg-transparent px-3 outline-none ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -485,7 +485,7 @@ function FormComposition({
                   className={cn(
                     compositionClass,
                     inputSizeVariants({ size, isMinHeight: true }),
-                    "-ml-[2px]"
+                    "form-icon -ml-[2px]"
                   )}
                 >
                   {iconLeft}
@@ -564,7 +564,7 @@ function FormComposition({
                   className={cn(
                     compositionClass,
                     inputSizeVariants({ size, isMinHeight: true }),
-                    "-mr-[2px]"
+                    "form-icon -mr-[2px]"
                   )}
                 >
                   {iconRight}

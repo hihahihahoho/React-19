@@ -90,10 +90,6 @@ They are useful when you want to allow multiple selections from a set of options
       control: "boolean",
       description: "Whether the multiselect is read-only",
     },
-    maxShownBadges: {
-      control: "number",
-      description: "Maximum number of badges to show before collapsing",
-    },
     formComposition: {
       description:
         "Configuration for form composition elements like label, help text",
@@ -101,6 +97,10 @@ They are useful when you want to allow multiple selections from a set of options
     onValueChange: {
       description: "Function called when selection changes",
       action: "values changed",
+    },
+    bagdeGroupProps: {
+      description:
+        "Configuration for the badge group display behavior including maxShownItems and overflowState",
     },
   },
   decorators: [
@@ -404,7 +404,9 @@ export const ColoredBadges: Story = {
           }}
           placeholder="Select colors"
           defaultValue={["red", "blue", "green"]}
-          maxShownBadges={8}
+          bagdeGroupProps={{
+            maxShownItems: 8,
+          }}
         />
 
         <MultiSelect
@@ -706,7 +708,9 @@ export const BadgeOverflow: Story = {
             description: `Select multiple languages (showing max ${maxBadges} badges)`,
           }}
           placeholder="Select languages"
-          maxShownBadges={maxBadges}
+          bagdeGroupProps={{
+            maxShownItems: maxBadges,
+          }}
           defaultValue={[
             "javascript",
             "typescript",
@@ -819,19 +823,21 @@ export const MultiSelectInFormWithFetchedData: Story = {
                 // Show search only if we have a significant number of options
                 minItemsToShowSearch: 5,
               }}
-              maxShownBadges={3}
+              bagdeGroupProps={{
+                maxShownItems: 3,
+              }}
             />
 
             <div className="flex justify-end gap-2">
+              <Button className="flex-1" type="submit" disabled={isLoading}>
+                Submit
+              </Button>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => form.reset()}
               >
                 Reset
-              </Button>
-              <Button type="submit" disabled={isLoading}>
-                Submit
               </Button>
             </div>
           </form>
@@ -930,7 +936,6 @@ export const ServerSideFetching: Story = {
         placeholder="Search for countries"
         value={selectedCountryCodes}
         onValueChange={setSelectedCountryCodes}
-        maxShownBadges={3}
         selectCommandProps={{
           loading: isLoading,
           minItemsToShowSearch: -1,
@@ -1117,7 +1122,6 @@ export const ServerSideFetchingInForm: Story = {
                 ),
                 requiredSymbol: true,
               }}
-              maxShownBadges={3}
               customDisplayValue={formSelectedCountries}
               selectCommandProps={{
                 loading: isLoading,
@@ -1132,6 +1136,9 @@ export const ServerSideFetchingInForm: Story = {
             />
 
             <div className="flex justify-end gap-2">
+              <Button className="flex-1" type="submit" disabled={isLoading}>
+                Submit
+              </Button>
               <Button
                 type="button"
                 variant="outline"
@@ -1139,7 +1146,6 @@ export const ServerSideFetchingInForm: Story = {
               >
                 Reset
               </Button>
-              <Button type="submit">Submit</Button>
             </div>
           </form>
         </Form>
@@ -1151,6 +1157,108 @@ export const ServerSideFetchingInForm: Story = {
       description: {
         story:
           "MultiSelect with server-side data fetching integrated in a form with React Hook Form and Zod validation. Demonstrates handling of selected values that are not in the current search results.",
+      },
+    },
+  },
+}
+
+/**
+ * Example demonstrating badge overflow state options.
+ */
+export const BadgeOverflowStates: Story = {
+  render: () => {
+    // Many options for testing overflow
+    const languageOptions = [
+      { value: "javascript", label: "JavaScript" },
+      { value: "typescript", label: "TypeScript" },
+      { value: "python", label: "Python" },
+      { value: "java", label: "Java" },
+      { value: "csharp", label: "C#" },
+      { value: "cpp", label: "C++" },
+      { value: "php", label: "PHP" },
+      { value: "ruby", label: "Ruby" },
+      { value: "go", label: "Go" },
+      { value: "rust", label: "Rust" },
+    ]
+
+    const [maxBadges, setMaxBadges] = useState(3)
+
+    return (
+      <div className="flex w-full flex-col gap-6">
+        <div className="mb-2">
+          <label className="mb-2 block text-sm font-medium">
+            Max badges to show: {maxBadges}
+          </label>
+          <input
+            type="range"
+            min={1}
+            max={10}
+            value={maxBadges}
+            onChange={(e) => setMaxBadges(parseInt(e.target.value))}
+            className="w-full"
+          />
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium">Collapse Mode (Default)</h3>
+          <MultiSelect
+            options={languageOptions}
+            formComposition={{
+              label: "Programming Languages",
+              description: `Shows max ${maxBadges} badges and collapses the rest with +X indicator`,
+            }}
+            placeholder="Select languages"
+            bagdeGroupProps={{
+              maxShownItems: maxBadges,
+              overflowState: "collapse", // Default behavior
+            }}
+            defaultValue={[
+              "javascript",
+              "typescript",
+              "python",
+              "java",
+              "csharp",
+              "cpp",
+              "php",
+            ]}
+          />
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium">None Mode</h3>
+          <MultiSelect
+            options={languageOptions}
+            formComposition={{
+              label: "Programming Languages",
+            }}
+            placeholder="Select languages"
+            bagdeGroupProps={{
+              overflowState: "none", // No collapse, just show up to maxShownItems
+            }}
+            defaultValue={[
+              "javascript",
+              "typescript",
+              "python",
+              "java",
+              "csharp",
+              "cpp",
+              "php",
+            ]}
+          />
+        </div>
+      </div>
+    )
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "This example demonstrates the two different overflow states for badges:\n\n" +
+          "- **collapse**: The default mode that shows a '+X' indicator when there are more items than can fit.\n" +
+          "- **none**: Shows exactly up to `maxShownItems` badges without a '+X' indicator.\n\n" +
+          "Both modes respect the `maxShownItems` setting, but handle overflow differently. " +
+          "The 'collapse' mode tries to fit as many badges as possible while ensuring the '+X' indicator is visible, " +
+          "while 'none' mode simply shows up to the maximum number specified.",
       },
     },
   },

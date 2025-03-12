@@ -77,7 +77,6 @@ function Input({
     } else {
       onValueChange?.("")
     }
-    console.log(formComposition)
     formComposition?.onClear?.()
   }, [onValueChange, formComposition, type, onValueFileChange])
 

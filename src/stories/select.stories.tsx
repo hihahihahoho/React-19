@@ -313,7 +313,7 @@ export const WithIcons: Story = {
           options={countryOptions}
           formComposition={{
             label: "Select Country",
-            iconLeft: <GlobeIcon className="size-4" />,
+            iconLeft: <GlobeIcon />,
           }}
           placeholder="Choose a country"
         />
@@ -323,17 +323,17 @@ export const WithIcons: Story = {
             {
               value: "email",
               label: "Email",
-              icon: <MailIcon className="size-4" />,
+              icon: <MailIcon />,
             },
             {
               value: "phone",
               label: "Phone",
-              icon: <PhoneIcon className="size-4" />,
+              icon: <PhoneIcon />,
             },
             {
               value: "address",
               label: "Address",
-              icon: <MapPinIcon className="size-4" />,
+              icon: <MapPinIcon />,
             },
           ]}
           formComposition={{
@@ -426,9 +426,9 @@ export const SelectInFormWithFetchedData: Story = {
                 label: "Country",
                 description: "Select your country",
                 iconLeft: isLoading ? (
-                  <Loader2Icon className="size-4 animate-spin" />
+                  <Loader2Icon className="animate-spin" />
                 ) : (
-                  <GlobeIcon className="size-4" />
+                  <GlobeIcon />
                 ),
                 requiredSymbol: true,
               }}
@@ -441,15 +441,15 @@ export const SelectInFormWithFetchedData: Story = {
             />
 
             <div className="flex justify-end gap-2">
+              <Button className="flex-1" type="submit" disabled={isLoading}>
+                Submit
+              </Button>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => form.reset()}
               >
                 Reset
-              </Button>
-              <Button type="submit" disabled={isLoading}>
-                Submit
               </Button>
             </div>
           </form>
@@ -585,9 +585,9 @@ export const ServerSideFetchingOnSearch: Story = {
           description: "Type to search countries",
           iconLeft:
             (isLoadingSelectedCountry || isTyping) && !customSelectedCountry ? (
-              <Loader2Icon className="size-4 animate-spin" />
+              <Loader2Icon className="animate-spin" />
             ) : (
-              !customSelectedCountry && <GlobeIcon className="size-4" />
+              !customSelectedCountry && <GlobeIcon />
             ),
         }}
         placeholder="Search for a country"
@@ -762,9 +762,9 @@ export const ServerSideFetchingOnSearchInForm: Story = {
                 description: "Search and select your country",
                 iconLeft:
                   (isLoadingFormCountry || isTyping) && !formSelectedCountry ? (
-                    <GlobeIcon className="size-4 animate-spin" />
+                    <GlobeIcon className="animate-spin" />
                   ) : (
-                    !formSelectedCountry && <GlobeIcon className="size-4" />
+                    !formSelectedCountry && <GlobeIcon />
                   ),
               }}
               customDisplayValue={formSelectedCountry}
@@ -781,15 +781,15 @@ export const ServerSideFetchingOnSearchInForm: Story = {
             />
 
             <div className="flex justify-end gap-2">
+              <Button className="flex-1" type="submit" disabled={isLoading}>
+                Submit
+              </Button>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => form.reset()}
               >
                 Reset
-              </Button>
-              <Button type="submit" disabled={isLoading}>
-                Submit
               </Button>
             </div>
           </form>

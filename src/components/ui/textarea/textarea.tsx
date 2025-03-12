@@ -23,6 +23,7 @@ export interface TextareaProps
   maxHeight?: number
   minHeight?: number
   maxLength?: number
+  maxLines?: number
 }
 
 function Textarea({
@@ -36,6 +37,7 @@ function Textarea({
   minHeight = 54,
   maxLength = 200,
   placeholder,
+  maxLines = Infinity,
   ...props
 }: TextareaProps) {
   const internalRef = useRef<HTMLTextAreaElement>(null)
@@ -72,13 +74,28 @@ function Textarea({
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const newValue = e.target.value
-      setInternalValue(newValue)
-      setTriggerAutoSize(newValue)
-      setCharCount(newValue.length)
-      onValueChange?.(newValue)
+      const lineCount = (newValue.match(/\n/g) || []).length + 1
+
+      // Enforce maximum 5 lines
+      if (lineCount > maxLines) {
+        const lines = newValue.split("\n").slice(0, maxLines)
+        const limitedValue = lines.join("\n")
+
+        e.target.value = limitedValue
+        setInternalValue(limitedValue)
+        setTriggerAutoSize(limitedValue)
+        setCharCount(limitedValue.length)
+        onValueChange?.(limitedValue)
+      } else {
+        setInternalValue(newValue)
+        setTriggerAutoSize(newValue)
+        setCharCount(newValue.length)
+        onValueChange?.(newValue)
+      }
+
       onChange?.(e)
     },
-    [onChange, onValueChange]
+    [onChange, onValueChange, maxLines]
   )
 
   const handleClear = useCallback(() => {

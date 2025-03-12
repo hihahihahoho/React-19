@@ -236,7 +236,7 @@ export const WithIcons: Story = {
       <Input
         formComposition={{
           label: "Search",
-          iconLeft: <Search className="size-4" />,
+          iconLeft: <Search />,
         }}
         placeholder="Search..."
         type="search"
@@ -244,7 +244,7 @@ export const WithIcons: Story = {
       <Input
         formComposition={{
           label: "Email",
-          iconLeft: <Mail className="size-4" />,
+          iconLeft: <Mail />,
         }}
         placeholder="example@domain.com"
         type="email"
@@ -252,7 +252,7 @@ export const WithIcons: Story = {
       <Input
         formComposition={{
           label: "Password",
-          iconLeft: <Lock className="size-4" />,
+          iconLeft: <Lock />,
         }}
         placeholder="Enter password"
         type="password"
@@ -260,7 +260,7 @@ export const WithIcons: Story = {
       <Input
         formComposition={{
           label: "Username",
-          iconRight: <User className="size-4" />,
+          iconRight: <User />,
         }}
         placeholder="Enter username"
       />
@@ -342,7 +342,7 @@ export const WithClearButton: Story = {
       <Input
         formComposition={{
           label: "Search",
-          iconLeft: <Search className="size-4" />,
+          iconLeft: <Search />,
           inputClear: true,
         }}
         placeholder="Search..."
@@ -352,7 +352,7 @@ export const WithClearButton: Story = {
       <Input
         formComposition={{
           label: "Email",
-          iconLeft: <Mail className="size-4" />,
+          iconLeft: <Mail />,
           inputClear: true,
           description: "Click the × to clear",
         }}
@@ -389,7 +389,7 @@ export const FileInputs: Story = {
         formComposition={{
           label: "Profile picture",
           description: "JPG, PNG or GIF (max. 1MB)",
-          iconLeft: <FileText className="size-4" />,
+          iconLeft: <FileText />,
         }}
         accept="image/*"
       />
@@ -452,7 +452,7 @@ export const WithFormValidation: Story = {
                 control={form.control}
                 formComposition={{
                   label: "Username",
-                  iconLeft: <User className="size-4" />,
+                  iconLeft: <User />,
                 }}
                 placeholder="Enter username"
               />
@@ -463,7 +463,7 @@ export const WithFormValidation: Story = {
                 type="email"
                 formComposition={{
                   label: "Email",
-                  iconLeft: <Mail className="size-4" />,
+                  iconLeft: <Mail />,
                 }}
                 placeholder="example@domain.com"
               />
@@ -474,7 +474,7 @@ export const WithFormValidation: Story = {
                 type="password"
                 formComposition={{
                   label: "Password",
-                  iconLeft: <Lock className="size-4" />,
+                  iconLeft: <Lock />,
                 }}
                 placeholder="Enter password"
               />
@@ -510,7 +510,7 @@ export const VariousInputTypes: Story = {
         type="tel"
         formComposition={{
           label: "Phone Number",
-          iconLeft: <Phone className="size-4" />,
+          iconLeft: <Phone />,
         }}
         placeholder="(123) 456-7890"
       />
@@ -519,7 +519,7 @@ export const VariousInputTypes: Story = {
         type="url"
         formComposition={{
           label: "Website",
-          iconLeft: <Globe className="size-4" />,
+          iconLeft: <Globe />,
         }}
         placeholder="https://example.com"
       />
@@ -528,7 +528,7 @@ export const VariousInputTypes: Story = {
         type="search"
         formComposition={{
           label: "Search",
-          iconLeft: <Search className="size-4" />,
+          iconLeft: <Search />,
           inputClear: true,
         }}
         placeholder="Search..."
@@ -698,7 +698,7 @@ export const CompleteShowcase: Story = {
           <Input
             formComposition={{
               label: "Search",
-              iconLeft: <Search className="size-4" />,
+              iconLeft: <Search />,
             }}
             type="search"
             placeholder="Search..."
@@ -706,7 +706,7 @@ export const CompleteShowcase: Story = {
           <Input
             formComposition={{
               label: "Email",
-              iconRight: <Mail className="size-4" />,
+              iconRight: <Mail />,
             }}
             type="email"
             placeholder="example@domain.com"
@@ -714,8 +714,8 @@ export const CompleteShowcase: Story = {
           <Input
             formComposition={{
               label: "Information",
-              iconLeft: <Info className="size-4" />,
-              iconRight: <Check className="size-4" />,
+              iconLeft: <Info />,
+              iconRight: <Check />,
             }}
             placeholder="Enter information"
           />
@@ -809,7 +809,7 @@ export const Interactive: Story = {
       label: "Interactive Input",
       description: "This is a customizable input field",
       inputClear: true,
-      iconLeft: <User className="size-4" />,
+      iconLeft: <User />,
       variant: "default",
       size: "default",
       labelPosition: "vertical",

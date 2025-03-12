@@ -731,6 +731,58 @@ export const CompleteShowcase: Story = {
 }
 
 /**
+ * Textareas with line limits to restrict the number of lines a user can enter.
+ */
+export const LineLimits: Story = {
+  render: () => (
+    <div className="flex w-full flex-col gap-4">
+      <Textarea
+        formComposition={{
+          label: "Max 5 Lines",
+          description: "This textarea will only allow up to 5 lines of text",
+        }}
+        placeholder="Try typing multiple lines here (max 5)..."
+        maxLines={5}
+      />
+
+      <Textarea
+        formComposition={{
+          label: "Max 3 Lines",
+          description: "This textarea is limited to just 3 lines",
+        }}
+        placeholder="Limited to 3 lines only..."
+        maxLines={3}
+      />
+
+      <Textarea
+        formComposition={{
+          label: "Single Line Only",
+          description: "This behaves more like a regular input field",
+        }}
+        placeholder="Only one line allowed here..."
+        maxLines={1}
+      />
+
+      <Textarea
+        formComposition={{
+          label: "Default (No Line Limit)",
+          description: "Standard textarea with unlimited lines",
+        }}
+        placeholder="This has no line restriction..."
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Textareas with different line limits to control how many lines of text a user can enter. This is useful for enforcing specific formatting requirements or preventing excessively long entries.",
+      },
+    },
+  },
+}
+
+/**
  * Fully interactive example with all available props.
  */
 export const Interactive: Story = {

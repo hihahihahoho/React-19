@@ -1,12 +1,16 @@
-import { useResizeObserver } from "@/hooks/use-resize-observer"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useResizeObserver } from "@/hooks/use-resize-observer";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-interface UseItemOverflowProps {
+// Define the possible overflow states
+type OverflowState = 'collapse' | 'none';
+
+export interface UseItemOverflowProps {
   totalItems: number
   maxShownItems?: number
-  minShowItems?: number // Add this new prop
+  minShowItems?: number
   itemClassName?: string
   plusItemClassName?: string
+  overflowState?: OverflowState
 }
 
 interface UseItemOverflowReturn {
@@ -14,6 +18,7 @@ interface UseItemOverflowReturn {
   visibleCount: number
   overflowCount: number
   isVisible: (index: number) => boolean
+  overflowState: OverflowState // Expose the current overflow state
 }
 
 export const useItemOverflow = ({
@@ -22,6 +27,7 @@ export const useItemOverflow = ({
   minShowItems = 1,
   itemClassName = "measured-item",
   plusItemClassName = "measured-plus",
+  overflowState = "collapse", // Default to current behavior
 }: UseItemOverflowProps): UseItemOverflowReturn => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [visibleCount, setVisibleCount] = useState<number>(0)
@@ -49,6 +55,7 @@ export const useItemOverflow = ({
     let widthSoFar = 0
     let count = 0
 
+    // Count how many items can fit in the container
     for (let i = 0; i < itemArray.length; i++) {
       const w = itemArray[i].getBoundingClientRect().width + itemGap
       if (widthSoFar + w <= containerWidth) {
@@ -60,6 +67,13 @@ export const useItemOverflow = ({
       }
     }
 
+    // If overflow state is 'none', show all items up to maxShownItems
+    if (overflowState === 'none') {
+      setVisibleCount(Math.min(totalItems, maxShownItems));
+      return;
+    }
+
+    // Otherwise use the collapse behavior
     if (count === totalItems) {
       setVisibleCount(count)
     } else {
@@ -69,12 +83,12 @@ export const useItemOverflow = ({
           testWidth += itemArray[i].getBoundingClientRect().width + itemGap
         }
         if (testWidth + plusWidth <= containerWidth) {
-          setVisibleCount(Math.max(count, minShowItems)) // Ensure we show at least minShowItems
+          setVisibleCount(Math.max(count, minShowItems))
           return
         }
         count--
       }
-      setVisibleCount(minShowItems) // Even if no items fit, show minShowItems
+      setVisibleCount(minShowItems)
     }
   }, [
     totalItems,
@@ -82,6 +96,7 @@ export const useItemOverflow = ({
     minShowItems,
     itemClassName,
     plusItemClassName,
+    overflowState, // Add the new dependency
   ])
 
   useResizeObserver({
@@ -93,14 +108,22 @@ export const useItemOverflow = ({
     calculateOverflow()
   }, [calculateOverflow])
 
-  const showCount = Math.min(Math.max(visibleCount, minShowItems), totalItems)
+  // Determine how many items to show based on overflow state
+  const showCount = overflowState === 'none'
+    ? Math.min(totalItems, maxShownItems)
+    : Math.min(Math.max(visibleCount, minShowItems), totalItems);
+
   const overflowCount = totalItems - showCount
-  const isVisible = (index: number) => index < minShowItems || index < showCount
+  const isVisible = (index: number) =>
+    overflowState === 'none'
+      ? index < maxShownItems
+      : (index < minShowItems || index < showCount)
 
   return {
     containerRef,
     visibleCount: showCount,
     overflowCount,
     isVisible,
+    overflowState, // Return the current overflow state
   }
 }

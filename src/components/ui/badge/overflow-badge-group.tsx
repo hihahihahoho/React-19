@@ -1,10 +1,14 @@
-import { useItemOverflow } from "@/hooks/use-item-overflow"
+import {
+  useItemOverflow,
+  UseItemOverflowProps,
+} from "@/hooks/use-item-overflow"
 import { cn } from "@/lib/utils"
 import * as React from "react"
 import { Badge, BadgeProps } from "../badge/badge"
 
 export interface OverflowBadgeGroupProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends React.HTMLAttributes<HTMLDivElement>,
+    Omit<UseItemOverflowProps, "totalItems"> {
   items: Array<{
     key: string
     content: React.ReactNode
@@ -12,8 +16,6 @@ export interface OverflowBadgeGroupProps
     onRemove?: () => void
     badgeProps?: BadgeProps
   }>
-  maxShownItems?: number
-  minShowItems?: number
   badgeMeasureClassName?: string
   overflowMeasureClassName?: string
   badgeProps?: BadgeProps
@@ -26,6 +28,7 @@ function OverflowBadgeGroup({
   className,
   badgeMeasureClassName = "measured-badge",
   overflowMeasureClassName = "measured-plus",
+  overflowState,
   badgeProps,
   ...props
 }: OverflowBadgeGroupProps) {
@@ -35,6 +38,7 @@ function OverflowBadgeGroup({
     minShowItems,
     itemClassName: badgeMeasureClassName,
     plusItemClassName: overflowMeasureClassName,
+    overflowState,
   })
 
   return (
@@ -43,6 +47,7 @@ function OverflowBadgeGroup({
       data-slot="overflow-badge-group"
       className={cn(
         "relative flex h-full w-full items-center gap-1 overflow-hidden whitespace-nowrap",
+        overflowState === "collapse" ? "flex-nowrap" : "flex-wrap py-1",
         className
       )}
       {...props}

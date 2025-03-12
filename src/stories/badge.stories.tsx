@@ -221,6 +221,7 @@ export const AllColorVariants: Story = {
 export const SizeVariants: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
+      <Badge size="xs">XSmall</Badge>
       <Badge size="sm">Small</Badge>
       <Badge size="md">Medium</Badge>
       <Badge size="lg">Large</Badge>
@@ -437,6 +438,21 @@ export const WithTooltips: Story = {
 export const SizesWithIcons: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-4">
+        <Badge size="xs" iconLeft={<Bell className="size-4" />}>
+          XSmall
+        </Badge>
+        <Badge size="xs" iconRight={<ChevronRight className="size-4" />}>
+          XSmall
+        </Badge>
+        <Badge
+          size="xs"
+          iconLeft={<Star className="size-4" />}
+          iconRight={<Check className="size-4" />}
+        >
+          XSmall
+        </Badge>
+      </div>
       <div className="flex flex-wrap items-center gap-4">
         <Badge size="sm" iconLeft={<Bell className="size-4" />}>
           Small

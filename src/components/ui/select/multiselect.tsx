@@ -2,7 +2,10 @@ import { cn } from "@/lib/utils"
 import { ChevronDown } from "lucide-react"
 import * as React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
-import { OverflowBadgeGroup } from "../badge/overflow-badge-group"
+import {
+  OverflowBadgeGroup,
+  OverflowBadgeGroupProps,
+} from "../badge/overflow-badge-group"
 import {
   FormComposition,
   FormCompositionProps,
@@ -22,17 +25,14 @@ export interface MultiSelectProps
   defaultValue?: string[]
   className?: string
   badgeClassName?: string
-  badgeMeasureClassName?: string
-  overflowMeasureClassName?: string
   disabled?: boolean
   formComposition?: FormCompositionProps
-  maxShownBadges?: number
-  minShownBadges?: number
   onValueChange?: (value: string[]) => void
   readonly?: boolean
   showClear?: boolean
   selectCommandProps?: SelectCommandProps
   customDisplayValue?: SelectItems[]
+  bagdeGroupProps?: Omit<OverflowBadgeGroupProps, "items">
   variant?: "default" | "button"
 }
 
@@ -44,16 +44,12 @@ function MultiSelect({
   formComposition,
   onValueChange,
   readonly,
-  className,
-  badgeMeasureClassName,
-  overflowMeasureClassName,
   placeholder = "Select",
   placeholderColor = "text-muted-foreground",
-  maxShownBadges,
-  minShownBadges,
   selectCommandProps,
   customDisplayValue,
   variant = "default",
+  bagdeGroupProps,
   ...props
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false)
@@ -169,16 +165,13 @@ function MultiSelect({
                     badgeProps: optionValue?.badgeProps,
                   }
                 })}
-                maxShownItems={maxShownBadges}
-                minShowItems={minShownBadges}
-                className={cn("-ml-2", className)}
-                badgeMeasureClassName={badgeMeasureClassName}
-                overflowMeasureClassName={overflowMeasureClassName}
                 badgeProps={{
                   clearBtn: true,
                   variant: "secondary",
                   size: "md",
                 }}
+                {...bagdeGroupProps}
+                className={cn("-ml-2", bagdeGroupProps?.className)}
               />
             ) : variant !== "button" ? (
               <div
