@@ -142,6 +142,7 @@ function FormDemo() {
       ],
       checkbox_group: ["recents", "home"],
       radio_group: "include",
+      checkbox_term: false,
     },
   })
 
