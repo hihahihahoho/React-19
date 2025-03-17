@@ -105,7 +105,7 @@ function Select({
             <div className={cn("flex h-full flex-1 items-center")}>
               <div className="line-clamp-1">
                 {selectedOption?.label || value || selectedOption?.value ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 [&_svg]:size-4">
                     {selectedOption?.icon &&
                       (typeof selectedOption.icon === "string" ? (
                         <Avatar size={"xs"}>
