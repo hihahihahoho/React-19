@@ -3,6 +3,7 @@ import { useMergedRef } from "@/hooks/use-merge-ref"
 import { cn } from "@/lib/utils"
 import { PopoverAnchor } from "@radix-ui/react-popover"
 import { Measurable } from "@radix-ui/rect"
+import { CommandInput } from "cmdk"
 import * as React from "react"
 import { Badge, BadgeProps } from "../badge/badge"
 import { Command } from "../command"
@@ -21,7 +22,7 @@ import { Input } from "./input"
 export interface InputTagProps
   extends Omit<
     React.ComponentProps<typeof Input>,
-    "value" | "onChange" | "defaultValue"
+    "value" | "onChange" | "defaultValue" | "onValueChange"
   > {
   /** Options displayed for tag suggestions */
   options?: SelectItems[] | SelectGroup[]
@@ -41,8 +42,8 @@ export interface InputTagProps
   loading?: boolean
   /** Min characters needed before showing search results */
   minCharToSearch?: number
-  /** Props passed to the SelectCommand component */
-  selectCommandProps?: Partial<React.ComponentProps<typeof SelectCommand>>
+
+  commndProps?: React.ComponentProps<typeof Command>
   /** History state options */
   historyOptions?: {
     commitEvery?: number
@@ -62,15 +63,14 @@ export function InputTag({
   defaultValue = [],
   onValueChange,
   allowDuplicates = false,
-  triggerKeys = ["Enter", ":"],
+  triggerKeys = ["Enter", ",", "Tab"],
   initialState,
   loading,
-  minCharToSearch = 1,
-  selectCommandProps,
+  minCharToSearch = 0,
+  commndProps,
   historyOptions = {},
   formComposition,
   onFocus,
-  onBlur,
   onKeyDown,
   badgeProps,
   ref,
@@ -80,6 +80,7 @@ export function InputTag({
   const internalRef = React.useRef<HTMLInputElement>(null)
   const mergeRef = useMergedRef(internalRef, ref)
   const formCompositionRef = React.useRef<HTMLDivElement>(null)
+  const containerRef = React.useRef<HTMLDivElement>(null)
 
   // State management using history hook
   const [tags, setTags, undo, redo] = useHistoryState<string[]>(
@@ -97,31 +98,52 @@ export function InputTag({
   const currentTags = isControlled ? controlledValue : tags
 
   // Check if we should show suggestion dropdown
-  const shouldShowDropdown =
-    open &&
-    inputValue.length >= minCharToSearch &&
-    options &&
-    options.length > 0
+  // Modified the shouldShowDropdown condition to properly handle the minCharToSearch condition
+  const shouldShowDropdown = React.useMemo(() => {
+    // Always show dropdown when open is true, minCharToSearch <= 0, and options exist
+    if (open && minCharToSearch <= 0 && options && options.length > 0) {
+      return true
+    }
+
+    // Otherwise, show based on search term length vs minCharToSearch
+    return (
+      open &&
+      inputValue.length >= minCharToSearch &&
+      options &&
+      options.length > 0
+    )
+  }, [open, minCharToSearch, inputValue, options])
 
   // Key event handlers for ctrl+z and ctrl+shift+z/ctrl+y
   const handleKeyDownGlobal = React.useCallback(
     (e: KeyboardEvent) => {
-      if (e.ctrlKey) {
-        if (e.key === "z") {
-          if (e.shiftKey) {
-            e.preventDefault()
-            redo()
-          } else {
-            e.preventDefault()
-            undo()
-          }
-        } else if (e.key === "y") {
-          e.preventDefault()
-          redo()
-        }
+      // Only apply undo/redo when input is focused
+      if (document.activeElement !== internalRef.current) {
+        return // Do nothing if input is not focused
+      }
+
+      // If input has content, let browser handle the undo/redo
+      if (inputValue) {
+        return // Let browser handle normal input undo/redo when input has content
+      }
+
+      // Apply custom undo/redo for tag management when input is empty
+      // Check for Ctrl+Z (undo)
+      if (e.ctrlKey && e.key.toLowerCase() === "z" && !e.shiftKey) {
+        e.preventDefault()
+        undo()
+      }
+
+      // Check for Ctrl+Shift+Z or Ctrl+Y (redo)
+      if (
+        (e.ctrlKey && e.key.toLowerCase() === "z" && e.shiftKey) ||
+        (e.ctrlKey && e.key.toLowerCase() === "y")
+      ) {
+        e.preventDefault()
+        redo()
       }
     },
-    [undo, redo]
+    [undo, redo, inputValue]
   )
 
   // Add global keyboard event listener for undo/redo
@@ -176,13 +198,65 @@ export function InputTag({
     [currentTags, isControlled, onValueChange, setTags]
   )
 
+  const handleComponentKeyDown = React.useCallback(
+    (e: KeyboardEvent) => {
+      // Handle delete key on selected tag from anywhere
+      if (
+        (e.key === "Delete" || e.key === "Backspace") &&
+        activeTagIndex !== null
+      ) {
+        // Only handle if we're not typing in the input
+        if (document.activeElement !== internalRef.current) {
+          removeTag(activeTagIndex)
+          e.preventDefault()
+        }
+      }
+
+      // Clear tag selection on Escape
+      if (e.key === "Escape") {
+        setActiveTagIndex(null)
+      }
+    },
+    [activeTagIndex, removeTag]
+  )
+
+  // Add global keyboard event listener for tag deletion
+  React.useEffect(() => {
+    // Only add the listener if we have a selected tag
+    if (activeTagIndex !== null) {
+      window.addEventListener("keydown", handleComponentKeyDown)
+      return () => {
+        window.removeEventListener("keydown", handleComponentKeyDown)
+      }
+    }
+  }, [handleComponentKeyDown, activeTagIndex])
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      // Skip if no tag is selected
+      if (activeTagIndex === null) return
+
+      // Check if click is outside the container
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setActiveTagIndex(null)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [activeTagIndex])
+
   // Handle input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
+  const handleInputChange = (value: string) => {
     setInputValue(value)
 
-    // Show dropdown if typing, otherwise close
-    setOpen(value.length >= minCharToSearch)
+    // Show dropdown if typing or if minCharToSearch is 0 or negative
+    setOpen(minCharToSearch <= 0 || value.length >= minCharToSearch)
     setActiveTagIndex(null)
   }
 
@@ -248,6 +322,19 @@ export function InputTag({
     internalRef.current?.focus()
   }
 
+  const handleFocus = React.useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      setActiveTagIndex(null)
+      onFocus?.(e)
+
+      // If minCharToSearch is 0 or negative, open dropdown on input focus
+      if (minCharToSearch <= 0 && options && options.length > 0) {
+        setOpen(true)
+      }
+    },
+    [minCharToSearch, onFocus, options]
+  )
+
   // Check for tag duplicates
   const isDuplicate = (tag: string) => {
     if (allowDuplicates) return false
@@ -265,14 +352,18 @@ export function InputTag({
       <Badge
         key={`${tag}-${index}`}
         size={"md"}
-        variant="secondary"
+        variant="blue"
         className={cn(
-          activeTagIndex === index && "ring-2 ring-ring",
+          activeTagIndex === index && "ring-2 ring-blue-500",
           duplicate && !allowDuplicates && "ring-2 ring-destructive"
         )}
         clearBtn={true}
         onClearBtnClick={() => removeTag(index)}
-        onClick={() => setActiveTagIndex(index)}
+        onClick={(e) => {
+          e.stopPropagation()
+          console.log(index)
+          setActiveTagIndex(index)
+        }}
         {...badgeProps}
       >
         {tag}
@@ -296,21 +387,18 @@ export function InputTag({
   }
 
   const inputArea = (
-    <div className="-mx-2 flex min-h-full flex-wrap gap-1 py-[3px]">
+    <div className="-mx-2 flex min-h-full flex-1 flex-wrap gap-1 py-[3px]">
       {currentTags.map((tag, index) => renderTag(tag, index))}
       <div ref={formCompositionRef} className="min-w-[120px] flex-1 px-2 py-1">
-        <input
+        <CommandInput
           ref={mergeRef}
           value={inputValue}
-          onChange={handleInputChange}
+          onValueChange={handleInputChange}
           onKeyDown={handleKeyDown}
-          onFocus={(e) => {
-            setActiveTagIndex(null)
-            onFocus?.(e)
-          }}
+          onFocus={handleFocus}
           className="h-full w-full flex-grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0"
           placeholder={
-            currentTags.length > 0 ? "Add more..." : "Type to add tags..."
+            currentTags.length > 0 ? "Thêm..." : "Gõ để nhập tags..."
           }
           autoComplete="off"
           {...props}
@@ -320,41 +408,57 @@ export function InputTag({
   )
 
   return (
-    <FormComposition isMinHeight className="" {...formComposition}>
+    <FormComposition
+      ref={containerRef}
+      isMinHeight
+      {...formComposition}
+      onFormCompositionClick={() => {
+        internalRef.current?.focus()
+      }}
+    >
       <Popover open={shouldShowDropdown} onOpenChange={setOpen}>
         <PopoverAnchor
           virtualRef={formCompositionRef as React.RefObject<Measurable>}
         />
-        {inputArea}
-        {shouldShowDropdown && (
-          <PopoverContent
-            onOpenAutoFocus={(e) => e.preventDefault()}
-            align="start"
-            className="w-[var(--radix-popover-trigger-width)] p-0"
-            onWheel={(e) => e.stopPropagation()}
-          >
-            <Command className="overflow-visible">
+        <Command {...commndProps} className="overflow-visible">
+          {inputArea}
+          {shouldShowDropdown && (
+            <PopoverContent
+              onOpenAutoFocus={(e) => e.preventDefault()}
+              align="start"
+              className="w-[var(--radix-popover-trigger-width)] p-0"
+              onWheel={(e) => e.stopPropagation()}
+              onInteractOutside={(e) => {
+                if (
+                  formCompositionRef.current &&
+                  formCompositionRef.current.contains(e.target as Node)
+                ) {
+                  e.preventDefault()
+                } else {
+                  setOpen(false)
+                }
+              }}
+            >
               <SelectCommand
                 showSearch={false}
                 items={options}
                 onSelect={handleSelect}
                 commandWrapper={false}
                 loading={loading}
-                {...selectCommandProps}
               />
-            </Command>
-          </PopoverContent>
-        )}
-        {initialState && inputValue.length < minCharToSearch && open && (
-          <PopoverContent
-            onOpenAutoFocus={(e) => e.preventDefault()}
-            align="start"
-            className="w-[var(--radix-popover-trigger-width)]"
-            onWheel={(e) => e.stopPropagation()}
-          >
-            {initialState}
-          </PopoverContent>
-        )}
+            </PopoverContent>
+          )}
+          {initialState && inputValue.length < minCharToSearch && open && (
+            <PopoverContent
+              onOpenAutoFocus={(e) => e.preventDefault()}
+              align="start"
+              className="w-[var(--radix-popover-trigger-width)]"
+              onWheel={(e) => e.stopPropagation()}
+            >
+              {initialState}
+            </PopoverContent>
+          )}
+        </Command>
       </Popover>
     </FormComposition>
   )

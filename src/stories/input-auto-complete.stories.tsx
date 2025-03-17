@@ -492,6 +492,7 @@ export const ServerSideFetchingOnSearch: Story = {
         loading={isLoading}
         initialState={showInitialState ? historyAndSuggestions : undefined}
         mode="select"
+        commandProps={{ shouldFilter: false }}
       />
     )
   },
@@ -499,7 +500,7 @@ export const ServerSideFetchingOnSearch: Story = {
     docs: {
       description: {
         story:
-          "InputAutoComplete with server-side data fetching using the REST Countries API to find countries by capital city. Features debounced search and history suggestions as badges.",
+          "InputAutoComplete with server-side data fetching using the REST Countries API to find countries by capital city. Features debounced search, history suggestions as badges, and disables client-side filtering with `commandProps: { shouldFilter: false }` since filtering happens on the server.",
       },
     },
   },
@@ -624,6 +625,7 @@ export const LocationSearchWithAPI: Story = {
         loading={isLoading}
         initialState={initialStateContent}
         mode="default"
+        commandProps={{ shouldFilter: false }}
       />
     )
   },
@@ -631,7 +633,7 @@ export const LocationSearchWithAPI: Story = {
     docs: {
       description: {
         story:
-          "InputAutoComplete integrated with OpenStreetMap's Nominatim API to search for real locations worldwide. Includes popular location badges as initial state and handles debounced API requests.",
+          "InputAutoComplete integrated with OpenStreetMap's Nominatim API to search for real locations worldwide. Includes popular location badges as initial state, handles debounced API requests, and disables client-side filtering with `commandProps: { shouldFilter: false }` as search is performed server-side.",
       },
     },
   },
@@ -780,7 +782,7 @@ export const FormIntegrationWithLocationSearch: Story = {
 
       // Handle form submission
       const onSubmit = (values: z.infer<typeof FormSchema>) => {
-        alert(`Selected location: ${values.location}}`)
+        alert(`Selected location: ${values.location}`)
         console.log(values)
       }
 
@@ -912,6 +914,7 @@ export const FormIntegrationWithLocationSearch: Story = {
                   // Update search state when input changes
                   setSearch(value)
                 }}
+                commandProps={{ shouldFilter: false }}
               />
 
               <div className="flex gap-2">

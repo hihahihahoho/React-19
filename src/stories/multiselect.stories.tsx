@@ -939,6 +939,7 @@ export const ServerSideFetching: Story = {
         selectCommandProps={{
           loading: isLoading,
           minItemsToShowSearch: -1,
+          shouldFilter: false,
           commandInputProps: {
             value: search,
             onValueChange: (value) => {
@@ -953,7 +954,7 @@ export const ServerSideFetching: Story = {
     docs: {
       description: {
         story:
-          "MultiSelect with server-side data fetching from the REST Countries API with debounced search functionality.",
+          "MultiSelect with server-side data fetching from the REST Countries API with debounced search functionality. It's critical to set `shouldFilter: false` in selectCommandProps to disable client-side filtering, since filtering is already happening on the server. This prevents duplicate filtering and ensures the component correctly displays API-filtered results.",
       },
     },
   },
@@ -1016,6 +1017,8 @@ export const ServerSideFetchingInForm: Story = {
         const url = debouncedSearch
           ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
           : "https://restcountries.com/v3.1/all?fields=name,flags,cca2"
+
+        console.log(url)
 
         const response = await fetch(url)
 
@@ -1126,6 +1129,7 @@ export const ServerSideFetchingInForm: Story = {
               selectCommandProps={{
                 loading: isLoading,
                 minItemsToShowSearch: -1,
+                shouldFilter: false,
                 commandInputProps: {
                   value: search,
                   onValueChange: (value) => {
@@ -1156,7 +1160,7 @@ export const ServerSideFetchingInForm: Story = {
     docs: {
       description: {
         story:
-          "MultiSelect with server-side data fetching integrated in a form with React Hook Form and Zod validation. Demonstrates handling of selected values that are not in the current search results.",
+          "MultiSelect with server-side data fetching integrated in a form with React Hook Form and Zod validation. Demonstrates handling of selected values that are not in the current search results. This example properly sets `shouldFilter: false` in selectCommandProps to disable client-side filtering when server-side filtering is in use, which is essential for correctly displaying API search results.",
       },
     },
   },

@@ -1,16 +1,18 @@
 import { useMergedRef } from "@/hooks/use-merge-ref"
+import { cn } from "@/lib/utils"
 import { PopoverAnchor, PopoverContentProps } from "@radix-ui/react-popover"
 import { Measurable } from "@radix-ui/rect"
+import { CommandInput } from "cmdk"
 import * as React from "react"
 import { Command } from "../command"
+import { FormComposition } from "../form/form"
 import { Popover, PopoverContent } from "../popover"
 import { SelectCommand } from "../select/select-command"
 import { SelectGroup, SelectItems } from "../select/select-interface"
-import { Input } from "./input"
 
 export interface InputAutoCompleteProps
   extends Omit<
-    React.ComponentProps<typeof Input>,
+    React.ComponentProps<typeof CommandInput>,
     "onValueChange" | "defaultValue"
   > {
   /** Options displayed in the dropdown */
@@ -33,8 +35,10 @@ export interface InputAutoCompleteProps
   minCharToSearch?: number
   /** Behavior mode - 'default': free text + suggestions, 'select': only options */
   mode?: "default" | "select"
-  /** Props passed to the SelectCommand component */
-  selectCommandProps?: Partial<React.ComponentProps<typeof SelectCommand>>
+  /** Props passed to the Command component */
+  commandProps?: React.ComponentProps<typeof Command>
+
+  formComposition?: React.ComponentProps<typeof FormComposition>
 }
 
 function InputAutoComplete({
@@ -44,20 +48,24 @@ function InputAutoComplete({
   defaultValue,
   onValueChange,
   onSearchChange,
-  onChange,
   onFocus,
+  onBlur,
   popoverContentProps,
   loading,
   initialState,
   mode = "default",
-  selectCommandProps,
+  commandProps,
   ref,
+  className,
+  minCharToSearch,
   ...props
 }: InputAutoCompleteProps) {
   const internalRef = React.useRef<HTMLInputElement>(null)
   const mergeRef = useMergedRef(internalRef, ref)
   const formCompositionRef = React.useRef<HTMLDivElement>(null)
   const prevValueRef = React.useRef(controlledValue)
+  const [isFocused, setIsFocused] = React.useState(false)
+  const [afterClose, setAfterClose] = React.useState(false)
 
   // State management
   const [open, setOpen] = React.useState(false)
@@ -92,28 +100,36 @@ function InputAutoComplete({
   // Handle input focus
   const handleFocus = React.useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(true)
       setOpen(true)
       onFocus?.(e)
+      setAfterClose(false)
     },
     [onFocus]
   )
 
+  const handleBlur = React.useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(false)
+      onBlur?.(e)
+    },
+    [onBlur]
+  )
+
   // Handle input changes
   const handleChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value
-      setSearchTerm(newValue)
+    (value: string) => {
+      setSearchTerm(value)
 
       // In default mode, update value immediately
       if (mode === "default") {
-        setLocalValue(newValue)
-        onValueChange?.(newValue)
+        setLocalValue(value)
+        onValueChange?.(value)
       }
 
-      onChange?.(e)
-      onSearchChange?.(newValue)
+      onSearchChange?.(value)
     },
-    [mode, onChange, onSearchChange, onValueChange]
+    [mode, onSearchChange, onValueChange]
   )
 
   // Handle selection from dropdown
@@ -136,23 +152,16 @@ function InputAutoComplete({
   )
 
   // Handle dropdown open/close
-  const handleOpenChange = React.useCallback(
-    (isOpen: boolean) => {
-      setOpen(isOpen)
+  const handleOpenChange = React.useCallback((isOpen: boolean) => {
+    setOpen(isOpen)
 
-      if (!isOpen) {
-        // Blur input when closing
-        internalRef.current?.blur()
-
-        // In select mode, reset search term to selected value when closing
-        if (mode === "select") {
-          setSearchTerm(value)
-          onSearchChange?.(value)
-        }
-      }
-    },
-    [mode, onSearchChange, value]
-  )
+    if (!isOpen) {
+      // Blur input when closing
+      internalRef.current?.blur()
+    } else {
+      setAfterClose(false)
+    }
+  }, [])
 
   // Handle input clearing
   const handleClear = React.useCallback(() => {
@@ -163,26 +172,48 @@ function InputAutoComplete({
     formComposition?.onClear?.()
   }, [formComposition, onSearchChange, onValueChange])
 
+  const hasValue = Boolean(value && value.toString().length)
+
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverAnchor
         virtualRef={formCompositionRef as React.RefObject<Measurable>}
       />
-      <Command className="overflow-visible">
-        <Input
-          value={displayValue}
-          onFocus={handleFocus}
-          onChange={handleChange}
-          autoComplete="off"
-          {...props}
-          ref={mergeRef}
-          formComposition={{
-            ...formComposition,
-            ref: formCompositionRef,
-            onClear: handleClear,
-          }}
-        />
+      <Command {...commandProps} className="overflow-visible">
+        <FormComposition
+          {...formComposition}
+          hasValue={hasValue}
+          onFormCompositionClick={() => internalRef.current?.focus()}
+          onClear={handleClear}
+          disabled={props.disabled}
+          readonly={props.readOnly}
+          isFocused={isFocused}
+          ref={formCompositionRef}
+        >
+          <CommandInput
+            {...props}
+            value={afterClose ? displayValue : searchTerm}
+            onFocus={handleFocus}
+            onValueChange={handleChange}
+            ref={mergeRef}
+            onBlur={handleBlur}
+            autoComplete="one-time-code"
+            className={cn(
+              "h-full w-full flex-grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0",
+              className
+            )}
+          />
+        </FormComposition>
         <PopoverContent
+          onAnimationEndCapture={() => {
+            if (!open) {
+              setAfterClose(true)
+              if (mode === "select") {
+                setSearchTerm(value)
+                onSearchChange?.(value)
+              }
+            }
+          }}
           onOpenAutoFocus={(e) => e.preventDefault()}
           onInteractOutside={(e) => {
             if (
@@ -201,7 +232,7 @@ function InputAutoComplete({
           {...popoverContentProps}
         >
           {initialState &&
-          (!searchTerm || searchTerm.length < (props.minCharToSearch ?? 1)) ? (
+          (!searchTerm || searchTerm.length < (minCharToSearch ?? 1)) ? (
             initialState
           ) : (
             <SelectCommand
@@ -211,7 +242,6 @@ function InputAutoComplete({
               onSelect={handleSelect}
               commandWrapper={false}
               loading={loading}
-              {...selectCommandProps}
             />
           )}
         </PopoverContent>

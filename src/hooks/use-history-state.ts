@@ -43,7 +43,6 @@ export function useHistoryState<T>(
         if (newIndex > newHistory.length - 1) newIndex = newHistory.length - 1;
       }
       _setHistoryIndex(newIndex);
-      console.log(newHistory);
       return newHistory;
     });
 

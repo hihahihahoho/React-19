@@ -503,6 +503,8 @@ export const ServerSideFetchingOnSearch: Story = {
           ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
           : "https://restcountries.com/v3.1/all?fields=name,flags,cca2"
 
+        console.log(url)
+
         const response = await fetch(url)
 
         if (!response.ok) {
@@ -598,6 +600,7 @@ export const ServerSideFetchingOnSearch: Story = {
         selectCommandProps={{
           loading: isLoading,
           minItemsToShowSearch: -1,
+          shouldFilter: false,
           commandInputProps: {
             value: search,
             onValueChange: (value) => {
@@ -612,7 +615,7 @@ export const ServerSideFetchingOnSearch: Story = {
     docs: {
       description: {
         story:
-          "Select with server-side data fetching from the REST Countries API with debounced search functionality. Demonstrates handling of selected values that are not in the current search results.",
+          "Select with server-side data fetching from the REST Countries API with debounced search functionality. It's critical to set `shouldFilter: false` in selectCommandProps to disable client-side filtering, since filtering is already happening on the server. This prevents duplicate filtering and ensures the component correctly displays API-filtered results.",
       },
     },
   },
@@ -771,6 +774,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
               selectCommandProps={{
                 loading: isLoading,
                 minItemsToShowSearch: -1,
+                shouldFilter: false,
                 commandInputProps: {
                   value: search,
                   onValueChange: (value) => {
@@ -801,7 +805,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
     docs: {
       description: {
         story:
-          "Select with server-side data fetching integrated into a form with validation. Uses React Hook Form and demonstrates fetching initial value data separately.",
+          "Select with server-side data fetching integrated into a form with validation. Uses React Hook Form and demonstrates fetching initial value data separately. This example properly sets `shouldFilter: false` in selectCommandProps to disable client-side filtering when server-side filtering is in use, which is essential for correctly displaying API search results.",
       },
     },
   },

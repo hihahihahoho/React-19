@@ -117,11 +117,18 @@ export const BasicTypes: Story = {
   render: () => (
     <div className="flex w-full flex-col gap-4">
       <InputTag
+        options={[
+          { label: "React", value: "react" },
+          {
+            label: "Vue",
+            value: "vue",
+          },
+        ]}
         formComposition={{
           label: "Username",
           description: "Enter your username or email",
         }}
-        placeholder="Username"
+        minCharToSearch={1}
       />
       <Input formComposition={{ label: "Text" }} placeholder="Enter text" />
       <Input
