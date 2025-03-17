@@ -20,8 +20,8 @@ const MultiSelectForm = <
   control,
   ...props
 }: Omit<MultiSelectFormProps<TFieldValues, TName>, "render">) => {
-  const { getJsonSchema } = useZodSchema()
-  const { isRequired } = getJsonSchema(name)
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional } = getSchemaFromPath(name)
   return (
     <FormField
       name={name}
@@ -40,7 +40,7 @@ const MultiSelectForm = <
             onValueChange={onChange}
             formComposition={{
               onClear: handleClear,
-              requiredSymbol: isRequired,
+              requiredSymbol: !isOptional(),
               ...props.formComposition,
             }}
           />

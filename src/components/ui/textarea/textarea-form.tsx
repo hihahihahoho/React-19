@@ -1,12 +1,8 @@
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
+import { ZodString } from "zod"
 import { FormField } from "../form/form"
 import { useZodSchema } from "../form/zod-schema-context"
 import { Textarea, TextareaProps } from "./textarea"
-
-type JsonSchemaType = {
-  isRequired: boolean
-  maxLength?: number | undefined
-}
 
 export interface TextareaFormProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -22,8 +18,8 @@ const TextareaForm = <
   control,
   ...props
 }: Omit<TextareaFormProps<TFieldValues, TName>, "render">) => {
-  const { getJsonSchema } = useZodSchema()
-  const { isRequired, maxLength }: JsonSchemaType = getJsonSchema(name)
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional, maxLength } = getSchemaFromPath<ZodString>(name)
   return (
     <FormField
       name={name}
@@ -41,13 +37,13 @@ const TextareaForm = <
 
         return (
           <Textarea
-            maxLength={maxLength}
+            maxLength={maxLength || undefined}
             {...field}
             value={value || ""}
             {...props}
             onChange={handleChange}
             formComposition={{
-              requiredSymbol: isRequired,
+              requiredSymbol: !isOptional(),
               ...props.formComposition,
               onClear: handleClear,
             }}

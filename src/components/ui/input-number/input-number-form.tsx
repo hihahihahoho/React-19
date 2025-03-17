@@ -11,11 +11,6 @@ import {
   InputNumberProps,
   OnValueChangeInputNumber,
 } from "./input-number"
-
-type JsonSchemaType = {
-  isRequired: boolean
-}
-
 export interface InputNumberFormProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -35,8 +30,8 @@ const InputNumberForm = <
     name: name,
   })
 
-  const { getJsonSchema } = useZodSchema()
-  const { isRequired }: JsonSchemaType = getJsonSchema(name)
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional } = getSchemaFromPath(name)
 
   return (
     <FormField
@@ -58,7 +53,7 @@ const InputNumberForm = <
             value={fieldValue || ""}
             onValueChange={handleChange}
             formComposition={{
-              requiredSymbol: isRequired,
+              requiredSymbol: !isOptional(),
               ...props.formComposition,
               onClear: handleClear,
             }}

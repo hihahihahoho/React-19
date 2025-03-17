@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 import { SwitchProps } from "@radix-ui/react-switch"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
 import { FormComposition, FormCompositionProps, FormField } from "../form/form"
+import { useZodSchema } from "../form/zod-schema-context"
 import { Switch } from "./switch"
 
 export interface SwitchFormProps<
@@ -21,12 +22,19 @@ const SwitchForm = <
   formComposition,
   ...props
 }: SwitchFormProps<TFieldValues, TName>) => {
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional } = getSchemaFromPath(name)
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormComposition {...formComposition} isMinHeight variant="empty">
+        <FormComposition
+          requiredSymbol={!isOptional()}
+          {...formComposition}
+          isMinHeight
+          variant="empty"
+        >
           <div className={cn("flex h-full items-center")}>
             <Switch
               {...props}

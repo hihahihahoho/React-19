@@ -14,12 +14,6 @@ import {
   DateRangePickerProps,
   OnValueChangeDateRangePicker,
 } from "./date-range-picker" // <-- Update import to your actual path
-
-type JsonSchemaType = {
-  isRequired: boolean
-  description?: string
-}
-
 type JsonDescriptionType = {
   minDate?: Date
   maxDate?: Date
@@ -49,10 +43,12 @@ const DateRangePickerForm = <
     name: name,
   })
 
-  const { getJsonSchema } = useZodSchema()
-  const { isRequired, description }: JsonSchemaType = getJsonSchema(name)
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional, _def } = getSchemaFromPath(name)
 
-  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}")
+  const jsonDescription: JsonDescriptionType = JSON.parse(
+    _def.description || "{}"
+  )
 
   return (
     <FormField
@@ -95,7 +91,7 @@ const DateRangePickerForm = <
               ...props.calendarProps,
             }}
             formComposition={{
-              requiredSymbol: isRequired,
+              requiredSymbol: !isOptional(),
               ...props.formComposition,
               onClear: handleClear,
             }}

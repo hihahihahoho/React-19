@@ -14,15 +14,13 @@ const InputForm = <
   TName extends FieldPath<TFieldValues>,
 >({
   name,
-  control,
   ...props
 }: Omit<InputFormProps<TFieldValues, TName>, "render">) => {
-  const { getJsonSchema } = useZodSchema()
-  const { isRequired } = getJsonSchema(name)
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional } = getSchemaFromPath(name)
   return (
     <FormField
       name={name}
-      control={control}
       render={({ field: { value, onChange, ...field } }) => {
         const handleClear = () => {
           if (props.type === "file") {
@@ -51,7 +49,7 @@ const InputForm = <
             {...props}
             onChange={handleChange}
             formComposition={{
-              requiredSymbol: isRequired,
+              requiredSymbol: !isOptional(),
               ...props.formComposition,
               onClear: handleClear,
             }}

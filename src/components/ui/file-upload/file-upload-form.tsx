@@ -3,12 +3,6 @@ import { FormField } from "../form/form"
 import { useZodSchema } from "../form/zod-schema-context"
 import { FileUpload, FileUploadProps } from "./file-upload"
 
-type JsonSchemaType = {
-  isRequired: boolean
-  maxLength?: number | undefined
-  description?: string
-}
-
 type JsonDescriptionType = {
   accept?: string
   maxFiles?: number
@@ -30,9 +24,11 @@ const FileUploadForm = <
   defaultValue,
   ...props
 }: FileUploadFormProps<TFieldValues, TName>) => {
-  const { getJsonSchema } = useZodSchema()
-  const { isRequired, description }: JsonSchemaType = getJsonSchema(name)
-  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}")
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional, _def } = getSchemaFromPath(name)
+  const jsonDescription: JsonDescriptionType = JSON.parse(
+    _def.description || "{}"
+  )
   return (
     <FormField
       name={name}
@@ -53,7 +49,7 @@ const FileUploadForm = <
             value={value || []}
             onFileChange={handleFileChange}
             formComposition={{
-              requiredSymbol: isRequired,
+              requiredSymbol: !isOptional(),
               ...props.formComposition,
             }}
           />

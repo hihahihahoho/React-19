@@ -1,13 +1,16 @@
 import React from "react"
 import { z } from "zod"
-import { zodToJsonSchema } from "zod-to-json-schema"
 
 type ZodSchemaContextValue = {
-  schema: z.ZodType
+  schema: z.ZodObject<{
+    [k: string]: z.ZodType
+  }>
 }
 
 interface ZodSchemaProviderProps {
-  schema: z.ZodType
+  schema: z.ZodObject<{
+    [k: string]: z.ZodType
+  }>
   children: React.ReactNode
 }
 
@@ -28,41 +31,47 @@ const useZodSchema = () => {
     throw new Error("useSchema must be used within a ZodSchemaProvider")
   }
 
-  const jsonSchemaFull = zodToJsonSchema(context.schema) as {
-    properties: any
-    required: string[]
-  }
-
-  const getJsonSchema = (
+  const getSchemaFromPath = <T extends z.ZodType = z.ZodType>(
     inputPath: string
-  ): Record<string, unknown> & {
-    isRequired: boolean
-  } => {
+  ): T => {
     const parts = inputPath.split(".")
-    let currentSchema = jsonSchemaFull.properties
-    let requiredFields = jsonSchemaFull.required
+    let currentSchema: z.ZodType = context.schema
 
-    for (let i = 0; i < parts.length; i++) {
-      if (currentSchema && currentSchema[parts[i]]) {
-        currentSchema = currentSchema[parts[i]]
-        if (currentSchema.items?.properties) {
-          requiredFields = currentSchema.items.required
-          currentSchema = currentSchema.items.properties[parts[i + 2]]
+    for (const part of parts) {
+      // Check if we're dealing with an object schema
+      if (currentSchema instanceof z.ZodObject) {
+        currentSchema = currentSchema.shape[part]
+      }
+      // Check if we're dealing with an array schema and the part is a number
+      else if (currentSchema instanceof z.ZodArray && !isNaN(Number(part))) {
+        // For array items, we just need to get the element type
+        // The index doesn't matter for schema definition
+        currentSchema = currentSchema.element
+      }
+      // Handle nested arrays (array of objects) where we need to access a property after an index
+      else if (currentSchema instanceof z.ZodArray) {
+        currentSchema = currentSchema.element
+
+        // If the element is an object and we're not at the end of the path,
+        // we need to access the property of the array element
+        if (currentSchema instanceof z.ZodObject) {
+          currentSchema = currentSchema.shape[part]
         }
+      }
+
+      if (!currentSchema) {
+        throw new Error(`Path ${inputPath} not found in schema`)
       }
     }
 
-    return {
-      isRequired: requiredFields.includes(parts[parts.length - 1]),
-      description: currentSchema.description,
-      ...currentSchema,
-    }
+    // Create the result with the schema and optional description
+    const result = currentSchema as unknown as T
+    return result
   }
 
   return {
     schema: context.schema,
-    jsonSchema: jsonSchemaFull,
-    getJsonSchema: getJsonSchema,
+    getSchemaFromPath,
   }
 }
 

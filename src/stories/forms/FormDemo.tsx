@@ -80,7 +80,7 @@ const FormSchema = z.object({
       required_error: "Please enter money.",
     })
     .gt(100000),
-  textarea: zodRequiredString("Please enter a description.").max(100),
+  textarea: zodRequiredString("Please enter a description.").max(230),
   select: zodRequiredString("Please select an option."),
   auto_complete: zodRequiredString("Please type to search."),
   multi_select: z
@@ -103,7 +103,7 @@ const FormSchema = z.object({
   file_upload: zodFile({
     accepted: ACCEPTED_IMAGE_TYPES,
     maxFileSize: MAX_FILE_SIZE,
-    length: { min: 1, max: 5 },
+    length: { min: 1, max: 7 },
   }),
   checkbox_group: z
     .array(z.string())

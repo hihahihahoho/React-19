@@ -474,9 +474,6 @@ export const DatePickerInForm: Story = {
                 description: "Must be in the next 6 months",
                 requiredSymbol: true,
               }}
-              calendarProps={{
-                disabled: (date) => date < today || date > addMonths(today, 6),
-              }}
             />
 
             <DatePickerForm

@@ -502,9 +502,6 @@ export const DateRangePickerInForm: Story = {
                 description: "Select start and end dates (max 14 days)",
                 requiredSymbol: true,
               }}
-              calendarProps={{
-                disabled: (date) => date < today || date > addMonths(today, 6),
-              }}
             />
 
             <DateRangePickerForm
@@ -513,9 +510,6 @@ export const DateRangePickerInForm: Story = {
               formComposition={{
                 label: "Past Experience (Optional)",
                 description: "When did you work with us previously?",
-              }}
-              calendarProps={{
-                disabled: (date) => date > today || date < subYears(today, 10),
               }}
             />
 

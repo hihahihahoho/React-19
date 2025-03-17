@@ -13,11 +13,6 @@ import {
   OnValueChangeDatePicker,
 } from "./datepicker"
 
-type JsonSchemaType = {
-  isRequired: boolean
-  description?: string
-}
-
 type JsonDescriptionType = {
   minDate?: Date
   maxDate?: Date
@@ -44,10 +39,12 @@ const DatePickerForm = <
     control,
     name: name,
   })
-  const { getJsonSchema } = useZodSchema()
-  const { isRequired, description }: JsonSchemaType = getJsonSchema(name)
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional, _def } = getSchemaFromPath(name)
 
-  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}")
+  const jsonDescription: JsonDescriptionType = JSON.parse(
+    _def.description || "{}"
+  )
   return (
     <FormField
       name={name}
@@ -86,7 +83,7 @@ const DatePickerForm = <
               },
             }}
             formComposition={{
-              requiredSymbol: isRequired,
+              requiredSymbol: !isOptional(),
               ...props.formComposition,
               onClear: handleClear,
             }}

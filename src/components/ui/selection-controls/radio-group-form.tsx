@@ -34,15 +34,15 @@ const RadioGroupForm = <
   items,
   ...props
 }: RadioGroupFormProps<TFieldValues, TName>) => {
-  const { getJsonSchema } = useZodSchema()
-  const { isRequired } = getJsonSchema(name)
+  const { getSchemaFromPath } = useZodSchema()
+  const { isOptional } = getSchemaFromPath(name)
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
         <FormComposition
-          requiredSymbol={isRequired}
+          requiredSymbol={!isOptional()}
           {...formComposition}
           isMinHeight
           variant="empty"
