@@ -74,6 +74,8 @@ export interface InputTagProps
    */
   mode?: "default" | "select"
 
+  disabled?: boolean
+
   onUndo?: () => void
   onRedo?: () => void
 }
@@ -101,6 +103,7 @@ export function InputTag({
   onUndo,
   onRedo,
   onSearchChange,
+  disabled,
 }: InputTagProps) {
   // Refs setup
   const internalRef = React.useRef<HTMLInputElement>(null)
@@ -448,6 +451,7 @@ export function InputTag({
             currentTags.length > 0 ? "Thêm..." : "Gõ để nhập tags..."
           }
           autoComplete="off"
+          disabled={disabled}
         />
       </div>
     </div>
@@ -473,6 +477,7 @@ export function InputTag({
       onFormCompositionClick={() => {
         internalRef.current?.focus()
       }}
+      disabled={disabled}
     >
       <Popover open={shouldShowDropdown} onOpenChange={setOpen}>
         <PopoverAnchor
