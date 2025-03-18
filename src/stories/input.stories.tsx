@@ -128,7 +128,7 @@ export const BasicTypes: Story = {
           label: "Username",
           description: "Enter your username or email",
         }}
-        minCharToSearch={1}
+        mode="select"
       />
       <Input formComposition={{ label: "Text" }} placeholder="Enter text" />
       <Input

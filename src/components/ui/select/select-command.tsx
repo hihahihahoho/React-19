@@ -57,6 +57,9 @@ export interface SelectCommandProps
   loading?: boolean
   minItemsToShowSearch?: number // if have more than this number of items, show search, this should override showSearch
   commandInputProps?: React.ComponentProps<typeof CommandInput>
+  showSelectedItems?: boolean
+  showEmptyState?: boolean
+  contentBefore?: React.ReactNode
 }
 
 function SelectCommand({
@@ -71,7 +74,10 @@ function SelectCommand({
   commandWrapper = true,
   loading,
   minItemsToShowSearch = 5,
+  showSelectedItems = true,
   commandInputProps,
+  showEmptyState = true,
+  contentBefore,
   ...props
 }: SelectCommandProps) {
   const flattenItems = flatItems(items)
@@ -161,7 +167,11 @@ function SelectCommand({
           <CommandLoading />
         ) : (
           <>
-            <CommandEmpty>Không tìm thấy kết quả</CommandEmpty>
+            {contentBefore}
+
+            {showEmptyState && (
+              <CommandEmpty>Không tìm thấy kết quả</CommandEmpty>
+            )}
 
             {items &&
               items.length > 0 &&
@@ -169,76 +179,81 @@ function SelectCommand({
                 ({ heading, options, isMultiSelect }, groupIndex) => (
                   <React.Fragment key={uniqueId + groupIndex}>
                     <CommandGroup heading={heading}>
-                      {options.map((option) => {
-                        const isSelected = selected.includes(option.value)
-                        const BadgeComp = option?.badgeProps?.variant
-                          ? Badge
-                          : React.Fragment
+                      {options
+                        .filter((item) => {
+                          if (showSelectedItems) return true
+                          return !selected.includes(item.value)
+                        })
+                        .map((option) => {
+                          const isSelected = selected.includes(option.value)
+                          const BadgeComp = option?.badgeProps?.variant
+                            ? Badge
+                            : React.Fragment
 
-                        return (
-                          <CommandItem
-                            {...option}
-                            key={uniqueId + option.value}
-                            value={option.value}
-                            onSelect={() => {
-                              onSelect?.(option)
-                              if (isMultiSelect || allMultiSelect) {
-                                toggleOption(option)
-                                return
-                              }
-                              handleSetSelected([option.value])
-                            }}
-                          >
-                            <div className="flex flex-1 items-center gap-3 -md:text-base [&_svg]:shrink-0">
-                              <div className="flex flex-1 items-center gap-2">
-                                <BadgeComp
-                                  {...(option?.badgeProps?.variant
-                                    ? {
-                                        variant: option.badgeProps.variant,
-                                        size: "sm",
-                                      }
-                                    : {})}
-                                >
-                                  {option.icon &&
-                                    (typeof option.icon === "string" ? (
-                                      <Avatar size={"xs"}>
-                                        <AvatarImage src={option.icon} />
-                                        <AvatarFallback>
-                                          {option.value.substring(0, 2)}
-                                        </AvatarFallback>
-                                      </Avatar>
-                                    ) : (
-                                      <div
-                                        className={cn(
-                                          !option?.badgeProps?.variant &&
-                                            "[&_svg]:size-4 [&_svg]:text-muted-foreground -md:[&_svg]:size-5"
-                                        )}
-                                      >
-                                        {option.icon}
-                                      </div>
-                                    ))}
-                                  {option.label || option.value}
-                                </BadgeComp>
-                              </div>
-                              {isMultiSelect || allMultiSelect ? (
-                                <Checkbox
-                                  className="[&_svg]:!text-primary-foreground"
-                                  checked={isSelected}
-                                />
-                              ) : (
-                                isSelected && (
-                                  <Check
-                                    className={cn(
-                                      "size-4 !text-foreground",
-                                      isSelected ? "opacity-100" : "opacity-0"
-                                    )}
+                          return (
+                            <CommandItem
+                              {...option}
+                              key={uniqueId + option.value}
+                              value={option.value}
+                              onSelect={() => {
+                                onSelect?.(option)
+                                if (isMultiSelect || allMultiSelect) {
+                                  toggleOption(option)
+                                  return
+                                }
+                                handleSetSelected([option.value])
+                              }}
+                            >
+                              <div className="flex flex-1 items-center gap-3 -md:text-base [&_svg]:shrink-0">
+                                <div className="flex flex-1 items-center gap-2">
+                                  <BadgeComp
+                                    {...(option?.badgeProps?.variant
+                                      ? {
+                                          variant: option.badgeProps.variant,
+                                          size: "sm",
+                                        }
+                                      : {})}
+                                  >
+                                    {option.icon &&
+                                      (typeof option.icon === "string" ? (
+                                        <Avatar size={"xs"}>
+                                          <AvatarImage src={option.icon} />
+                                          <AvatarFallback>
+                                            {option.value.substring(0, 2)}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                      ) : (
+                                        <div
+                                          className={cn(
+                                            !option?.badgeProps?.variant &&
+                                              "[&_svg]:size-4 [&_svg]:text-muted-foreground -md:[&_svg]:size-5"
+                                          )}
+                                        >
+                                          {option.icon}
+                                        </div>
+                                      ))}
+                                    {option.label || option.value}
+                                  </BadgeComp>
+                                </div>
+                                {isMultiSelect || allMultiSelect ? (
+                                  <Checkbox
+                                    className="[&_svg]:!text-primary-foreground"
+                                    checked={isSelected}
                                   />
-                                )
-                              )}
-                            </div>
-                          </CommandItem>
-                        )
-                      })}
+                                ) : (
+                                  isSelected && (
+                                    <Check
+                                      className={cn(
+                                        "size-4 !text-foreground",
+                                        isSelected ? "opacity-100" : "opacity-0"
+                                      )}
+                                    />
+                                  )
+                                )}
+                              </div>
+                            </CommandItem>
+                          )
+                        })}
                     </CommandGroup>
                     {groupIndex < modifyItemsNew.length - 1 && (
                       <CommandSeparator />

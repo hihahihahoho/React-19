@@ -3,13 +3,15 @@ import { useMergedRef } from "@/hooks/use-merge-ref"
 import { cn } from "@/lib/utils"
 import { PopoverAnchor } from "@radix-ui/react-popover"
 import { Measurable } from "@radix-ui/rect"
-import { CommandInput } from "cmdk"
+import { CommandInput, useCommandState } from "cmdk"
+import { AlertCircle, PlusCircle } from "lucide-react"
 import * as React from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
 import { Badge, BadgeProps } from "../badge/badge"
-import { Command } from "../command"
+import { Command, CommandGroup, CommandItem } from "../command"
 import { FormComposition, FormCompositionProps } from "../form/form"
 import { Popover, PopoverContent } from "../popover"
-import { SelectCommand } from "../select/select-command"
+import { flatItems, SelectCommand } from "../select/select-command"
 import { SelectGroup, SelectItems } from "../select/select-interface"
 import {
   Tooltip,
@@ -32,6 +34,7 @@ export interface InputTagProps
   defaultValue?: string[]
   /** Called when tags change */
   onValueChange?: (value: string[]) => void
+  onSearchChange?: (value: string) => void
   /** Whether to allow duplicate tags */
   allowDuplicates?: boolean
   /** Keys that trigger tag addition */
@@ -40,10 +43,12 @@ export interface InputTagProps
   initialState?: React.ReactNode
   /** Whether options are loading */
   loading?: boolean
-  /** Min characters needed before showing search results */
+  /** Min characters needed before showing search results, set to 0 to show default suggestion list */
   minCharToSearch?: number
 
-  commndProps?: React.ComponentProps<typeof Command>
+  commandProps?: React.ComponentProps<typeof Command>
+
+  selectCommandProps?: React.ComponentProps<typeof SelectCommand>
   /** History state options */
   historyOptions?: {
     commitEvery?: number
@@ -55,6 +60,22 @@ export interface InputTagProps
   formComposition?: FormCompositionProps
   /** Props passed to each tag badge */
   badgeProps?: BadgeProps
+  /**
+   * Custom display values to render instead of the actual selected values.
+   * Useful when you want to show different content than what's stored in the tag values.
+   * Each item should follow the SelectItems interface with properties like label, icon, etc.
+   */
+  customDisplayValue?: SelectItems[]
+
+  /**
+   * Display mode for the input tag component:
+   * - "default": Allows free text entry with tag creation on trigger keys
+   * - "select": Only allows selecting tags from the provided options list
+   */
+  mode?: "default" | "select"
+
+  onUndo?: () => void
+  onRedo?: () => void
 }
 
 export function InputTag({
@@ -63,18 +84,23 @@ export function InputTag({
   defaultValue = [],
   onValueChange,
   allowDuplicates = false,
-  triggerKeys = ["Enter", ",", "Tab"],
+  triggerKeys = [",", "Tab"],
   initialState,
   loading,
   minCharToSearch = 0,
-  commndProps,
+  commandProps,
   historyOptions = {},
   formComposition,
   onFocus,
   onKeyDown,
   badgeProps,
+  mode = "default",
   ref,
-  ...props
+  customDisplayValue,
+  selectCommandProps,
+  onUndo,
+  onRedo,
+  onSearchChange,
 }: InputTagProps) {
   // Refs setup
   const internalRef = React.useRef<HTMLInputElement>(null)
@@ -84,7 +110,7 @@ export function InputTag({
 
   // State management using history hook
   const [tags, setTags, undo, redo] = useHistoryState<string[]>(
-    defaultValue,
+    controlledValue || defaultValue,
     historyOptions
   )
   const [inputValue, setInputValue] = React.useState("")
@@ -100,6 +126,9 @@ export function InputTag({
   // Check if we should show suggestion dropdown
   // Modified the shouldShowDropdown condition to properly handle the minCharToSearch condition
   const shouldShowDropdown = React.useMemo(() => {
+    if (loading) {
+      return true
+    }
     // Always show dropdown when open is true, minCharToSearch <= 0, and options exist
     if (open && minCharToSearch <= 0 && options && options.length > 0) {
       return true
@@ -131,6 +160,7 @@ export function InputTag({
       // Check for Ctrl+Z (undo)
       if (e.ctrlKey && e.key.toLowerCase() === "z" && !e.shiftKey) {
         e.preventDefault()
+        onUndo?.()
         undo()
       }
 
@@ -140,11 +170,18 @@ export function InputTag({
         (e.ctrlKey && e.key.toLowerCase() === "y")
       ) {
         e.preventDefault()
+        onRedo?.()
         redo()
       }
     },
     [undo, redo, inputValue]
   )
+
+  React.useEffect(() => {
+    if (isControlled) {
+      onValueChange?.(tags)
+    }
+  }, [tags, isControlled])
 
   // Add global keyboard event listener for undo/redo
   React.useEffect(() => {
@@ -167,12 +204,8 @@ export function InputTag({
 
       const newTags = [...currentTags, newTagValue]
 
-      if (isControlled) {
-        onValueChange?.(newTags)
-      } else {
-        setTags(newTags)
-        onValueChange?.(newTags)
-      }
+      onValueChange?.(newTags)
+      setTags(newTags)
 
       setInputValue("")
       setActiveTagIndex(null)
@@ -185,15 +218,10 @@ export function InputTag({
     (indexToRemove: number) => {
       const newTags = currentTags.filter((_, index) => index !== indexToRemove)
 
-      if (isControlled) {
-        onValueChange?.(newTags)
-      } else {
-        setTags(newTags)
-        onValueChange?.(newTags)
-      }
+      onValueChange?.(newTags)
+      setTags(newTags)
 
       setActiveTagIndex(null)
-      internalRef.current?.focus()
     },
     [currentTags, isControlled, onValueChange, setTags]
   )
@@ -254,6 +282,9 @@ export function InputTag({
   // Handle input changes
   const handleInputChange = (value: string) => {
     setInputValue(value)
+    if (onSearchChange) {
+      onSearchChange(value)
+    }
 
     // Show dropdown if typing or if minCharToSearch is 0 or negative
     setOpen(minCharToSearch <= 0 || value.length >= minCharToSearch)
@@ -264,8 +295,8 @@ export function InputTag({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(e)
 
-    // Tag creation triggers
-    if (triggerKeys.includes(e.key) && inputValue) {
+    // Tag creation triggers - only in default mode
+    if (mode === "default" && triggerKeys.includes(e.key) && inputValue) {
       e.preventDefault()
       addTag(inputValue)
       return
@@ -318,7 +349,7 @@ export function InputTag({
   // Handle selection from dropdown
   const handleSelect = (selected: SelectItems) => {
     addTag(selected.value.toString())
-    setOpen(false)
+    // setOpen(false)
     internalRef.current?.focus()
   }
 
@@ -337,7 +368,6 @@ export function InputTag({
 
   // Check for tag duplicates
   const isDuplicate = (tag: string) => {
-    if (allowDuplicates) return false
     return currentTags.filter((t) => t === tag).length > 1
   }
 
@@ -346,27 +376,43 @@ export function InputTag({
     return currentTags.filter((t) => t === tag).length
   }
 
-  const renderTag = (tag: string, index: number) => {
+  const renderTag = (tag: string, index: number, display?: SelectItems) => {
     const duplicate = isDuplicate(tag)
+    const tagContent =
+      display || flatItems(options)?.find((o) => o.value === tag)
+
     const tagDisplay = (
       <Badge
         key={`${tag}-${index}`}
         size={"md"}
-        variant="blue"
-        className={cn(
-          activeTagIndex === index && "ring-2 ring-blue-500",
-          duplicate && !allowDuplicates && "ring-2 ring-destructive"
-        )}
+        variant={duplicate ? "red" : "blue"}
+        className={cn(activeTagIndex === index && "ring-2 ring-blue-500")}
         clearBtn={true}
-        onClearBtnClick={() => removeTag(index)}
+        onClearBtnClick={() => {
+          removeTag(index)
+        }}
         onClick={(e) => {
           e.stopPropagation()
-          console.log(index)
           setActiveTagIndex(index)
         }}
         {...badgeProps}
+        {...tagContent?.badgeProps}
       >
-        {tag}
+        {tagContent?.icon &&
+          (typeof tagContent.icon === "string" ? (
+            <Avatar size={"xs"}>
+              <AvatarImage src={tagContent.icon} />
+              <AvatarFallback>
+                {(tagContent.value || "").substring(0, 2)}
+              </AvatarFallback>
+            </Avatar>
+          ) : (
+            tagContent.icon
+          ))}
+
+        <span className="overflow-hidden text-ellipsis">
+          {tagContent?.label || tagContent?.value || tag}
+        </span>
       </Badge>
     )
 
@@ -376,7 +422,7 @@ export function InputTag({
           <Tooltip>
             <TooltipTrigger asChild>{tagDisplay}</TooltipTrigger>
             <TooltipContent>
-              <p>Duplicate tag ({getDuplicateCount(tag)} occurrences)</p>
+              <p>Trùng lặp: {getDuplicateCount(tag)}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -385,12 +431,13 @@ export function InputTag({
 
     return tagDisplay
   }
-
   const inputArea = (
-    <div className="-mx-2 flex min-h-full flex-1 flex-wrap gap-1 py-[3px]">
-      {currentTags.map((tag, index) => renderTag(tag, index))}
+    <div className="flex min-h-full flex-1 flex-wrap gap-1 py-[3px]">
+      {customDisplayValue?.map((tag, index) => renderTag("", index, tag)) ||
+        currentTags.map((tag, index) => renderTag(tag, index))}
       <div ref={formCompositionRef} className="min-w-[120px] flex-1 px-2 py-1">
         <CommandInput
+          {...selectCommandProps?.commandInputProps}
           ref={mergeRef}
           value={inputValue}
           onValueChange={handleInputChange}
@@ -401,7 +448,6 @@ export function InputTag({
             currentTags.length > 0 ? "Thêm..." : "Gõ để nhập tags..."
           }
           autoComplete="off"
-          {...props}
         />
       </div>
     </div>
@@ -411,7 +457,19 @@ export function InputTag({
     <FormComposition
       ref={containerRef}
       isMinHeight
+      inputClear={true}
+      clearWhenNotFocus={true}
+      hasValue={currentTags.length > 0}
       {...formComposition}
+      onClear={() => {
+        setTags([])
+        onValueChange?.([])
+        setActiveTagIndex(null)
+      }}
+      className={cn(
+        !formComposition?.iconLeft && "pl-1",
+        formComposition?.className
+      )}
       onFormCompositionClick={() => {
         internalRef.current?.focus()
       }}
@@ -420,13 +478,16 @@ export function InputTag({
         <PopoverAnchor
           virtualRef={formCompositionRef as React.RefObject<Measurable>}
         />
-        <Command {...commndProps} className="overflow-visible">
+        <Command {...commandProps} className="overflow-visible">
           {inputArea}
           {shouldShowDropdown && (
             <PopoverContent
               onOpenAutoFocus={(e) => e.preventDefault()}
               align="start"
-              className="w-[var(--radix-popover-trigger-width)] p-0"
+              className={cn(
+                "w-[var(--radix-popover-trigger-width)] p-0",
+                "has-[[cmdk-group]:first-child:last-child>[cmdk-group-items]:empty]:hidden"
+              )}
               onWheel={(e) => e.stopPropagation()}
               onInteractOutside={(e) => {
                 if (
@@ -443,8 +504,20 @@ export function InputTag({
                 showSearch={false}
                 items={options}
                 onSelect={handleSelect}
+                selected={currentTags}
                 commandWrapper={false}
                 loading={loading}
+                showSelectedItems={false}
+                contentBefore={
+                  mode === "default" ? (
+                    <AddNewButton
+                      onSelect={(value) => addTag(value)}
+                      existingTags={currentTags}
+                    />
+                  ) : null
+                }
+                showEmptyState={false}
+                {...selectCommandProps}
               />
             </PopoverContent>
           )}
@@ -461,5 +534,42 @@ export function InputTag({
         </Command>
       </Popover>
     </FormComposition>
+  )
+}
+
+function AddNewButton({
+  onSelect,
+  existingTags = [],
+  ...props
+}: React.ComponentProps<typeof CommandItem> & {
+  onSelect?: (value: string) => void
+  existingTags?: string[]
+}) {
+  const search = useCommandState((state) => state.search)
+  if (search === "") return null
+
+  const isDuplicate = existingTags.includes(search.trim())
+
+  return (
+    <CommandGroup forceMount>
+      <CommandItem
+        forceMount
+        key={search}
+        value={search}
+        className={cn("gap-1", isDuplicate && "text-destructive")}
+        onSelect={() => onSelect?.(search)}
+        {...props}
+      >
+        {isDuplicate ? (
+          <AlertCircle className="size-4 text-destructive" />
+        ) : (
+          <PlusCircle className="size-4" />
+        )}
+        <strong>
+          {search}
+          {isDuplicate && <span className="text-xs font-normal"> (trùng)</span>}
+        </strong>
+      </CommandItem>
+    </CommandGroup>
   )
 }
