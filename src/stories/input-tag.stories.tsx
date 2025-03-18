@@ -20,6 +20,7 @@ import {
   Ban,
   Briefcase,
   Calendar,
+  Code,
   Flag,
   Globe,
   Loader2Icon,
@@ -632,7 +633,7 @@ export const HistoryAndUndo: Story = {
     docs: {
       description: {
         story:
-          "Demonstrates the history tracking functionality built into the InputTag component. Users can undo and redo tag additions and removals using standard keyboard shortcuts.",
+          "Demonstrates the history tracking functionality built into the InputTag component. Users can undo and redo tag additions and removals using standard keyboard shortcuts. The `shouldFilter: false` property is crucial here as it disables the component's built-in client-side filtering, allowing the server to handle filtering based on search input instead.",
       },
     },
   },
@@ -857,6 +858,124 @@ export const ServerSideFetchingInForm: Story = {
       description: {
         story:
           "InputTag with server-side data fetching integrated in a form with React Hook Form and Zod validation. Demonstrates handling of selected values that are not in the current search results and maintains selected data in a cache.",
+      },
+    },
+  },
+}
+
+/**
+ * Simplified example with server-side data fetching in a form.
+ */
+export const ServerSideFetchingInSimpleForm: Story = {
+  render: function SimpleServerSideFormExample() {
+    const [search, setSearch] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
+
+    // Form setup
+    const formSchema = z.object({
+      tailwind_classes: z
+        .array(z.string())
+        .min(1, "Please select at least one CSS class"),
+    })
+
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        tailwind_classes: ["flex", "p-4", "rounded"],
+      },
+    })
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+      alert(`Applied Tailwind classes: ${values.tailwind_classes.join(" ")}`)
+    }
+
+    // Simulate server-side data fetching with a timeout
+    useEffect(() => {
+      setIsLoading(true)
+      const timer = setTimeout(() => {
+        setIsLoading(false)
+      }, 200)
+
+      return () => clearTimeout(timer)
+    }, [search])
+
+    // Simplified mock CSS classes filtered by search term
+    const tailwindClasses = useMemo(() => {
+      const allClasses = [
+        // Layout
+        { value: "flex", label: "flex" },
+        { value: "grid", label: "grid" },
+        { value: "block", label: "block" },
+        // Spacing
+        { value: "p-2", label: "p-2" },
+        { value: "p-4", label: "p-4" },
+        { value: "m-2", label: "m-2" },
+        // Colors
+        { value: "bg-blue-100", label: "bg-blue-100" },
+        { value: "bg-red-100", label: "bg-red-100" },
+        { value: "text-blue-500", label: "text-blue-500" },
+        // Borders
+        { value: "rounded", label: "rounded" },
+        { value: "border", label: "border" },
+      ]
+
+      if (!search) return allClasses
+
+      // Simple client-side filtering (simulating server filtering)
+      return allClasses.filter((item) =>
+        item.value.toLowerCase().includes(search.toLowerCase())
+      )
+    }, [search])
+
+    // Preview component showing applied classes
+    const PreviewComponent = () => {
+      const classes = form.watch("tailwind_classes")
+      return (
+        <div className="mt-4 rounded-lg border border-gray-200 p-4">
+          <p className="mb-2 text-xs text-muted-foreground">Preview:</p>
+          <div className={classes.join(" ")}>Element with Tailwind classes</div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Applied classes: <code>{classes.join(" ")}</code>
+          </p>
+        </div>
+      )
+    }
+
+    return (
+      <ZodSchemaProvider schema={formSchema}>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <InputTagForm
+              control={form.control}
+              name="tailwind_classes"
+              options={tailwindClasses}
+              onSearchChange={(value) => {
+                setSearch(value)
+              }}
+              loading={isLoading}
+              formComposition={{
+                label: "Tailwind CSS Classes",
+                description:
+                  "Search and select Tailwind classes, or type custom ones",
+                iconLeft: <Code className="size-4" />,
+              }}
+              placeholder="Search classes..."
+              triggerKeys={[" "]}
+            />
+
+            <PreviewComponent />
+
+            <Button type="submit">Apply Classes</Button>
+          </form>
+        </Form>
+      </ZodSchemaProvider>
+    )
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A simplified version of server-side fetching integrated with a form. This example uses Tailwind CSS classes as suggestions and shows a live preview of the applied classes.",
       },
     },
   },

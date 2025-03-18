@@ -163,12 +163,12 @@ function SelectCommand({
       )}
 
       <CommandList tabIndex={0}>
+        {contentBefore}
+
         {loading ? (
           <CommandLoading />
         ) : (
           <>
-            {contentBefore}
-
             {showEmptyState && (
               <CommandEmpty>Không tìm thấy kết quả</CommandEmpty>
             )}

@@ -129,6 +129,9 @@ export function InputTag({
   // Check if we should show suggestion dropdown
   // Modified the shouldShowDropdown condition to properly handle the minCharToSearch condition
   const shouldShowDropdown = React.useMemo(() => {
+    if (inputValue) {
+      return true
+    }
     if (loading) {
       return true
     }
