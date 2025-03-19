@@ -128,26 +128,31 @@ export function InputTag({
 
   // Check if we should show suggestion dropdown
   // Modified the shouldShowDropdown condition to properly handle the minCharToSearch condition
+  // Determine whether to show the dropdown suggestions
   const shouldShowDropdown = React.useMemo(() => {
-    if (inputValue) {
-      return true
-    }
-    if (loading) {
-      return true
-    }
-    // Always show dropdown when open is true, minCharToSearch <= 0, and options exist
-    if (open && minCharToSearch <= 0 && options && options.length > 0) {
+    // Always show when loading
+    if (loading && open) {
       return true
     }
 
-    // Otherwise, show based on search term length vs minCharToSearch
-    return (
-      open &&
-      inputValue.length >= minCharToSearch &&
-      options &&
-      options.length > 0
-    )
-  }, [open, minCharToSearch, inputValue, options])
+    // Must have the dropdown marked as open to proceed
+    if (!open) {
+      return false
+    }
+
+    // Has content in search box
+    if (inputValue) {
+      return true
+    }
+
+    // If no minimum search requirement and we have options
+    if (minCharToSearch <= 0 && options && options.length > 0) {
+      return true
+    }
+
+    // Has typed enough characters to meet search threshold
+    return inputValue.length >= minCharToSearch && options && options.length > 0
+  }, [open, loading, inputValue, minCharToSearch, options])
 
   // Key event handlers for ctrl+z and ctrl+shift+z/ctrl+y
   const handleKeyDownGlobal = React.useCallback(
@@ -364,12 +369,22 @@ export function InputTag({
       setActiveTagIndex(null)
       onFocus?.(e)
 
-      // If minCharToSearch is 0 or negative, open dropdown on input focus
-      if (minCharToSearch <= 0 && options && options.length > 0) {
-        setOpen(true)
+      // Only open dropdown if we have options to display
+      if (options && options.length > 0) {
+        // Case 1: No minimum search requirement
+        if (minCharToSearch <= 0) {
+          setOpen(true)
+          return
+        }
+
+        // Case 2: Input already has text that meets minimum search requirement
+        if (inputValue && inputValue.length >= minCharToSearch) {
+          setOpen(true)
+          return
+        }
       }
     },
-    [minCharToSearch, onFocus, options]
+    [minCharToSearch, onFocus, options, inputValue]
   )
 
   // Check for tag duplicates
@@ -488,47 +503,45 @@ export function InputTag({
         />
         <Command {...commandProps} className="overflow-visible">
           {inputArea}
-          {shouldShowDropdown && (
-            <PopoverContent
-              onOpenAutoFocus={(e) => e.preventDefault()}
-              align="start"
-              className={cn(
-                "w-[var(--radix-popover-trigger-width)] p-0",
-                "has-[[cmdk-group]:first-child:last-child>[cmdk-group-items]:empty]:hidden"
-              )}
-              onWheel={(e) => e.stopPropagation()}
-              onInteractOutside={(e) => {
-                if (
-                  formCompositionRef.current &&
-                  formCompositionRef.current.contains(e.target as Node)
-                ) {
-                  e.preventDefault()
-                } else {
-                  setOpen(false)
-                }
-              }}
-            >
-              <SelectCommand
-                showSearch={false}
-                items={options}
-                onSelect={handleSelect}
-                selected={currentTags}
-                commandWrapper={false}
-                loading={loading}
-                showSelectedItems={false}
-                contentBefore={
-                  mode === "default" ? (
-                    <AddNewButton
-                      onSelect={(value) => addTag(value)}
-                      existingTags={currentTags}
-                    />
-                  ) : null
-                }
-                showEmptyState={false}
-                {...selectCommandProps}
-              />
-            </PopoverContent>
-          )}
+          <PopoverContent
+            onOpenAutoFocus={(e) => e.preventDefault()}
+            align="start"
+            className={cn(
+              "w-[var(--radix-popover-trigger-width)] p-0",
+              "has-[[cmdk-group]:first-child:last-child>[cmdk-group-items]:empty]:hidden"
+            )}
+            onWheel={(e) => e.stopPropagation()}
+            onInteractOutside={(e) => {
+              if (
+                formCompositionRef.current &&
+                formCompositionRef.current.contains(e.target as Node)
+              ) {
+                e.preventDefault()
+              } else {
+                setOpen(false)
+              }
+            }}
+          >
+            <SelectCommand
+              showSearch={false}
+              items={options}
+              onSelect={handleSelect}
+              selected={currentTags}
+              commandWrapper={false}
+              loading={loading}
+              showSelectedItems={false}
+              contentBefore={
+                mode === "default" ? (
+                  <AddNewButton
+                    onSelect={(value) => addTag(value)}
+                    existingTags={currentTags}
+                  />
+                ) : null
+              }
+              showEmptyState={false}
+              {...selectCommandProps}
+            />
+          </PopoverContent>
           {initialState && inputValue.length < minCharToSearch && open && (
             <PopoverContent
               onOpenAutoFocus={(e) => e.preventDefault()}

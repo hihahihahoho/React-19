@@ -35,7 +35,7 @@ import { z } from "zod"
  * InputTag component allows users to enter and manage multiple tags or keywords in a text input.
  */
 const meta = {
-  title: "Forms/InputTag",
+  title: "Forms/Input Tag",
   component: InputTag,
   parameters: {
     layout: "centered",
