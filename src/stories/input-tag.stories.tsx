@@ -52,10 +52,21 @@ They are useful for collecting multiple related values like categories, skills, 
 - When managing a list of simple values
 
 ## Accessibility
-- InputTag is keyboard navigable
-- Tags can be deleted with Backspace or Delete
-- Arrow keys can be used to navigate between tags
-- Undo/redo support with Ctrl+Z and Ctrl+Y
+- Fully keyboard navigable component with focus management:
+  - Left/Right arrow keys navigate between tags when focus is in the container
+  - Right arrow from the last tag moves focus to the input field
+  - Deleting a tag automatically moves focus to the previous tag
+- Tag management:
+  - Delete or Backspace removes selected tags
+  - Empty input + Backspace selects the last tag for potential deletion
+  - Tab/comma/space creates new tags (configurable via triggerKeys)
+- History management with standard keyboard shortcuts:
+  - Ctrl+Z to undo tag additions and removals
+  - Ctrl+Y or Ctrl+Shift+Z to redo changes
+- Focus containment:
+  - Escape key clears tag selection and returns focus to input
+  - Click outside deselects any selected tag
+- Screen reader friendly with appropriate ARIA attributes
         `,
       },
     },
@@ -903,7 +914,10 @@ export const ServerSideFetchingInSimpleForm: Story = {
     const tailwindClasses = useMemo(() => {
       const allClasses = [
         // Layout
-        { value: "flex", label: "flex" },
+        {
+          value: "flex",
+          label: "flex",
+        },
         { value: "grid", label: "grid" },
         { value: "block", label: "block" },
         // Spacing

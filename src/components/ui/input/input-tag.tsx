@@ -499,7 +499,7 @@ export function InputTag({
     <div className="flex min-h-full flex-1 flex-wrap gap-1 py-[3px]">
       {customDisplayValue?.map((tag, index) => renderTag("", index, tag)) ||
         currentTags.map((tag, index) => renderTag(tag, index))}
-      <div ref={formCompositionRef} className="min-w-[120px] flex-1 px-2 py-1">
+      <div ref={formCompositionRef} className="h-7 min-w-[120px] flex-1 px-2">
         <CommandInput
           {...selectCommandProps?.commandInputProps}
           ref={mergeRef}
