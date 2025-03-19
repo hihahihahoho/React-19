@@ -14,6 +14,7 @@ import {
   QueryClient,
   QueryClientProvider,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query"
 import {
   AlertTriangleIcon,
@@ -855,203 +856,18 @@ export const MultiSelectInFormWithFetchedData: Story = {
     },
   },
 }
-
-/**
- * Example with server-side data fetching and debounce (standalone).
- */
-export const ServerSideFetching: Story = {
-  render: function ServerSideExample() {
-    const [search, setSearch] = useState("")
-    const [debouncedSearch, setDebouncedSearch] = useState("")
-    const [isTyping, setIsTyping] = useState(false)
-    const [selectedCountryCodes, setSelectedCountryCodes] = useState<string[]>(
-      ["US", "CA"] // Default to US and Canada
-    )
-    const [countriesCache, setCountriesCache] = useState<Map<string, any>>(
-      new Map()
-    )
-
-    // Debounce the search input
-    useEffect(() => {
-      if (search) {
-        setIsTyping(true)
-      }
-
-      const timer = setTimeout(() => {
-        setDebouncedSearch(search)
-        setIsTyping(false)
-      }, 300)
-
-      return () => clearTimeout(timer)
-    }, [search])
-
-    // Fetch country list based on search term
-    const { data, isLoading: isLoadingResults } = useQuery({
-      queryKey: ["countries", debouncedSearch],
-      queryFn: async () => {
-        const url = debouncedSearch
-          ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
-          : "https://restcountries.com/v3.1/alpha?codes=VN,KR,GD,CH,GS,SL,HU,TW,WF,BB,?fields=name,flags,cca2"
-
-        const response = await fetch(url)
-
-        if (!response.ok) {
-          if (response.status === 404) {
-            return []
-          }
-          throw new Error("Network response was not ok")
-        }
-
-        const data = await response.json()
-
-        // Update our cache with these results
-        setCountriesCache((prev) => {
-          const newCache = new Map(prev)
-          const countries = data
-          countries.forEach((country: any) => {
-            newCache.set(country.cca2, country)
-          })
-          return newCache
-        })
-
-        return data
-      },
-      refetchOnWindowFocus: false,
-    })
-
-    // Fetch specific country details for selected values
-    const { isLoading: selectedCountryDataLoading } = useQuery({
-      queryKey: ["selectedCountries", selectedCountryCodes],
-      queryFn: async () => {
-        if (!selectedCountryCodes || selectedCountryCodes.length === 0)
-          return []
-
-        // Filter out codes we already have in our cache
-        const codesToFetch = selectedCountryCodes.filter(
-          (code) => !countriesCache.has(code)
-        )
-        if (codesToFetch.length === 0) return []
-
-        const codes = codesToFetch.join(",")
-        const response = await fetch(
-          `https://restcountries.com/v3.1/alpha?codes=${codes}`
-        )
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch selected countries")
-        }
-
-        const data = await response.json()
-
-        // Update our cache with these results
-        setCountriesCache((prev) => {
-          const newCache = new Map(prev)
-          data.forEach((country: any) => {
-            newCache.set(country.cca2, country)
-          })
-          return newCache
-        })
-
-        return data
-      },
-      enabled: selectedCountryCodes?.length > 0,
-      refetchOnWindowFocus: false,
-    })
-
-    const isLoading = isTyping || isLoadingResults
-
-    // Memoize country options to avoid recreation on each render
-    const countryOptions = useMemo(() => {
-      if (!data) return []
-
-      return data.map((country: any) => ({
-        value: country.cca2,
-        label: country.name.common,
-        icon: country.flags?.svg || country.flags?.png,
-        keywords: [country.name.common, country.cca2],
-      }))
-    }, [data])
-
-    // Create display values for selected countries using the cache
-    const selectedCountries = useMemo(() => {
-      const selectedItems: SelectItems[] = []
-
-      for (const code of selectedCountryCodes) {
-        // Try to find the country in our cache
-        const country = countriesCache.get(code)
-
-        if (country) {
-          selectedItems.push({
-            value: country.cca2,
-            label: country.name.common,
-            icon: country.flags?.svg || country.flags?.png,
-          })
-        } else if (selectedCountryDataLoading) {
-          // Only show loading state for countries not found in cache
-          selectedItems.push({
-            value: code,
-            label: `Loading ${code}...`,
-            icon: <Loader2 className="size-4 animate-spin" />,
-          })
-        }
-      }
-
-      return selectedItems
-    }, [selectedCountryCodes, countriesCache, selectedCountryDataLoading])
-
-    return (
-      <MultiSelect
-        options={countryOptions}
-        formComposition={{
-          label: "Select Countries",
-          description: "Type to search countries",
-          iconLeft: selectedCountries.length <= 0 && (
-            <GlobeIcon className="size-4" />
-          ),
-        }}
-        placeholder="Search for countries"
-        value={selectedCountryCodes}
-        onValueChange={setSelectedCountryCodes}
-        customDisplayValue={selectedCountries}
-        bagdeGroupProps={{
-          overflowState: "none",
-        }}
-        selectCommandProps={{
-          loading: isLoading,
-          minItemsToShowSearch: -1,
-          shouldFilter: false,
-          commandInputProps: {
-            value: search,
-            onValueChange: (value) => {
-              setSearch(value)
-            },
-          },
-        }}
-      />
-    )
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "MultiSelect with server-side data fetching using a cache to maintain selected country data. This implementation handles both searching and displaying selected items that might not be in the current search results. It also properly manages loading states for both search results and fetching details of selected countries. The `shouldFilter: false` property is crucial here as it disables the component's built-in client-side filtering, allowing the server to handle filtering based on search input instead.",
-      },
-    },
-  },
-}
-
 /**
  * Example with server-side data fetching in a form.
  */
 export const ServerSideFetchingInForm: Story = {
   render: function ServerSideFormExample() {
-    // Move useQueryClient to the top level
     const [search, setSearch] = useState("")
     const [debouncedSearch, setDebouncedSearch] = useState("")
     const [isTyping, setIsTyping] = useState(false)
-    const [countriesCache, setCountriesCache] = useState<Map<string, any>>(
-      new Map()
-    )
+    const queryClient = useQueryClient()
+
+    const countriesData =
+      queryClient.getQueryData<any[]>(["countries", "cache"]) || []
 
     // Form setup
     const formSchema = z.object({
@@ -1068,15 +884,15 @@ export const ServerSideFetchingInForm: Story = {
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-      // Use our cached data for display
-      const countryNames = values.countries
+      // Map country codes to names using the cache
+      const selectedCountries = values.countries
         .map((code) => {
-          const country = countriesCache.get(code)
-          return country ? country.name.common : code
+          const country = countriesData.find((c) => c.cca2 === code)
+          return country?.name?.common || code
         })
         .join(", ")
 
-      alert(`Selected countries: ${countryNames}`)
+      alert(`Selected countries: ${selectedCountries}`)
     }
 
     // Debounce the search input
@@ -1093,15 +909,30 @@ export const ServerSideFetchingInForm: Story = {
       return () => clearTimeout(timer)
     }, [search])
 
-    // KEEPING YOUR EXACT QUERY AS REQUESTED
+    // Fetch country list based on search term OR fetch selected countries
     const { data, isLoading: isLoadingResults } = useQuery({
       queryKey: ["countries", debouncedSearch],
       queryFn: async () => {
+        // If we have a search term, fetch filtered results
+        // Otherwise fetch the initial selected countries or default options
+        const selectedCodes = form.watch("countries")
+        // Add additional default countries to show some variety in initial results
+        const defaultCountries = [
+          "VN",
+          "KR",
+          "GD",
+          "CH",
+          "GS",
+          "SL",
+          "HU",
+          "TW",
+          "WF",
+          "BB",
+        ]
+
         const url = debouncedSearch
           ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
-          : "https://restcountries.com/v3.1/alpha?codes=VN,KR,GD,CH,GS,SL,HU,TW,WF,BB,?fields=name,flags,cca2"
-
-        console.log(url)
+          : `https://restcountries.com/v3.1/alpha?codes=${[...selectedCodes, ...defaultCountries].join(",")}&fields=name,flags,cca2`
 
         const response = await fetch(url)
 
@@ -1113,58 +944,27 @@ export const ServerSideFetchingInForm: Story = {
         }
 
         const data = await response.json()
+        const countries = Array.isArray(data) ? data : [data]
 
-        // Update our cache with these results
-        setCountriesCache((prev) => {
-          const newCache = new Map(prev)
-          const countries = data
-          countries.forEach((country: any) => {
-            newCache.set(country.cca2, country)
-          })
-          return newCache
+        // Merge new countries with existing cache
+        const updatedCache = [...countriesData]
+
+        countries.forEach((country) => {
+          const existingIndex = updatedCache.findIndex(
+            (c) => c.cca2 === country.cca2
+          )
+          if (existingIndex >= 0) {
+            updatedCache[existingIndex] = country
+          } else {
+            updatedCache.push(country)
+          }
         })
 
-        return data
+        // Update the cache
+        queryClient.setQueryData(["countries", "cache"], updatedCache)
+
+        return countries
       },
-      refetchOnWindowFocus: false,
-    })
-
-    // Fetch specific country details for form's selected values
-    const { isLoading: formSelectedCountryDataLoading } = useQuery({
-      queryKey: ["selectedCountries", form.watch("countries")],
-      queryFn: async () => {
-        const countryCodes = form.watch("countries")
-        if (!countryCodes || countryCodes.length === 0) return []
-
-        // Filter out codes we already have in our cache
-        const codesToFetch = countryCodes.filter(
-          (code) => !countriesCache.has(code)
-        )
-        if (codesToFetch.length === 0) return []
-
-        const codes = codesToFetch.join(",")
-        const response = await fetch(
-          `https://restcountries.com/v3.1/alpha?codes=${codes}`
-        )
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch selected countries")
-        }
-
-        const data = await response.json()
-
-        // Update our cache with these results
-        setCountriesCache((prev) => {
-          const newCache = new Map(prev)
-          data.forEach((country: any) => {
-            newCache.set(country.cca2, country)
-          })
-          return newCache
-        })
-
-        return data
-      },
-      enabled: form.watch("countries")?.length > 0,
       refetchOnWindowFocus: false,
     })
 
@@ -1182,15 +982,15 @@ export const ServerSideFetchingInForm: Story = {
       }))
     }, [data])
 
-    // Create display values for selected countries - using the cache instead of query client
+    // Create display values for selected countries using the query cache
     const formSelectedCountries = useMemo(() => {
-      const orderedCountryCodes = form.watch("countries") || []
-      console.log(orderedCountryCodes)
+      const selectedCountryCodes = form.watch("countries") || []
+
       const selectedItems: SelectItems[] = []
 
-      for (const code of orderedCountryCodes) {
-        // Try to find the country in our cache
-        const country = countriesCache.get(code)
+      // For each selected code, try to find it in the cache
+      for (const code of selectedCountryCodes) {
+        const country = countriesData.find((c) => c.cca2 === code)
 
         if (country) {
           selectedItems.push({
@@ -1198,22 +998,18 @@ export const ServerSideFetchingInForm: Story = {
             label: country.name.common,
             icon: country.flags?.svg || country.flags?.png,
           })
-        } else if (formSelectedCountryDataLoading) {
-          // Only show loading state for countries not found in cache
+        } else {
+          // Show a loading indicator for countries we don't have yet
           selectedItems.push({
             value: code,
-            label: `Loading ${code}...`,
+            label: code,
             icon: <Loader2 className="size-4 animate-spin" />,
           })
         }
       }
 
       return selectedItems
-    }, [
-      form.watch("countries"),
-      countriesCache,
-      formSelectedCountryDataLoading,
-    ])
+    }, [form.watch("countries"), countriesData])
 
     return (
       <ZodSchemaProvider schema={formSchema}>
@@ -1272,7 +1068,7 @@ export const ServerSideFetchingInForm: Story = {
     docs: {
       description: {
         story:
-          "MultiSelect with server-side data fetching integrated in a form with React Hook Form and Zod validation. Demonstrates handling of selected values that are not in the current search results. The `shouldFilter: false` property is crucial here as it disables the component's built-in client-side filtering, allowing the server to handle filtering based on search input instead.",
+          "MultiSelect with server-side data fetching integrated in a form with React Hook Form and Zod validation. Uses the QueryClient cache to store country data, removing the need for separate state variables or queries. The `shouldFilter: false` property disables client-side filtering, allowing the server to handle searching.",
       },
     },
   },

@@ -13,6 +13,7 @@ import {
   QueryClient,
   QueryClientProvider,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query"
 import {
   AlertTriangle,
@@ -23,7 +24,6 @@ import {
   Code,
   Flag,
   Globe,
-  Loader2Icon,
   Tags,
   User,
 } from "lucide-react"
@@ -561,7 +561,6 @@ export const InForm: Story = {
               formComposition={{
                 label: "Skills",
                 description: "Add your programming skills (min 2 required)",
-                labelPosition: "horizontal",
               }}
               placeholder="Enter skills..."
             />
@@ -574,17 +573,20 @@ export const InForm: Story = {
               formComposition={{
                 label: "Categories",
                 description: "Select at least one category",
-                labelPosition: "horizontal",
               }}
               placeholder="Select categories..."
             />
 
-            <div className="flex justify-end gap-2">
-              <Button type="submit">Submit</Button>
+            <div className="flex gap-2">
+              <Button type="submit" className="flex-1">
+                Submit
+              </Button>
               <Button
-                type="reset"
-                onClick={() => form.reset()}
+                type="button"
                 variant="outline"
+                onClick={() => {
+                  form.reset()
+                }}
               >
                 Reset
               </Button>
@@ -662,9 +664,10 @@ export const ServerSideFetchingInForm: Story = {
     const [search, setSearch] = useState("")
     const [debouncedSearch, setDebouncedSearch] = useState("")
     const [isTyping, setIsTyping] = useState(false)
-    const [countriesCache, setCountriesCache] = useState<Map<string, any>>(
-      new Map()
-    )
+    const queryClient = useQueryClient()
+
+    const countriesData =
+      queryClient.getQueryData<any[]>(["countries", "cache"]) || []
 
     // Form setup
     const formSchema = z.object({
@@ -681,10 +684,16 @@ export const ServerSideFetchingInForm: Story = {
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-      // Display selected values
+      // Get country data from the query cache
+      const countriesData =
+        queryClient.getQueryData<any[]>(["countries", "cache"]) || []
+
+      // Map country codes to names using the cache
       const selectedCountries = values.countries
-        .filter((code) => countriesCache.has(code))
-        .map((code) => countriesCache.get(code)?.name?.common)
+        .map((code) => {
+          const country = countriesData.find((c) => c.cca2 === code)
+          return country?.name?.common || code
+        })
         .join(", ")
 
       alert(`Form submitted!\nCountries: ${selectedCountries || "None"}`)
@@ -704,13 +713,29 @@ export const ServerSideFetchingInForm: Story = {
       return () => clearTimeout(timer)
     }, [search])
 
-    // Fetch country list based on search term
+    // Fetch country list based on search term OR initially load selected countries
     const { data, isLoading: isLoadingResults } = useQuery({
       queryKey: ["countries", debouncedSearch],
       queryFn: async () => {
+        // If we have a search term, fetch filtered results
+        // Otherwise fetch the initial selected countries
+        const selectedCodes = form.watch("countries")
+        const defaultCountries = [
+          "VN",
+          "KR",
+          "GD",
+          "CH",
+          "GS",
+          "SL",
+          "HU",
+          "TW",
+          "WF",
+          "BB",
+        ]
+
         const url = debouncedSearch
           ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
-          : "https://restcountries.com/v3.1/alpha?codes=US,CA,GB,FR,DE,JP&fields=name,flags,cca2"
+          : `https://restcountries.com/v3.1/alpha?codes=${[...selectedCodes, ...defaultCountries].join(",")}&fields=name,flags,cca2`
 
         const response = await fetch(url)
 
@@ -723,57 +748,29 @@ export const ServerSideFetchingInForm: Story = {
 
         const data = await response.json()
 
-        // Update our cache with these results - using callback pattern
-        setCountriesCache((prev) => {
-          const newCache = new Map(prev)
-          const countries = data
-          countries.forEach((country: any) => {
-            newCache.set(country.cca2, country)
-          })
-          return newCache
+        // Store fetched countries in a separate cache entry
+
+        const countries = Array.isArray(data) ? data : [data]
+
+        // Merge new countries with existing cache
+        const updatedCache = [...countriesData]
+
+        countries.forEach((country) => {
+          const existingIndex = updatedCache.findIndex(
+            (c) => c.cca2 === country.cca2
+          )
+          if (existingIndex >= 0) {
+            updatedCache[existingIndex] = country
+          } else {
+            updatedCache.push(country)
+          }
         })
+
+        // Update the cache
+        queryClient.setQueryData(["countries", "cache"], updatedCache)
 
         return data
       },
-      refetchOnWindowFocus: false,
-    })
-
-    // Fetch specific country details for form's selected values
-    const { isLoading: formSelectedCountryDataLoading } = useQuery({
-      queryKey: ["selectedCountries", form.watch("countries")],
-      queryFn: async () => {
-        const countryCodes = form.watch("countries")
-        if (!countryCodes || countryCodes.length === 0) return []
-
-        // Filter out codes we already have in our cache
-        const codesToFetch = countryCodes.filter(
-          (code) => !countriesCache.has(code)
-        )
-        if (codesToFetch.length === 0) return []
-
-        const codes = codesToFetch.join(",")
-        const response = await fetch(
-          `https://restcountries.com/v3.1/alpha?codes=${codes}`
-        )
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch selected countries")
-        }
-
-        const data = await response.json()
-
-        // Update our cache with these results - using callback pattern
-        setCountriesCache((prev) => {
-          const newCache = new Map(prev)
-          data.forEach((country: any) => {
-            newCache.set(country.cca2, country)
-          })
-          return newCache
-        })
-
-        return data
-      },
-      enabled: form.watch("countries")?.length > 0,
       refetchOnWindowFocus: false,
     })
 
@@ -783,48 +780,37 @@ export const ServerSideFetchingInForm: Story = {
     const countryOptions = useMemo(() => {
       if (!data) return []
 
-      return data.map((country: any) => ({
+      return (Array.isArray(data) ? data : [data]).map((country: any) => ({
         value: country.cca2,
         label: country.name.common,
         icon: country.flags?.svg || country.flags?.png,
       }))
     }, [data])
 
-    // Create display values for selected countries using the cache
+    // Create display values for selected countries using the query cache
     const formSelectedCountries = useMemo(() => {
-      const orderedCountryCodes = form.watch("countries") || []
-      const selectedItems: SelectItems[] = []
+      const selectedCountryCodes = form.watch("countries") || []
 
-      for (const code of orderedCountryCodes) {
-        // Try to find the country in our cache
-        const country = countriesCache.get(code)
-
-        if (country) {
-          selectedItems.push({
-            value: country.cca2,
-            label: country.name.common,
-            icon: country.flags?.svg || country.flags?.png,
-            badgeProps: { variant: "blue" },
-          })
-        } else if (formSelectedCountryDataLoading) {
-          // Only show loading state for countries not found in cache
-          selectedItems.push({
-            value: code,
-            label: `Loading ${code}...`,
-            icon: <Loader2Icon className="size-4 animate-spin" />,
-            badgeProps: {
-              clearBtn: false,
-            },
-          })
-        }
-      }
-
-      return selectedItems
-    }, [
-      form.watch("countries"),
-      countriesCache,
-      formSelectedCountryDataLoading,
-    ])
+      return selectedCountryCodes
+        .map((code) => {
+          const country = countriesData.find((c) => c.cca2 === code)
+          if (country) {
+            return {
+              value: country.cca2,
+              label: country.name.common,
+              icon: country.flags?.svg || country.flags?.png,
+              badgeProps: { variant: "blue" },
+            }
+          } else {
+            return {
+              value: code,
+              label: code,
+              badgeProps: { variant: "red" },
+            }
+          }
+        })
+        .filter(Boolean) as SelectItems[]
+    }, [form.watch("countries"), countriesData])
 
     return (
       <ZodSchemaProvider schema={formSchema}>
@@ -834,7 +820,6 @@ export const ServerSideFetchingInForm: Story = {
               control={form.control}
               name="countries"
               options={countryOptions}
-              mode="select" // Force select-only mode
               formComposition={{
                 label: "Countries",
                 description: "Search and select countries",
@@ -849,12 +834,16 @@ export const ServerSideFetchingInForm: Story = {
               onSearchChange={setSearch}
             />
 
-            <div className="flex justify-end gap-2">
-              <Button type="submit">Submit</Button>
+            <div className="flex gap-2">
+              <Button type="submit" className="flex-1">
+                Submit
+              </Button>
               <Button
-                type="reset"
-                onClick={() => form.reset()}
+                type="button"
                 variant="outline"
+                onClick={() => {
+                  form.reset()
+                }}
               >
                 Reset
               </Button>
@@ -868,7 +857,7 @@ export const ServerSideFetchingInForm: Story = {
     docs: {
       description: {
         story:
-          "InputTag with server-side data fetching integrated in a form with React Hook Form and Zod validation. Demonstrates handling of selected values that are not in the current search results and maintains selected data in a cache.",
+          "InputTag with server-side data fetching integrated in a form with React Hook Form and Zod validation. Uses the QueryClient cache to store country data, removing the need for a separate state variable.",
       },
     },
   },
