@@ -15,6 +15,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query"
+import axios from "axios"
 import {
   Flag,
   GlobeIcon,
@@ -23,7 +24,7 @@ import {
   MapPinIcon,
   PhoneIcon,
 } from "lucide-react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -474,8 +475,6 @@ export const SelectInFormWithFetchedData: Story = {
 export const ServerSideFetchingOnSearchInForm: Story = {
   render: function ServerSideFormExample() {
     const [search, setSearch] = useState("")
-    const [debouncedSearch, setDebouncedSearch] = useState("")
-    const [isTyping, setIsTyping] = useState(false)
     const queryClient = useQueryClient()
 
     const countriesData =
@@ -493,24 +492,11 @@ export const ServerSideFetchingOnSearchInForm: Story = {
       },
     })
 
-    // Debounce the search input
-    useEffect(() => {
-      if (search) {
-        setIsTyping(true)
-      }
-
-      const timer = setTimeout(() => {
-        setDebouncedSearch(search)
-        setIsTyping(false)
-      }, 300)
-
-      return () => clearTimeout(timer)
-    }, [search])
-
     // Fetch country list based on search term
     const { data, isLoading: isLoadingResults } = useQuery({
-      queryKey: ["countries", debouncedSearch],
-      queryFn: async () => {
+      queryKey: ["countries", search], // Use search directly, not debounced search
+      queryFn: async ({ signal }) => {
+        // React Query provides the AbortSignal
         // If we have a search term, fetch filtered results
         // Otherwise fetch the default options or a limited set
         const selectedCode = form.watch("country")
@@ -525,45 +511,52 @@ export const ServerSideFetchingOnSearchInForm: Story = {
           "AU",
         ]
 
-        const url = debouncedSearch
-          ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
+        const url = search
+          ? `https://restcountries.com/v3.1/name/${search}`
           : `https://restcountries.com/v3.1/alpha?codes=${[selectedCode, ...defaultCountries].join(",")}&fields=name,flags,cca2`
 
-        const response = await fetch(url)
+        try {
+          const { data } = await axios.get(url, { signal })
 
-        if (!response.ok) {
-          if (response.status === 404) {
-            return []
+          const countries = Array.isArray(data) ? data : [data]
+
+          // Merge new countries with existing cache
+          const updatedCache = [...countriesData]
+
+          countries.forEach((country) => {
+            const existingIndex = updatedCache.findIndex(
+              (c) => c.cca2 === country.cca2
+            )
+            if (existingIndex >= 0) {
+              updatedCache[existingIndex] = country
+            } else {
+              updatedCache.push(country)
+            }
+          })
+
+          // Update the cache
+          queryClient.setQueryData(["countries", "cache"], updatedCache)
+
+          return countries
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            if (error.response?.status === 404) {
+              return []
+            }
           }
-          throw new Error("Network response was not ok")
+          throw error
         }
-
-        const data = await response.json()
-        const countries = Array.isArray(data) ? data : [data]
-
-        // Merge new countries with existing cache
-        const updatedCache = [...countriesData]
-
-        countries.forEach((country) => {
-          const existingIndex = updatedCache.findIndex(
-            (c) => c.cca2 === country.cca2
-          )
-          if (existingIndex >= 0) {
-            updatedCache[existingIndex] = country
-          } else {
-            updatedCache.push(country)
-          }
-        })
-
-        // Update the cache
-        queryClient.setQueryData(["countries", "cache"], updatedCache)
-
-        return countries
       },
       refetchOnWindowFocus: false,
+      enabled: search.length > 0 || search.length === 0, // Only run if empty or 3+ characters
+      // Add built-in debounce instead of setTimeout
+      refetchOnMount: true,
+      staleTime: 0,
+      gcTime: 5 * 60 * 1000,
+      // Don't keep fetching when typing fast
     })
 
-    const isLoading = isTyping || isLoadingResults
+    const isLoading = isLoadingResults
 
     // Memoize country options to avoid recreation on each render
     const countryOptions = useMemo(() => {
@@ -649,7 +642,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
                 commandInputProps: {
                   value: search,
                   onValueChange: (value) => {
-                    setSearch(value)
+                    setSearch(value) // React Query will handle debouncing internally
                   },
                 },
               }}
@@ -676,7 +669,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
     docs: {
       description: {
         story:
-          "Select with server-side data fetching integrated into a form with validation. Uses the QueryClient cache to store country data, removing the need for a separate query for the selected country. Sets `shouldFilter: false` to let the server handle filtering.",
+          "Select with server-side data fetching using Axios and React Query. This implementation automatically handles cancellation of pending requests when new searches are triggered. No manual debounce setTimeout needed.",
       },
     },
   },
