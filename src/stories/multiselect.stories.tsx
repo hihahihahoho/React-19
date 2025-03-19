@@ -46,7 +46,7 @@ import { z } from "zod"
  * MultiSelect component allows users to choose multiple values from a list of options.
  */
 const meta = {
-  title: "Forms/MultiSelect",
+  title: "Forms/Multi Select",
   component: MultiSelect,
   parameters: {
     layout: "centered",

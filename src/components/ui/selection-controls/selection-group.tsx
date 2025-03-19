@@ -15,7 +15,7 @@ const selectionGroupVariants = cva(
     variants: {
       variant: {
         default: "",
-        card: "rounded-xl p-4 ring-1 ring-border has-[[data-state=checked]]:ring-2 has-[[data-state=checked]]:ring-primary",
+        card: "rounded-xl p-4 ring-1 ring-border has-[[data-state=checked]]:bg-primary/[0.03] has-[[data-state=checked]]:ring-2 has-[[data-state=checked]]:ring-primary",
       },
     },
     defaultVariants: {

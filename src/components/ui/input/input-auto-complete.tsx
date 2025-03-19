@@ -1,3 +1,5 @@
+"use client"
+
 import { useMergedRef } from "@/hooks/use-merge-ref"
 import { cn } from "@/lib/utils"
 import { PopoverAnchor, PopoverContentProps } from "@radix-ui/react-popover"

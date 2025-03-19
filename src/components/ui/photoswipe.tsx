@@ -86,9 +86,9 @@ function PhotoSwipe({
   images = [
     // Default images if none provided
     {
-      src: "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
+      src: "https://pbs.twimg.com/media/Gk58xZCWUAABX7L?format=jpg&name=large",
       thumbnail:
-        "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
+        "https://pbs.twimg.com/media/Gk58xZCWUAABX7L?format=jpg&name=large",
       alt: "Nature image 1",
     },
     {

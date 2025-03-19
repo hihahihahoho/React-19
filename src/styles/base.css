@@ -1,4 +1,5 @@
-body {
+body,
+[data-sonner-toaster] {
   font-family:
     "Inter",
     system-ui,

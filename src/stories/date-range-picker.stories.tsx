@@ -20,7 +20,7 @@ import { z } from "zod"
  * DateRangePicker component allows users to select a date range with a calendar interface.
  */
 const meta = {
-  title: "Forms/DateRangePicker",
+  title: "Forms/Date Range Picker",
   component: DateRangePicker,
   parameters: {
     layout: "centered",

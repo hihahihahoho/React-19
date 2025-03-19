@@ -1,19 +1,29 @@
 "use client"
 
-import { useToast } from "@/hooks/use-toast"
 import { ACCEPTED_IMAGE_TYPES } from "@/lib/const"
 import { formatFileSize } from "@/lib/file-size"
 import { cn } from "@/lib/utils"
-import { AlignLeft, CloudUpload, Image, Music, Play, X } from "lucide-react"
+import {
+  AlignLeft,
+  CloudUpload,
+  Image,
+  Maximize2,
+  Music,
+  Play,
+  SquareArrowOutUpRight,
+  X,
+} from "lucide-react"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Button } from "../button"
 import { CloseCircle } from "../custom-icons"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../dialog"
 import {
   FormComposition,
   FormCompositionProps,
   FormControl,
 } from "../form/form"
 import { GlassIcon } from "../glass-icon"
+import { sonnerToast } from "../sonner"
 
 type TAccept = string
 
@@ -79,7 +89,6 @@ function FileUpload({
   defaultValue,
   ...props
 }: FileUploadProps) {
-  const { toast } = useToast()
   const inputRef = useRef<HTMLInputElement>(null)
   const [isDragOver, setIsDragOver] = useState(false)
   const isControlled = value !== undefined
@@ -94,19 +103,31 @@ function FileUpload({
     return initial
   })
 
+  // Replace the existing isRemoteFile and getRemoteUrl functions with these:
+
+  const isRemoteFile = (file: File): boolean => {
+    return file.name.startsWith("REMOTE_FILE::")
+  }
+
+  const getRemoteUrl = (file: File): string | null => {
+    if (!isRemoteFile(file)) return null
+    // Extract URL from filename (removes the prefix)
+    return file.name.replace("REMOTE_FILE::", "")
+  }
+
   const previewUrls = useMemo(() => {
     return internalFiles.reduce(
       (acc, file) => {
         let previewUrl = null
-        if (file.file) {
-          if (file.file.type.startsWith("image/")) {
-            if (file.file.size > 0) {
-              previewUrl = URL.createObjectURL(file.file)
-            } else {
-              previewUrl = file.file.name
-            }
-          }
+
+        // Check if it's a remote file
+
+        if (isRemoteFile(file.file)) {
+          previewUrl = getRemoteUrl(file.file)
+        } else if (file.file.type.startsWith("image/")) {
+          previewUrl = URL.createObjectURL(file.file)
         }
+
         acc[file.id] = previewUrl
         return acc
       },
@@ -123,6 +144,48 @@ function FileUpload({
       setInternalFiles(newFiles)
     }
   }, [value, isControlled])
+
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const [previewFile, setPreviewFile] = useState<{
+    url: string
+    type: string
+    name: string
+  } | null>(null)
+
+  // Add a function to open the preview
+  const handlePreviewFile = useCallback((fileMeta: FileWithMeta) => {
+    let previewUrl: string | null = null
+    let fileType: string = ""
+    let fileName: string = ""
+
+    if (isRemoteFile(fileMeta.file)) {
+      previewUrl = getRemoteUrl(fileMeta.file)
+      fileType = fileMeta.file.type
+      fileName = previewUrl?.split("/").pop() || "File"
+    } else {
+      previewUrl = URL.createObjectURL(fileMeta.file)
+      fileType = fileMeta.file.type
+      fileName = fileMeta.file.name
+    }
+
+    if (previewUrl) {
+      setPreviewFile({
+        url: previewUrl,
+        type: fileType,
+        name: fileName,
+      })
+      setPreviewOpen(true)
+    }
+  }, [])
+
+  // Add cleanup for preview URLs
+  useEffect(() => {
+    return () => {
+      if (previewFile && !previewFile.url.startsWith("http")) {
+        URL.revokeObjectURL(previewFile.url)
+      }
+    }
+  }, [previewFile])
 
   useEffect(() => {
     return () => {
@@ -147,14 +210,10 @@ function FileUpload({
     (file: File) => {
       const errors = []
       if (!accept.includes(file.type)) {
-        errors.push(`File ${file.name} không đúng định dạng cho phép`)
+        errors.push("sai định dạng")
       }
       if (file.size > maxFileSize) {
-        errors.push(
-          `File ${file.name} vượt quá kích thước tối đa (${formatFileSize(
-            maxFileSize
-          )})`
-        )
+        errors.push(`quá dung lượng`)
       }
       return errors
     },
@@ -202,31 +261,19 @@ function FileUpload({
 
       // Show duplicate error
       if (duplicates.length > 0) {
-        toast({
+        sonnerToast({
           variant: "destructive",
-          title: "File trùng lặp",
-          description: (
-            <ul className="list-inside list-disc text-xs">
-              {duplicates.map((name, index) => (
-                <li key={index}>Đã tồn tại file: {name}</li>
-              ))}
-            </ul>
-          ),
+          title: `${duplicates.length} tệp đã tồn tại`,
         })
       }
 
-      // Show validation errors
+      // Show validation errors - Simplified error message
       if (errors.length > 0) {
-        toast({
+        // Create a unique list of error types
+        const uniqueErrors = Array.from(new Set(errors))
+        sonnerToast({
           variant: "destructive",
-          title: "Không thể tải lên một số file",
-          description: (
-            <ul className="list-inside list-disc text-xs">
-              {errors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          ),
+          title: `${filesArray.length - validFiles.length} tệp ${uniqueErrors.join(", ")}`,
         })
       }
 
@@ -251,6 +298,11 @@ function FileUpload({
           syncInput(updatedFiles)
         }
       }
+
+      // Clear the input field after processing
+      if (inputRef.current) {
+        inputRef.current.value = ""
+      }
     },
     [
       validateFile,
@@ -259,7 +311,6 @@ function FileUpload({
       value,
       internalFiles,
       syncInput,
-      toast,
       isMultipleAllowed,
     ]
   )
@@ -335,7 +386,7 @@ function FileUpload({
                     className="h-[100px] cursor-default"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {previewUrls[fileMeta.id] ? (
+                    {fileMeta.file.type.startsWith("image/") ? (
                       <img
                         src={previewUrls[fileMeta.id] || ""}
                         alt={fileMeta.file.name}
@@ -363,18 +414,32 @@ function FileUpload({
                       </div>
                     )}
                   </div>
-                  <Button
-                    size="xs"
-                    variant="ghost"
-                    isRounded
-                    iconOnly
-                    className="absolute right-1 top-1 size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      removeFile(fileMeta.id)
-                    }}
-                    iconLeft={<X />}
-                  />
+                  <div className="absolute right-1 top-1 flex gap-1">
+                    <Button
+                      size="xs"
+                      variant="ghost"
+                      isRounded
+                      iconOnly
+                      className="size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handlePreviewFile(fileMeta)
+                      }}
+                      iconLeft={<Maximize2 className="!size-3.5" />}
+                    />
+                    <Button
+                      size="xs"
+                      variant="ghost"
+                      isRounded
+                      iconOnly
+                      className="size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        removeFile(fileMeta.id)
+                      }}
+                      iconLeft={<X />}
+                    />
+                  </div>
                 </div>
               ))}
               {(internalFiles.length < maxFiles || maxFiles === 1) && (
@@ -410,53 +475,73 @@ function FileUpload({
                   {maxFiles !== 1 && internalFiles.length + "/" + maxFiles}
                 </div>
               )}
-              {internalFiles.map((fileMeta) => (
-                <div
-                  key={fileMeta.id}
-                  className="flex min-w-0 cursor-default items-center gap-3 rounded-lg bg-secondary p-2"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {previewUrls[fileMeta.id] ? (
-                    <img
-                      src={previewUrls[fileMeta.id] || ""}
-                      alt={fileMeta.file.name}
-                      className="size-12 rounded-lg border object-cover"
-                      onError={(e) => {
-                        ;(e.target as HTMLImageElement).style.display = "none"
-                      }}
-                    />
-                  ) : (
-                    <div className="flex size-12 items-center justify-center">
-                      {fileMeta.file.type.startsWith("image/")
-                        ? fileIcon.image
-                        : fileMeta.file.type.startsWith("audio/")
-                          ? fileIcon.audio
-                          : fileMeta.file.type.startsWith("video/")
-                            ? fileIcon.video
-                            : fileIcon.other}
+              {internalFiles.map((fileMeta) => {
+                const displayName = isRemoteFile(fileMeta.file)
+                  ? getRemoteUrl(fileMeta.file)?.split("/").pop() ||
+                    "remote-image"
+                  : fileMeta.file.name
+                return (
+                  <div
+                    key={fileMeta.id}
+                    className="flex min-w-0 cursor-default items-center gap-3 rounded-lg bg-secondary p-2"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {fileMeta.file.type.startsWith("image/") ? (
+                      <img
+                        src={previewUrls[fileMeta.id] || ""}
+                        alt={displayName}
+                        className="size-12 rounded-lg border object-cover"
+                        onError={(e) => {
+                          ;(e.target as HTMLImageElement).style.display = "none"
+                        }}
+                      />
+                    ) : (
+                      <div className="flex size-12 items-center justify-center">
+                        {fileMeta.file.type.startsWith("image/")
+                          ? fileIcon.image
+                          : fileMeta.file.type.startsWith("audio/")
+                            ? fileIcon.audio
+                            : fileMeta.file.type.startsWith("video/")
+                              ? fileIcon.video
+                              : fileIcon.other}
+                      </div>
+                    )}
+                    <div className="grid flex-1 gap-1">
+                      <div className="truncate text-sm">{displayName}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {fileMeta.file.type.split("/")[1].toUpperCase()} -{" "}
+                        {formatFileSize(fileMeta.file.size)}
+                      </div>
                     </div>
-                  )}
-                  <div className="grid flex-1 gap-1">
-                    <div className="truncate text-sm">{fileMeta.file.name}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {fileMeta.file.type.split("/")[1].toUpperCase()} -{" "}
-                      {formatFileSize(fileMeta.file.size)}
+                    <div className="flex gap-0">
+                      <Button
+                        variant="ghost"
+                        isRounded
+                        iconOnly
+                        className="size-8 min-w-0 border-0 opacity-70 hover:opacity-100"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handlePreviewFile(fileMeta)
+                        }}
+                      >
+                        <Maximize2 className="!size-4.5" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        isRounded
+                        iconOnly
+                        className="size-8 min-w-0 border-0 opacity-70 hover:opacity-100"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          removeFile(fileMeta.id)
+                        }}
+                      >
+                        <CloseCircle className="!size-5" />
+                      </Button>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    isRounded
-                    iconOnly
-                    className="size-8 min-w-0 border-0 opacity-70 hover:opacity-100"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      removeFile(fileMeta.id)
-                    }}
-                  >
-                    <CloseCircle className="!size-5" />
-                  </Button>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )
         ) : (
@@ -478,6 +563,41 @@ function FileUpload({
           </div>
         )}
       </div>
+      {/* File Preview Modal */}
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>{previewFile?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="flex h-full w-full justify-center">
+            {previewFile?.type.startsWith("image/") ? (
+              <img
+                src={previewFile.url}
+                alt={previewFile.name}
+                className="max-h-[80vh] object-contain"
+              />
+            ) : previewFile?.type === "application/pdf" ? (
+              <iframe
+                src={previewFile.url}
+                title={previewFile.name}
+                className="h-[80vh] w-full"
+              />
+            ) : (
+              <div className="flex h-40 w-full items-center justify-center">
+                <a
+                  href={previewFile?.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90"
+                >
+                  <SquareArrowOutUpRight className="size-4" />
+                  Open file in new tab
+                </a>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </FormComposition>
   )
 }

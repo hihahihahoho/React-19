@@ -17,7 +17,7 @@ import { z } from "zod"
  * DatePicker component allows users to select a date with a calendar interface.
  */
 const meta = {
-  title: "Forms/DatePicker",
+  title: "Forms/Date Picker",
   component: DatePicker,
   parameters: {
     layout: "centered",

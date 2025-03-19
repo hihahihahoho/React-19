@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/selection-controls/radio-group-form"
 import { TextareaForm } from "@/components/ui/textarea/textarea-form"
 import { ACCEPTED_PDF_TYPES, FORMAT_DATE } from "@/lib/const"
+import { createRemoteFileProxy } from "@/lib/utils"
 import { zodDate, zodDateRange, zodFile, zodRequiredString } from "@/lib/zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { parse } from "date-fns"
@@ -132,12 +133,9 @@ function FormDemo() {
         to: new Date("2024-10-28"),
       },
       file_upload: [
-        new File(
-          [],
-          "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
-          {
-            type: ACCEPTED_IMAGE_TYPES[0],
-          }
+        createRemoteFileProxy(
+          "https://pbs.twimg.com/media/Gk58xZCWUAABX7L?format=jpg&name=large",
+          1000000
         ),
       ],
       checkbox_group: ["recents", "home"],

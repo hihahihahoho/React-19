@@ -4,6 +4,7 @@ import { FileUpload } from "@/components/ui/file-upload/file-upload"
 import { FileUploadForm } from "@/components/ui/file-upload/file-upload-form"
 import { Form } from "@/components/ui/form/form"
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import { createRemoteFileProxy } from "@/lib/utils"
 import { zodFile } from "@/lib/zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react"
@@ -15,7 +16,7 @@ import { z } from "zod"
  * Use it to collect files from users with support for drag and drop, preview, and file validation.
  */
 const meta = {
-  title: "Forms/FileUpload",
+  title: "Forms/File Upload",
   component: FileUpload,
   parameters: {
     layout: "centered",
@@ -402,15 +403,16 @@ export const CompleteFormExample: Story = {
 export const WithPredefinedFiles: Story = {
   render: () => {
     // Create a sample file object for demonstration
-    const sampleFile = new File(
-      [],
-      "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
-      { type: "image/jpeg" }
+    const sampleFile = createRemoteFileProxy(
+      "https://pbs.twimg.com/media/Gk58xZCWUAABX7L?format=jpg&name=large",
+      1000000
     )
 
-    const samplePdf = new File([], "sample-document.pdf", {
-      type: "application/pdf",
-    })
+    const samplePdf = createRemoteFileProxy(
+      "https://pdfobject.com/pdf/sample.pdf",
+      1000000,
+      "application/pdf"
+    )
 
     return (
       <div className="w-full space-y-6">
@@ -478,12 +480,9 @@ export const FormDemoExample: Story = {
       resolver: zodResolver(FormSchema),
       defaultValues: {
         file_upload: [
-          new File(
-            [],
-            "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
-            {
-              type: ACCEPTED_IMAGE_TYPES[0],
-            }
+          createRemoteFileProxy(
+            "https://pbs.twimg.com/media/Gk58xZCWUAABX7L?format=jpg&name=large",
+            1000000
           ),
         ],
       },
@@ -565,15 +564,16 @@ export const FormDemoExample: Story = {
 export const DisplayVariantsComparison: Story = {
   render: () => {
     // Create sample files
-    const sampleFile1 = new File(
-      [],
-      "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
-      { type: "image/jpeg" }
+    const sampleFile1 = createRemoteFileProxy(
+      "https://pbs.twimg.com/media/Gk58xZCWUAABX7L?format=jpg&name=large",
+      1000000
     )
 
-    const sampleFile2 = new File([], "document.pdf", {
-      type: "application/pdf",
-    })
+    const sampleFile2 = createRemoteFileProxy(
+      "https://pdfobject.com/pdf/sample.pdf",
+      1000000,
+      "application/pdf"
+    )
 
     const sampleFiles = [sampleFile1, sampleFile2]
 

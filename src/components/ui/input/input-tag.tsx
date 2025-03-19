@@ -1,3 +1,5 @@
+"use client"
+
 import { useHistoryState } from "@/hooks/use-history-state"
 import { useMergedRef } from "@/hooks/use-merge-ref"
 import { cn } from "@/lib/utils"

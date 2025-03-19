@@ -30,7 +30,7 @@ import { z } from "zod"
  * Use it when users need to select from predefined options while still allowing typing.
  */
 const meta = {
-  title: "Forms/InputAutoComplete",
+  title: "Forms/Input Auto Complete",
   component: InputAutoComplete,
   parameters: {
     layout: "centered",

@@ -39,6 +39,7 @@ function Calendar({
       showOutsideDays={showOutsideDays}
       captionLayout="dropdown"
       className={cn("p-3", className)}
+      footer={true}
       classNames={{
         months: "flex flex-row justify-center gap-5",
         month: "gap-4 flex flex-col items-center", // changed from month

@@ -33,7 +33,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 const lightboxItems: LightBoxImageType[] = [
   {
-    src: "https://images.pexels.com/photos/1032650/pexels-photo-1032650.jpeg",
+    src: "https://pbs.twimg.com/media/Gk58xZCWUAABX7L?format=jpg&name=large",
     alt: "Image 1",
   },
   {
