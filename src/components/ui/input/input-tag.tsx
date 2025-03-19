@@ -156,53 +156,11 @@ export function InputTag({
     return inputValue.length >= minCharToSearch && options && options.length > 0
   }, [open, loading, inputValue, minCharToSearch, options])
 
-  // Key event handlers for ctrl+z and ctrl+shift+z/ctrl+y
-  const handleKeyDownGlobal = React.useCallback(
-    (e: KeyboardEvent) => {
-      // Only apply undo/redo when input is focused
-      if (document.activeElement !== internalRef.current) {
-        return // Do nothing if input is not focused
-      }
-
-      // If input has content, let browser handle the undo/redo
-      if (inputValue) {
-        return // Let browser handle normal input undo/redo when input has content
-      }
-
-      // Apply custom undo/redo for tag management when input is empty
-      // Check for Ctrl+Z (undo)
-      if (e.ctrlKey && e.key.toLowerCase() === "z" && !e.shiftKey) {
-        e.preventDefault()
-        onUndo?.()
-        undo()
-      }
-
-      // Check for Ctrl+Shift+Z or Ctrl+Y (redo)
-      if (
-        (e.ctrlKey && e.key.toLowerCase() === "z" && e.shiftKey) ||
-        (e.ctrlKey && e.key.toLowerCase() === "y")
-      ) {
-        e.preventDefault()
-        onRedo?.()
-        redo()
-      }
-    },
-    [undo, redo, inputValue]
-  )
-
   React.useEffect(() => {
     if (isControlled) {
       onValueChange?.(tags)
     }
   }, [tags, isControlled])
-
-  // Add global keyboard event listener for undo/redo
-  React.useEffect(() => {
-    window.addEventListener("keydown", handleKeyDownGlobal)
-    return () => {
-      window.removeEventListener("keydown", handleKeyDownGlobal)
-    }
-  }, [handleKeyDownGlobal])
 
   // Add a new tag
   const addTag = React.useCallback(
@@ -234,9 +192,125 @@ export function InputTag({
       onValueChange?.(newTags)
       setTags(newTags)
 
-      setActiveTagIndex(null)
+      // Focus previous tag if available, otherwise keep focus on input
+      if (indexToRemove > 0) {
+        setActiveTagIndex(indexToRemove - 1)
+      } else if (newTags.length > 0) {
+        setActiveTagIndex(0) // Focus first tag if removing first tag and others exist
+      } else {
+        setActiveTagIndex(null)
+        internalRef.current?.focus() // Focus input if no tags left
+      }
     },
     [currentTags, isControlled, onValueChange, setTags]
+  )
+
+  const handleKeyDownGlobal = React.useCallback(
+    (e: KeyboardEvent) => {
+      // Check if focus is within the container instead of just the input
+      if (!containerRef.current?.contains(document.activeElement as Node)) {
+        return // Do nothing if focus is not within container
+      }
+
+      // If input has content and input is focused, let default handlers work
+      const isInputFocused = document.activeElement === internalRef.current
+      if (inputValue && isInputFocused) {
+        return
+      }
+
+      // Apply custom undo/redo for tag management when input is empty
+      if (e.ctrlKey && e.key.toLowerCase() === "z" && !e.shiftKey) {
+        e.preventDefault()
+        onUndo?.()
+        undo()
+        return
+      }
+
+      // Check for Ctrl+Shift+Z or Ctrl+Y (redo)
+      if (
+        (e.ctrlKey && e.key.toLowerCase() === "z" && e.shiftKey) ||
+        (e.ctrlKey && e.key.toLowerCase() === "y")
+      ) {
+        e.preventDefault()
+        onRedo?.()
+        redo()
+        return
+      }
+
+      // Handle tag navigation with arrow keys when container has focus
+      if (e.key === "ArrowLeft") {
+        e.preventDefault()
+        setActiveTagIndex((prev) => {
+          if (prev === null) return currentTags.length - 1
+          return prev <= 0 ? 0 : prev - 1
+        })
+        return
+      }
+
+      if (e.key === "ArrowRight") {
+        e.preventDefault()
+        setActiveTagIndex((prev) => {
+          if (prev === null) return 0
+          // If we're at the last tag, focus the input instead
+          if (prev >= currentTags.length - 1) {
+            internalRef.current?.focus()
+            return null
+          }
+          return prev + 1
+        })
+        return
+      }
+
+      // Handle backspace to remove last tag when input is empty
+      if (
+        e.key === "Backspace" &&
+        !inputValue &&
+        currentTags.length > 0 &&
+        isInputFocused
+      ) {
+        e.preventDefault()
+        if (activeTagIndex !== null) {
+          // Remove currently selected tag
+          removeTag(activeTagIndex)
+        } else {
+          // Select last tag for potential removal
+          setActiveTagIndex(currentTags.length - 1)
+        }
+        return
+      }
+
+      // Handle delete key on selected tag
+      if (
+        (e.key === "Delete" || e.key === "Backspace") &&
+        activeTagIndex !== null
+      ) {
+        // Only handle if we're not typing in the input
+        if (!isInputFocused) {
+          removeTag(activeTagIndex)
+          e.preventDefault()
+          return
+        }
+      }
+
+      // Clear tag selection on Escape
+      if (e.key === "Escape") {
+        setActiveTagIndex(null)
+        internalRef.current?.focus()
+        return
+      }
+    },
+    [
+      undo,
+      redo,
+      inputValue,
+      containerRef,
+      currentTags,
+      internalRef,
+      activeTagIndex,
+      onUndo,
+      onRedo,
+      removeTag,
+    ]
   )
 
   const handleComponentKeyDown = React.useCallback(
@@ -260,6 +334,14 @@ export function InputTag({
     },
     [activeTagIndex, removeTag]
   )
+
+  // Add global keyboard event listener for undo/redo
+  React.useEffect(() => {
+    window.addEventListener("keydown", handleKeyDownGlobal)
+    return () => {
+      window.removeEventListener("keydown", handleKeyDownGlobal)
+    }
+  }, [handleKeyDownGlobal])
 
   // Add global keyboard event listener for tag deletion
   React.useEffect(() => {
@@ -315,48 +397,7 @@ export function InputTag({
       return
     }
 
-    // Handle backspace to remove last tag when input is empty
-    if (e.key === "Backspace" && !inputValue && currentTags.length > 0) {
-      if (activeTagIndex !== null) {
-        // Remove currently selected tag
-        removeTag(activeTagIndex)
-      } else {
-        // Select last tag for potential removal
-        setActiveTagIndex(currentTags.length - 1)
-      }
-      return
-    }
-
-    // Handle delete key on selected tag
-    if (
-      (e.key === "Delete" || e.key === "Backspace") &&
-      activeTagIndex !== null
-    ) {
-      removeTag(activeTagIndex)
-      return
-    }
-
-    // Tag navigation with arrow keys when input is empty
-    if (!inputValue) {
-      if (e.key === "ArrowLeft") {
-        e.preventDefault()
-        setActiveTagIndex((prev) => {
-          if (prev === null) return currentTags.length - 1
-          return prev <= 0 ? 0 : prev - 1
-        })
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault()
-        setActiveTagIndex((prev) => {
-          if (prev === null) return 0
-          return prev >= currentTags.length - 1 ? null : prev + 1
-        })
-      }
-    }
-
-    // Clear tag selection on Escape
-    if (e.key === "Escape") {
-      setActiveTagIndex(null)
-    }
+    // Let the global handler handle the rest
   }
 
   // Handle selection from dropdown
@@ -503,7 +544,10 @@ export function InputTag({
         <PopoverAnchor
           virtualRef={formCompositionRef as React.RefObject<Measurable>}
         />
-        <Command {...commandProps} className="overflow-visible">
+        <Command
+          {...commandProps}
+          className="overflow-visible focus-visible:outline-none"
+        >
           {inputArea}
           <PopoverContent
             onOpenAutoFocus={(e) => e.preventDefault()}
