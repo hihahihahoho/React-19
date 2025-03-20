@@ -823,51 +823,45 @@ export const FormIntegrationWithLocationSearch: Story = {
           return []
         }
 
-        try {
-          const { data } = await axios.get(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-              search
-            )}&limit=5`,
-            { signal }
-          )
+        const { data } = await axios.get(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+            search
+          )}&limit=5`,
+          { signal }
+        )
 
-          if (data.length === 0) {
-            throw new Error("No results found")
-          }
-
-          // Transform results to the expected format
-          const locationResults = data.map((item: any) => ({
-            value: item.display_name,
-            label: item.display_name,
-            description: `${item.type} in ${item.address?.country || ""}`,
-            icon: item.icon
-              ? `https://nominatim.openstreetmap.org/ui/mapicons/${item.icon}.png`
-              : "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
-          }))
-
-          // Update the cache with new locations
-          const updatedCache = [...locationsCache]
-
-          locationResults.forEach((location: any) => {
-            const existingIndex = updatedCache.findIndex(
-              (c) => c.value === location.value
-            )
-            if (existingIndex >= 0) {
-              updatedCache[existingIndex] = location
-            } else {
-              updatedCache.push(location)
-            }
-          })
-
-          // Update the cache
-          queryClient.setQueryData(["locations", "cache"], updatedCache)
-
-          return locationResults
-        } catch (error) {
-          if (axios.isCancel(error)) {
-          }
-          throw error
+        if (data.length === 0) {
+          throw new Error("No results found")
         }
+
+        // Transform results to the expected format
+        const locationResults = data.map((item: any) => ({
+          value: item.display_name,
+          label: item.display_name,
+          description: `${item.type} in ${item.address?.country || ""}`,
+          icon: item.icon
+            ? `https://nominatim.openstreetmap.org/ui/mapicons/${item.icon}.png`
+            : "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
+        }))
+
+        // Update the cache with new locations
+        const updatedCache = [...locationsCache]
+
+        locationResults.forEach((location: any) => {
+          const existingIndex = updatedCache.findIndex(
+            (c) => c.value === location.value
+          )
+          if (existingIndex >= 0) {
+            updatedCache[existingIndex] = location
+          } else {
+            updatedCache.push(location)
+          }
+        })
+
+        // Update the cache
+        queryClient.setQueryData(["locations", "cache"], updatedCache)
+
+        return locationResults
       },
       enabled: search.length >= 3,
       staleTime: 60000,

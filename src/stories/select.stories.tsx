@@ -507,32 +507,28 @@ export const ServerSideFetchingOnSearchInForm: Story = {
           ? `https://restcountries.com/v3.1/name/${search}`
           : `https://restcountries.com/v3.1/alpha?codes=${[selectedCode, ...defaultCountries].join(",")}&fields=name,flags,cca2`
 
-        try {
-          const { data } = await axios.get(url, { signal })
+        const { data } = await axios.get(url, { signal })
 
-          const countries = Array.isArray(data) ? data : [data]
+        const countries = Array.isArray(data) ? data : [data]
 
-          // Merge new countries with existing cache
-          const updatedCache = [...countriesData]
+        // Merge new countries with existing cache
+        const updatedCache = [...countriesData]
 
-          countries.forEach((country) => {
-            const existingIndex = updatedCache.findIndex(
-              (c) => c.cca2 === country.cca2
-            )
-            if (existingIndex >= 0) {
-              updatedCache[existingIndex] = country
-            } else {
-              updatedCache.push(country)
-            }
-          })
+        countries.forEach((country) => {
+          const existingIndex = updatedCache.findIndex(
+            (c) => c.cca2 === country.cca2
+          )
+          if (existingIndex >= 0) {
+            updatedCache[existingIndex] = country
+          } else {
+            updatedCache.push(country)
+          }
+        })
 
-          // Update the cache
-          queryClient.setQueryData(["countries", "cache"], updatedCache)
+        // Update the cache
+        queryClient.setQueryData(["countries", "cache"], updatedCache)
 
-          return countries
-        } catch (error) {
-          throw error
-        }
+        return countries
       },
       refetchOnWindowFocus: true,
       enabled: search.length >= 0, // Only run if empty or 3+ characters

@@ -38,7 +38,6 @@ function SelectCommandVirtualize({
   commandWrapper = true,
   loading,
   minItemsToShowSearch = 5,
-  showSelectedItems = true,
   commandInputProps,
   showEmptyState = true,
   contentBefore,
