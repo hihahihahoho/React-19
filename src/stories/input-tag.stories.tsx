@@ -15,6 +15,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query"
+import axios from "axios"
 import {
   AlertTriangle,
   ArrowDown,
@@ -662,8 +663,6 @@ export const HistoryAndUndo: Story = {
 export const ServerSideFetchingInForm: Story = {
   render: function ServerSideFormExample() {
     const [search, setSearch] = useState("")
-    const [debouncedSearch, setDebouncedSearch] = useState("")
-    const [isTyping, setIsTyping] = useState(false)
     const queryClient = useQueryClient()
 
     const countriesData =
@@ -679,102 +678,70 @@ export const ServerSideFetchingInForm: Story = {
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-        countries: ["US", "CA"],
+        countries: ["US", "CA"], // Default to US and Canada
       },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-      // Get country data from the query cache
-      const countriesData =
-        queryClient.getQueryData<any[]>(["countries", "cache"]) || []
-
-      // Map country codes to names using the cache
-      const selectedCountries = values.countries
-        .map((code) => {
-          const country = countriesData.find((c) => c.cca2 === code)
-          return country?.name?.common || code
-        })
-        .join(", ")
-
-      alert(`Form submitted!\nCountries: ${selectedCountries || "None"}`)
-    }
-
-    // Debounce the search input
-    useEffect(() => {
-      if (search) {
-        setIsTyping(true)
-      }
-
-      const timer = setTimeout(() => {
-        setDebouncedSearch(search)
-        setIsTyping(false)
-      }, 300)
-
-      return () => clearTimeout(timer)
-    }, [search])
-
-    // Fetch country list based on search term OR initially load selected countries
-    const { data, isLoading: isLoadingResults } = useQuery({
-      queryKey: ["countries", debouncedSearch],
-      queryFn: async () => {
+    // Fetch country list based on search term
+    const { data, isLoading } = useQuery({
+      queryKey: ["countries", search], // Use search directly, not debounced search
+      queryFn: async ({ signal }) => {
         // If we have a search term, fetch filtered results
-        // Otherwise fetch the initial selected countries
+        // Otherwise fetch the initial selected countries or default options
         const selectedCodes = form.watch("countries")
+        // Add additional default countries to show some variety in initial results
         const defaultCountries = [
           "VN",
           "KR",
-          "GD",
-          "CH",
-          "GS",
-          "SL",
-          "HU",
-          "TW",
-          "WF",
-          "BB",
+          "GB",
+          "JP",
+          "AU",
+          "FR",
+          "DE",
+          "BR",
         ]
 
-        const url = debouncedSearch
-          ? `https://restcountries.com/v3.1/name/${debouncedSearch}`
+        const url = search
+          ? `https://restcountries.com/v3.1/name/${search}`
           : `https://restcountries.com/v3.1/alpha?codes=${[...selectedCodes, ...defaultCountries].join(",")}&fields=name,flags,cca2`
 
-        const response = await fetch(url)
+        try {
+          const { data } = await axios.get(url, { signal })
 
-        if (!response.ok) {
-          if (response.status === 404) {
-            return []
+          const countries = Array.isArray(data) ? data : [data]
+
+          // Merge new countries with existing cache
+          const updatedCache = [...countriesData]
+
+          countries.forEach((country) => {
+            const existingIndex = updatedCache.findIndex(
+              (c) => c.cca2 === country.cca2
+            )
+            if (existingIndex >= 0) {
+              updatedCache[existingIndex] = country
+            } else {
+              updatedCache.push(country)
+            }
+          })
+
+          // Update the cache
+          queryClient.setQueryData(["countries", "cache"], updatedCache)
+
+          return countries
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            if (error.response?.status === 404) {
+              return []
+            }
           }
-          throw new Error("Network response was not ok")
+          throw error
         }
-
-        const data = await response.json()
-
-        // Store fetched countries in a separate cache entry
-
-        const countries = Array.isArray(data) ? data : [data]
-
-        // Merge new countries with existing cache
-        const updatedCache = [...countriesData]
-
-        countries.forEach((country) => {
-          const existingIndex = updatedCache.findIndex(
-            (c) => c.cca2 === country.cca2
-          )
-          if (existingIndex >= 0) {
-            updatedCache[existingIndex] = country
-          } else {
-            updatedCache.push(country)
-          }
-        })
-
-        // Update the cache
-        queryClient.setQueryData(["countries", "cache"], updatedCache)
-
-        return data
       },
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
+      enabled: search.length >= 0,
+      staleTime: 0,
+      gcTime: 5 * 60 * 1000,
     })
-
-    const isLoading = isTyping || isLoadingResults
 
     // Memoize country options to avoid recreation on each render
     const countryOptions = useMemo(() => {
@@ -812,6 +779,18 @@ export const ServerSideFetchingInForm: Story = {
         .filter(Boolean) as SelectItems[]
     }, [form.watch("countries"), countriesData])
 
+    function onSubmit(values: z.infer<typeof formSchema>) {
+      // Map country codes to names using the cache
+      const selectedCountries = values.countries
+        .map((code) => {
+          const country = countriesData.find((c) => c.cca2 === code)
+          return country?.name?.common || code
+        })
+        .join(", ")
+
+      alert(`Selected countries: ${selectedCountries}`)
+    }
+
     return (
       <ZodSchemaProvider schema={formSchema}>
         <Form {...form}>
@@ -828,7 +807,7 @@ export const ServerSideFetchingInForm: Story = {
               placeholder="Search countries..."
               customDisplayValue={formSelectedCountries}
               commandProps={{
-                shouldFilter: false,
+                shouldFilter: false, // Important! Disable client-side filtering
               }}
               loading={isLoading}
               onSearchChange={setSearch}
@@ -857,7 +836,8 @@ export const ServerSideFetchingInForm: Story = {
     docs: {
       description: {
         story:
-          "InputTag with server-side data fetching integrated in a form with React Hook Form and Zod validation. Uses the QueryClient cache to store country data, removing the need for a separate state variable.",
+          "InputTag with server-side data fetching using Axios and React Query. This implementation automatically handles cancellation of pending requests when new searches are triggered, and uses a central cache to store country data for efficient retrieval.\n\n" +
+          "**Important:** Setting `shouldFilter: false` is critical when implementing server-side filtering to prevent the component from applying its own client-side filtering on top of your server-side results. This ensures that the component displays exactly what the server returns.",
       },
     },
   },

@@ -547,8 +547,8 @@ export const ServerSideFetchingOnSearchInForm: Story = {
           throw error
         }
       },
-      refetchOnWindowFocus: false,
-      enabled: search.length > 0 || search.length === 0, // Only run if empty or 3+ characters
+      refetchOnWindowFocus: true,
+      enabled: search.length >= 0, // Only run if empty or 3+ characters
       // Add built-in debounce instead of setTimeout
       refetchOnMount: true,
       staleTime: 0,
@@ -669,7 +669,8 @@ export const ServerSideFetchingOnSearchInForm: Story = {
     docs: {
       description: {
         story:
-          "Select with server-side data fetching using Axios and React Query. This implementation automatically handles cancellation of pending requests when new searches are triggered. No manual debounce setTimeout needed.",
+          "Select with server-side data fetching using Axios and React Query. This implementation automatically handles cancellation of pending requests when new searches are triggered. No manual debounce setTimeout needed.\n\n" +
+          "**Important:** Setting `shouldFilter: false` is critical when implementing server-side filtering to prevent the component from applying its own client-side filtering on top of your server-side results. This ensures that the component displays exactly what the server returns.",
       },
     },
   },
