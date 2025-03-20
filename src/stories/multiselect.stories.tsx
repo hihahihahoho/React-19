@@ -116,7 +116,7 @@ type Story = StoryObj<typeof meta>
 
 // Sample options
 const fruitOptions: SelectItems[] = [
-  { value: "apple", label: "Apple" },
+  { value: "Nguyễn Thành Tùng", label: "Nguyễn Thành Tùng" },
   { value: "banana", label: "Banana" },
   { value: "orange", label: "Orange" },
   { value: "strawberry", label: "Strawberry" },
@@ -844,6 +844,157 @@ export const MultiSelectInFormWithFetchedData: Story = {
       description: {
         story:
           "A form with a MultiSelect component that fetches countries data once on component mount. This example demonstrates fetching data separately from the search functionality, which is suitable when you have a manageable list of options that don't require server-side filtering.",
+      },
+    },
+  },
+}
+
+/**
+ * Example of a multiselect in a form with a large dataset for virtualization testing.
+ */
+export const MultiSelectWithLargeDataset: Story = {
+  render: function LargeDatasetExample() {
+    // Form setup
+    const formSchema = z.object({
+      users: z.array(z.string()).min(1, "Please select at least one user"),
+    })
+
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        users: [],
+      },
+    })
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+      alert(`Form submitted with ${values.users.length} users selected!`)
+    }
+
+    // Fetch large user dataset
+    const { data, isLoading } = useQuery({
+      queryKey: ["largeUserDataset"],
+      queryFn: async () => {
+        // Fetch from JSONPlaceholder API
+        const jsonPlaceholderResponse = await fetch(
+          "https://jsonplaceholder.typicode.com/users"
+        )
+
+        if (!jsonPlaceholderResponse.ok) {
+          throw new Error("Failed to fetch initial users")
+        }
+
+        const initialUsers = (await jsonPlaceholderResponse.ok)
+          ? await jsonPlaceholderResponse.json()
+          : []
+
+        // Fetch from Random User API to get more data and profile images
+        const randomUserResponse = await fetch(
+          "https://randomuser.me/api/?results=500"
+        )
+
+        if (!randomUserResponse.ok) {
+          throw new Error("Failed to fetch random users")
+        }
+
+        const randomUsers = await randomUserResponse.json()
+
+        // Create a large dataset by combining and multiplying both sources
+        const combinedUsers = [
+          // First add the original users from JSONPlaceholder
+          ...initialUsers.map((user: any) => ({
+            id: `jp-${user.id}`,
+            name: user.name,
+            email: user.email,
+            username: user.username,
+          })),
+
+          // Then add all the random users with profile images
+          ...randomUsers.results.map((user: any, index: number) => ({
+            id: `ru-${index}`,
+            name: `${user.name.first} ${user.name.last}`,
+            email: user.email,
+            username: user.login.username,
+            avatar: user.picture.thumbnail,
+          })),
+        ]
+
+        return combinedUsers
+      },
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // Data remains fresh for 5 minutes
+    })
+
+    // Transform API data into select options
+    const userOptions: SelectItems[] = useMemo(() => {
+      if (!data) return []
+
+      return data.map((user: any) => ({
+        value: user.id,
+        label: user.name,
+        description: user.email,
+        icon: user.avatar ? (
+          user.avatar
+        ) : (
+          <div className="flex size-5 items-center justify-center rounded-full bg-gray-200 text-gray-500">
+            <User className="size-3.5" />
+          </div>
+        ),
+      }))
+    }, [data])
+
+    return (
+      <ZodSchemaProvider schema={formSchema}>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-4"
+          >
+            <MultiSelectForm
+              name="users"
+              control={form.control}
+              options={userOptions}
+              formComposition={{
+                label: "Users",
+                description: "Select users from a large dataset",
+                iconLeft: isLoading ? (
+                  <Loader2Icon className="size-4 animate-spin" />
+                ) : (
+                  <User className="size-4" />
+                ),
+                requiredSymbol: true,
+              }}
+              placeholder="Choose users"
+              selectCommandProps={{
+                loading: isLoading,
+                minItemsToShowSearch: 5,
+              }}
+              bagdeGroupProps={{
+                maxShownItems: 5,
+              }}
+            />
+
+            <div className="flex justify-end gap-2">
+              <Button className="flex-1" type="submit" disabled={isLoading}>
+                Submit
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => form.reset()}
+              >
+                Reset
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </ZodSchemaProvider>
+    )
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "This example demonstrates a MultiSelect component with a large dataset (500+ items) to test virtualization. It combines data from JSONPlaceholder and the Random User API to create a substantial list of users with avatars. The `virtualized: true` property enables efficient rendering of the large dataset by only rendering items that are currently visible in the viewport.",
       },
     },
   },

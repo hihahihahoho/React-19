@@ -12,8 +12,13 @@ export const getNodeText = (node: React.ReactNode): string => {
     case "object": {
       if (node instanceof Array) return node.map(getNodeText).join("")
 
-      if ("props" in node) return getNodeText(node.props.children)
-    } // eslint-ignore-line no-fallthrough
+      if (node !== null && typeof node === "object" && "props" in node) {
+        const reactElement = node as { props: { children?: React.ReactNode } }
+        return getNodeText(reactElement.props.children)
+      }
+
+      return ""
+    }
 
     default:
       console.warn("Unresolved `node` of type:", typeof node, node)
