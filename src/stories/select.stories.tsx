@@ -9,7 +9,12 @@ import {
 } from "@/components/ui/select/select-interface"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query"
 import axios from "axios"
 import {
   Flag,
@@ -82,10 +87,13 @@ They are useful when you have a list of options but want to save space by showin
   },
   decorators: [
     (Story) => {
+      const queryClient = new QueryClient()
       return (
-        <div className="mx-auto w-[384px] max-w-[80vw]">
-          <Story />
-        </div>
+        <QueryClientProvider client={queryClient}>
+          <div className="mx-auto w-[384px] max-w-[80vw]">
+            <Story />
+          </div>
+        </QueryClientProvider>
       )
     },
   ],
@@ -507,36 +515,44 @@ export const ServerSideFetchingOnSearchInForm: Story = {
           ? `https://restcountries.com/v3.1/name/${search}`
           : `https://restcountries.com/v3.1/alpha?codes=${[selectedCode, ...defaultCountries].join(",")}&fields=name,flags,cca2`
 
-        const { data } = await axios.get(url, { signal })
+        try {
+          const { data } = await axios.get(url, { signal })
 
-        const countries = Array.isArray(data) ? data : [data]
+          const countries = Array.isArray(data) ? data : [data]
 
-        // Merge new countries with existing cache
-        const updatedCache = [...countriesData]
+          // Merge new countries with existing cache
+          const updatedCache = [...countriesData]
 
-        countries.forEach((country) => {
-          const existingIndex = updatedCache.findIndex(
-            (c) => c.cca2 === country.cca2
-          )
-          if (existingIndex >= 0) {
-            updatedCache[existingIndex] = country
-          } else {
-            updatedCache.push(country)
+          countries.forEach((country) => {
+            const existingIndex = updatedCache.findIndex(
+              (c) => c.cca2 === country.cca2
+            )
+            if (existingIndex >= 0) {
+              updatedCache[existingIndex] = country
+            } else {
+              updatedCache.push(country)
+            }
+          })
+
+          // Update the cache
+          queryClient.setQueryData(["countries", "cache"], updatedCache)
+
+          return countries
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            if (error.response?.status === 404) {
+              return []
+            }
           }
-        })
-
-        // Update the cache
-        queryClient.setQueryData(["countries", "cache"], updatedCache)
-
-        return countries
+          throw error
+        }
       },
-      refetchOnWindowFocus: true,
-      enabled: search.length >= 0, // Only run if empty or 3+ characters
+      refetchOnWindowFocus: false,
+      enabled: search.length > 0 || search.length === 0, // Only run if empty or 3+ characters
       // Add built-in debounce instead of setTimeout
       refetchOnMount: true,
       staleTime: 0,
       gcTime: 5 * 60 * 1000,
-      retry: 0,
       // Don't keep fetching when typing fast
     })
 
@@ -653,8 +669,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
     docs: {
       description: {
         story:
-          "Select with server-side data fetching using Axios and React Query. This implementation automatically handles cancellation of pending requests when new searches are triggered. No manual debounce setTimeout needed.\n\n" +
-          "**Important:** Setting `shouldFilter: false` is critical when implementing server-side filtering to prevent the component from applying its own client-side filtering on top of your server-side results. This ensures that the component displays exactly what the server returns.",
+          "Select with server-side data fetching using Axios and React Query. This implementation automatically handles cancellation of pending requests when new searches are triggered. No manual debounce setTimeout needed.",
       },
     },
   },

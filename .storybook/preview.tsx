@@ -4,6 +4,7 @@ import { Toaster } from "../src/components/ui/toast/toaster"
 
 import { sonnerToast } from "../src/components/ui/sonner"
 
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import React from "react"
 import { Toaster as SonnerToaster } from "sonner"
 import "swiper/css"
@@ -48,6 +49,7 @@ const preview: Preview = {
           <Toaster />
           <SonnerToaster />
           <AlertDialogContainer />
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       )
     },
