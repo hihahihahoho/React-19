@@ -9,12 +9,7 @@ import {
 } from "@/components/ui/select/select-interface"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react"
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import {
   Flag,
@@ -87,13 +82,10 @@ They are useful when you have a list of options but want to save space by showin
   },
   decorators: [
     (Story) => {
-      const queryClient = new QueryClient()
       return (
-        <QueryClientProvider client={queryClient}>
-          <div className="mx-auto w-[384px] max-w-[80vw]">
-            <Story />
-          </div>
-        </QueryClientProvider>
+        <div className="mx-auto w-[384px] max-w-[80vw]">
+          <Story />
+        </div>
       )
     },
   ],
@@ -539,11 +531,6 @@ export const ServerSideFetchingOnSearchInForm: Story = {
 
           return countries
         } catch (error) {
-          if (axios.isAxiosError(error)) {
-            if (error.response?.status === 404) {
-              return []
-            }
-          }
           throw error
         }
       },
@@ -553,6 +540,7 @@ export const ServerSideFetchingOnSearchInForm: Story = {
       refetchOnMount: true,
       staleTime: 0,
       gcTime: 5 * 60 * 1000,
+      retry: 0,
       // Don't keep fetching when typing fast
     })
 

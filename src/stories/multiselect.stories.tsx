@@ -10,12 +10,7 @@ import {
 } from "@/components/ui/select/select-interface"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react"
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import {
   AlertTriangleIcon,
@@ -107,13 +102,10 @@ They are useful when you want to allow multiple selections from a set of options
   },
   decorators: [
     (Story) => {
-      const queryClient = new QueryClient()
       return (
-        <QueryClientProvider client={queryClient}>
-          <div className="mx-auto w-[384px] max-w-[80vw]">
-            <Story />
-          </div>
-        </QueryClientProvider>
+        <div className="mx-auto w-[384px] max-w-[80vw]">
+          <Story />
+        </div>
       )
     },
   ],
@@ -928,11 +920,6 @@ export const ServerSideFetchingInForm: Story = {
 
           return countries
         } catch (error) {
-          if (axios.isAxiosError(error)) {
-            if (error.response?.status === 404) {
-              return []
-            }
-          }
           throw error
         }
       },
@@ -940,6 +927,7 @@ export const ServerSideFetchingInForm: Story = {
       enabled: search.length >= 0,
       staleTime: 0,
       gcTime: 5 * 60 * 1000,
+      retry: 0,
     })
 
     // Memoize country options to avoid recreation on each render

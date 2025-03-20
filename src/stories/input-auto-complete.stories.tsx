@@ -6,11 +6,8 @@ import { InputAutoComplete } from "@/components/ui/input/input-auto-complete"
 import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react"
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import axios from "axios"
 import {
   Clock,
   Globe,
@@ -99,13 +96,10 @@ It supports two modes: "default" (free typing with suggestions) and "select" (on
   },
   decorators: [
     (Story) => {
-      const queryClient = new QueryClient()
       return (
-        <QueryClientProvider client={queryClient}>
-          <div className="flex items-center justify-center md:w-96">
-            <Story />
-          </div>
-        </QueryClientProvider>
+        <div className="flex items-center justify-center md:w-96">
+          <Story />
+        </div>
       )
     },
   ],
@@ -508,74 +502,112 @@ export const ServerSideFetchingOnSearch: Story = {
 /**
  * Integration with a REST API for real data fetching.
  */
+
 export const LocationSearchWithAPI: Story = {
   render: function LocationAPIExample() {
     const [search, setSearch] = useState("")
-    const [debouncedSearch, setDebouncedSearch] = useState("")
-    const [isTyping, setIsTyping] = useState(false)
-    const [selectedLocation, setSelectedLocation] = useState<string>("")
+    const queryClient = useQueryClient()
 
-    // Debounce the search input
-    useEffect(() => {
-      if (search) {
-        setIsTyping(true)
-      }
+    // Popular locations for initial state
+    const popularLocations = [
+      {
+        value: "New York, USA",
+        icon: "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
+      },
+      {
+        value: "London, UK",
+        icon: "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
+      },
+      {
+        value: "Paris, France",
+        icon: "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
+      },
+      {
+        value: "Tokyo, Japan",
+        icon: "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
+      },
+      {
+        value: "Sydney, Australia",
+        icon: "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
+      },
+    ]
 
-      const timer = setTimeout(() => {
-        setDebouncedSearch(search)
-        setIsTyping(false)
-      }, 500)
+    // Store search history in query cache
+    const searchHistory =
+      queryClient.getQueryData<string[]>(["locationSearchHistory"]) || []
 
-      return () => clearTimeout(timer)
-    }, [search])
-
-    // Fetch locations from API
-    const { data, isLoading: isLoadingResults } = useQuery({
-      queryKey: ["locations", debouncedSearch],
-      queryFn: async () => {
-        if (!debouncedSearch || debouncedSearch.length < 3) {
+    // Fetch locations from API based on search term
+    const { data, isLoading } = useQuery({
+      queryKey: ["locationSearch", search],
+      queryFn: async ({ signal }) => {
+        if (!search || search.length < 3) {
           return []
         }
 
         try {
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(debouncedSearch)}&limit=5`
+          const { data } = await axios.get(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+              search
+            )}&limit=5`,
+            { signal }
           )
 
-          if (!response.ok) {
-            throw new Error("Network response was not ok")
-          }
-
-          const data = await response.json()
+          // Transform results to the expected format
           return data.map((item: any) => ({
             value: item.display_name,
-            keywords: [item.display_name, item.type],
+            label: item.display_name,
             description: `${item.type} in ${item.address?.country || ""}`,
-            icon: <Map className="text-blue-500" />,
+            icon: item.icon
+              ? `https://nominatim.openstreetmap.org/ui/mapicons/${item.icon}.png`
+              : "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
           }))
         } catch (error) {
           console.error("Failed to fetch locations:", error)
-          return []
+          throw error
         }
       },
-      enabled: debouncedSearch.length >= 3,
+      enabled: search.length >= 3,
       staleTime: 60000,
+      gcTime: 5 * 60 * 1000,
+      retry: 0,
     })
 
-    // Show loading state when typing or when API is loading
-    const isLoading = isTyping || isLoadingResults
+    // Value change handler - updates the search history
+    const handleValueChange = (value: string) => {
+      if (value && !searchHistory.includes(value)) {
+        const updatedHistory = [value, ...searchHistory.slice(0, 4)]
+        queryClient.setQueryData(["locationSearchHistory"], updatedHistory)
+      }
+    }
 
-    // Popular locations for initial state
-    const popularLocations = [
-      "New York, USA",
-      "London, UK",
-      "Tokyo, Japan",
-      "Paris, France",
-      "Sydney, Australia",
-    ]
+    // Calculate whether to show the initial state
+    const showInitialState = search.length < 3 || !search
 
+    // Build the initial state content with popular locations
     const initialStateContent = (
       <div className="flex flex-col gap-3 p-3">
+        {searchHistory.length > 0 && (
+          <>
+            <div className="mb-2 flex items-center text-sm">
+              <History className="mr-2 size-4 text-blue-500" />
+              <span className="font-medium">Recent Searches</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {searchHistory.map((location) => (
+                <Badge
+                  key={location}
+                  variant="blue"
+                  iconLeft={<Map className="size-3" />}
+                  onClick={() => setSearch(location)}
+                >
+                  {location}
+                </Badge>
+              ))}
+            </div>
+            <div className="my-1 border-t"></div>
+          </>
+        )}
+
         <div className="mb-2 flex items-center text-sm">
           <Star className="mr-2 size-4 text-amber-500" />
           <span className="font-medium">Popular Locations</span>
@@ -584,15 +616,12 @@ export const LocationSearchWithAPI: Story = {
         <div className="flex flex-wrap gap-2">
           {popularLocations.map((location) => (
             <Badge
-              key={location}
+              key={location.value}
               variant="amber"
               iconLeft={<Map className="size-3" />}
-              onClick={() => {
-                setSelectedLocation(location)
-                setSearch(location)
-              }}
+              onClick={() => setSearch(location.value)}
             >
-              {location}
+              {location.value}
             </Badge>
           ))}
         </div>
@@ -604,36 +633,35 @@ export const LocationSearchWithAPI: Story = {
     )
 
     return (
-      <InputAutoComplete
-        value={selectedLocation}
-        onValueChange={(value) => {
-          setSelectedLocation(value)
-          setSearch(value) // Update the search value to match selection
-        }}
-        options={data || []}
-        formComposition={{
-          label: "Location Search",
-          description: "Search for locations worldwide",
-          iconLeft: isLoading ? (
-            <Loader2Icon className="animate-spin" />
-          ) : (
-            <Search />
-          ),
-        }}
-        placeholder="Type location name (min 3 chars)"
-        minCharToSearch={3}
-        loading={isLoading}
-        initialState={initialStateContent}
-        mode="default"
-        commandProps={{ shouldFilter: false }}
-      />
+      <div className="w-full max-w-md">
+        <InputAutoComplete
+          options={data || []}
+          formComposition={{
+            label: "Search Location",
+            description: "Search for real locations using OpenStreetMap API",
+            iconLeft: isLoading ? (
+              <Loader2Icon className="size-4 animate-spin" />
+            ) : (
+              <Search className="size-4" />
+            ),
+          }}
+          placeholder="Type location name (min 3 chars)"
+          minCharToSearch={3}
+          loading={isLoading}
+          initialState={showInitialState ? initialStateContent : undefined}
+          mode="default"
+          onSearchChange={setSearch}
+          onValueChange={handleValueChange}
+          commandProps={{ shouldFilter: false }}
+        />
+      </div>
     )
   },
   parameters: {
     docs: {
       description: {
         story:
-          "InputAutoComplete integrated with OpenStreetMap's Nominatim API to search for real locations worldwide. Includes popular location badges as initial state, handles debounced API requests, and disables client-side filtering with `commandProps: { shouldFilter: false }` as search is performed server-side.",
+          "InputAutoComplete integrated with OpenStreetMap's Nominatim API to search for real locations worldwide using React Query and Axios. This implementation automatically handles cancellation of pending requests when new searches are triggered. Includes popular location badges as initial state, maintains search history in the query cache, and disables client-side filtering with `commandProps: { shouldFilter: false }` as search is performed server-side.",
       },
     },
   },
@@ -761,191 +789,191 @@ export const FormIntegrationWithHistory: Story = {
  */
 export const FormIntegrationWithLocationSearch: Story = {
   render: function FormWithAPIExample() {
+    const [search, setSearch] = useState("")
+    const queryClient = useQueryClient()
+
+    // Store location data in a central cache for reuse
+    const locationsCache =
+      queryClient.getQueryData<any[]>(["locations", "cache"]) || []
+
     // Define form schema with Zod
     const FormSchema = z.object({
       location: z.string().min(3, "Please enter a valid location"),
     })
 
-    function LocationSearchForm() {
-      const [search, setSearch] = useState("")
-      const [debouncedSearch, setDebouncedSearch] = useState("")
-      const [isTyping, setIsTyping] = useState(false)
-      const [showInitialState, setShowInitialState] = useState(true)
+    // Form setup with react-hook-form and zod validation
+    const form = useForm<z.infer<typeof FormSchema>>({
+      resolver: zodResolver(FormSchema),
+      defaultValues: {
+        location: "",
+      },
+    })
 
-      // Form setup with react-hook-form and zod validation
-      const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
-        defaultValues: {
-          location: "",
-        },
-      })
-
-      // Handle form submission
-      const onSubmit = (values: z.infer<typeof FormSchema>) => {
-        alert(`Selected location: ${values.location}`)
-        console.log(values)
-      }
-
-      // Debounce the search input
-      useEffect(() => {
-        console.log(search)
-        if (search) {
-          setIsTyping(true)
-        }
-        setShowInitialState(search.length < 3 || !search)
-
-        const timer = setTimeout(() => {
-          setDebouncedSearch(search)
-          setIsTyping(false)
-        }, 500)
-
-        return () => clearTimeout(timer)
-      }, [search])
-
-      // Fetch locations from API
-      const { data, isLoading: isLoadingResults } = useQuery({
-        queryKey: ["form-locations", debouncedSearch],
-        queryFn: async () => {
-          if (!debouncedSearch || debouncedSearch.length < 3) {
-            return []
-          }
-
-          try {
-            const response = await fetch(
-              `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-                debouncedSearch
-              )}&limit=5`
-            )
-
-            if (!response.ok) {
-              throw new Error("Network response was not ok")
-            }
-
-            const data = await response.json()
-            return data.map((item: any) => ({
-              value: item.display_name,
-              label: item.display_name,
-              description: `${item.type} in ${item.address?.country || ""}`,
-              // Pass icon as URL string if available, otherwise use a marker icon
-              icon: item.icon
-                ? `https://nominatim.openstreetmap.org/ui/mapicons/${item.icon}.png`
-                : "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
-            }))
-          } catch (error) {
-            console.error("Failed to fetch locations:", error)
-            return []
-          }
-        },
-        enabled: debouncedSearch.length >= 3,
-        staleTime: 60000,
-      })
-
-      // Show loading state when typing or when API is loading
-      const isLoading = isTyping || isLoadingResults
-
-      // Popular locations for initial state
-      const popularLocations = [
-        "New York, USA",
-        "London, UK",
-        "Tokyo, Japan",
-        "Paris, France",
-        "Sydney, Australia",
-      ]
-
-      const initialStateContent = (
-        <div className="flex flex-col gap-3 p-3">
-          <div className="mb-2 flex items-center text-sm">
-            <Star className="mr-2 size-4 text-amber-500" />
-            <span className="font-medium">Popular Locations</span>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {popularLocations.map((location) => (
-              <Badge
-                key={location}
-                variant="amber"
-                iconLeft={<Map className="size-3" />}
-                onClick={() => {
-                  // Update form field value with location from badge
-                  form.setValue("location", location, { shouldValidate: true })
-                  setSearch(location)
-                  setShowInitialState(false)
-                }}
-              >
-                {location}
-              </Badge>
-            ))}
-          </div>
-
-          <div className="mt-1 border-t pt-2 text-center text-xs text-muted-foreground">
-            Type at least 3 characters to search for locations
-          </div>
-        </div>
-      )
-
-      return (
-        <ZodSchemaProvider schema={FormSchema}>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full space-y-4"
-            >
-              <InputAutoCompleteForm
-                name="location"
-                control={form.control}
-                options={data || []}
-                formComposition={{
-                  label: "Search Location",
-                  description: "Search for locations worldwide",
-                  iconLeft: isLoading ? (
-                    <Loader2Icon className="animate-spin" />
-                  ) : (
-                    <Search />
-                  ),
-                }}
-                placeholder="Type location name (min 3 chars)"
-                minCharToSearch={3}
-                loading={isLoading}
-                initialState={
-                  showInitialState ? initialStateContent : undefined
-                }
-                mode="default"
-                onSearchChange={(value) => {
-                  // Update search state when input changes
-                  setSearch(value)
-                }}
-                commandProps={{ shouldFilter: false }}
-              />
-
-              <div className="flex gap-2">
-                <Button type="submit" className="flex-1">
-                  Submit
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    form.reset()
-                    setSearch("")
-                    setShowInitialState(true)
-                  }}
-                >
-                  Reset
-                </Button>
-              </div>
-            </form>
-          </Form>
-        </ZodSchemaProvider>
-      )
+    // Handle form submission
+    const onSubmit = (values: z.infer<typeof FormSchema>) => {
+      alert(`Selected location: ${values.location}`)
+      console.log(values)
     }
 
-    return <LocationSearchForm />
+    // Fetch locations from API based on search term
+    const { data, isLoading } = useQuery({
+      queryKey: ["locations", search],
+      queryFn: async ({ signal }) => {
+        if (!search || search.length < 3) {
+          return []
+        }
+
+        try {
+          const { data } = await axios.get(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+              search
+            )}&limit=5`,
+            { signal }
+          )
+
+          if (data.length === 0) {
+            throw new Error("No results found")
+          }
+
+          // Transform results to the expected format
+          const locationResults = data.map((item: any) => ({
+            value: item.display_name,
+            label: item.display_name,
+            description: `${item.type} in ${item.address?.country || ""}`,
+            icon: item.icon
+              ? `https://nominatim.openstreetmap.org/ui/mapicons/${item.icon}.png`
+              : "https://nominatim.openstreetmap.org/ui/mapicons/place.png",
+          }))
+
+          // Update the cache with new locations
+          const updatedCache = [...locationsCache]
+
+          locationResults.forEach((location: any) => {
+            const existingIndex = updatedCache.findIndex(
+              (c) => c.value === location.value
+            )
+            if (existingIndex >= 0) {
+              updatedCache[existingIndex] = location
+            } else {
+              updatedCache.push(location)
+            }
+          })
+
+          // Update the cache
+          queryClient.setQueryData(["locations", "cache"], updatedCache)
+
+          return locationResults
+        } catch (error) {
+          if (axios.isCancel(error)) {
+          }
+          throw error
+        }
+      },
+      enabled: search.length >= 3,
+      staleTime: 60000,
+      gcTime: 5 * 60 * 1000,
+      retry: 0,
+    })
+
+    // Calculate whether to show the initial state
+    const showInitialState = search.length < 3 || !search
+
+    // Popular locations for initial state
+    const popularLocations = [
+      "New York, USA",
+      "London, UK",
+      "Tokyo, Japan",
+      "Paris, France",
+      "Sydney, Australia",
+    ]
+
+    const initialStateContent = (
+      <div className="flex flex-col gap-3 p-3">
+        <div className="mb-2 flex items-center text-sm">
+          <Star className="mr-2 size-4 text-amber-500" />
+          <span className="font-medium">Popular Locations</span>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {popularLocations.map((location) => (
+            <Badge
+              key={location}
+              variant="amber"
+              iconLeft={<Map className="size-3" />}
+              onClick={() => {
+                // Update form field value with location from badge
+                form.setValue("location", location, { shouldValidate: true })
+                setSearch(location)
+              }}
+            >
+              {location}
+            </Badge>
+          ))}
+        </div>
+
+        <div className="mt-1 border-t pt-2 text-center text-xs text-muted-foreground">
+          Type at least 3 characters to search for locations
+        </div>
+      </div>
+    )
+
+    return (
+      <ZodSchemaProvider schema={FormSchema}>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-4"
+          >
+            <InputAutoCompleteForm
+              name="location"
+              control={form.control}
+              options={data || []}
+              formComposition={{
+                label: "Search Location",
+                description: "Search for locations worldwide",
+                iconLeft: isLoading ? (
+                  <Loader2Icon className="size-4 animate-spin" />
+                ) : (
+                  <Search className="size-4" />
+                ),
+              }}
+              placeholder="Type location name (min 3 chars)"
+              minCharToSearch={3}
+              loading={isLoading}
+              initialState={showInitialState ? initialStateContent : undefined}
+              mode="default"
+              onSearchChange={(value) => {
+                // Update search state when input changes
+                setSearch(value)
+              }}
+              commandProps={{ shouldFilter: false }}
+            />
+
+            <div className="flex gap-2">
+              <Button type="submit" className="flex-1" disabled={isLoading}>
+                Submit
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  form.reset()
+                  setSearch("")
+                }}
+              >
+                Reset
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </ZodSchemaProvider>
+    )
   },
   parameters: {
     docs: {
       description: {
         story:
-          "Form integration example with server-side location search API. Demonstrates how to use InputAutoCompleteForm with external API data, debounced search, and form validation.",
+          "Form integration example with server-side location search API using Axios. Implements the same data caching approach used in the Select component, with immediate search triggering and automatic request cancellation.",
       },
     },
   },
