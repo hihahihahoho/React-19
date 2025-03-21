@@ -149,8 +149,11 @@ function InputAutoComplete({
 
       // Close dropdown
       setOpen(false)
+      if (mode === "select") {
+        internalRef.current?.blur()
+      }
     },
-    [onSearchChange, onValueChange]
+    [onSearchChange, onValueChange, mode]
   )
 
   // Handle dropdown open/close
