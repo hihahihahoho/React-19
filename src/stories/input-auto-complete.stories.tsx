@@ -491,6 +491,9 @@ export const ServerSideFetchingOnSearch: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:
@@ -658,6 +661,9 @@ export const LocationSearchWithAPI: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:
@@ -965,6 +971,9 @@ export const FormIntegrationWithLocationSearch: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:

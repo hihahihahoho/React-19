@@ -460,6 +460,9 @@ export const SelectInFormWithFetchedData: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:
@@ -666,6 +669,9 @@ export const ServerSideFetchingOnSearchInForm: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:

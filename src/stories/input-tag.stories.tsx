@@ -817,6 +817,9 @@ export const ServerSideFetchingInForm: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:

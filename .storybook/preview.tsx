@@ -23,6 +23,7 @@ import {
 const preview: Preview = {
   decorators: [
     (Story, context) => {
+      const showDevtools = context.parameters?.reactQuery?.devtools === true
       // Check the background color to determine the theme
       const background = context.globals?.backgrounds?.value
       document.documentElement.classList.toggle(
@@ -49,7 +50,7 @@ const preview: Preview = {
           <Toaster />
           <SonnerToaster />
           <AlertDialogContainer />
-          <ReactQueryDevtools initialIsOpen={false} />
+          {showDevtools && <ReactQueryDevtools initialIsOpen={false} />}
         </QueryClientProvider>
       )
     },

@@ -840,6 +840,9 @@ export const MultiSelectInFormWithFetchedData: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:
@@ -991,6 +994,9 @@ export const MultiSelectWithLargeDataset: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:
@@ -1184,6 +1190,9 @@ export const ServerSideFetchingInForm: Story = {
     )
   },
   parameters: {
+    reactQuery: {
+      devtools: true,
+    },
     docs: {
       description: {
         story:
