@@ -48,7 +48,7 @@ export interface UseSelectCommandProps {
   selected?: string[]
   setSelected?: (selected: string[]) => void
   defaultSelect?: string[]
-  items?: any[]
+  items?: SelectItems[] | SelectGroup[]
 }
 
 function useSelectCommand({

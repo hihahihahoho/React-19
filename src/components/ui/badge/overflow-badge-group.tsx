@@ -19,6 +19,7 @@ export interface OverflowBadgeGroupProps
   badgeMeasureClassName?: string
   overflowMeasureClassName?: string
   badgeProps?: BadgeProps
+  reverseOrder?: boolean
 }
 
 function OverflowBadgeGroup({
@@ -30,6 +31,7 @@ function OverflowBadgeGroup({
   overflowMeasureClassName = "measured-plus",
   overflowState = "collapse",
   badgeProps,
+  reverseOrder = false,
   ...props
 }: OverflowBadgeGroupProps) {
   const { containerRef, overflowCount, isVisible } = useItemOverflow({
@@ -40,6 +42,9 @@ function OverflowBadgeGroup({
     plusItemClassName: overflowMeasureClassName,
     overflowState,
   })
+
+  // Create a copy of items array to avoid mutating the original
+  const displayItems = reverseOrder ? [...items].reverse() : items
 
   return (
     <div
@@ -52,7 +57,7 @@ function OverflowBadgeGroup({
       )}
       {...props}
     >
-      {items.map((item, index) => {
+      {displayItems.map((item, index) => {
         const visible = isVisible(index)
         return (
           <Badge

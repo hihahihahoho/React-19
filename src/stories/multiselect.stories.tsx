@@ -33,6 +33,7 @@ import {
   TagIcon,
   TimerIcon,
   User,
+  User2,
   ZapIcon,
 } from "lucide-react"
 import { useMemo, useState } from "react"
@@ -805,11 +806,13 @@ export const MultiSelectInFormWithFetchedData: Story = {
               formComposition={{
                 label: "Countries",
                 description: "Select countries you've visited",
-                iconLeft: isLoading ? (
-                  <Loader2Icon className="size-4 animate-spin" />
-                ) : (
-                  <GlobeIcon className="size-4" />
-                ),
+                iconLeft: !form.watch("countries").length ? (
+                  isLoading ? (
+                    <Loader2Icon className="size-4 animate-spin" />
+                  ) : (
+                    <GlobeIcon className="size-4" />
+                  )
+                ) : undefined,
                 requiredSymbol: true,
               }}
               placeholder="Choose countries"
@@ -940,7 +943,7 @@ export const VirtualizedMultiSelect: Story = {
           user.avatar
         ) : (
           <div className="flex size-5 items-center justify-center rounded-full bg-gray-200 text-gray-500">
-            <User className="size-3.5" />
+            <User2 className="size-3.5" />
           </div>
         ),
       }))
@@ -960,11 +963,13 @@ export const VirtualizedMultiSelect: Story = {
               formComposition={{
                 label: "Users",
                 description: "Select users from a large dataset",
-                iconLeft: isLoading ? (
-                  <Loader2Icon className="size-4 animate-spin" />
-                ) : (
-                  <User className="size-4" />
-                ),
+                iconLeft: !form.watch("users").length ? (
+                  isLoading ? (
+                    <Loader2Icon className="size-4 animate-spin" />
+                  ) : (
+                    <User2 className="size-4" />
+                  )
+                ) : undefined,
                 requiredSymbol: true,
               }}
               placeholder="Choose users"

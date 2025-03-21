@@ -428,11 +428,13 @@ export const SelectInFormWithFetchedData: Story = {
               formComposition={{
                 label: "Country",
                 description: "Select your country",
-                iconLeft: isLoading ? (
-                  <Loader2Icon className="animate-spin" />
-                ) : (
-                  <GlobeIcon />
-                ),
+                iconLeft: !form.watch("country").length ? (
+                  isLoading ? (
+                    <Loader2Icon className="size-4 animate-spin" />
+                  ) : (
+                    <GlobeIcon className="size-4" />
+                  )
+                ) : undefined,
                 requiredSymbol: true,
               }}
               placeholder="Choose a country"

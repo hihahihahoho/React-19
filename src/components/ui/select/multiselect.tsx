@@ -88,9 +88,13 @@ function MultiSelect({
     },
     [currentValue, handleValueChange]
   )
-  const currentItems =
-    customDisplayValue ||
-    flattenItems.filter((item) => currentValue.includes(item.value))
+  const currentItems = React.useMemo(() => {
+    if (customDisplayValue) return customDisplayValue
+
+    return currentValue
+      .map((value) => flattenItems.find((item) => item.value === value))
+      .filter(Boolean) as SelectItems[]
+  }, [customDisplayValue, currentValue, flattenItems])
 
   const SelectComponentToUse = virtualComponents || SelectCommand
 
@@ -176,6 +180,9 @@ function MultiSelect({
                   variant: "secondary",
                   size: "md",
                 }}
+                reverseOrder={
+                  bagdeGroupProps?.overflowState === "none" ? false : true
+                }
                 {...bagdeGroupProps}
                 className={cn("-ml-2", bagdeGroupProps?.className)}
               />
