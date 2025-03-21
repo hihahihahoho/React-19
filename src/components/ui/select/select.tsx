@@ -9,6 +9,7 @@ import {
   FormControlButton,
 } from "../form/form"
 import { flatItems, SelectCommand, SelectCommandProps } from "./select-command"
+import { SelectCommandVirtualizeProps } from "./select-command-virtualize"
 import { SelectGroup, SelectItems } from "./select-interface"
 import { SelectPopover } from "./select-popover"
 
@@ -21,12 +22,15 @@ export interface SelectProps extends React.ComponentProps<"button"> {
   defaultValue?: OnValueChangeSelect
   disabled?: boolean
   formComposition?: FormCompositionProps
+
   onValueChange?: (value: OnValueChangeSelect) => void
   onFocus?: React.FocusEventHandler<HTMLButtonElement>
   onBlur?: React.FocusEventHandler<HTMLButtonElement>
   readonly?: boolean
-  selectCommandProps?: SelectCommandProps
+  selectCommandProps?: SelectCommandProps &
+    Partial<SelectCommandVirtualizeProps>
   customDisplayValue?: SelectItems
+  virtualComponents?: React.ComponentType<SelectCommandVirtualizeProps>
 }
 
 function Select({
@@ -42,6 +46,7 @@ function Select({
   readonly,
   selectCommandProps,
   customDisplayValue,
+  virtualComponents,
   ...props
 }: SelectProps) {
   const [open, setOpen] = useState(false)
@@ -69,6 +74,8 @@ function Select({
   const selectedOption =
     customDisplayValue ||
     flattenItems.find((item) => item.value === currentValue)
+
+  const SelectComponentToUse = virtualComponents || SelectCommand
 
   return (
     <SelectPopover
@@ -139,7 +146,7 @@ function Select({
       }
       label={formComposition?.label || placeholder || "Chọn"}
     >
-      <SelectCommand
+      <SelectComponentToUse
         {...selectCommandProps}
         items={options}
         selected={[currentValue || ""]}

@@ -457,32 +457,6 @@ export const ProfileExample: Story = {
     },
   },
 }
-
-/**
- * Fully interactive example with all available props.
- */
-export const Interactive: Story = {
-  args: {
-    className: "bg-gray-50 px-4 rounded",
-    children: (
-      <>
-        <DataRowLabel>Interactive Example</DataRowLabel>
-        <DataRowValue>
-          This example can be customized using the Controls panel
-        </DataRowValue>
-      </>
-    ),
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "An interactive example that can be customized using the Controls panel.",
-      },
-    },
-  },
-}
-
 /**
  * A comprehensive showcase of all DataRow features and use cases.
  */

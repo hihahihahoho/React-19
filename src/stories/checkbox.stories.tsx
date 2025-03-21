@@ -752,27 +752,3 @@ export const CardVariants: Story = {
     },
   },
 }
-
-/**
- * Fully interactive example with all available props.
- */
-export const Interactive: Story = {
-  args: {
-    checked: false,
-    disabled: false,
-    required: false,
-  },
-  render: (args) => (
-    <SelectionGroup control={<Checkbox {...args} />}>
-      Interactive Checkbox
-    </SelectionGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "A fully interactive checkbox that can be customized using the Controls panel.",
-      },
-    },
-  },
-}

@@ -635,30 +635,6 @@ export const CompleteShowcase: Story = {
 }
 
 /**
- * Fully interactive example with all available props.
- */
-export const Interactive: Story = {
-  args: {
-    children: "Interactive Badge",
-    variant: "default",
-    size: "md",
-    clearBtn: false,
-    tooltip: "This is a customizable badge",
-    onClearBtnClick: () => alert("Badge cleared"),
-    iconLeft: <Star className="size-4" />,
-    iconRight: null,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "A fully interactive badge that can be customized using the Controls panel.",
-      },
-    },
-  },
-}
-
-/**
  * Example showing how to use badges with both icons and clear functionality.
  */
 export const WithIconsAndClear: Story = {

@@ -157,9 +157,13 @@ export function InputTag({
   }, [open, loading, inputValue, minCharToSearch, options])
 
   React.useEffect(() => {
+    // This effect should only run when tags change AND the component is controlled
+    // BUT we want to avoid the infinite loop when onValueChange is included
     if (isControlled) {
       onValueChange?.(tags)
     }
+    // Deliberately NOT including onValueChange in deps array
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tags, isControlled])
 
   // Add a new tag
@@ -181,7 +185,7 @@ export function InputTag({
       setInputValue("")
       setActiveTagIndex(null)
     },
-    [allowDuplicates, currentTags, isControlled, onValueChange, setTags]
+    [allowDuplicates, currentTags, onValueChange, setTags]
   )
 
   // Remove a tag
@@ -202,7 +206,7 @@ export function InputTag({
         internalRef.current?.focus() // Focus input if no tags left
       }
     },
-    [currentTags, isControlled, onValueChange, setTags]
+    [currentTags, onValueChange, setTags]
   )
 
   const handleKeyDownGlobal = React.useCallback(
@@ -386,6 +390,57 @@ export function InputTag({
     setActiveTagIndex(null)
   }
 
+  // Handle paste event to automatically create tags when pasting content with trigger keys
+  const handlePaste = React.useCallback(
+    (e: React.ClipboardEvent<HTMLInputElement>) => {
+      // Only process in default mode
+      if (mode !== "default") return
+
+      const pastedText = e.clipboardData.getData("text")
+
+      // Check if the pasted text contains any trigger keys
+      const hasTriggerKeys = triggerKeys.some((key) => pastedText.includes(key))
+
+      if (hasTriggerKeys) {
+        e.preventDefault()
+
+        // Create proper regex pattern for splitting
+        // For space trigger, we need to use a simple space character
+        // For other characters, we need to escape special regex characters
+        const splitPattern = triggerKeys
+          .map((key) => {
+            // Escape special regex characters
+            return key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+          })
+          .join("|")
+
+        // Create regex that properly handles all trigger keys
+        const regex = new RegExp(`(${splitPattern})`)
+        const newTags = pastedText
+          .split(regex)
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 0 && !triggerKeys.includes(tag))
+
+        // Add all tags at once to avoid state update issues
+        if (newTags.length > 0) {
+          // Filter out duplicates if needed
+          const tagsToAdd = allowDuplicates
+            ? newTags
+            : newTags.filter((tag) => !currentTags.includes(tag))
+
+          if (tagsToAdd.length > 0) {
+            const updatedTags = [...currentTags, ...tagsToAdd]
+
+            // Update state in one batch
+            setTags(updatedTags)
+            onValueChange?.(updatedTags)
+            setInputValue("")
+          }
+        }
+      }
+    },
+    [triggerKeys, mode, currentTags, allowDuplicates, onValueChange, setTags]
+  )
   // Handle keyboard interaction
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(e)
@@ -507,6 +562,7 @@ export function InputTag({
           onValueChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
+          onPaste={handlePaste}
           className="h-full w-full flex-grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0"
           placeholder={
             currentTags.length > 0 ? "Thêm..." : "Gõ để nhập tags..."

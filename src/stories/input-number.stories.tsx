@@ -8,7 +8,7 @@ import {
 import { InputNumberForm } from "@/components/ui/input-number/input-number-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react"
-import { Calculator, DollarSign, Hash, Percent, TrendingUp } from "lucide-react"
+import { DollarSign, Hash, Percent, TrendingUp } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -398,38 +398,6 @@ export const WithFormValidation: Story = {
       description: {
         story:
           "Example of form validation using react-hook-form and zod with InputNumberForm component.",
-      },
-    },
-  },
-}
-
-/**
- * Fully interactive example with all available props
- */
-export const Interactive: Story = {
-  args: {
-    placeholder: "Enter number",
-    value: 5000,
-    disabled: false,
-    readOnly: false,
-    maskitoOptions: {
-      precision: 2,
-      thousandSeparator: ",",
-      decimalSeparator: ".",
-    },
-    formComposition: {
-      label: "Interactive Number Input",
-      description: "Try changing the controls in the panel below",
-      inputClear: true,
-      iconLeft: <Calculator />,
-      variant: "default",
-    },
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "A fully interactive InputNumber that can be customized using the Controls panel.",
       },
     },
   },

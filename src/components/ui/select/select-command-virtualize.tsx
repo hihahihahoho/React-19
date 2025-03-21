@@ -74,7 +74,12 @@ function SelectCommandVirtualize({
         const label = item.label || item.value
         const itemText = getNodeText(label)
         // Combine all searchable parts of the item
-        return [itemText, item.value, ...(item.keywords || [])].join(" ")
+        return [
+          itemText,
+          item.value,
+          item.description,
+          ...(item.keywords || []),
+        ].join(" ")
       }),
     [flattenItems]
   )
@@ -87,7 +92,7 @@ function SelectCommandVirtualize({
 
     const results = fuzzyFilterStrings(searchableStrings, filter)
     return results.map((result) => result.index)
-  }, [searchableStrings, filter])
+  }, [searchableStrings, filter, flattenItems])
 
   // Map indices back to actual items
   const filteredItems = React.useMemo(
@@ -107,6 +112,12 @@ function SelectCommandVirtualize({
     },
     ...virtualizerOptions,
   })
+
+  React.useEffect(() => {
+    if (parentRef.current) {
+      parentRef.current.scrollTop = 0
+    }
+  }, [filter, filteredItemIndices.length, virtualizer])
 
   const virtualRows = virtualizer.getVirtualItems()
 

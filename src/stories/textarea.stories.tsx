@@ -781,34 +781,3 @@ export const LineLimits: Story = {
     },
   },
 }
-
-/**
- * Fully interactive example with all available props.
- */
-export const Interactive: Story = {
-  args: {
-    placeholder: "Interactive textarea",
-    disabled: false,
-    readOnly: false,
-    maxHeight: 300,
-    minHeight: 54,
-    maxLength: 200,
-    formComposition: {
-      label: "Interactive Textarea",
-      description: "This is a customizable textarea field",
-      iconLeft: <MessageSquare className="size-4" />,
-      variant: "default",
-      size: "default",
-      labelPosition: "vertical",
-    },
-    defaultValue: "This is some sample text you can edit.",
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "A fully interactive textarea that can be customized using the Controls panel.",
-      },
-    },
-  },
-}

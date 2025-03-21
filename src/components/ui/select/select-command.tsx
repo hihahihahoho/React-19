@@ -172,7 +172,14 @@ function SelectCommandItem({
                   {option.icon}
                 </div>
               ))}
-            {option.label || option.value}
+            <div className="space-y-0.5">
+              <div className="item">{option.label || option.value}</div>
+              {option.description && (
+                <div className="text-xs text-muted-foreground">
+                  {option.description}
+                </div>
+              )}
+            </div>
           </BadgeComp>
         </div>
         {isMultiSelect ? (

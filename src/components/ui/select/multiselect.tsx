@@ -13,6 +13,7 @@ import {
 } from "../form/form"
 import { Separator } from "../separator"
 import { flatItems, SelectCommand, SelectCommandProps } from "./select-command"
+import { SelectCommandVirtualizeProps } from "./select-command-virtualize"
 import { SelectGroup, SelectItems } from "./select-interface"
 import { SelectPopover } from "./select-popover"
 
@@ -27,10 +28,12 @@ export interface MultiSelectProps
   badgeClassName?: string
   disabled?: boolean
   formComposition?: FormCompositionProps
+  selectCommandProps?: SelectCommandProps &
+    Partial<SelectCommandVirtualizeProps>
+  virtualComponents?: React.ComponentType<SelectCommandVirtualizeProps>
   onValueChange?: (value: string[]) => void
   readonly?: boolean
   showClear?: boolean
-  selectCommandProps?: SelectCommandProps
   customDisplayValue?: SelectItems[]
   bagdeGroupProps?: Omit<OverflowBadgeGroupProps, "items">
   variant?: "default" | "button"
@@ -50,6 +53,7 @@ function MultiSelect({
   customDisplayValue,
   variant = "default",
   bagdeGroupProps,
+  virtualComponents,
   ...props
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false)
@@ -87,6 +91,8 @@ function MultiSelect({
   const currentItems =
     customDisplayValue ||
     flattenItems.filter((item) => currentValue.includes(item.value))
+
+  const SelectComponentToUse = virtualComponents || SelectCommand
 
   return (
     <SelectPopover
@@ -188,7 +194,7 @@ function MultiSelect({
       }
       label={formComposition?.label || placeholder}
     >
-      <SelectCommand
+      <SelectComponentToUse
         {...selectCommandProps}
         items={options}
         selected={currentValue}

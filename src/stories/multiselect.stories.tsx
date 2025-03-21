@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form/form"
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import { MultiSelect } from "@/components/ui/select/multiselect"
 import { MultiSelectForm } from "@/components/ui/select/multiselect-form"
+import { SelectCommandVirtualize } from "@/components/ui/select/select-command-virtualize"
 import {
   SelectGroup,
   SelectItems,
@@ -855,7 +856,7 @@ export const MultiSelectInFormWithFetchedData: Story = {
 /**
  * Example of a multiselect in a form with a large dataset for virtualization testing.
  */
-export const MultiSelectWithLargeDataset: Story = {
+export const VirtualizedMultiSelect: Story = {
   render: function LargeDatasetExample() {
     // Form setup
     const formSchema = z.object({
@@ -970,10 +971,14 @@ export const MultiSelectWithLargeDataset: Story = {
               selectCommandProps={{
                 loading: isLoading,
                 minItemsToShowSearch: 5,
+                virtualizerOptions: {
+                  estimateSize: () => 50,
+                },
               }}
               bagdeGroupProps={{
                 maxShownItems: 5,
               }}
+              virtualComponents={SelectCommandVirtualize}
             />
 
             <div className="flex justify-end gap-2">
@@ -1000,7 +1005,7 @@ export const MultiSelectWithLargeDataset: Story = {
     docs: {
       description: {
         story:
-          "This example demonstrates a MultiSelect component with a large dataset (500+ items) to test virtualization. It combines data from JSONPlaceholder and the Random User API to create a substantial list of users with avatars. The `virtualized: true` property enables efficient rendering of the large dataset by only rendering items that are currently visible in the viewport.",
+          "This example demonstrates a virtualized MultiSelect component that efficiently handles a large dataset (500+ items). Using the `SelectCommandVirtualize` component with the `virtualComponents` prop enables windowed rendering, where only visible items are actually rendered in the DOM. The `virtualizerOptions` prop allows fine-tuning the virtualization behavior, such as setting the estimated item size. This approach dramatically improves performance when working with long lists by reducing memory usage and DOM nodes.",
       },
     },
   },

@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form/form"
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import { Select } from "@/components/ui/select/select"
+import { SelectCommandVirtualize } from "@/components/ui/select/select-command-virtualize"
 import { SelectForm } from "@/components/ui/select/select-form"
 import {
   SelectGroup,
@@ -24,7 +25,7 @@ import {
   MapPinIcon,
   PhoneIcon,
 } from "lucide-react"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -680,28 +681,111 @@ export const ServerSideFetchingOnSearchInForm: Story = {
     },
   },
 }
+
 /**
- * Interactive example with all available props.
+ * Example of a select with virtualization for efficient rendering of large datasets.
  */
-export const Interactive: Story = {
-  args: {
-    placeholder: "Select an option",
-    options: fruitOptions,
-    disabled: false,
-    readonly: false,
-    formComposition: {
-      label: "Interactive Select",
-      description: "This is a customizable select field",
-      variant: "default",
-      size: "default",
-      labelPosition: "vertical",
-    },
+export const VirtualizedSelect: Story = {
+  render: function VirtualizedLargeDatasetExample() {
+    const [isLoading, setIsLoading] = useState(true)
+    const [largeOptions, setLargeOptions] = useState<SelectItems[]>([])
+
+    // Generate a large dataset of 1000 items
+    useEffect(() => {
+      const generateLargeDataset = () => {
+        setIsLoading(true)
+
+        // Create an array of 1000 items
+        const items: SelectItems[] = Array.from(
+          { length: 1000 },
+          (_, index) => {
+            return {
+              value: `item-${index}`,
+              label: `Item ${index} - ${Math.random().toString(36).substring(2, 10)}`,
+              description: `Description for item ${index}`,
+              keywords: [`keyword-${index}`, `tag-${index % 10}`],
+            }
+          }
+        )
+
+        setLargeOptions(items)
+        setIsLoading(false)
+      }
+
+      // Simulate network delay
+      const timer = setTimeout(generateLargeDataset, 500)
+      return () => clearTimeout(timer)
+    }, [])
+
+    // Using SelectForm here to demonstrate in a more realistic context
+    const FormSchema = z.object({
+      item: z.string().min(1, "Please select an item"),
+    })
+
+    const form = useForm<z.infer<typeof FormSchema>>({
+      resolver: zodResolver(FormSchema),
+      defaultValues: {
+        item: "",
+      },
+    })
+
+    function onSubmit(values: z.infer<typeof FormSchema>) {
+      const selectedItem = largeOptions.find(
+        (item) => item.value === values.item
+      )
+      alert(`Selected: ${selectedItem?.label || values.item}`)
+    }
+
+    return (
+      <ZodSchemaProvider schema={FormSchema}>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-4"
+          >
+            <SelectForm
+              name="item"
+              control={form.control}
+              options={largeOptions}
+              formComposition={{
+                label: "Select Item",
+                description: "Virtualized select with 1000 items",
+                requiredSymbol: true,
+              }}
+              placeholder="Choose from 1000 items"
+              selectCommandProps={{
+                loading: isLoading,
+                minItemsToShowSearch: 5,
+                virtualizerOptions: {
+                  overscan: 20,
+                  estimateSize: () => 40,
+                },
+              }}
+              virtualComponents={SelectCommandVirtualize}
+            />
+
+            <div className="flex justify-end gap-2">
+              <Button className="flex-1" type="submit" disabled={isLoading}>
+                Submit
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => form.reset()}
+              >
+                Reset
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </ZodSchemaProvider>
+    )
   },
   parameters: {
     docs: {
       description: {
         story:
-          "A fully interactive select that can be customized using the Controls panel.",
+          "This example demonstrates a virtualized Select component that efficiently handles a large dataset (1000 items). Using the `SelectCommandVirtualize` component with the `virtualComponents` prop enables windowed rendering, where only visible items are actually rendered in the DOM. The `virtualizerOptions` prop allows fine-tuning the virtualization behavior, such as setting the estimated item size and overscan. This approach dramatically improves performance when working with long lists by reducing memory usage and DOM nodes.",
       },
     },
   },

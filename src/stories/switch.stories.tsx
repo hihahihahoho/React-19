@@ -601,27 +601,3 @@ export const CompleteShowcase: Story = {
     },
   },
 }
-
-/**
- * Fully interactive example with all available props.
- */
-export const Interactive: Story = {
-  args: {
-    checked: false,
-    disabled: false,
-    required: false,
-  },
-  render: (args) => (
-    <SelectionGroup control={<Switch {...args} />}>
-      Interactive Switch
-    </SelectionGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "A fully interactive switch that can be customized using the Controls panel.",
-      },
-    },
-  },
-}

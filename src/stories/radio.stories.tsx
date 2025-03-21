@@ -763,35 +763,3 @@ export const CompleteShowcase: Story = {
     },
   },
 }
-
-/**
- * Fully interactive example with all available props.
- */
-export const Interactive: Story = {
-  args: {
-    defaultValue: "option1",
-    disabled: false,
-    required: false,
-  },
-  render: (args) => (
-    <RadioGroup {...args}>
-      <SelectionGroup control={<RadioGroupItem value="option1" />}>
-        First Option
-      </SelectionGroup>
-      <SelectionGroup control={<RadioGroupItem value="option2" />}>
-        Second Option
-      </SelectionGroup>
-      <SelectionGroup control={<RadioGroupItem value="option3" disabled />}>
-        Third Option (Disabled)
-      </SelectionGroup>
-    </RadioGroup>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "A fully interactive radio group that can be customized using the Controls panel.",
-      },
-    },
-  },
-}
