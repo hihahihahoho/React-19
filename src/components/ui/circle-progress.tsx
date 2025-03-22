@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import React, { useEffect, useRef, useState } from "react"
+import React from "react"
 
 export interface CircleProgressProps
   extends React.HtmlHTMLAttributes<HTMLDivElement> {
@@ -51,20 +51,20 @@ const CircleProgress = ({
   ...props
 }: CircleProgressProps) => {
   // Add state for animated value
-  const [animatedValue, setAnimatedValue] = useState(
+  const [animatedValue, setAnimatedValue] = React.useState(
     disableAnimation ? value : 0
   )
   // Use a ref to track the current animation value without causing re-renders
-  const animatedValueRef = useRef(animatedValue)
+  const animatedValueRef = React.useRef(animatedValue)
 
   // Generate a unique gradient ID if not provided
-  const uniqueGradientId = useRef(
+  const uniqueGradientId = React.useRef(
     gradientId ||
       `circle-progress-gradient-${Math.random().toString(36).substring(2, 9)}`
   ).current
 
   // Update ref when state changes
-  useEffect(() => {
+  React.useEffect(() => {
     animatedValueRef.current = animatedValue
   }, [animatedValue])
 
@@ -88,7 +88,7 @@ const CircleProgress = ({
       : defaultGetColor(fillPercentage)
 
   // Animation effect - fixed to avoid the dependency loop
-  useEffect(() => {
+  React.useEffect(() => {
     // If animation is disabled, just set the value directly
     if (disableAnimation) {
       setAnimatedValue(value)
@@ -123,13 +123,13 @@ const CircleProgress = ({
     return () => cancelAnimationFrame(animationFrame)
   }, [value, maxValue, animationDuration, disableAnimation]) // removed animatedValue from deps
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (onColorChange) {
       onColorChange(currentColor)
     }
   }, [currentColor, onColorChange])
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (onValueChange) {
       onValueChange(animatedValue, fillPercentage)
     }
