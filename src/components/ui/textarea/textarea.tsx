@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react"
+import { CircleProgress } from "../circle-progress"
 import {
   FormComposition,
   FormCompositionProps,
@@ -133,7 +134,21 @@ function Textarea({
       readonly={props.readOnly}
       isFocused={isFocused}
       isMinHeight={true}
-      subDescription={maxLength ? `${charCount}/${maxLength}` : `${charCount}`}
+      subDescription={
+        <div className="flex items-center gap-1">
+          <span>
+            {maxLength ? `${charCount}/${maxLength}` : `${charCount}`}
+          </span>
+          {maxLength && (
+            <CircleProgress
+              size={12}
+              strokeWidth={2}
+              value={charCount}
+              maxValue={maxLength}
+            />
+          )}
+        </div>
+      }
     >
       <FormControl>
         <textarea
