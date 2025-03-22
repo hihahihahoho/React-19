@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils"
 import {
   AlignLeft,
   CloudUpload,
+  Eye,
   Image,
-  Maximize2,
   Music,
   Play,
   SquareArrowOutUpRight,
@@ -77,6 +77,10 @@ const MAX_FILE_SIZE = 500000 // 500
 const generateFileId = (file: File) => {
   return `${file.name}-${file.size}-${file.lastModified}`
 }
+
+const isRemoteFile = (file: File): boolean => {
+  return file.name.startsWith("REMOTE_FILE::")
+}
 function FileUpload({
   onFileChange,
   maxFiles = 5,
@@ -105,15 +109,11 @@ function FileUpload({
 
   // Replace the existing isRemoteFile and getRemoteUrl functions with these:
 
-  const isRemoteFile = (file: File): boolean => {
-    return file.name.startsWith("REMOTE_FILE::")
-  }
-
-  const getRemoteUrl = (file: File): string | null => {
+  const getRemoteUrl = useCallback((file: File): string | null => {
     if (!isRemoteFile(file)) return null
     // Extract URL from filename (removes the prefix)
     return file.name.replace("REMOTE_FILE::", "")
-  }
+  }, [])
 
   const previewUrls = useMemo(() => {
     return internalFiles.reduce(
@@ -133,7 +133,7 @@ function FileUpload({
       },
       {} as Record<string, string | null>
     )
-  }, [internalFiles])
+  }, [internalFiles, getRemoteUrl])
 
   useEffect(() => {
     if (isControlled) {
@@ -153,30 +153,33 @@ function FileUpload({
   } | null>(null)
 
   // Add a function to open the preview
-  const handlePreviewFile = useCallback((fileMeta: FileWithMeta) => {
-    let previewUrl: string | null = null
-    let fileType: string = ""
-    let fileName: string = ""
+  const handlePreviewFile = useCallback(
+    (fileMeta: FileWithMeta) => {
+      let previewUrl: string | null = null
+      let fileType: string = ""
+      let fileName: string = ""
 
-    if (isRemoteFile(fileMeta.file)) {
-      previewUrl = getRemoteUrl(fileMeta.file)
-      fileType = fileMeta.file.type
-      fileName = previewUrl?.split("/").pop() || "File"
-    } else {
-      previewUrl = URL.createObjectURL(fileMeta.file)
-      fileType = fileMeta.file.type
-      fileName = fileMeta.file.name
-    }
+      if (isRemoteFile(fileMeta.file)) {
+        previewUrl = getRemoteUrl(fileMeta.file)
+        fileType = fileMeta.file.type
+        fileName = previewUrl?.split("/").pop() || "File"
+      } else {
+        previewUrl = URL.createObjectURL(fileMeta.file)
+        fileType = fileMeta.file.type
+        fileName = fileMeta.file.name
+      }
 
-    if (previewUrl) {
-      setPreviewFile({
-        url: previewUrl,
-        type: fileType,
-        name: fileName,
-      })
-      setPreviewOpen(true)
-    }
-  }, [])
+      if (previewUrl) {
+        setPreviewFile({
+          url: previewUrl,
+          type: fileType,
+          name: fileName,
+        })
+        setPreviewOpen(true)
+      }
+    },
+    [getRemoteUrl]
+  )
 
   // Add cleanup for preview URLs
   useEffect(() => {
@@ -425,7 +428,7 @@ function FileUpload({
                         e.stopPropagation()
                         handlePreviewFile(fileMeta)
                       }}
-                      iconLeft={<Maximize2 className="!size-3.5" />}
+                      iconLeft={<Eye className="!size-3.5" />}
                     />
                     <Button
                       size="xs"
@@ -524,7 +527,7 @@ function FileUpload({
                           handlePreviewFile(fileMeta)
                         }}
                       >
-                        <Maximize2 className="!size-4.5" />
+                        <Eye className="!size-5" />
                       </Button>
                       <Button
                         variant="ghost"

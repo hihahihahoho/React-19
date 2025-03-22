@@ -44,7 +44,6 @@ const lightboxItems: LightBoxImageType[] = [
     src: "https://swiperjs.com/demos/images/nature-3.jpg",
     alt: "Image 3",
   },
-  {
     src: "https://swiperjs.com/demos/images/nature-5.jpg",
     alt: "Image 5",
   },
