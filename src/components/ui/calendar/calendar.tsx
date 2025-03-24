@@ -46,19 +46,6 @@ function Calendar({
         month_caption: "flex items-center justify-center", // changed from caption
         caption_label: "text-sm font-medium",
         nav: "absolute left-0 z-10 flex w-full justify-between space-x-1 px-3", // changed from nav
-        button_previous: cn(
-          // changed from nav_button
-          buttonVariants({
-            variant: "outline",
-            className: "absolute left-3 size-8 min-w-7 p-0",
-          })
-        ),
-        button_next: cn(
-          buttonVariants({
-            variant: "outline",
-            className: "absolute right-3 size-8 min-w-7 p-0",
-          })
-        ), // changed from nav_button_next
         month_grid: "w-full border-collapse space-y-1 border-0", // changed from table
         weekdays: "flex", // changed from head_row
         weekday:
@@ -82,6 +69,19 @@ function Calendar({
           "outside text-muted-foreground opacity-50 aria-selected:bg-primary/50 aria-selected:text-muted-foreground aria-selected:opacity-30", // changed from day_outside
         disabled: "text-muted-foreground opacity-50", // changed from day_disabled
         hidden: "invisible", // changed from day_hidden
+        button_previous: cn(
+          // changed from nav_button
+          buttonVariants({
+            variant: "outline",
+            className: "absolute left-3 size-8 min-w-7 p-0",
+          })
+        ),
+        button_next: cn(
+          buttonVariants({
+            variant: "outline",
+            className: "absolute right-3 size-8 min-w-7 p-0",
+          })
+        ), // changed from nav_button_next
         ...classNames,
       }}
       components={{
