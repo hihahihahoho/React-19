@@ -18,7 +18,7 @@ import {
  * Use buttons to enable users to trigger actions, navigate, or submit forms.
  */
 const meta = {
-  title: "BASE/Button",
+  title: "Controls/Button",
   component: Button,
   parameters: {
     layout: "centered",

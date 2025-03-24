@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 // Meta Configuration
 
 const meta = {
-  title: "Base/Toggle Group",
+  title: "Controls/Toggle Group",
   component: ToggleGroup,
   parameters: {},
 } satisfies Meta<typeof ToggleGroup>

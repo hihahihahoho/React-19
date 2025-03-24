@@ -22,7 +22,7 @@ import {
  * Use badges to highlight status, categorize items, or display counts.
  */
 const meta = {
-  title: "BASE/Badge",
+  title: "Display/Badge",
   component: Badge,
   parameters: {
     layout: "centered",

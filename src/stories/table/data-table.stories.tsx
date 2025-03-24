@@ -4,7 +4,7 @@ import { Drawer } from "@/components/ui/drawer"
 import DemoTableBasic from "./basic-table-demo"
 
 const meta = {
-  title: "Base/Data Table",
+  title: "Data Display/Data Table",
   component: Drawer,
 } satisfies Meta<typeof Drawer>
 

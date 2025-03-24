@@ -8,7 +8,7 @@ import React from "react"
  * Use alerts to display important information, notifications, or warnings.
  */
 const meta = {
-  title: "BASE/Alert",
+  title: "Display/Alert",
   component: Alert,
   parameters: {
     layout: "centered",

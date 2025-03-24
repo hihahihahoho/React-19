@@ -8,7 +8,7 @@ import { Bell, Clock, Coffee, Heart, MailWarning } from "lucide-react"
  * Use toasts to provide feedback, alerts, or information to users.
  */
 const meta = {
-  title: "Base/Sonner Toast",
+  title: "Overlays/Sonner Toast",
   component: Toaster,
   parameters: {
     layout: "centered",

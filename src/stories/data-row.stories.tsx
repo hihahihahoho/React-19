@@ -13,7 +13,7 @@ import { Edit, ExternalLink, Github, Mail, Phone } from "lucide-react"
  * commonly used in details pages, profiles, or settings sections.
  */
 const meta = {
-  title: "BASE/Data Row",
+  title: "Data Display/Data Row",
   component: DataRow,
   parameters: {
     layout: "centered",

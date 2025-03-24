@@ -6,7 +6,7 @@ import { useState } from "react"
 
 // Meta Configuration
 const meta: Meta<typeof Tabs> = {
-  title: "Base/Tabs",
+  title: "Controls/Tabs",
   component: Tabs,
   parameters: {
     // Optional: Add any Storybook parameters here

@@ -12,7 +12,7 @@ import {
 import { FormDemo } from "./forms/FormDemo"
 
 const meta = {
-  title: "Base/Drawer",
+  title: "Overlays/Drawer",
   component: Drawer,
   parameters: {
     layout: "centered",

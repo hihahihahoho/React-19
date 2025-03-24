@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
  * Useful for displaying percentages, counters, timers, and resource usage indicators.
  */
 const meta = {
-  title: "BASE/Circle Progress",
+  title: "Display/Circle Progress",
   component: CircleProgress,
   parameters: {
     layout: "centered",

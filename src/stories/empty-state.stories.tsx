@@ -3,7 +3,7 @@ import { EmptyState } from "@/components/ui/empty-state/empty-state"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {
-  title: "BASE/Empty State",
+  title: "Display/Empty State",
   component: EmptyState,
   parameters: {
     layout: "centered",

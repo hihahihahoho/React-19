@@ -22,7 +22,7 @@ import {
  * Use to add visual interest and depth to UI elements.
  */
 const meta = {
-  title: "BASE/Glass Icon",
+  title: "Utilities/Glass Icon",
   component: GlassIcon,
   parameters: {
     layout: "centered",
