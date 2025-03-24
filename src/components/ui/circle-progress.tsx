@@ -75,9 +75,9 @@ const CircleProgress = ({
 
   // Default color function
   const defaultGetColor = (percentage: number) => {
-    if (percentage < 0.7) return "stroke-emerald-500" // Green
-    if (percentage < 0.9) return "stroke-amber-500" // Yellow/Orange
-    return "stroke-red-500" // Red
+    if (percentage < 0.7) return "stroke-emerald-500 dark:stroke-emerald-400" // Green
+    if (percentage < 0.9) return "stroke-amber-500 dark:stroke-amber-400" // Yellow/Orange
+    return "stroke-red-500 dark:stroke-red-400" // Red
   }
 
   // Use custom color function if provided, otherwise use default

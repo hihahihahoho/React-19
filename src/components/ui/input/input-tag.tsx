@@ -602,7 +602,7 @@ export function InputTag({
         />
         <Command
           {...commandProps}
-          className="overflow-visible focus-visible:outline-none"
+          className="overflow-visible bg-transparent focus-visible:outline-none"
         >
           {inputArea}
           <PopoverContent
