@@ -6,7 +6,7 @@ export type SelectItems = React.ComponentProps<typeof CommandItem> & {
   value: string | number
   label?: React.ReactNode
   icon?: React.ReactNode
-  description?: React.ReactNode;
+  description?: React.ReactNode
   badgeProps?: BadgeProps
 }
 

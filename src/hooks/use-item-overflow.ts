@@ -1,8 +1,8 @@
-import { useResizeObserver } from "@/hooks/use-resize-observer";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useResizeObserver } from "@/hooks/use-resize-observer"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 // Define the possible overflow states
-type OverflowState = 'collapse' | 'none';
+type OverflowState = "collapse" | "none"
 
 export interface UseItemOverflowProps {
   totalItems: number
@@ -68,9 +68,9 @@ export const useItemOverflow = ({
     }
 
     // If overflow state is 'none', show all items up to maxShownItems
-    if (overflowState === 'none') {
-      setVisibleCount(Math.min(totalItems, maxShownItems));
-      return;
+    if (overflowState === "none") {
+      setVisibleCount(Math.min(totalItems, maxShownItems))
+      return
     }
 
     // Otherwise use the collapse behavior
@@ -109,15 +109,16 @@ export const useItemOverflow = ({
   }, [calculateOverflow])
 
   // Determine how many items to show based on overflow state
-  const showCount = overflowState === 'none'
-    ? Math.min(totalItems, maxShownItems)
-    : Math.min(Math.max(visibleCount, minShowItems), totalItems);
+  const showCount =
+    overflowState === "none"
+      ? Math.min(totalItems, maxShownItems)
+      : Math.min(Math.max(visibleCount, minShowItems), totalItems)
 
   const overflowCount = totalItems - showCount
   const isVisible = (index: number) =>
-    overflowState === 'none'
+    overflowState === "none"
       ? index < maxShownItems
-      : (index < minShowItems || index < showCount)
+      : index < minShowItems || index < showCount
 
   return {
     containerRef,

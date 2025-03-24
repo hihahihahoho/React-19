@@ -1,83 +1,86 @@
 // use-alert-dialog.tsx
-"use client";
+"use client"
 
-import { AlertDialogProps } from "@radix-ui/react-alert-dialog";
+import { AlertDialogProps } from "@radix-ui/react-alert-dialog"
 // Inspired by react-hot-toast library
-import * as React from "react";
+import * as React from "react"
 
-
-const ALERT_DIALOG_LIMIT = 1;
-const ALERT_DIALOG_REMOVE_DELAY = 300; // Short delay for exit animation, adjust as needed
-export type AlertDialogStatusType = "default" | "success" | "warning" | "destructive";
+const ALERT_DIALOG_LIMIT = 1
+const ALERT_DIALOG_REMOVE_DELAY = 300 // Short delay for exit animation, adjust as needed
+export type AlertDialogStatusType =
+  | "default"
+  | "success"
+  | "warning"
+  | "destructive"
 
 type AlertDialog = Omit<AlertDialogProps, "title" | "description"> & {
-  id: string;
-  status?: AlertDialogStatusType;
-  customStatusIcon?: React.ReactNode;
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  action?: React.ReactNode;
-  showCancel?: boolean;
-  cancelContent?: React.ReactNode;
-  showFooter?: boolean;
-  footerOrientation?: "horizontal" | "vertical";
-  content?: React.ReactNode;
-  open?: boolean;
-};
+  id: string
+  status?: AlertDialogStatusType
+  customStatusIcon?: React.ReactNode
+  title: React.ReactNode
+  description?: React.ReactNode
+  action?: React.ReactNode
+  showCancel?: boolean
+  cancelContent?: React.ReactNode
+  showFooter?: boolean
+  footerOrientation?: "horizontal" | "vertical"
+  content?: React.ReactNode
+  open?: boolean
+}
 
-let count = 0;
+let count = 0
 
 function genId() {
-  count = (count + 1) % Number.MAX_SAFE_INTEGER;
-  return count.toString();
+  count = (count + 1) % Number.MAX_SAFE_INTEGER
+  return count.toString()
 }
 
 type ActionType = {
-  ADD_ALERT_DIALOG: "ADD_ALERT_DIALOG";
-  UPDATE_ALERT_DIALOG: "UPDATE_ALERT_DIALOG";
-  DISMISS_ALERT_DIALOG: "DISMISS_ALERT_DIALOG";
-  REMOVE_ALERT_DIALOG: "REMOVE_ALERT_DIALOG";
-};
+  ADD_ALERT_DIALOG: "ADD_ALERT_DIALOG"
+  UPDATE_ALERT_DIALOG: "UPDATE_ALERT_DIALOG"
+  DISMISS_ALERT_DIALOG: "DISMISS_ALERT_DIALOG"
+  REMOVE_ALERT_DIALOG: "REMOVE_ALERT_DIALOG"
+}
 
 type Action =
   | {
-    type: ActionType["ADD_ALERT_DIALOG"];
-    dialog: AlertDialog;
-  }
+      type: ActionType["ADD_ALERT_DIALOG"]
+      dialog: AlertDialog
+    }
   | {
-    type: ActionType["UPDATE_ALERT_DIALOG"];
-    dialog: Partial<AlertDialog> & { id: string };
-  }
+      type: ActionType["UPDATE_ALERT_DIALOG"]
+      dialog: Partial<AlertDialog> & { id: string }
+    }
   | {
-    type: ActionType["DISMISS_ALERT_DIALOG"];
-    dialogId?: AlertDialog["id"];
-  }
+      type: ActionType["DISMISS_ALERT_DIALOG"]
+      dialogId?: AlertDialog["id"]
+    }
   | {
-    type: ActionType["REMOVE_ALERT_DIALOG"];
-    dialogId?: AlertDialog["id"];
-  };
+      type: ActionType["REMOVE_ALERT_DIALOG"]
+      dialogId?: AlertDialog["id"]
+    }
 
 interface State {
-  dialogs: AlertDialog[];
+  dialogs: AlertDialog[]
 }
 
-const dialogTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
+const dialogTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
 
 const addToRemoveQueue = (dialogId: string) => {
   if (dialogTimeouts.has(dialogId)) {
-    return;
+    return
   }
 
   const timeout = setTimeout(() => {
-    dialogTimeouts.delete(dialogId);
+    dialogTimeouts.delete(dialogId)
     dispatch({
       type: "REMOVE_ALERT_DIALOG",
       dialogId: dialogId,
-    });
-  }, ALERT_DIALOG_REMOVE_DELAY);
+    })
+  }, ALERT_DIALOG_REMOVE_DELAY)
 
-  dialogTimeouts.set(dialogId, timeout);
-};
+  dialogTimeouts.set(dialogId, timeout)
+}
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -85,7 +88,7 @@ export const reducer = (state: State, action: Action): State => {
       return {
         ...state,
         dialogs: [action.dialog, ...state.dialogs].slice(0, ALERT_DIALOG_LIMIT),
-      };
+      }
 
     case "UPDATE_ALERT_DIALOG":
       return {
@@ -93,17 +96,17 @@ export const reducer = (state: State, action: Action): State => {
         dialogs: state.dialogs.map((d) =>
           d.id === action.dialog.id ? { ...d, ...action.dialog } : d
         ),
-      };
+      }
 
     case "DISMISS_ALERT_DIALOG": {
-      const { dialogId } = action;
+      const { dialogId } = action
 
       if (dialogId) {
-        addToRemoveQueue(dialogId);
+        addToRemoveQueue(dialogId)
       } else {
         state.dialogs.forEach((dialog) => {
-          addToRemoveQueue(dialog.id);
-        });
+          addToRemoveQueue(dialog.id)
+        })
       }
 
       return {
@@ -111,12 +114,12 @@ export const reducer = (state: State, action: Action): State => {
         dialogs: state.dialogs.map((d) =>
           d.id === dialogId || dialogId === undefined
             ? {
-              ...d,
-              open: false,
-            }
+                ...d,
+                open: false,
+              }
             : d
         ),
-      };
+      }
     }
 
     case "REMOVE_ALERT_DIALOG":
@@ -124,41 +127,41 @@ export const reducer = (state: State, action: Action): State => {
         return {
           ...state,
           dialogs: [],
-        };
+        }
       }
       return {
         ...state,
         dialogs: state.dialogs.filter((d) => d.id !== action.dialogId),
-      };
+      }
 
     default:
-      return state;
+      return state
   }
-};
-
-const listeners: Array<(state: State) => void> = [];
-
-let memoryState: State = { dialogs: [] };
-
-function dispatch(action: Action) {
-  memoryState = reducer(memoryState, action);
-  listeners.forEach((listener) => {
-    listener(memoryState);
-  });
 }
 
-type AlertDialogInput = Omit<AlertDialog, "id">;
+const listeners: Array<(state: State) => void> = []
+
+let memoryState: State = { dialogs: [] }
+
+function dispatch(action: Action) {
+  memoryState = reducer(memoryState, action)
+  listeners.forEach((listener) => {
+    listener(memoryState)
+  })
+}
+
+type AlertDialogInput = Omit<AlertDialog, "id">
 
 function showAlertDialog({ ...props }: AlertDialogInput) {
-  const id = genId();
+  const id = genId()
 
   const update = (props: AlertDialog) =>
     dispatch({
       type: "UPDATE_ALERT_DIALOG",
       dialog: { ...props, id },
-    });
+    })
 
-  const dismiss = () => dispatch({ type: "DISMISS_ALERT_DIALOG", dialogId: id });
+  const dismiss = () => dispatch({ type: "DISMISS_ALERT_DIALOG", dialogId: id })
 
   dispatch({
     type: "ADD_ALERT_DIALOG",
@@ -167,39 +170,38 @@ function showAlertDialog({ ...props }: AlertDialogInput) {
       id,
       open: true,
       onOpenChange: (open: boolean) => {
-        if (!open) dismiss();
+        if (!open) dismiss()
       },
     },
-  });
+  })
 
   return {
     id: id,
     dismiss,
     update,
-  };
+  }
 }
 
 function useAlertDialog() {
-  const [state, setState] = React.useState<State>(memoryState);
+  const [state, setState] = React.useState<State>(memoryState)
 
   React.useEffect(() => {
-    listeners.push(setState);
+    listeners.push(setState)
     return () => {
-      const index = listeners.indexOf(setState);
+      const index = listeners.indexOf(setState)
       if (index > -1) {
-        listeners.splice(index, 1);
+        listeners.splice(index, 1)
       }
-    };
-  }, []);
+    }
+  }, [])
 
   return {
     dialogs: state.dialogs,
     showAlertDialog,
-    dialogIds: state.dialogs.map(dialog => dialog.id),
+    dialogIds: state.dialogs.map((dialog) => dialog.id),
     dismiss: (dialogId?: string) =>
       dispatch({ type: "DISMISS_ALERT_DIALOG", dialogId }),
-  };
+  }
 }
 
-export { showAlertDialog as alertDialog, useAlertDialog };
-
+export { showAlertDialog as alertDialog, useAlertDialog }

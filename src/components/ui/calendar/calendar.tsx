@@ -42,10 +42,10 @@ function Calendar({
       footer={true}
       classNames={{
         months: "flex flex-row justify-center gap-5",
-        month: "gap-4 flex flex-col items-center", // changed from month
-        month_caption: "flex justify-center items-center", // changed from caption
+        month: "flex flex-col items-center gap-4", // changed from month
+        month_caption: "flex items-center justify-center", // changed from caption
         caption_label: "text-sm font-medium",
-        nav: "space-x-1 flex justify-between z-10  absolute w-full left-0 px-3", // changed from nav
+        nav: "absolute left-0 z-10 flex w-full justify-between space-x-1 px-3", // changed from nav
         button_previous: cn(
           // changed from nav_button
           buttonVariants({
@@ -59,24 +59,24 @@ function Calendar({
             className: "absolute right-3 size-8 min-w-7 p-0",
           })
         ), // changed from nav_button_next
-        month_grid: "w-full border-collapse border-0 space-y-1", // changed from table
+        month_grid: "w-full border-collapse space-y-1 border-0", // changed from table
         weekdays: "flex", // changed from head_row
         weekday:
-          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]", // changed from head_cell
-        week: "flex w-full mt-2", // changed from row
+          "w-9 rounded-md text-[0.8rem] font-normal text-muted-foreground", // changed from head_cell
+        week: "mt-2 flex w-full", // changed from row
         day_button: cn(
           // cell is now day
           "relative size-9 min-w-0 p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-primary first:[&:has([aria-selected])]:rounded-l-md [&:has([aria-selected].outside)]:bg-primary/50 [&:has([aria-selected].range-end)]:rounded-r-md"
         ),
-        day: "border-0 p-0 hover:bg-accent rounded-md size-9 last:rounded-r-md first:rounded-l-md [&:has(+_.invisible[aria-selected])]:rounded-r-md", // changed from cell
+        day: "size-9 rounded-md border-0 p-0 first:rounded-l-md last:rounded-r-md hover:bg-accent [&:has(+_.invisible[aria-selected])]:rounded-r-md", // changed from cell
         range_middle:
           "range-middle rounded-none bg-primary/10 !text-foreground hover:bg-primary/10 [&.invisible+.range-middle]:rounded-l-md [&:has(+_.invisible)]:rounded-r-md", // changed from day_range_middle
         range_end:
-          "range-end !bg-primary !text-primary-foreground rounded-r-md rounded-l-none", // changed from day_range_end
+          "range-end rounded-l-none rounded-r-md !bg-primary !text-primary-foreground", // changed from day_range_end
         range_start:
-          "range-start !bg-primary !text-primary-foreground rounded-r-none rounded-l-md", // changed from day_range_start
+          "range-start rounded-l-md rounded-r-none !bg-primary !text-primary-foreground", // changed from day_range_start
         selected:
-          "bg-primary text-primary-foreground focus:bg-primary focus:text-primary-foreground rounded-md hover:bg-primary hover:text-primary-foreground", // changed from day_selected
+          "rounded-md bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground", // changed from day_selected
         today: "bg-accent", // changed from day_today
         outside:
           "outside text-muted-foreground opacity-50 aria-selected:bg-primary/50 aria-selected:text-muted-foreground aria-selected:opacity-30", // changed from day_outside
