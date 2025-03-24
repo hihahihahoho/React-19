@@ -30,8 +30,11 @@ function DialogOverlay({
 function DialogContent({
   className,
   children,
+  innerScroll,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content>) {
+}: React.ComponentProps<typeof DialogPrimitive.Content> & {
+  innerScroll?: boolean
+}) {
   const [currentScroll, setCurrentScroll] = React.useState(0)
   return (
     <DialogPortal>
@@ -42,7 +45,10 @@ function DialogContent({
             setCurrentScroll(e.currentTarget.scrollTop)
           }}
           className={cn(
-            "margin-auto relative top-0 my-4 max-h-[calc(100%_-_32px)] w-[calc(100%_-_32px)] max-w-xl gap-4 overflow-auto rounded-lg border bg-background p-6 shadow-lg duration-1000 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 -md:border-0",
+            "margin-auto relative top-0 my-4 max-h-[calc(100vh_-_32px)] w-[calc(100%_-_32px)] max-w-xl gap-4 overflow-auto rounded-lg border bg-background p-0 shadow-lg duration-1000 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 -md:border-0",
+            innerScroll
+              ? "flex flex-col gap-0 overflow-hidden [&_[data-slot=dialog-inner]]:overflow-y-auto"
+              : "overflow-auto",
             className
           )}
           {...props}
@@ -50,7 +56,7 @@ function DialogContent({
           <div className="sticky top-0 z-50 w-full">
             <DialogPrimitive.Close
               className={cn(
-                "absolute -right-2 -top-2 flex size-8 items-center justify-center rounded-full ring-offset-background backdrop-blur transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
+                "absolute right-2 top-2 flex size-8 items-center justify-center rounded-full ring-offset-background backdrop-blur transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
                 currentScroll > 20 &&
                   "bg-foreground/70 text-background shadow-sm"
               )}
@@ -59,7 +65,7 @@ function DialogContent({
               <span className="sr-only">Close</span>
             </DialogPrimitive.Close>
           </div>
-          <div className="flex flex-col gap-4">{children}</div>
+          {children}
         </DialogPrimitive.Content>
       </DialogOverlay>
     </DialogPortal>
@@ -74,7 +80,7 @@ function DialogHeader({
     <div
       data-slot="dialog-header"
       className={cn(
-        "flex flex-col space-y-1.5 text-center sm:text-left",
+        "z-40 flex flex-col space-y-1.5 p-6 text-center sm:text-left",
         className
       )}
       {...props}
@@ -90,7 +96,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+        "z-40 flex flex-col-reverse gap-2 p-6 sm:flex-row sm:justify-end",
         className
       )}
       {...props}
@@ -127,6 +133,21 @@ function DialogDescription({
   )
 }
 
+function DialogInner({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      data-slot="dialog-inner"
+      className={cn("px-4 sm:px-6", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+}
 export {
   Dialog,
   DialogClose,
@@ -134,6 +155,7 @@ export {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogInner,
   DialogOverlay,
   DialogPortal,
   DialogTitle,

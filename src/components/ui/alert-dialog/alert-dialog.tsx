@@ -20,7 +20,7 @@ function AlertDialogOverlay({
     <AlertDialogPrimitive.Overlay
       data-slot="overlay"
       className={cn(
-        "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+        "fixed inset-0 z-50 !bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
         className
       )}
       {...props}
@@ -31,11 +31,20 @@ AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
 
 function AlertDialogContent({
   className,
+  overlayCloseable = false,
   ...props
-}: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
+}: React.ComponentProps<typeof AlertDialogPrimitive.Content> & {
+  overlayCloseable?: boolean
+}) {
   return (
     <AlertDialogPortal>
-      <AlertDialogOverlay />
+      {overlayCloseable ? (
+        <AlertDialogPrimitive.Action asChild>
+          <AlertDialogOverlay></AlertDialogOverlay>
+        </AlertDialogPrimitive.Action>
+      ) : (
+        <AlertDialogOverlay />
+      )}
       <AlertDialogPrimitive.Content
         data-slot="content"
         className={cn(
@@ -68,13 +77,17 @@ AlertDialogHeader.displayName = "AlertDialogHeader"
 
 function AlertDialogFooter({
   className,
+  footerOrientation = "horizontal",
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement> & {
+  footerOrientation?: "horizontal" | "vertical"
+}) {
   return (
     <div
       data-slot="footer"
       className={cn(
         "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        footerOrientation === "vertical" ? "flex-col" : "items-center",
         className
       )}
       {...props}
@@ -90,10 +103,7 @@ function AlertDialogTitle({
   return (
     <AlertDialogPrimitive.Title
       data-slot="title"
-      className={cn(
-        "flex items-center gap-2 text-lg font-semibold -sm:flex-col",
-        className
-      )}
+      className={cn("text-lg font-semibold", className)}
       {...props}
     />
   )

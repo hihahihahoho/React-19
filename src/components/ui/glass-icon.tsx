@@ -48,15 +48,31 @@ const glassIconVariants = cva(
 )
 
 const glassIconColorVariants = {
-  blue: "bg-blue-500 dark:bg-blue-600",
-  green: "bg-green-500 dark:bg-green-600",
+  // Default variants from Badge
+  default: "bg-primary dark:bg-primary",
+  secondary: "bg-secondary dark:bg-secondary",
+  destructive: "bg-destructive dark:bg-destructive",
+  outline: "bg-primary/10 dark:bg-primary/20",
+
+  // Color variants
   red: "bg-red-500 dark:bg-red-600",
-  purple: "bg-purple-500 dark:bg-purple-600",
+  orange: "bg-orange-500 dark:bg-orange-600",
   amber: "bg-amber-500 dark:bg-amber-600",
-  rose: "bg-rose-500 dark:bg-rose-600",
-  indigo: "bg-indigo-500 dark:bg-indigo-600",
-  cyan: "bg-cyan-500 dark:bg-cyan-600",
+  yellow: "bg-yellow-400 dark:bg-yellow-500",
+  lime: "bg-lime-400 dark:bg-lime-500",
+  green: "bg-green-500 dark:bg-green-600",
   emerald: "bg-emerald-500 dark:bg-emerald-600",
+  teal: "bg-teal-500 dark:bg-teal-600",
+  cyan: "bg-cyan-500 dark:bg-cyan-600",
+  sky: "bg-sky-500 dark:bg-sky-600",
+  blue: "bg-blue-500 dark:bg-blue-600",
+  indigo: "bg-indigo-500 dark:bg-indigo-600",
+  violet: "bg-violet-500 dark:bg-violet-600",
+  purple: "bg-purple-500 dark:bg-purple-600",
+  fuchsia: "bg-fuchsia-400 dark:bg-fuchsia-500",
+  pink: "bg-pink-400 dark:bg-pink-500",
+  rose: "bg-rose-400 dark:bg-rose-500",
+  zinc: "bg-zinc-600 dark:bg-zinc-700",
   gray: "bg-primary dark:bg-primary/30",
 }
 

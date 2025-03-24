@@ -81,7 +81,8 @@ These icons feature a frosted glass effect with subtle backgrounds and shadows.
     },
     className: {
       control: "text",
-      description: "Additional CSS classes to apply to the glass icon wrapper",
+      description:
+        "Additional CSS classes to apply to the glass icon container",
     },
   },
   decorators: [
@@ -261,7 +262,7 @@ export const CustomColors: Story = {
     docs: {
       description: {
         story:
-          "For custom colors or gradients not in the preset list, you can still use backgroundClassName.",
+          "For custom colors or gradients not in the preset list, you can use backgroundClassName to override default styles.",
       },
     },
   },
