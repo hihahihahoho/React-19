@@ -141,7 +141,7 @@ function Alert({
           <button
             onClick={handleDismiss}
             className={cn(
-              "self-start rounded-full p-1 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
+              "dark:hover:bg-gray-799 -mr-2 -mt-1 self-start rounded-full p-1 transition-colors hover:bg-gray-100",
               classNames.dismissButton
             )}
             aria-label="Dismiss alert"

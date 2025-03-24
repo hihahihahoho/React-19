@@ -209,7 +209,7 @@ export const WithRichContent: Story = {
  */
 export const CustomStyling: Story = {
   render: () => (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-4 [&>*]:flex-1">
       <Alert
         variant="default"
         title="Custom Padding"
@@ -260,7 +260,7 @@ export const DismissibleAlerts: Story = {
     const [isErrorVisible, setIsErrorVisible] = React.useState(true)
 
     return (
-      <div className="flex flex-col gap-4">
+      <div className="flex w-full flex-col gap-4 [&>*]:flex-1">
         {isInfoVisible && (
           <Alert
             variant="default"
