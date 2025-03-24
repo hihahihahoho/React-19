@@ -3,6 +3,9 @@
     "cva",
     "cn"
   ],
+  "tailwindAttributes": [
+    "classNames"
+  ],
   "plugins": [
     "prettier-plugin-tailwindcss"
   ],

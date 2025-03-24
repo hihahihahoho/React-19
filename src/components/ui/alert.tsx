@@ -63,7 +63,6 @@ type AlertProps = React.HTMLAttributes<HTMLDivElement> &
     title?: React.ReactNode
     description?: React.ReactNode
     classNames?: {
-      root?: string
       icon?: string
       title?: string
       description?: string
@@ -110,7 +109,7 @@ function Alert({
       data-has-description={hasDescription ? "true" : "false"}
       data-dismissible={dismissible ? "true" : "false"}
       title={titleAttribute}
-      className={cn(alertVariants({ variant }), className, classNames.root)}
+      className={cn(alertVariants({ variant }), className)}
       {...props}
     >
       <div className="flex gap-3">

@@ -204,35 +204,46 @@ export const WithRichContent: Story = {
   },
 }
 
+// ...existing code...
+
 /**
- * Alerts with custom styling through className props.
+ * Alerts with custom styling through className and classNames props.
  */
 export const CustomStyling: Story = {
   render: () => (
     <div className="flex w-full flex-col gap-4 [&>*]:flex-1">
       <Alert
         variant="default"
-        title="Custom Padding"
-        description="This alert has custom padding applied."
-        className="p-6"
+        title="Custom Root Styling"
+        description="This alert has custom padding and background applied via className."
+        className="bg-slate-50 p-6"
       />
       <Alert
         variant="success"
-        title="Custom Border Radius"
-        description="This alert has a custom border radius applied."
-        className="rounded-3xl"
+        title="Custom Icon and Title"
+        description="This alert has custom styling for both the icon and title."
+        classNames={{
+          icon: "rounded-full bg-emerald-100 p-1",
+          title: "text-lg font-bold text-emerald-700",
+        }}
       />
       <Alert
         variant="warning"
-        title="Custom Width"
-        description="This alert has a custom width applied."
-        className="max-w-sm"
+        title="Custom Description"
+        description="This alert has custom description styling with italic text."
+        classNames={{
+          description: "font-medium italic text-amber-700",
+        }}
       />
       <Alert
         variant="destructive"
-        title="Custom Shadow"
-        description="This alert has a custom shadow applied."
-        className="shadow-lg"
+        title="Custom Appearance"
+        description="This alert has a custom border and shadow via className, and custom dismiss button via classNames."
+        dismissible
+        className="border-2 border-dashed shadow-lg"
+        classNames={{
+          dismissButton: "bg-rose-100 hover:bg-rose-200",
+        }}
       />
     </div>
   ),
@@ -240,7 +251,7 @@ export const CustomStyling: Story = {
     docs: {
       description: {
         story:
-          "Alerts can be customized with additional classes to fit specific design requirements.",
+          "Alerts can be customized with the className prop for the root element and classNames object prop to target specific parts like icon, title, description and dismissButton.",
       },
     },
   },
