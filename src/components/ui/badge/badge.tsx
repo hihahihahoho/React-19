@@ -11,7 +11,7 @@ import {
 } from "../tooltip"
 
 const badgeVariants = cva(
-  "inline-flex items-center gap-1 rounded-[6px] px-2.5 py-0.5 text-xs font-medium ring-inset transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-1 rounded-[6px] px-2.5 py-0.5 text-xs font-medium ring-inset transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -51,10 +51,10 @@ const badgeVariants = cva(
         zinc: "bg-zinc-600/10 text-zinc-700 hover:bg-zinc-600/20 dark:bg-white/5 dark:text-zinc-400 dark:hover:bg-white/10",
       },
       size: {
-        xs: "min-h-5 px-2 py-0.5 text-xs",
-        sm: "min-h-6 px-2.5 py-0.5 text-xs",
-        md: "min-h-7 px-2.5 py-0.5 text-xs",
-        lg: "rounded-4 min-h-8 px-4 py-1 text-sm",
+        xs: "min-h-5 min-w-5 px-2 py-0.5 text-xs",
+        sm: "min-h-6 min-w-6 px-2.5 py-0.5 text-xs",
+        md: "min-h-7 min-w-7 px-2.5 py-0.5 text-xs",
+        lg: "rounded-4 min-h-8 min-w-8 px-4 py-1 text-sm",
       },
       hasLeftIcon: { true: "" },
       hasRightIcon: { true: "" },

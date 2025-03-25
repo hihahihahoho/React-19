@@ -510,6 +510,87 @@ export const SizesWithIcons: Story = {
   },
 }
 
+// ...existing code...
+
+/**
+ * Example showing how badges can be customized with different shapes.
+ */
+export const Customization: Story = {
+  render: () => (
+    <div className="grid gap-6">
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Circle Badges</h3>
+        <div className="flex flex-wrap gap-4">
+          <Badge className="flex aspect-square h-6 w-6 items-center justify-center rounded-full p-0">
+            3
+          </Badge>
+          <Badge
+            variant="secondary"
+            className="flex aspect-square h-8 w-8 items-center justify-center rounded-full p-0"
+            iconLeft={<Bell className="size-4" />}
+          />
+          <Badge
+            variant="blue"
+            className="flex aspect-square h-10 w-10 items-center justify-center rounded-full p-0"
+            tooltip="Profile notifications"
+          >
+            <Mail className="size-5" />
+          </Badge>
+          <Badge
+            variant="green"
+            className="flex aspect-square h-12 w-12 items-center justify-center rounded-full p-0"
+          >
+            <Check className="size-6" />
+          </Badge>
+        </div>
+      </div>
+
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Square Badges</h3>
+        <div className="flex flex-wrap gap-4">
+          <Badge className="flex aspect-square h-6 w-6 items-center justify-center rounded-md p-0">
+            5
+          </Badge>
+          <Badge
+            variant="secondary"
+            className="flex aspect-square h-8 w-8 items-center justify-center rounded-md p-0"
+          >
+            <Star className="size-4" />
+          </Badge>
+          <Badge
+            variant="red"
+            className="flex aspect-square h-10 w-10 items-center justify-center rounded-md p-0"
+            tooltip="Critical alerts"
+          >
+            <AlertCircle className="size-5" />
+          </Badge>
+          <Badge
+            variant="orange"
+            className="flex aspect-square h-12 w-12 items-center justify-center rounded-sm p-0"
+          >
+            <AlertTriangle className="size-6" />
+          </Badge>
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Custom-shaped badges provide versatile styling options:
+
+- **Circle badges** are perfect for notification counts, status indicators, and avatar badges
+- **Square badges** work well for app icons, feature highlights, and custom indicators
+- Custom shapes can be easily created using Tailwind CSS classes
+- Use \`aspect-square\`, \`rounded-full\`, \`p-0\` and specific height/width for perfect circles
+- For notification indicators, use absolute positioning with negative offsets
+        `,
+      },
+    },
+  },
+}
+
 /**
  * A comprehensive showcase of all badge variants, sizes, and features.
  */
