@@ -63,10 +63,6 @@ It supports two modes: "default" (free typing with suggestions) and "select" (on
         defaultValue: { summary: "default" },
       },
     },
-    loading: {
-      control: "boolean",
-      description: "Whether the component is in a loading state",
-    },
     minCharToSearch: {
       control: "number",
       description:
@@ -461,10 +457,12 @@ export const ServerSideFetchingOnSearch: Story = {
         }}
         placeholder="Type a capital city name"
         minCharToSearch={2}
-        loading={isLoading}
         initialState={showInitialState ? historyAndSuggestions : undefined}
         mode="select"
         commandProps={{ shouldFilter: false }}
+        selectCommandProps={{
+          loading: isLoading,
+        }}
       />
     )
   },
@@ -628,12 +626,12 @@ export const LocationSearchWithAPI: Story = {
           }}
           placeholder="Type location name (min 3 chars)"
           minCharToSearch={3}
-          loading={isLoading}
           initialState={showInitialState ? initialStateContent : undefined}
           mode="default"
           onSearchChange={setSearch}
           onValueChange={handleValueChange}
           commandProps={{ shouldFilter: false }}
+          selectCommandProps={{ loading: isLoading }}
         />
       </div>
     )
@@ -918,7 +916,6 @@ export const FormIntegrationWithLocationSearch: Story = {
               }}
               placeholder="Type location name (min 3 chars)"
               minCharToSearch={3}
-              loading={isLoading}
               initialState={showInitialState ? initialStateContent : undefined}
               mode="default"
               onSearchChange={(value) => {
@@ -926,6 +923,7 @@ export const FormIntegrationWithLocationSearch: Story = {
                 setSearch(value)
               }}
               commandProps={{ shouldFilter: false }}
+              selectCommandProps={{ loading: isLoading }}
             />
 
             <div className="flex gap-2">

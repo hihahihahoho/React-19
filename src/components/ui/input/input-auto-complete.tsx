@@ -31,8 +31,6 @@ export interface InputAutoCompleteProps
   defaultValue?: string
   /** Content shown before search, like suggestions */
   initialState?: React.ReactNode
-  /** Whether options are loading */
-  loading?: boolean
   /** Min characters needed before showing search results */
   minCharToSearch?: number
   /** Behavior mode - 'default': free text + suggestions, 'select': only options */
@@ -41,6 +39,7 @@ export interface InputAutoCompleteProps
   commandProps?: React.ComponentProps<typeof Command>
 
   formComposition?: React.ComponentProps<typeof FormComposition>
+  selectCommandProps?: React.ComponentProps<typeof SelectCommand>
 }
 
 function InputAutoComplete({
@@ -53,13 +52,13 @@ function InputAutoComplete({
   onFocus,
   onBlur,
   popoverContentProps,
-  loading,
   initialState,
   mode = "default",
   commandProps,
   ref,
   className,
   minCharToSearch,
+  selectCommandProps,
   ...props
 }: InputAutoCompleteProps) {
   const internalRef = React.useRef<HTMLInputElement>(null)
@@ -241,12 +240,12 @@ function InputAutoComplete({
             initialState
           ) : (
             <SelectCommand
+              {...selectCommandProps}
               showSearch={false}
               selected={[value]}
               items={options}
               onSelect={handleSelect}
               commandWrapper={false}
-              loading={loading}
             />
           )}
         </PopoverContent>

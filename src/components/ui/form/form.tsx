@@ -356,14 +356,8 @@ export interface FormCompositionProps
   suffix?: React.ReactNode
   iconLeft?: string | React.ReactNode
   iconRight?: string | React.ReactNode
-  prefixNotFocusInput?: {
-    order?: number
-    element: React.ReactNode
-  }
-  suffixNotFocusInput?: {
-    order?: number
-    element: React.ReactNode
-  }
+  prefixNotFocusInput?: React.ReactNode
+  suffixNotFocusInput?: React.ReactNode
   isFocused?: boolean
   hasValue?: boolean
   inputClear?: boolean
@@ -511,7 +505,7 @@ function FormComposition({
                   )}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {prefixNotFocusInput.element}
+                  {prefixNotFocusInput}
                 </div>
               )}
               <Slottable>{children}</Slottable>
@@ -544,7 +538,7 @@ function FormComposition({
                   )}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {suffixNotFocusInput.element}
+                  {suffixNotFocusInput}
                 </div>
               )}
               {suffix && (

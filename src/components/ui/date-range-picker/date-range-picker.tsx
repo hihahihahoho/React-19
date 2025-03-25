@@ -99,7 +99,7 @@ function DateRangePicker({
       <>
         {fromFormatted}
         {fromFormatted && toFormatted ? (
-          <ArrowRightIcon className="text-muted-foreground" />
+          <ArrowRightIcon className="size-4 text-muted-foreground" />
         ) : (
           ""
         )}
@@ -125,13 +125,13 @@ function DateRangePicker({
       <FormControlButton disabled={disabled} {...props}>
         <div className={cn("flex h-full flex-1 items-center", className)}>
           {hasValue ? (
-            <span className="flex items-center gap-2">{displayRange}</span>
+            <span className="flex items-center gap-1">{displayRange}</span>
           ) : (
             <span className={cn(placeholderColor)}>
               {placeholder || (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   {localeConfig.format.toLowerCase()}
-                  <ArrowRightIcon />
+                  <ArrowRightIcon className="size-4" />
                   {localeConfig.format.toLowerCase()}
                 </div>
               )}

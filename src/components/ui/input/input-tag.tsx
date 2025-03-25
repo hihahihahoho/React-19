@@ -43,8 +43,6 @@ export interface InputTagProps
   triggerKeys?: string[]
   /** Content shown before search, like suggestions */
   initialState?: React.ReactNode
-  /** Whether options are loading */
-  loading?: boolean
   /** Min characters needed before showing search results, set to 0 to show default suggestion list */
   minCharToSearch?: number
 
@@ -90,7 +88,6 @@ export function InputTag({
   allowDuplicates = false,
   triggerKeys = [",", "Tab"],
   initialState,
-  loading,
   minCharToSearch = 0,
   commandProps,
   historyOptions = {},
@@ -133,7 +130,7 @@ export function InputTag({
   // Determine whether to show the dropdown suggestions
   const shouldShowDropdown = React.useMemo(() => {
     // Always show when loading
-    if (loading && open) {
+    if (selectCommandProps?.loading && open) {
       return true
     }
 
@@ -154,7 +151,7 @@ export function InputTag({
 
     // Has typed enough characters to meet search threshold
     return inputValue.length >= minCharToSearch && options && options.length > 0
-  }, [open, loading, inputValue, minCharToSearch, options])
+  }, [open, selectCommandProps?.loading, inputValue, minCharToSearch, options])
 
   React.useEffect(() => {
     // This effect should only run when tags change AND the component is controlled
@@ -630,7 +627,6 @@ export function InputTag({
               onSelect={handleSelect}
               selected={currentTags}
               commandWrapper={false}
-              loading={loading}
               showSelectedItems={false}
               contentBefore={
                 mode === "default" ? (

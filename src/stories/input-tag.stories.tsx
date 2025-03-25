@@ -793,8 +793,10 @@ export const ServerSideFetchingInForm: Story = {
               commandProps={{
                 shouldFilter: false, // Important! Disable client-side filtering
               }}
-              loading={isLoading}
               onSearchChange={setSearch}
+              selectCommandProps={{
+                loading: isLoading,
+              }}
             />
 
             <div className="flex gap-2">
@@ -922,7 +924,6 @@ export const ServerSideFetchingInSimpleForm: Story = {
               onSearchChange={(value) => {
                 setSearch(value)
               }}
-              loading={isLoading}
               formComposition={{
                 label: "Tailwind CSS Classes",
                 description:
@@ -931,6 +932,9 @@ export const ServerSideFetchingInSimpleForm: Story = {
               }}
               placeholder="Search classes..."
               triggerKeys={[" "]}
+              selectCommandProps={{
+                loading: isLoading,
+              }}
             />
 
             <PreviewComponent />

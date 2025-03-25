@@ -4,8 +4,8 @@ import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import {
   InputNumber,
   OnValueChangeInputNumber,
-} from "@/components/ui/input-number/input-number"
-import { InputNumberForm } from "@/components/ui/input-number/input-number-form"
+} from "@/components/ui/input/input-number"
+import { InputNumberForm } from "@/components/ui/input/input-number-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react"
 import { DollarSign, Hash, Percent, TrendingUp } from "lucide-react"

@@ -170,23 +170,19 @@ function DatePicker({
         DateTimeInputRef.current?.focus()
       }}
       suffixNotFocusInput={
-        editable
-          ? {
-              element: (
-                <Button
-                  ref={calendarButtonRef}
-                  onClick={() => setOpen(!open)}
-                  size="xs"
-                  variant="outline"
-                  iconOnly
-                  disabled={disabled}
-                  className="-mr-1"
-                >
-                  <CalendarIcon />
-                </Button>
-              ),
-            }
-          : undefined
+        editable ? (
+          <Button
+            ref={calendarButtonRef}
+            onClick={() => setOpen(!open)}
+            size="xs"
+            variant="outline"
+            iconOnly
+            disabled={disabled}
+            className="-mr-1"
+          >
+            <CalendarIcon />
+          </Button>
+        ) : undefined
       }
     >
       {editable ? (
