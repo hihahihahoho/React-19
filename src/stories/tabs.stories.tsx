@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Badge } from "@/components/ui/badge/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import type { Meta, StoryObj } from "@storybook/react"
 import {
   Code,
@@ -478,10 +479,10 @@ export const ScrollableTabs: Story = {
           <TabsTrigger value="tab8">Tab 8</TabsTrigger>
           <TabsTrigger value="tab9">Tab 9</TabsTrigger>
           <TabsTrigger value="tab10">Tab 10</TabsTrigger>
-          <TabsTrigger value="tab10">Tab 11</TabsTrigger>
-          <TabsTrigger value="tab10">Tab 12</TabsTrigger>
-          <TabsTrigger value="tab10">Tab 13</TabsTrigger>
-          <TabsTrigger value="tab10">Tab 14</TabsTrigger>
+          <TabsTrigger value="tab11">Tab 11</TabsTrigger>
+          <TabsTrigger value="tab12">Tab 12</TabsTrigger>
+          <TabsTrigger value="tab13">Tab 13</TabsTrigger>
+          <TabsTrigger value="tab14">Tab 14</TabsTrigger>
         </TabsList>
         {Array.from({ length: 14 }).map((_, i) => (
           <TabsContent key={i} value={`tab${i + 1}`}>
@@ -507,6 +508,192 @@ export const ScrollableTabs: Story = {
 }
 
 // ...existing code...
+
+/**
+ * Showcase of vertical oriented tabs.
+ */
+export const VerticalTabs: Story = {
+  render: () => (
+    <div className="space-y-8">
+      {/* Default variant vertical tabs */}
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Default Variant</h3>
+        <Tabs
+          defaultValue="general"
+          orientation="vertical"
+          className="flex max-w-3xl"
+        >
+          <TabsList className="w-40">
+            <TabsTrigger value="general">
+              <Cog />
+              General
+            </TabsTrigger>
+            <TabsTrigger value="account">
+              <User />
+              Account
+            </TabsTrigger>
+            <TabsTrigger value="security">
+              <Settings />
+              Security
+            </TabsTrigger>
+          </TabsList>
+          <div className="flex-1">
+            <TabsContent value="general">
+              <div className="rounded-lg border p-4">
+                <h3 className="text-lg font-medium">General Settings</h3>
+                <p className="text-sm text-muted-foreground">
+                  Configure general application settings.
+                </p>
+              </div>
+            </TabsContent>
+            <TabsContent value="account">
+              <div className="rounded-lg border p-4">
+                <h3 className="text-lg font-medium">Account Settings</h3>
+                <p className="text-sm text-muted-foreground">
+                  Manage your account information.
+                </p>
+              </div>
+            </TabsContent>
+            <TabsContent value="security">
+              <div className="rounded-lg border p-4">
+                <h3 className="text-lg font-medium">Security Settings</h3>
+                <p className="text-sm text-muted-foreground">
+                  Manage your security preferences.
+                </p>
+              </div>
+            </TabsContent>
+          </div>
+        </Tabs>
+      </div>
+
+      {/* Line variant vertical tabs */}
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Line Variant</h3>
+        <Tabs
+          defaultValue="profile"
+          orientation="vertical"
+          variant="line"
+          className="flex max-w-3xl"
+        >
+          <TabsList className="w-36">
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="preferences">Preferences</TabsTrigger>
+            <TabsTrigger value="billing">Billing</TabsTrigger>
+          </TabsList>
+          <div className="flex-1">
+            <TabsContent value="profile">
+              <div className="rounded-lg border p-4">
+                <h3 className="text-lg font-medium">Profile</h3>
+                <p className="text-sm text-muted-foreground">
+                  Manage your personal information.
+                </p>
+              </div>
+            </TabsContent>
+            <TabsContent value="preferences">
+              <div className="rounded-lg border p-4">
+                <h3 className="text-lg font-medium">Preferences</h3>
+                <p className="text-sm text-muted-foreground">
+                  Customize your experience.
+                </p>
+              </div>
+            </TabsContent>
+            <TabsContent value="billing">
+              <div className="rounded-lg border p-4">
+                <h3 className="text-lg font-medium">Billing</h3>
+                <p className="text-sm text-muted-foreground">
+                  Manage subscription and payments.
+                </p>
+              </div>
+            </TabsContent>
+          </div>
+        </Tabs>
+      </div>
+
+      {/* Scrollable vertical tabs */}
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Scrollable Tabs</h3>
+        <Tabs
+          defaultValue="tab1"
+          orientation="vertical"
+          className="flex max-w-3xl"
+        >
+          <TabsList className="h-40 w-36 overflow-auto">
+            {[...Array(12)].map((_, i) => (
+              <TabsTrigger key={i} value={`tab${i + 1}`}>
+                Tab {i + 1}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <div className="flex-1">
+            {[...Array(12)].map((_, i) => (
+              <TabsContent key={i} value={`tab${i + 1}`}>
+                <div className="rounded-lg border p-4">
+                  <h3 className="text-lg font-medium">Content {i + 1}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    This is the content for tab {i + 1}.
+                  </p>
+                </div>
+              </TabsContent>
+            ))}
+          </div>
+        </Tabs>
+      </div>
+
+      {/* Responsive example */}
+      <div>
+        <h3 className="mb-2 text-sm font-medium">
+          Responsive (Resize Browser)
+        </h3>
+        <ResponsiveTabsExample />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Vertical tabs with support for scrolling when content overflows. The tabs adjust to the available vertical space and scroll independently of the content.
+        `,
+      },
+    },
+  },
+}
+
+// Simplified helper component for responsive example
+function ResponsiveTabsExample() {
+  const isDesktop = useMediaQuery("(min-width: 768px)")
+
+  return (
+    <Tabs
+      defaultValue="dashboard"
+      orientation={isDesktop ? "vertical" : "horizontal"}
+      className={isDesktop ? "flex" : ""}
+    >
+      <TabsList className={isDesktop ? "w-32" : "w-full"}>
+        <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+        <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <TabsTrigger value="reports">Reports</TabsTrigger>
+      </TabsList>
+      <div className={isDesktop ? "flex-1" : ""}>
+        <TabsContent value="dashboard">
+          <div className="rounded-lg border p-4">
+            <h3 className="font-medium">Dashboard Content</h3>
+          </div>
+        </TabsContent>
+        <TabsContent value="analytics">
+          <div className="rounded-lg border p-4">
+            <h3 className="font-medium">Analytics Content</h3>
+          </div>
+        </TabsContent>
+        <TabsContent value="reports">
+          <div className="rounded-lg border p-4">
+            <h3 className="font-medium">Reports Content</h3>
+          </div>
+        </TabsContent>
+      </div>
+    </Tabs>
+  )
+}
 
 /**
  * Examples of various tab customizations for different design needs.
@@ -712,68 +899,6 @@ export const Customization: Story = {
         </Tabs>
       </div>
 
-      {/* Vertical Tabs */}
-      <div>
-        <h3 className="mb-2 text-sm font-medium">Vertical Tabs</h3>
-        <div className="flex gap-4">
-          <Tabs
-            defaultValue="general"
-            className="flex w-full flex-col sm:flex-row"
-          >
-            <TabsList className="h-fit w-full sm:w-40 sm:flex-col">
-              <TabsTrigger value="general" className="justify-start">
-                General
-              </TabsTrigger>
-              <TabsTrigger value="account" className="justify-start">
-                Account
-              </TabsTrigger>
-              <TabsTrigger value="security" className="justify-start">
-                Security
-              </TabsTrigger>
-              <TabsTrigger value="notifications" className="justify-start">
-                Notifications
-              </TabsTrigger>
-            </TabsList>
-            <div className="flex-1 pt-0 sm:pt-0">
-              <TabsContent value="general" className="mt-0 sm:mt-0">
-                <div className="rounded-lg border p-4">
-                  <h3 className="text-lg font-medium">General Settings</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Configure your general application settings.
-                  </p>
-                </div>
-              </TabsContent>
-              <TabsContent value="account" className="mt-0 sm:mt-0">
-                <div className="rounded-lg border p-4">
-                  <h3 className="text-lg font-medium">Account Settings</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Manage your account information.
-                  </p>
-                </div>
-              </TabsContent>
-              <TabsContent value="security" className="mt-0 sm:mt-0">
-                <div className="rounded-lg border p-4">
-                  <h3 className="text-lg font-medium">Security Settings</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Manage your security preferences.
-                  </p>
-                </div>
-              </TabsContent>
-              <TabsContent value="notifications" className="mt-0 sm:mt-0">
-                <div className="rounded-lg border p-4">
-                  <h3 className="text-lg font-medium">
-                    Notification Preferences
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    Control which notifications you receive.
-                  </p>
-                </div>
-              </TabsContent>
-            </div>
-          </Tabs>
-        </div>
-      </div>
-
       {/* Custom Styled Tabs */}
       <div>
         <h3 className="mb-2 text-sm font-medium">Custom Styled Tabs</h3>
@@ -783,21 +908,21 @@ export const Customization: Story = {
               value="home"
               className="rounded-b-none rounded-t-lg border border-b-0 border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background"
             >
-              <Home className="mr-2 size-4" />
+              <Home />
               Home
             </TabsTrigger>
             <TabsTrigger
               value="dashboard"
               className="rounded-b-none rounded-t-lg border border-b-0 border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background"
             >
-              <MessageSquare className="mr-2 size-4" />
+              <MessageSquare />
               Dashboard
             </TabsTrigger>
             <TabsTrigger
               value="settings"
               className="rounded-b-none rounded-t-lg border border-b-0 border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background"
             >
-              <Settings className="mr-2 size-4" />
+              <Settings />
               Settings
             </TabsTrigger>
           </TabsList>

@@ -1,5 +1,7 @@
 "use client"
 
+import { useScrollIntoView } from "@/hooks/use-scroll-into-view"
+import { useWheelScroll } from "@/hooks/use-wheel-scroll"
 import { cn } from "@/lib/utils"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -20,16 +22,27 @@ const tabsListVariants = cva(
         default: "min-h-9 gap-1.5",
         lg: "min-h-10 gap-2",
       },
+      orientation: {
+        horizontal: "flex-row",
+        vertical: "flex-col",
+      },
     },
     defaultVariants: {
+      orientation: "horizontal",
       variant: "default",
       size: "default",
     },
+
     compoundVariants: [
       {
         variant: "default",
         size: "sm",
         className: "p-[2px]",
+      },
+      {
+        variant: "line",
+        orientation: "vertical",
+        className: "gap-4 !border-b-0 !border-r",
       },
     ],
   }
@@ -48,25 +61,33 @@ const tabsTriggerVariants = cva(
         default: "gap-1.5 py-1 text-sm",
         lg: "gap-2 py-1.5",
       },
+      orientation: {
+        horizontal: "",
+        vertical: "w-full justify-start text-left",
+      },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
+      orientation: "horizontal",
     },
     compoundVariants: [
       {
         variant: "line",
         size: "default",
+        orientation: "horizontal",
         className: "pb-1.5 pt-2",
       },
       {
         variant: "line",
         size: "sm",
+        orientation: "horizontal",
         className: "b-1 min-w-8 pt-1.5",
       },
       {
         variant: "line",
         size: "lg",
+        orientation: "horizontal",
         className: "pb-2 pt-2.5",
       },
       {
@@ -84,6 +105,11 @@ const tabsTriggerVariants = cva(
         size: "lg",
         className: "rounded-md",
       },
+      {
+        variant: "line",
+        orientation: "vertical",
+        className: "border-b-0 border-r-2 pb-0 pr-3 pt-0",
+      },
     ],
   }
 )
@@ -99,11 +125,23 @@ const tabsIndicatorVariants = cva("absolute left-0 right-0 -z-[1]", {
       default: "",
       lg: "",
     },
+    orientation: {
+      horizontal: "",
+      vertical: "",
+    },
   },
   defaultVariants: {
     variant: "default",
     size: "default",
+    orientation: "horizontal",
   },
+  compoundVariants: [
+    {
+      variant: "line",
+      orientation: "vertical",
+      className: "-bottom-auto -right-0.5 bottom-0 left-auto h-full w-0.5",
+    },
+  ],
 })
 
 const tabsContentVariants = cva(
@@ -119,10 +157,15 @@ const tabsContentVariants = cva(
         default: "mt-2",
         lg: "mt-2.5",
       },
+      orientation: {
+        horizontal: "",
+        vertical: "ml-4 mt-0",
+      },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
+      orientation: "horizontal",
     },
   }
 )
@@ -136,6 +179,7 @@ type TabsContextType = {
   listContainerRef: React.RefObject<HTMLDivElement | null>
   variant: VariantProps<typeof tabsListVariants>["variant"]
   size: VariantProps<typeof tabsListVariants>["size"]
+  orientation: VariantProps<typeof tabsListVariants>["orientation"]
 }
 
 // Context
@@ -149,32 +193,8 @@ export const useTabsContext = () => {
   return context
 }
 
-// Helper functions
-const scrollTabIntoView = (
-  activeTabRef: React.RefObject<HTMLElement> | undefined,
-  listRef: HTMLDivElement | null
-) => {
-  if (!activeTabRef?.current || !listRef) return
-
-  const tabElement = activeTabRef.current
-  const listElement = listRef
-
-  const tabRect = tabElement.getBoundingClientRect()
-  const listRect = listElement.getBoundingClientRect()
-
-  const tabCenter = tabRect.left + tabRect.width / 2
-  const listCenter = listRect.left + listRect.width / 2
-  const scrollOffset = tabCenter - listCenter
-
-  listElement.scrollTo({
-    left: listElement.scrollLeft + scrollOffset,
-    behavior: "smooth",
-  })
-}
-
-// Component implementations
 export interface TabsProps
-  extends React.ComponentProps<typeof TabsPrimitive.Root>,
+  extends Omit<React.ComponentProps<typeof TabsPrimitive.Root>, "orientation">,
     VariantProps<typeof tabsListVariants> {
   setActiveTab?: (tabValue: string) => void
 }
@@ -187,6 +207,7 @@ function Tabs({
   children,
   variant = "default",
   size = "default",
+  orientation = "horizontal",
   ...props
 }: TabsProps) {
   const [internalActiveTab, setInternalActiveTab] =
@@ -200,6 +221,7 @@ function Tabs({
     new Map()
   )
   const listContainerRef = React.useRef<HTMLDivElement>(null)
+  const scrollIntoView = useScrollIntoView()
 
   const registerTab = React.useCallback(
     (tabValue: string, ref: React.RefObject<HTMLElement>) => {
@@ -215,11 +237,19 @@ function Tabs({
     }
   }, [value, isControlled, internalActiveTab])
 
-  // Handle tab scrolling when active tab changes
+  // Handle tab scrolling when active tab changes using the new hook
   React.useEffect(() => {
     const activeTabRef = tabRefs.current.get(activeTab)
-    scrollTabIntoView(activeTabRef, listContainerRef.current)
-  }, [activeTab])
+    if (activeTabRef?.current && listContainerRef.current) {
+      scrollIntoView(activeTabRef.current, {
+        position: "center",
+        container: listContainerRef.current,
+        smooth: true,
+        axis: orientation === "horizontal" ? "x" : "y",
+        onlyIfNeeded: false,
+      })
+    }
+  }, [activeTab, orientation, scrollIntoView])
 
   const handleSetActiveTab = React.useCallback(
     (tab: string) => {
@@ -240,8 +270,17 @@ function Tabs({
       listContainerRef,
       variant,
       size,
+      orientation,
     }),
-    [activeTab, handleSetActiveTab, layoutId, registerTab, variant, size]
+    [
+      activeTab,
+      handleSetActiveTab,
+      layoutId,
+      registerTab,
+      variant,
+      size,
+      orientation,
+    ]
   )
 
   return (
@@ -256,6 +295,7 @@ function Tabs({
           }}
           data-variant={variant}
           data-size={size}
+          data-orientation={orientation}
           {...props}
         >
           {children}
@@ -269,34 +309,25 @@ function TabsList({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.List>) {
-  const { listContainerRef, variant, size } = useTabsContext()
+  const { listContainerRef, variant, size, orientation } = useTabsContext()
 
-  const handleWheel = React.useCallback(
-    (event: React.WheelEvent<HTMLDivElement>) => {
-      if (
-        !listContainerRef.current ||
-        event.deltaY === 0 ||
-        event.deltaX !== 0
-      ) {
-        return
-      }
-      event.stopPropagation()
-      listContainerRef.current.scrollBy({
-        left: event.deltaY,
-        behavior: "smooth",
-      })
-    },
-    [listContainerRef]
-  )
+  const { handleWheel } = useWheelScroll({
+    orientation,
+    containerRef: listContainerRef,
+    speed: 1,
+  })
 
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
-      className={cn(tabsListVariants({ variant, size, className }))}
+      className={cn(
+        tabsListVariants({ variant, size, orientation, className })
+      )}
       ref={listContainerRef as React.RefObject<HTMLDivElement>}
       onWheel={handleWheel}
       data-variant={variant}
       data-size={size}
+      data-orientation={orientation}
       {...props}
     />
   )
@@ -308,7 +339,8 @@ function TabsTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
-  const { activeTab, layoutId, registerTab, variant, size } = useTabsContext()
+  const { activeTab, layoutId, registerTab, variant, size, orientation } =
+    useTabsContext()
   const triggerRef = React.useRef<HTMLButtonElement>(null)
 
   React.useEffect(() => {
@@ -321,16 +353,19 @@ function TabsTrigger({
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       ref={triggerRef}
-      className={cn(tabsTriggerVariants({ variant, size, className }))}
+      className={cn(
+        tabsTriggerVariants({ variant, size, orientation, className })
+      )}
       value={value}
       data-variant={variant}
       data-size={size}
+      data-orientation={orientation}
       {...props}
     >
       {children}
       {activeTab === value && (
         <motion.div
-          className={cn(tabsIndicatorVariants({ variant, size }))}
+          className={cn(tabsIndicatorVariants({ variant, size, orientation }))}
           layoutId={layoutId}
           transition={{
             duration: 0.2,
@@ -346,14 +381,17 @@ function TabsContent({
   className,
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Content>) {
-  const { variant, size } = useTabsContext()
+  const { variant, size, orientation } = useTabsContext()
 
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
-      className={cn(tabsContentVariants({ variant, size, className }))}
+      className={cn(
+        tabsContentVariants({ variant, size, orientation, className })
+      )}
       data-variant={variant}
       data-size={size}
+      data-orientation={orientation}
       {...props}
     />
   )
