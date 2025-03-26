@@ -112,15 +112,3 @@ While visual fidelity is critical, you may:
 ### Code Comments
 
 > **IMPORTANT**: Avoid writing unnecessary comments in your code unless they directly relate to design decisions or mockup implementation details.
-
-```tsx
-// CORRECT - Comment explains design-related implementation detail
-// Using overflow-hidden to maintain the rounded corners as shown in mockup
-<div className="rounded-lg overflow-hidden">
-  <Image src="/product.jpg" alt="Product" />
-</div>
-
-// INCORRECT - Unnecessary comment that doesn't relate to design
-// This is a button that submits the form
-<Button type="submit">Submit</Button>
-```
