@@ -442,7 +442,8 @@ function FormComposition({
         {label && (
           <FormLabelWrapper
             className={cn(
-              labelPosition === "horizontal" && newLayout.leftColClass
+              labelPosition === "horizontal" && newLayout.leftColClass,
+              disabled && "cursor-not-allowed opacity-50"
             )}
           >
             <FormLabel requiredSymbol={requiredSymbol}>{label}</FormLabel>

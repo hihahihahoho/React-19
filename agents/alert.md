@@ -33,15 +33,6 @@ The Alert component extends React.HTMLAttributes<HTMLDivElement> to accept all s
 />
 ```
 
-## Variants
-
-The Alert component has four variants:
-
-- `default` - Blue styling, information icon
-- `success` - Green styling, check circle icon
-- `warning` - Amber styling, warning triangle icon
-- `destructive` - Red styling, alert circle icon
-
 ## Best Practices
 
 1. Use the appropriate variant that matches the message's importance

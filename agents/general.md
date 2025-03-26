@@ -1,4 +1,3 @@
-````markdown
 # General Design System Guidelines
 
 ## Overview
@@ -24,26 +23,80 @@ This document provides essential guidelines for AI agents and ML systems working
 
 ## Implementation Guidelines
 
+### Documentation Priority
+
+> **CRITICAL**: Before implementing any component, agents MUST first read the corresponding documentation file in the `agents` folder matching the component name. Do not consult other documentation or implementation details unless explicitly specified or as a last resort.
+
+```tsx
+// Example: When implementing Button component
+// FIRST: Read e:\work-out\react-19\agents\button.md for specific guidelines
+// DO NOT examine existing button implementations unless directed or as last resort
+```
+
 ### Import Patterns
 
 > **CRITICAL**: Agents/LMs must strictly follow the import patterns shown in documentation. If imports aren't explicitly declared, default to using the shadcn import structure.
 
 ```tsx
 // CORRECT - Using documented import paths
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input/input"
-import { SelectForm } from "@/components/ui/select/select-form"
+import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 
 // INCORRECT - Using incorrect paths
-import { Button } from "@/ui/button"
-import { Input } from "@/components/form/input"
+import { ZodSchemaProvider } from "@/components/ui/form/form"
 ```
-````
 
 When documentation doesn't specify imports, follow shadcn conventions:
 
 ```tsx
 import { ComponentName } from "@/components/ui/component-name"
+```
+
+### Component Styling Integrity
+
+> **CRITICAL**: Do not modify component `className` props unless specifically instructed to do so. The default styling system must remain intact.
+
+```tsx
+// CORRECT - Preserving original className
+<Button className="existing-class">Submit</Button>
+
+// INCORRECT - Modifying without instruction
+<Button className="my-custom-class">Submit</Button>
+```
+
+### Layout Implementation
+
+> **IMPORTANT**: Use Tailwind's spacing utilities (`space-x-`, `space-y-`, etc.) for managing layout and component spacing rather than custom margin/padding classes.
+
+```tsx
+// CORRECT - Using Tailwind space classes
+<div className="space-y-4">
+  <Input />
+  <Select />
+  <Button />
+</div>
+
+// INCORRECT - Using custom margin classes
+<div>
+  <Input className="mb-4" />
+  <Select className="mb-4" />
+  <Button />
+</div>
+```
+
+### Responsive Design
+
+> **REQUIRED**: All implementations must automatically incorporate responsive design patterns using Tailwind's responsive prefixes (`sm:`, `md:`, `lg:`, etc.)
+
+```tsx
+// CORRECT - With responsive design
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {items.map(item => <Card key={item.id} {...item} />)}
+</div>
+
+// INCORRECT - No responsive considerations
+<div className="grid grid-cols-2 gap-4">
+  {items.map(item => <Card key={item.id} {...item} />)}
+</div>
 ```
 
 ### Implementation Flexibility
@@ -55,3 +108,19 @@ While visual fidelity is critical, you may:
 - Extend component functionality as long as visual appearance is preserved
 
 > **IMPORTANT**: The final implementation should be visually indistinguishable from the provided design mockups, with every detail of spacing, color, typography, and interaction preserved.
+
+### Code Comments
+
+> **IMPORTANT**: Avoid writing unnecessary comments in your code unless they directly relate to design decisions or mockup implementation details.
+
+```tsx
+// CORRECT - Comment explains design-related implementation detail
+// Using overflow-hidden to maintain the rounded corners as shown in mockup
+<div className="rounded-lg overflow-hidden">
+  <Image src="/product.jpg" alt="Product" />
+</div>
+
+// INCORRECT - Unnecessary comment that doesn't relate to design
+// This is a button that submits the form
+<Button type="submit">Submit</Button>
+```
