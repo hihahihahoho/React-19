@@ -11,6 +11,7 @@ The InputAutoComplete component provides a searchable input field with dropdown 
 ```typescript
 import { InputAutoComplete } from "@/components/ui/input/input-auto-complete"
 import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form"
+import { SelectItems, SelectGroup } from "@/components/ui/select/select"
 ```
 
 ## Types

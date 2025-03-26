@@ -11,6 +11,7 @@ The Select component provides a dropdown selector with search capabilities, grou
 ```typescript
 import { Select } from "@/components/ui/select/select"
 import { SelectForm } from "@/components/ui/select/select-form"
+import { SelectItems, SelectGroup } from "@/components/ui/select/select"
 ```
 
 ## Types
