@@ -1,7 +1,6 @@
 import { CheckboxProps } from "@radix-ui/react-checkbox"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
-import { FormComposition, FormCompositionProps, FormField } from "../form/form"
-import { useZodSchema } from "../form/zod-schema-context"
+import { FormCompositionProps, FormField } from "../form/form"
 import { Checkbox } from "./checkbox"
 import { SelectionGroup, SelectionGroupProps } from "./selection-group"
 
@@ -22,35 +21,25 @@ const CheckboxForm = <
   name,
   selectionGroup,
   children,
-  formComposition,
   ...props
 }: CheckboxFormProps<TFieldValues, TName>) => {
-  const { getSchemaFromPath } = useZodSchema()
-  const { isOptional } = getSchemaFromPath(name)
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormComposition
-          requiredSymbol={!isOptional()}
-          {...formComposition}
-          variant="empty"
-          className="h-auto min-h-0"
+        <SelectionGroup
+          control={
+            <Checkbox
+              {...props}
+              onCheckedChange={field.onChange}
+              checked={field.value}
+            />
+          }
+          {...selectionGroup}
         >
-          <SelectionGroup
-            control={
-              <Checkbox
-                {...props}
-                onCheckedChange={field.onChange}
-                checked={field.value}
-              />
-            }
-            {...selectionGroup}
-          >
-            {children}
-          </SelectionGroup>
-        </FormComposition>
+          {children}
+        </SelectionGroup>
       )}
     />
   )

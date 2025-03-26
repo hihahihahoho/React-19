@@ -1,3 +1,4 @@
+````markdown
 # InputAutoComplete Component Documentation
 
 ## Overview
@@ -9,29 +10,37 @@ The InputAutoComplete component provides a searchable input field with dropdown 
 ## Import
 
 ```typescript
-import { InputAutoComplete } from "@/components/ui/input/input-auto-complete"
+import {
+  InputAutoComplete,
+  type InputAutoCompleteProps,
+} from "@/components/ui/input/input-auto-complete"
 import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form"
-import { SelectItems, SelectGroup } from "@/components/ui/select/select"
+import {
+  SelectItems,
+  SelectGroup,
+} from "@/components/ui/select/select-interface"
 ```
+````
 
-## Types
+## Props Explanation
 
-```typescript
-export interface InputAutoCompleteProps {
-  options?: SelectItems[] | SelectGroup[] // Options for dropdown
-  onValueChange?: (value: string) => void // Called when value changes
-  onSearchChange?: (value: string) => void // Called when search term changes
-  value?: string // Controlled value
-  defaultValue?: string // Uncontrolled initial value
-  initialState?: React.ReactNode // Content shown before search
-  loading?: boolean // Show loading state
-  minCharToSearch?: number // Min chars before showing results
-  mode?: "default" | "select" // Behavior mode
-  formComposition?: FormCompositionProps // Styling options
-}
-```
+| Prop              | Type                           | Default   | Description                               |
+| ----------------- | ------------------------------ | --------- | ----------------------------------------- |
+| `options`         | SelectItems[] \| SelectGroup[] | []        | Options to display in dropdown            |
+| `onValueChange`   | (value: string) => void        | undefined | Called when value changes                 |
+| `onSearchChange`  | (value: string) => void        | undefined | Called when search term changes           |
+| `value`           | string                         | undefined | Controlled value                          |
+| `defaultValue`    | string                         | undefined | Uncontrolled initial value                |
+| `placeholder`     | string                         | undefined | Text displayed when input is empty        |
+| `initialState`    | React.ReactNode                | undefined | Content shown before search               |
+| `loading`         | boolean                        | false     | Show loading state when fetching options  |
+| `minCharToSearch` | number                         | 0         | Minimum characters before showing results |
+| `mode`            | "default" \| "select"          | "default" | Behavior mode for selection               |
+| `formComposition` | FormCompositionProps           | undefined | Styling and layout options                |
+| `disabled`        | boolean                        | false     | Disables the component                    |
+| `readonly`        | boolean                        | false     | Makes the component read-only             |
 
-## Basic Usage
+## Example Usage
 
 ```tsx
 <InputAutoComplete
@@ -51,110 +60,31 @@ export interface InputAutoCompleteProps {
 ## Form Integration
 
 ```tsx
-const formSchema = z.object({
-  country: z.string().min(1, "Please select a country"),
-})
-
-function CountryForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  })
-
-  return (
-    <ZodSchemaProvider schema={formSchema}>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <InputAutoCompleteForm
-            control={form.control}
-            name="country"
-            options={countryOptions}
-            mode="select"
-            formComposition={{
-              label: "Country",
-              labelPosition: "horizontal",
-            }}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
-    </ZodSchemaProvider>
-  )
-}
-```
-
-## Loading State
-
-You can show a loading state while fetching options asynchronously:
-
-```tsx
-// Example with loading state
-<InputAutoComplete
-  placeholder="Search countries..."
-  options={countries} // This might be empty while loading
-  loading={isLoading} // Boolean indicating loading state
-  onSearchChange={handleSearch}
+<InputAutoCompleteForm
+  control={form.control}
+  name="country"
+  options={countryOptions}
+  mode="select"
   formComposition={{
     label: "Country",
+    description: "Select your country",
   }}
 />
 ```
 
 ## Key Features
 
-1. **Two Modes**: `default` for free text with suggestions, `select` for strict option selection
-2. **Search**: Filter options as you type
-3. **FormComposition**: Uses all FormComposition styling options
-4. **React Hook Form Integration**: Works with form validation
-5. **Grouped Options**: Support for option categories
-
-## Options Format
-
-```typescript
-// Simple options
-const options = [
-  { value: "us", label: "United States" },
-  { value: "uk", label: "United Kingdom" },
-]
-
-// Grouped options
-const groupedOptions = [
-  {
-    label: "North America",
-    items: [{ value: "us", label: "United States" }],
-  },
-  {
-    label: "Europe",
-    items: [{ value: "uk", label: "United Kingdom" }],
-  },
-]
-```
-
-## Integration with Zod Schema
-
-The component automatically handles required field indicators based on your schema:
-
-```tsx
-// Schema definition
-const schema = z.object({
-  country: z.string().min(1, "Country is required")
-})
-
-// In component
-<ZodSchemaProvider schema={schema}>
-  <InputAutoCompleteForm
-    control={form.control}
-    name="country"
-    // requiredSymbol is automatically set based on schema
-  />
-</ZodSchemaProvider>
-```
+1. **FormComposition Integration**: Leverages all FormComposition styling and layout options
+2. **Dual Mode Support**: "default" for free text with suggestions, "select" for strict selection
+3. **Search Capability**: Built-in searching and filtering of options
+4. **Loading States**: Visual indicator when options are being fetched
+5. **Option Grouping**: Support for logical grouping of related options
+6. **Minimum Character Search**: Configure minimum characters before searching
 
 ## Best Practices
 
-1. Use `default` mode for search inputs, `select` for strict selection fields
-2. Use InputAutoCompleteForm with React Hook Form for validation
-3. Provide clear labels and descriptions via FormComposition
-4. Handle loading states appropriately when fetching options
-5. Read both form-composition.md and form.md documentation
-
-> **NOTE**: The FormComposition and Form systems are critical to using InputAutoComplete effectively.
+1. **Read both form.md and form-composition.md thoroughly** to understand all available options
+2. Use `mode="default"` for search inputs with suggestions, `mode="select"` for dropdown selection
+3. Provide appropriate `minCharToSearch` value to optimize search performance
+4. Handle loading states properly when fetching options asynchronously
+5. Use `InputAutoCompleteForm` with React Hook Form for seamless form validation
