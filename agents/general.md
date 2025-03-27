@@ -1,12 +1,10 @@
 # General Design System Guidelines
 
-### Code Comments
-
-> **CRITICAL**: DO NOT write comments in your code unless absolutely essential. Comments should be used only in exceptional cases where complex logic cannot be understood from the code itself. Strive for self-documenting code that requires no explanation.
-
 ## Overview
 
 This document provides essential guidelines for AI agents and ML systems working with our React UI component library. **Always strictly adhere to the visual design presented in user-provided images or mockups**.
+
+> **CRITICAL**: DO NOT write comments in your code unless absolutely essential. Comments should be used only in exceptional cases where complex logic cannot be understood from the code itself. Strive for self-documenting code that requires no explanation.
 
 > **CRITICAL**: Visual fidelity to the provided designs is the highest priority. Match the exact appearance, spacing, and interaction patterns shown.
 
@@ -126,3 +124,35 @@ While visual fidelity is critical, you may:
 - Extend component functionality as long as visual appearance is preserved
 
 > **IMPORTANT**: The final implementation should be visually indistinguishable from the provided design mockups, with every detail of spacing, color, typography, and interaction preserved.
+
+#### Conditional Styling with `cn()`
+
+> **REQUIRED**: When implementing conditional classnames, always use the `cn()` utility function from shadcn. Never concatenate classname strings directly.
+
+```tsx
+// Import the cn utility
+import { cn } from "@/lib/utils"
+
+// CORRECT - Using cn() for conditional classes
+<Button
+  className={cn(
+    "base-class",
+    isActive && "active-class",
+    disabled && "opacity-50"
+  )}
+>
+  Submit
+</Button>
+
+// INCORRECT - String concatenation or template literals
+<Button className={`base-class ${isActive ? 'active-class' : ''}`}>
+  Submit
+</Button>
+
+// INCORRECT - Direct string manipulation
+<Button className={"base-class" + (isActive ? " active-class" : "")}>
+  Submit
+</Button>
+```
+
+The `cn()` utility properly handles conditional classes, automatically filtering out falsy values and ensuring proper class merging behavior.

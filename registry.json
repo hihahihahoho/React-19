@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "TungShadcn",
+  "homepage": "https://localhost:3000",
+  "items": [
+    {
+      "name": "Button",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:component",
+          "target": "./components/test/button.tsx"
+        }
+      ]
+    }
+  ]
+}

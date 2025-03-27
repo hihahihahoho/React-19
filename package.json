@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && pnpx shadcn build",
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
@@ -60,6 +60,7 @@
     "react-hook-form": "^7.54.2",
     "react-photoswipe-gallery": "^3.1.0",
     "react-remove-scroll": "^2.6.3",
+    "shadcn": "2.4.0-canary.18",
     "sonner": "^2.0.1",
     "swiper": "^11.2.4",
     "tailwind-merge": "^2.6.0",
