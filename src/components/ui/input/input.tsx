@@ -1,6 +1,7 @@
 import { useMergedRef } from "@/hooks/use-merge-ref"
 import { getNodeText } from "@/lib/get-node-text"
-import { cn, lowercaseFirstChar } from "@/lib/utils"
+import { cn } from "@/lib/utils"
+import { lowercaseFirstChar } from "@/lib/utils-plus"
 import React, { useCallback, useRef, useState } from "react"
 import {
   FormComposition,

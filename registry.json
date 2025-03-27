@@ -4,6 +4,18 @@
   "homepage": "https://react-19.octung112.workers.dev",
   "items": [
     {
+      "name": "utils-plus",
+      "author": "hihahihahoho",
+      "type": "registry:lib",
+      "files": [
+        {
+          "path": "src/lib/utils-plus.ts",
+          "type": "registry:lib",
+          "target": "./lib/test/utils-plus.ts"
+        }
+      ]
+    },
+    {
       "name": "button",
       "author": "hihahihahoho",
       "dependencies": [

@@ -1,5 +1,6 @@
 import { getNodeText } from "@/lib/get-node-text"
-import { cn, lowercaseFirstChar } from "@/lib/utils"
+import { cn } from "@/lib/utils"
+import { lowercaseFirstChar } from "@/lib/utils-plus"
 import { ChevronDown } from "lucide-react"
 import React, { useCallback, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar"

@@ -2,7 +2,8 @@
 
 import { useMergedRef } from "@/hooks/use-merge-ref"
 import { getNodeText } from "@/lib/get-node-text"
-import { cn, lowercaseFirstChar } from "@/lib/utils"
+import { cn } from "@/lib/utils"
+import { lowercaseFirstChar } from "@/lib/utils-plus"
 import { maskitoTransform } from "@maskito/core"
 import { maskitoNumberOptionsGenerator, maskitoParseNumber } from "@maskito/kit"
 import { useMaskito } from "@maskito/react"
