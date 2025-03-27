@@ -5,7 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 import { Checkbox } from "@/components/ui/selection-controls/checkbox"
 import { ColumnDef } from "@tanstack/react-table"
 import {

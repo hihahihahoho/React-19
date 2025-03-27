@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { EmptyState } from "@/components/ui/empty-state/empty-state"
+import { EmptyState } from "@/components/ui/empty-state"
 import type { Meta, StoryObj } from "@storybook/react"
 
 const meta = {
