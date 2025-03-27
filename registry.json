@@ -27,7 +27,7 @@
         "class-variance-authority"
       ],
       "registryDependencies": [
-        "button"
+        "src/components/ui/button.tsx"
       ],
       "type": "registry:component",
       "files": [
