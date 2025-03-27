@@ -1405,6 +1405,109 @@
           "target": ".test/components/file-upload/file-upload-form.tsx"
         }
       ]
+    },
+    {
+      "name": "toast",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@radix-ui/react-toast",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/toast/toast.tsx",
+          "type": "registry:component",
+          "target": ".test/components/toast/toast.tsx"
+        },
+        {
+          "path": "src/components/ui/toast/toaster.tsx",
+          "type": "registry:component",
+          "target": ".test/components/toast/toaster.tsx"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "author": "hihahihahoho",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/table/table.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@tanstack/react-table",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/table",
+        "https://react-19.octung112.workers.dev/r/button",
+        "https://react-19.octung112.workers.dev/r/empty-state",
+        "https://react-19.octung112.workers.dev/r/scroll-area",
+        "https://react-19.octung112.workers.dev/r/pagination",
+        "https://react-19.octung112.workers.dev/r/select",
+        "https://react-19.octung112.workers.dev/r/select-command",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/table/data-table.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/data-table.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-cell.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/data-table-cell.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-context.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/data-table-context.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-header-cell.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/data-table-header-cell.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-pagination.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/data-table-pagination.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-selection.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/data-table-selection.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-floating-header.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/data-table-floating-header.tsx"
+        },
+        {
+          "path": "src/components/ui/table/header-ref-context.tsx",
+          "type": "registry:component",
+          "target": ".test/components/table/header-ref-context.tsx"
+        }
+      ]
     }
   ]
 }
