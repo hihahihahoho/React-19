@@ -27,7 +27,7 @@
         "class-variance-authority"
       ],
       "registryDependencies": [
-        "src/components/ui/button.tsx"
+        "https://react-19.octung112.workers.dev/r/button.json"
       ],
       "type": "registry:component",
       "files": [
