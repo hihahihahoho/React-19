@@ -3,3 +3,17 @@
 - allow paste input date
 - fix bug input date error -> calendar disapear
 - emoji picker
+
+components from shadcn origin:
+- collapsible.tsx
+- sheet.tsx
+- skeleton.tsx
+- separator.tsx
+- breadcrumb.tsx
+- context-menu.tsx
+- popover.tsx
+- hover-card.tsx
+- label.tsx
+- toggle-group.tsx
+- toggle.tsx
+
