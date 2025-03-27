@@ -1,8 +1,8 @@
 // https://usehooks-ts.com/react-hook/use-resize-observer
 
-import { useEffect, useRef, useState } from "react"
 
 import type { RefObject } from "react"
+import React from "react"
 import { useIsMounted } from "./use-is-mounted"
 
 type Size = {
@@ -25,13 +25,13 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
   options: UseResizeObserverOptions<T>
 ): Size {
   const { ref, box = "content-box" } = options
-  const [{ width, height }, setSize] = useState<Size>(initialSize)
+  const [{ width, height }, setSize] = React.useState<Size>(initialSize)
   const isMounted = useIsMounted()
-  const previousSize = useRef<Size>({ ...initialSize })
-  const onResize = useRef<((size: Size) => void) | undefined>(undefined)
+  const previousSize = React.useRef<Size>({ ...initialSize })
+  const onResize = React.useRef<((size: Size) => void) | undefined>(undefined)
   onResize.current = options.onResize
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!ref.current) return
 
     if (typeof window === "undefined" || !("ResizeObserver" in window)) return
@@ -96,5 +96,5 @@ function extractSize(
   return Array.isArray(entry[box])
     ? entry[box][0][sizeType]
     : // @ts-expect-error Support Firefox's non-standard behavior
-      (entry[box][sizeType] as number)
+    (entry[box][sizeType] as number)
 }

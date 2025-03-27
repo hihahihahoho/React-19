@@ -1,7 +1,7 @@
-import { useLayoutEffect, useState } from "react"
+import React from "react"
 
 export const useScroll = () => {
-  const [position, setPosition] = useState({
+  const [position, setPosition] = React.useState({
     x: 0,
     y: 0,
   })
@@ -13,7 +13,7 @@ export const useScroll = () => {
     })
   }
 
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     window.addEventListener("scroll", handleScroll)
 
     return () => {

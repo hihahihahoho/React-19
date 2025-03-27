@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React from "react";
 
 export type ScrollPosition = 'center' | 'start' | 'end';
 export type ScrollAxis = 'x' | 'y' | 'both';
@@ -44,7 +44,7 @@ export interface ScrollIntoViewHookOptions {
  * Hook for scrolling elements into view with configurable options
  */
 export const useScrollIntoView = () => {
-  return useCallback((element: HTMLElement | null, options: ScrollIntoViewHookOptions = {}) => {
+  return React.useCallback((element: HTMLElement | null, options: ScrollIntoViewHookOptions = {}) => {
     if (!element) return;
 
     const {

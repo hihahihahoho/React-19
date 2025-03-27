@@ -1,8 +1,7 @@
-import { Ref, type RefCallback } from "react"
 
-type PossibleRef<T> = Ref<T> | undefined
+type PossibleRef<T> = React.Ref<T> | undefined
 
-type RefCleanup<T> = ReturnType<RefCallback<T>>
+type RefCleanup<T> = ReturnType<React.RefCallback<T>>
 
 export function assignRef<T>(ref: PossibleRef<T>, value: T): RefCleanup<T> {
   if (typeof ref === "function") {

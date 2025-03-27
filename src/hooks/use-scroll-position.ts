@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useState } from "react"
+import React from "react"
 
 type ScrollPosition = {
   isReachTop: boolean
@@ -7,15 +7,15 @@ type ScrollPosition = {
   isReachRight: boolean
 }
 
-function useScrollPosition(ref: RefObject<Element | null>): ScrollPosition {
-  const [position, setPosition] = useState<ScrollPosition>({
+function useScrollPosition(ref: React.RefObject<Element | null>): ScrollPosition {
+  const [position, setPosition] = React.useState<ScrollPosition>({
     isReachTop: true,
     isReachBottom: false,
     isReachLeft: true,
     isReachRight: false,
   })
 
-  useEffect(() => {
+  React.useEffect(() => {
     const element = ref.current
     if (!element) return
 

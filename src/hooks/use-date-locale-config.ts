@@ -1,5 +1,5 @@
 import { generateLocaleDateConfig } from "@/lib/locale-date"
-import { useMemo } from "react"
+import React from "react"
 
 /**
  * Hook for handling locale detection and configuration
@@ -10,7 +10,7 @@ import { useMemo } from "react"
 
 export function useLocaleDateConfig(locale?: string) {
   // Detect user's browser locale if not provided
-  const effectiveLocale = useMemo(() => {
+  const effectiveLocale = React.useMemo(() => {
     if (!locale) {
       return navigator.language || "en"
     }
@@ -18,7 +18,7 @@ export function useLocaleDateConfig(locale?: string) {
   }, [locale])
 
   // Generate the locale configuration
-  const localeConfig = useMemo(() => {
+  const localeConfig = React.useMemo(() => {
     return generateLocaleDateConfig(effectiveLocale)
   }, [effectiveLocale])
 

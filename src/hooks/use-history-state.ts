@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import React from "react"
 
 type Options = {
   commitEvery?: number
@@ -11,12 +11,12 @@ export function useHistoryState<T>(
   initialState: T,
   options: Options = {}
 ): [
-  T,
-  (setter: T | ((prevState: T) => T)) => void,
-  () => void,
-  () => void,
-  () => void,
-] {
+    T,
+    (setter: T | ((prevState: T) => T)) => void,
+    () => void,
+    () => void,
+    () => void,
+  ] {
   const {
     throttle = 0,
     debounce = 0,
@@ -24,15 +24,15 @@ export function useHistoryState<T>(
     maxHistory = Infinity,
   } = options
 
-  const [_state, _setState] = useState<T>(initialState)
-  const [_history, _setHistory] = useState<T[]>([initialState])
-  const [_historyIndex, _setHistoryIndex] = useState<number>(0)
-  const [shouldWait, setShouldWait] = useState<boolean>(false)
-  const [debounceTimeout, setDebounceTimeout] = useState<ReturnType<
+  const [_state, _setState] = React.useState<T>(initialState)
+  const [_history, _setHistory] = React.useState<T[]>([initialState])
+  const [_historyIndex, _setHistoryIndex] = React.useState<number>(0)
+  const [shouldWait, setShouldWait] = React.useState<boolean>(false)
+  const [debounceTimeout, setDebounceTimeout] = React.useState<ReturnType<
     typeof setTimeout
   > | null>(null)
 
-  const changeCounter = useRef(0)
+  const changeCounter = React.useRef(0)
 
   function updateHistory(newVal: T) {
     _setHistory((prevHistory) => {

@@ -1,5 +1,5 @@
 import { useResizeObserver } from "@/hooks/use-resize-observer"
-import { useCallback, useEffect, useRef, useState } from "react"
+import React from "react"
 
 // Define the possible overflow states
 type OverflowState = "collapse" | "none"
@@ -29,10 +29,10 @@ export const useItemOverflow = ({
   plusItemClassName = "measured-plus",
   overflowState = "collapse", // Default to current behavior
 }: UseItemOverflowProps): UseItemOverflowReturn => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [visibleCount, setVisibleCount] = useState<number>(0)
+  const containerRef = React.useRef<HTMLDivElement>(null)
+  const [visibleCount, setVisibleCount] = React.useState<number>(0)
 
-  const calculateOverflow = useCallback(() => {
+  const calculateOverflow = React.useCallback(() => {
     const containerWidth = containerRef.current?.getBoundingClientRect().width
     if (!containerWidth) return
     if (!containerRef.current) return
@@ -104,7 +104,7 @@ export const useItemOverflow = ({
     onResize: calculateOverflow,
   })
 
-  useEffect(() => {
+  React.useEffect(() => {
     calculateOverflow()
   }, [calculateOverflow])
 
