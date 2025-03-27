@@ -85,3 +85,4 @@ Plus all standard HTML button attributes (except "disabled" which is handled dif
 3. Use loading state for async actions to prevent multiple submissions
 4. Match button size to surrounding UI elements
 5. Keep button text concise and action-oriented
+6. **DO NOT add custom classes to icons** when using `iconLeft` or `iconRight` props - spacing and sizing are automatically handled by the component

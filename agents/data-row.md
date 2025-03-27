@@ -67,3 +67,4 @@ export function UserProfile() {
 - **Complex Content**: DataRowValue can contain complex content including rich text, components, badges, or interactive elements
 - **Interactive Elements**: When adding buttons or links, use appropriate styling and accessibility attributes
 - **Grouping**: Use semantic grouping with headings before DataRowWrapper sections to organize related information
+- **CRITICAL: No Automatic Mapping**: DO NOT use array mapping (`.map()`) to generate DataRow components unless explicitly requested by the user. Always write out individual DataRow components for better readability and maintenance.

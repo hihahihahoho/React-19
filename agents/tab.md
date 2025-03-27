@@ -16,3 +16,18 @@ This component is built on top of the Shadcn/ui Tabs component
 | `variant`       | `'default' \| 'line'`        | `'default'`    | Visual style of tabs                   |
 | `size`          | `'sm' \| 'default' \| 'lg'`  | `'default'`    | Size of the tabs                       |
 | `orientation`   | `'horizontal' \| 'vertical'` | `'horizontal'` | Direction of tab layout                |
+
+## Variant Options
+
+The `variant` prop allows two styling approaches:
+
+- `default`: Standard tab appearance (likely with background and borders)
+- `line`: Minimalist style with an indicator line for the active tab
+
+## Size Options
+
+The `size` prop gives flexibility for different space requirements:
+
+- `sm`: Compact size for space-constrained interfaces
+- `default`: Standard size for general usage
+- `lg`: Larger tabs for improved touch targets or visual emphasis

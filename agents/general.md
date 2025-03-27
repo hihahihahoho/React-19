@@ -1,5 +1,9 @@
 # General Design System Guidelines
 
+### Code Comments
+
+> **CRITICAL**: DO NOT write comments in your code unless absolutely essential. Comments should be used only in exceptional cases where complex logic cannot be understood from the code itself. Strive for self-documenting code that requires no explanation.
+
 ## Overview
 
 This document provides essential guidelines for AI agents and ML systems working with our React UI component library. **Always strictly adhere to the visual design presented in user-provided images or mockups**.
@@ -65,21 +69,35 @@ import { ComponentName } from "@/components/ui/component-name"
 
 ### Layout Implementation
 
-> **IMPORTANT**: Use Tailwind's spacing utilities (`space-x-`, `space-y-`, etc.) for managing layout and component spacing rather than custom margin/padding classes.
+> **IMPORTANT**: Use appropriate Tailwind spacing utilities based on layout context:
+>
+> - Use `gap-x` and `gap-y` for flex layouts, grid layouts, and rows
+> - Use `space-x-` and `space-y-` for regular block element flows
 
 ```tsx
-// CORRECT - Using Tailwind space classes
+// CORRECT - Using gap with flex/grid
+<div className="flex gap-4">
+  <Input />
+  <Select />
+  <Button />
+</div>
+
+<div className="grid grid-cols-2 gap-4">
+  <Card />
+  <Card />
+</div>
+
+// CORRECT - Using space with regular flow
 <div className="space-y-4">
   <Input />
   <Select />
   <Button />
 </div>
 
-// INCORRECT - Using custom margin classes
-<div>
-  <Input className="mb-4" />
-  <Select className="mb-4" />
-  <Button />
+// INCORRECT - Mixing approaches inappropriately
+<div className="flex space-x-4">
+  <Input />
+  <Select />
 </div>
 ```
 
@@ -108,7 +126,3 @@ While visual fidelity is critical, you may:
 - Extend component functionality as long as visual appearance is preserved
 
 > **IMPORTANT**: The final implementation should be visually indistinguishable from the provided design mockups, with every detail of spacing, color, typography, and interaction preserved.
-
-### Code Comments
-
-> **IMPORTANT**: Avoid writing unnecessary comments in your code unless they directly relate to design decisions or mockup implementation details.
