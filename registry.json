@@ -4,7 +4,7 @@
   "homepage": "https://react-19.octung112.workers.dev",
   "items": [
     {
-      "name": "Button",
+      "name": "button",
       "author": "hihahihahoho",
       "dependencies": [
         "@radix-ui/react-slot",
@@ -16,6 +16,25 @@
           "path": "src/components/ui/button.tsx",
           "type": "registry:component",
           "target": "./components/test/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "calendar-range",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "button"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/calendar/calendar-range.tsx",
+          "type": "registry:component",
+          "target": "./components/test/calendar/calendar-range.tsx"
         }
       ]
     }
