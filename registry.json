@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "TungShadcn",
-  "homepage": "https://localhost:3000",
+  "homepage": "https://react-19.octung112.workers.dev",
   "items": [
     {
       "name": "Button",
