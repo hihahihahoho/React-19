@@ -7,13 +7,13 @@ import React, {
   useRef,
   useState,
 } from "react"
+import { useAutosizeTextArea } from "../../../hooks/use-autosize-textarea"
 import { CircleProgress } from "../circle-progress"
 import {
   FormComposition,
   FormCompositionProps,
   FormControl,
 } from "../form/form"
-import { useAutosizeTextArea } from "./use-autosize-textarea"
 
 export type OnValueChangeTextarea =
   TextareaHTMLAttributes<HTMLTextAreaElement>["value"]

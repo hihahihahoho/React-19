@@ -11,7 +11,7 @@
         {
           "path": "src/lib/utils-plus.ts",
           "type": "registry:lib",
-          "target": "./lib/test/utils-plus.ts"
+          "target": ".test/lib/utils-plus.ts"
         }
       ]
     },
@@ -27,7 +27,7 @@
         {
           "path": "src/components/ui/button.tsx",
           "type": "registry:component",
-          "target": "./components/test/button.tsx"
+          "target": ".test/components/button.tsx"
         }
       ]
     },
@@ -46,7 +46,7 @@
         {
           "path": "src/components/ui/calendar/calendar-range.tsx",
           "type": "registry:component",
-          "target": "./components/test/calendar/calendar-range.tsx"
+          "target": ".test/components/calendar/calendar-range.tsx"
         }
       ]
     }
