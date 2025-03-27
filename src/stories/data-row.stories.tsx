@@ -92,21 +92,21 @@ export const WithIcons: Story = {
   render: () => (
     <DataRowWrapper>
       <DataRow>
-        <DataRowLabel className="flex items-center gap-2">
+        <DataRowLabel>
           <Mail className="size-4" />
           <span>Email</span>
         </DataRowLabel>
         <DataRowValue>contact@example.com</DataRowValue>
       </DataRow>
       <DataRow>
-        <DataRowLabel className="flex items-center gap-2">
+        <DataRowLabel>
           <Phone className="size-4" />
           <span>Phone</span>
         </DataRowLabel>
         <DataRowValue>(123) 456-7890</DataRowValue>
       </DataRow>
       <DataRow>
-        <DataRowLabel className="flex items-center gap-2">
+        <DataRowLabel>
           <Github className="size-4" />
           <span>GitHub</span>
         </DataRowLabel>
@@ -481,14 +481,14 @@ export const CompleteShowcase: Story = {
         <h3 className="mb-2 text-sm font-medium">With Icons</h3>
         <DataRowWrapper>
           <DataRow>
-            <DataRowLabel className="flex items-center gap-2">
+            <DataRowLabel>
               <Mail className="size-4" />
               <span>Email</span>
             </DataRowLabel>
             <DataRowValue>support@example.com</DataRowValue>
           </DataRow>
           <DataRow>
-            <DataRowLabel className="flex items-center gap-2">
+            <DataRowLabel>
               <Phone className="size-4" />
               <span>Phone</span>
             </DataRowLabel>
@@ -555,7 +555,7 @@ export const CompleteShowcase: Story = {
           </DataRow>
           <DataRow>
             <DataRowLabel>Description</DataRowLabel>
-            <DataRowValue>
+            <DataRowValue className="items-start">
               <p className="mb-2">Senior Developer with expertise in:</p>
               <ul className="list-inside list-disc text-sm">
                 <li>Frontend development</li>

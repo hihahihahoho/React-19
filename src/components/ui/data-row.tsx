@@ -44,7 +44,7 @@ const DataRowLabel = ({
     <div
       data-slot="data-row-label"
       className={cn(
-        "col-span-5 text-muted-foreground sm:col-span-4",
+        "col-span-5 flex items-center gap-2 text-muted-foreground sm:col-span-4",
         className
       )}
       {...props}
@@ -63,7 +63,7 @@ const DataRowValue = ({
     <div
       data-slot="data-row-value"
       className={cn(
-        "text-text-14-regular word-break col-span-7 sm:col-span-8",
+        "text-text-14-regular word-break col-span-7 flex items-center gap-2 sm:col-span-8",
         className
       )}
       {...props}
