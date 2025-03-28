@@ -2,7 +2,7 @@ import useScrollPosition from "@/hooks/use-scroll-position"
 import { useSyncScroll } from "@/hooks/use-sync-scroll"
 import { cn } from "@/lib/utils"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { useSidebar } from "../sidebar"
+// import { useSidebar } from "../sidebar"
 import { useDataTable } from "./data-table-context"
 import { DataTableHeaderCell } from "./data-table-header-cell"
 import { useHeaderRefs } from "./header-ref-context"
@@ -23,7 +23,7 @@ export function FloatingHeader({
 }: FloatingHeaderProps) {
   const { table, setColumnPinning } = useDataTable()
   const { headerRefs } = useHeaderRefs()
-  const { state, isMobile } = useSidebar()
+  // const { state, isMobile } = useSidebar()
   const [showClonedHeader, setShowClonedHeader] = useState(false)
   const [tableOffset, setTableOffset] = useState({ left: 0, width: 0 })
   const syncWithScrollRef = useRef<HTMLDivElement>(null)
@@ -97,9 +97,9 @@ export function FloatingHeader({
     <div
       className={cn(
         "fixed top-0 z-[30] overflow-hidden border-b-0 bg-background shadow-md",
-        state === "collapsed" && "top-12",
-        state === "expanded" && "top-16",
-        isMobile && "top-16",
+        // state === "collapsed" && "top-12",
+        // state === "expanded" && "top-16",
+        // isMobile && "top-16",
         fixedHeaderOffset
       )}
       style={{
