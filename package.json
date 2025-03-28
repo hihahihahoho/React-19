@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
-    "@hookform/resolvers": "^4.1.2",
+    "@hookform/resolvers": "^4.1.3",
     "@maskito/core": "^3.2.1",
     "@maskito/kit": "^3.2.1",
     "@maskito/react": "^3.2.1",
