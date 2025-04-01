@@ -25,7 +25,7 @@
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/const.json",
-        "https://react-19.octung112.workers.dev/r/file-size.json",
+        "https://react-19.octung112.workers.dev/r/file-size.json"
       ],
       "type": "registry:lib",
       "files": [
