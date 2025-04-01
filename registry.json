@@ -22,7 +22,7 @@
       "dependencies": [
         "date-fns"
       ],
-      "devDependencies": [
+      "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/const.json",
         "https://react-19.octung112.workers.dev/r/file-size.json",
         "zod"
