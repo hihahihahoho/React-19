@@ -19,7 +19,14 @@
     {
       "name": "zod",
       "author": "hihahihahoho",
-      "dependencies": [],
+      "dependencies": [
+        "date-fns"
+      ],
+      "devDependencies": [
+        "https://react-19.octung112.workers.dev/r/const.json",
+        "https://react-19.octung112.workers.dev/r/file-size.json",
+        "zod"
+      ],
       "type": "registry:lib",
       "files": [
         {
@@ -832,6 +839,8 @@
         "https://react-19.octung112.workers.dev/r/label.json",
         "https://react-19.octung112.workers.dev/r/button.json",
         "https://react-19.octung112.workers.dev/r/custom-icons.json",
+        "utils",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils"
       ],
       "type": "registry:component",
