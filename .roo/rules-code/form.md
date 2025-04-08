@@ -38,7 +38,7 @@ import { zodRequiredString, zodFile, zodDate, zodDateRange } from "@/lib/zod"
 
 ```tsx
 const form_schema = z.object({
-  user_name: z.string().min(3, "Username must be at least 3 characters"),
+  user_name: zodRequiredString("Username can not be empty"),
   email: z.string().email("Invalid email address"),
 })
 
