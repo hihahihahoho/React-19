@@ -15,7 +15,11 @@ const meta = {
     docs: {
       description: {
         component: `
-Alert components are used to display important information, such as status notifications, 
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/alert.json
+\`\`\`
+
+Alert components are used to display important information, such as status notifications,
 warnings, errors, or success messages. They draw attention to important events or changes.
 
 ## When to use

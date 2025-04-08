@@ -24,6 +24,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/checkbox.json
+\`\`\`
+
 Checkbox components provide a way for users to select multiple options from a set or toggle a single option on or off.
 They can be used individually or in groups and support various states like checked, unchecked, indeterminate, and disabled.
 

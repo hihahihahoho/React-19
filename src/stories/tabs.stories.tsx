@@ -29,6 +29,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/tabs.json
+\`\`\`
+
 Tabs allow users to navigate between related sections of content, displaying one section at a time.
 They organize content into separate views where only one view is visible at a time.
 

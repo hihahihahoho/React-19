@@ -30,6 +30,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/alert-dialog.json
+\`\`\`
+
 Alert Dialog component presents critical information and requires user confirmation or acknowledgment
 before proceeding with an action. Unlike regular dialogs, they're designed for cases where user
 attention is essential.

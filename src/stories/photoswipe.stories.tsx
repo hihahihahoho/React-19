@@ -5,7 +5,19 @@ import type { Meta, StoryObj } from "@storybook/react"
 const meta = {
   title: "Utilities/Photo Swipe",
   component: PhotoSwipe,
-  parameters: {},
+  parameters: {
+    docs: {
+      description: {
+        component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/photoswipe.json
+\`\`\`
+
+PhotoSwipe provides a responsive, touch-friendly image gallery with zoom and swipe support.
+        `,
+      },
+    },
+  },
 } satisfies Meta<typeof Select>
 
 export default meta

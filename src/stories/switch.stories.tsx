@@ -23,6 +23,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/switch.json
+\`\`\`
+
 Switch components provide a way for users to toggle between two states: on and off.
 They are commonly used for enabling or disabling features, settings, or preferences.
 

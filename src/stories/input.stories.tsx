@@ -33,6 +33,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/input.json
+\`\`\`
+
 Input components are interactive controls that allow users to enter text and other data.
 They can include various types, validation states, and additional elements like labels and help text.
 

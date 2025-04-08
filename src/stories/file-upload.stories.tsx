@@ -23,6 +23,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/file-upload.json
+\`\`\`
+
 FileUpload component allows users to upload files with drag-and-drop functionality, file previews, and validation.
 
 ## Features

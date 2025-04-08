@@ -26,6 +26,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/dialog.json
+\`\`\`
+
 Dialog components provide modal interfaces that focus user attention on specific content or actions.
 They appear above the page content and block interactions with the rest of the application until dismissed.
 

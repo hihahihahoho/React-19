@@ -29,6 +29,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/glass-icon.json
+\`\`\`
+
 GlassIcon components add depth and visual interest with a glassmorphic style.
 These icons feature a frosted glass effect with subtle backgrounds and shadows.
 

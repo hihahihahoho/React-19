@@ -25,6 +25,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/button.json
+\`\`\`
+
 Button components are interactive elements that enable users to trigger actions, navigate, or submit forms.
 They come in various styles, sizes, and can include icons or loading states.
 

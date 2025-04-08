@@ -30,6 +30,10 @@ const meta: Meta<typeof RadioGroup> = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/radio-group.json
+\`\`\`
+
 Radio button components provide a way for users to select a single option from a list of predefined choices.
 Unlike checkboxes, radio buttons enforce a single selection within a group and cannot be unchecked directly.
 

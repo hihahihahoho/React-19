@@ -27,6 +27,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/textarea.json
+\`\`\`
+
 Textarea components are interactive controls that allow users to enter multiple lines of text.
 They are useful for collecting longer form content and support various states, sizes, and compositions.
 

@@ -10,6 +10,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/empty-state.json
+\`\`\`
+
 EmptyState component displays a clear, informative message for scenarios when no data is available,
 an error occurs, or a specific state needs to be communicated.
 

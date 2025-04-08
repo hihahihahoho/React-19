@@ -40,6 +40,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/select.json
+\`\`\`
+
 Select components allow users to choose a single option from a dropdown list.
 They are useful when you have a list of options but want to save space by showing them only when needed.
 

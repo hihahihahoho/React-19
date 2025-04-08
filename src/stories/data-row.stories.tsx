@@ -20,6 +20,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/data-row.json
+\`\`\`
+
 DataRow components create structured layouts for displaying information in a label-value format.
 They organize content in a responsive grid that adapts to different screen sizes.
 

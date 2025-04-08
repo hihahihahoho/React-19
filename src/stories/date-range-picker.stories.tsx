@@ -27,6 +27,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/date-range-picker.json
+\`\`\`
+
 DateRangePicker components allow users to select a range of dates from a calendar interface.
 They can be used to input date ranges in forms or as standalone components.
 

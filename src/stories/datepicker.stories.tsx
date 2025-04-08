@@ -24,6 +24,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/datepicker.json
+\`\`\`
+
 DatePicker components allow users to select a date from a calendar interface.
 They can be used to input dates in forms or as standalone components.
 

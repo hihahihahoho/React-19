@@ -34,6 +34,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/input-auto-complete.json
+\`\`\`
+
 InputAutoComplete provides an enhanced input field with dropdown suggestions as users type.
 It supports two modes: "default" (free typing with suggestions) and "select" (only selected options are valid).
 

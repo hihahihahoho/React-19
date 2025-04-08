@@ -39,6 +39,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/input-tag.json
+\`\`\`
+
 InputTag components allow users to enter and manage multiple tags or keywords in a text input.
 They are useful for collecting multiple related values like categories, skills, or keywords.
 

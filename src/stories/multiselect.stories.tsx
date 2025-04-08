@@ -51,6 +51,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/multiselect.json
+\`\`\`
+
 MultiSelect components allow users to choose multiple options from a dropdown list.
 They are useful when you want to allow multiple selections from a set of options.
 
@@ -193,7 +197,7 @@ export const GroupedOptions: Story = {
  */
 export const MultiSelectStates: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <MultiSelect
         options={fruitOptions}
         formComposition={{
@@ -247,7 +251,7 @@ export const MultiSelectStates: Story = {
  */
 export const LabelPositioning: Story = {
   render: () => (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex w-full flex-col gap-4">
       <MultiSelect
         options={fruitOptions}
         formComposition={{
@@ -391,7 +395,7 @@ export const ColoredBadges: Story = {
     ]
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <MultiSelect
           options={colorOptions}
           formComposition={{
@@ -513,7 +517,7 @@ export const ButtonVariant: Story = {
     ]
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <h3 className="text-sm font-medium">Basic button variants</h3>
         <div className="flex flex-wrap gap-2">
           <MultiSelect
@@ -639,7 +643,7 @@ export const WithIcons: Story = {
     ]
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <MultiSelect
           options={countryOptions}
           formComposition={{
@@ -682,9 +686,9 @@ export const BadgeOverflow: Story = {
     const [maxBadges, setMaxBadges] = useState(3)
 
     return (
-      <div className="flex flex-col w-full gap-4">
+      <div className="flex w-full flex-col gap-4">
         <div className="mb-4">
-          <label className="block mb-2 text-sm font-medium">
+          <label className="mb-2 block text-sm font-medium">
             Max badges to show: {maxBadges}
           </label>
           <input
@@ -943,7 +947,7 @@ export const VirtualizedMultiSelect: Story = {
         icon: user.avatar ? (
           user.avatar
         ) : (
-          <div className="flex items-center justify-center text-gray-500 bg-gray-200 rounded-full size-5">
+          <div className="flex size-5 items-center justify-center rounded-full bg-gray-200 text-gray-500">
             <User2 className="size-3.5" />
           </div>
         ),
@@ -1235,9 +1239,9 @@ export const BadgeOverflowStates: Story = {
     const [maxBadges, setMaxBadges] = useState(3)
 
     return (
-      <div className="flex flex-col w-full gap-6">
+      <div className="flex w-full flex-col gap-6">
         <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium">
+          <label className="mb-2 block text-sm font-medium">
             Max badges to show: {maxBadges}
           </label>
           <input

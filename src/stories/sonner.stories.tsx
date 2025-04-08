@@ -15,6 +15,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/sonner.json
+\`\`\`
+
 Sonner toast components provide a non-disruptive way to show notifications, alerts, and feedback to users.
 They come in various styles, can be positioned in different locations, and support custom content.
 

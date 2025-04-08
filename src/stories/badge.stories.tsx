@@ -29,7 +29,11 @@ const meta = {
     docs: {
       description: {
         component: `
-Badge components are used to highlight status, indicate categories, or show counts. 
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/badge.json
+\`\`\`
+
+Badge components are used to highlight status, indicate categories, or show counts.
 They can include icons, display text, and have interactive elements like tooltips or clear buttons.
 
 ## When to use

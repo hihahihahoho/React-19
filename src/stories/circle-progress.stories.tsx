@@ -15,6 +15,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/circle-progress.json
+\`\`\`
+
 CircleProgress displays progress, completion status, or usage metrics in a circular format.
 It provides visual feedback about processes, tasks completion, or resource utilization.
 
