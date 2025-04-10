@@ -59,7 +59,24 @@ const data = {
       items: [
         {
           title: "History",
-          url: "#",
+          items: [
+            {
+              title: "General",
+              url: "#",
+            },
+            {
+              title: "Team",
+              url: "#",
+            },
+            {
+              title: "Billing",
+              url: "#",
+            },
+            {
+              title: "Limits",
+              url: "#",
+            },
+          ],
         },
         {
           title: "Starred",
