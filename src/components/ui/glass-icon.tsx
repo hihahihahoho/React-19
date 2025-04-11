@@ -79,8 +79,8 @@ const glassIconColorVariants = {
 const glassIconBackgroundVariants = cva("absolute z-0 rounded-lg", {
   variants: {
     variant: {
-      default: "absolute top-[4px] right-[5px] size-[34px] rotate-[15deg]",
-      card: "top-[7px] right-[6px] h-[34px] w-[30px] rotate-[15deg]",
+      default: "absolute top-1 right-1.25 size-8.5 rotate-[15deg]",
+      card: "top-1.75 right-1.5 h-8.5 w-7.5 rotate-[15deg]",
     },
     size: {
       sm: "",
