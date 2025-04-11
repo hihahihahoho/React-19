@@ -183,7 +183,7 @@ function InputAutoComplete({
       <PopoverAnchor
         virtualRef={formCompositionRef as React.RefObject<Measurable>}
       />
-      <Command {...commandProps} className="overflow-visible">
+      <Command {...commandProps} className="overflow-visible bg-transparent">
         <FormComposition
           {...formComposition}
           hasValue={hasValue}
@@ -203,7 +203,7 @@ function InputAutoComplete({
             onBlur={handleBlur}
             autoComplete="one-time-code"
             className={cn(
-              "h-full w-full flex-grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0",
+              "file:text-foreground placeholder:text-muted-foreground h-full w-full grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium focus:ring-0 focus:outline-hidden",
               className
             )}
           />

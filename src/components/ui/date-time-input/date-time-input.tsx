@@ -255,7 +255,7 @@ function DateSegment({
       <div
         ref={ref}
         role="spinbutton"
-        className={`relative cursor-text select-none rounded-md px-[1px] text-center tabular-nums caret-transparent outline-none ${
+        className={`relative cursor-text select-none rounded-md px-[1px] text-center tabular-nums caret-transparent outline-hidden ${
           !displayValue && "text-muted-foreground"
         } ${isFocused ? "bg-primary/20" : "hover:bg-primary/20"}`}
         id={id}

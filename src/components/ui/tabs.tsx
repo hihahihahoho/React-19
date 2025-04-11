@@ -15,7 +15,7 @@ const tabsListVariants = cva(
     variants: {
       variant: {
         default: "rounded-lg bg-muted p-1",
-        line: "flex gap-4 !rounded-none border-b",
+        line: "flex gap-4 rounded-none! border-b",
       },
       size: {
         sm: "min-h-8 gap-1",
@@ -42,14 +42,14 @@ const tabsListVariants = cva(
       {
         variant: "line",
         orientation: "vertical",
-        className: "gap-4 !border-b-0 !border-r",
+        className: "gap-4 border-b-0! border-r!",
       },
     ],
   }
 )
 
 const tabsTriggerVariants = cva(
-  "relative inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
+  "relative inline-flex items-center justify-center whitespace-nowrap font-medium ring-offset-background transition-all focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -114,10 +114,10 @@ const tabsTriggerVariants = cva(
   }
 )
 
-const tabsIndicatorVariants = cva("absolute left-0 right-0 -z-[1]", {
+const tabsIndicatorVariants = cva("absolute left-0 right-0 -z-1", {
   variants: {
     variant: {
-      default: "top-0 h-full w-full rounded-md bg-background shadow",
+      default: "top-0 h-full w-full rounded-md bg-background shadow-sm",
       line: "-bottom-0.5 h-0.5 w-full rounded-none bg-primary",
     },
     size: {
@@ -145,7 +145,7 @@ const tabsIndicatorVariants = cva("absolute left-0 right-0 -z-[1]", {
 })
 
 const tabsContentVariants = cva(
-  "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  "ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
     variants: {
       variant: {

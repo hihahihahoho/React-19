@@ -49,7 +49,7 @@ They organize content in a responsive grid that adapts to different screen sizes
   },
   decorators: [
     (Story) => (
-      <div className="flex w-full max-w-3xl items-center justify-center rounded-lg bg-white p-6 shadow-sm">
+      <div className="flex w-full max-w-3xl items-center justify-center rounded-lg bg-white p-6 shadow-xs">
         <Story />
       </div>
     ),

@@ -560,7 +560,7 @@ export function InputTag({
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
           onPaste={handlePaste}
-          className="h-full w-full flex-grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0"
+          className="h-full w-full grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-0"
           placeholder={
             currentTags.length > 0 ? "Thêm..." : "Gõ để nhập tags..."
           }
@@ -599,7 +599,7 @@ export function InputTag({
         />
         <Command
           {...commandProps}
-          className="overflow-visible bg-transparent focus-visible:outline-none"
+          className="overflow-visible bg-transparent focus-visible:outline-hidden"
         >
           {inputArea}
           <PopoverContent

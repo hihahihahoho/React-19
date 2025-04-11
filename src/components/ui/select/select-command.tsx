@@ -184,14 +184,14 @@ function SelectCommandItem({
         </div>
         {isMultiSelect ? (
           <Checkbox
-            className="[&_svg]:!text-primary-foreground"
+            className="[&_svg]:text-primary-foreground!"
             checked={isSelected}
           />
         ) : (
           isSelected && (
             <Check
               className={cn(
-                "size-4 !text-foreground",
+                "size-4 text-foreground!",
                 isSelected ? "opacity-100" : "opacity-0"
               )}
             />

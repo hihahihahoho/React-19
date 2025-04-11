@@ -64,7 +64,7 @@ function CommandPrimitiveInput({
         <Command.Input
           {...props}
           className={cn(
-            "h-full w-full flex-grow border-none bg-transparent placeholder:text-muted-foreground focus:outline-none focus:ring-0",
+            "h-full w-full grow border-none bg-transparent placeholder:text-muted-foreground focus:outline-hidden focus:ring-0",
             className
           )}
           value={inputValue}

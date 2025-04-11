@@ -1,0 +1,5 @@
+.popover-content-width-full {
+  width: var(--radix-popover-trigger-width) !important;
+  /* max-height: var(--radix-popover-content-available-height); */
+  @apply min-w-[200px];
+}

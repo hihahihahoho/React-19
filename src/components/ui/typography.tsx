@@ -49,7 +49,7 @@ export const Lead = createComponent(
 
 export const P = createComponent(
   "p",
-  "leading-7 [&:not(:first-child)]:mt-6",
+  "leading-7 not-first:mt-6",
   "P"
 )
 

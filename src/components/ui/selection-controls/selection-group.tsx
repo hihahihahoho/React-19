@@ -10,12 +10,12 @@ import { FormControl } from "../form/form"
 
 // Define the variant styles using cva
 const selectionGroupVariants = cva(
-  "group/group-selection group/group-selection flex flex-row gap-2 text-sm has-[:disabled]:cursor-not-allowed",
+  "group/group-selection group/group-selection flex flex-row gap-2 text-sm has-disabled:cursor-not-allowed",
   {
     variants: {
       variant: {
         default: "",
-        card: "rounded-xl p-4 ring-1 ring-border has-[[data-state=checked]]:bg-primary/[0.03] has-[[data-state=checked]]:ring-2 has-[[data-state=checked]]:ring-primary",
+        card: "rounded-xl p-4 ring-1 ring-border has-data-[state=checked]:bg-primary/[0.03] has-data-[state=checked]:ring-2 has-data-[state=checked]:ring-primary",
       },
     },
     defaultVariants: {

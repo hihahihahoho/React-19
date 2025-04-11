@@ -10,7 +10,7 @@ export function DataTableSelection() {
       {table.getSelectedRowModel().rows.length > 0 && (
         <div className="pointer-events-none sticky bottom-24 left-0 right-0 z-30 mb-4 flex items-center justify-center text-xs">
           <motion.div
-            className="pointer-events-auto flex flex-wrap items-center gap-2 rounded-xl border bg-card/90 px-4 py-3 backdrop-blur -sm:flex-col"
+            className="pointer-events-auto flex flex-wrap items-center gap-2 rounded-xl border bg-card/90 px-4 py-3 backdrop-blur-sm -sm:flex-col"
             initial={{
               opacity: 0,
               y: 20,

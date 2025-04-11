@@ -349,7 +349,7 @@ function FileUpload({
     <FormComposition
       data-slot="file-upload"
       {...formComposition}
-      className="flex-col border-0 p-0 !shadow-none !ring-0"
+      className="flex-col border-0 p-0 shadow-none! ring-0!"
       variant="ghost"
       isMinHeight
     >
@@ -423,19 +423,19 @@ function FileUpload({
                       variant="ghost"
                       isRounded
                       iconOnly
-                      className="size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur"
+                      className="size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur-sm"
                       onClick={(e) => {
                         e.stopPropagation()
                         handlePreviewFile(fileMeta)
                       }}
-                      iconLeft={<Eye className="!size-3.5" />}
+                      iconLeft={<Eye className="size-3.5!" />}
                     />
                     <Button
                       size="xs"
                       variant="ghost"
                       isRounded
                       iconOnly
-                      className="size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur"
+                      className="size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur-sm"
                       onClick={(e) => {
                         e.stopPropagation()
                         removeFile(fileMeta.id)
@@ -527,7 +527,7 @@ function FileUpload({
                           handlePreviewFile(fileMeta)
                         }}
                       >
-                        <Eye className="!size-5" />
+                        <Eye className="size-5!" />
                       </Button>
                       <Button
                         variant="ghost"
@@ -539,7 +539,7 @@ function FileUpload({
                           removeFile(fileMeta.id)
                         }}
                       >
-                        <CloseCircle className="!size-5" />
+                        <CloseCircle className="size-5!" />
                       </Button>
                     </div>
                   </div>

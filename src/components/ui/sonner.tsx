@@ -88,7 +88,7 @@ function sonnerToast({
     {
       unstyled: true,
       classNames: {
-        toast: "md:!w-fit !left-0 !right-0 md:!mx-auto",
+        toast: "md:w-fit! left-0! right-0! md:mx-auto!",
       },
       position,
       ...props,

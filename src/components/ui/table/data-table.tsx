@@ -58,7 +58,7 @@ export function DataTable({
       <div className="w-full" ref={tableRef}>
         <div className="relative">
           {variant === "rounded" && (
-            <div className="pointer-events-none absolute left-0 top-0 z-[50] h-full w-full rounded-xl border"></div>
+            <div className="pointer-events-none absolute left-0 top-0 z-50 h-full w-full rounded-xl border"></div>
           )}
           <FloatingHeader
             mainScrollRef={mainScrollRef}
@@ -111,7 +111,7 @@ export function DataTable({
               </Table>
             </ScrollAreaTable>
           </div>
-          <div className="sticky bottom-0 z-30 mt-[-1px] border-t bg-card/90 backdrop-blur">
+          <div className="sticky bottom-0 z-30 mt-[-1px] border-t bg-card/90 backdrop-blur-sm">
             <div ref={scrollBarAreaRef} />
             {table.getRowModel().rows?.length > 0 && <DataTablePagination />}
           </div>

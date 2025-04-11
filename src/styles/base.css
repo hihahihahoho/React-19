@@ -17,21 +17,13 @@ body,
     "Noto Color Emoji";
 }
 
-@layer utilities {
-  .popover-content-width-full {
-    width: var(--radix-popover-trigger-width);
-    /* max-height: var(--radix-popover-content-available-height); */
-    @apply min-w-[200px];
-  }
+* {
+  @apply border-border outline-ring/50;
+}
+body {
+  @apply bg-background text-foreground;
 }
 
-@layer base {
-  *,
-  ::before,
-  ::after {
-    border-color: hsl(var(--border));
-  }
-}
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -60,16 +52,16 @@ body,
 }
 
 .range-start.range-end {
-  @apply !rounded-md;
+  @apply rounded-md!;
 }
 
 .column-left-shadow {
-  @apply absolute -right-4 top-0 h-full w-4 dark:border-l;
+  @apply absolute top-0 -right-4 h-full w-4 dark:border-l;
   box-shadow: inset 8px 1px 12px -11px rgba(0, 0, 0, 0.2);
 }
 
 .column-right-shadow {
-  @apply absolute -left-4 top-0 h-full w-4 dark:border-r;
+  @apply absolute top-0 -left-4 h-full w-4 dark:border-r;
   box-shadow: inset -8px 1px 12px -11px rgba(0, 0, 0, 0.2);
 }
 .dark {
@@ -104,16 +96,7 @@ body,
   }
 }
 .column-pin-backdrop {
-  @apply absolute bottom-0 left-0 top-0 z-[-1] h-full w-full bg-background backdrop-blur dark:bg-card/80;
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+  @apply bg-background dark:bg-card/80 absolute top-0 bottom-0 left-0 z-[-1] h-full w-full backdrop-blur-sm;
 }
 
 .max-h-\[calc\(100vh_-_32px\)\] {

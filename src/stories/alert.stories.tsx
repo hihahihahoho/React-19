@@ -215,7 +215,7 @@ export const WithRichContent: Story = {
  */
 export const CustomStyling: Story = {
   render: () => (
-    <div className="flex w-full flex-col gap-4 [&>*]:flex-1">
+    <div className="flex w-full flex-col gap-4 *:flex-1">
       <Alert
         variant="default"
         title="Custom Root Styling"
@@ -242,7 +242,7 @@ export const CustomStyling: Story = {
       <Alert
         variant="destructive"
         title="Custom Appearance"
-        description="This alert has a custom border and shadow via className, and custom dismiss button via classNames."
+        description="This alert has a custom border and shadow-sm via className, and custom dismiss button via classNames."
         dismissible
         className="border-2 border-dashed shadow-lg"
         classNames={{
@@ -275,7 +275,7 @@ export const DismissibleAlerts: Story = {
     const [isErrorVisible, setIsErrorVisible] = React.useState(true)
 
     return (
-      <div className="flex w-full flex-col gap-4 [&>*]:flex-1">
+      <div className="flex w-full flex-col gap-4 *:flex-1">
         {isInfoVisible && (
           <Alert
             variant="default"

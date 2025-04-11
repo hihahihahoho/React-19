@@ -28,7 +28,7 @@ const preview: Preview = {
       const background = context.globals?.backgrounds?.value
       document.documentElement.classList.toggle(
         "dark",
-        background === "#09090B"
+        background === "#0a0a0a"
       )
       document.documentElement.classList.toggle(
         "light",
@@ -66,14 +66,14 @@ const preview: Preview = {
       default: "light", // Ensure the themes parameter is defined
       list: [
         { name: "light", class: "light", color: "#ffffff" },
-        { name: "dark", class: "dark", color: "#09090B" },
+        { name: "dark", class: "dark", color: "#0a0a0a" },
       ],
     },
     backgrounds: {
       default: "light",
       values: [
         { name: "light", value: "#ffffff" },
-        { name: "dark", value: "#09090B" },
+        { name: "dark", value: "#0a0a0a" },
       ],
     },
   },

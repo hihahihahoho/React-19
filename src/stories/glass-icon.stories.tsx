@@ -257,7 +257,7 @@ export const CustomColors: Story = {
       <GlassIcon backgroundClassName="bg-pink-400 dark:bg-pink-500">
         <Mail />
       </GlassIcon>
-      <GlassIcon backgroundClassName="bg-gradient-to-br from-purple-500 to-blue-600">
+      <GlassIcon backgroundClassName="bg-linear-to-br from-purple-500 to-blue-600">
         <Star />
       </GlassIcon>
     </div>

@@ -52,12 +52,12 @@ function DrawerContent({
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto max-h-[90%] flex-col rounded-t-[10px] border bg-background",
+          "rounded-t-2.5 bg-background fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto max-h-[90%] flex-col border",
           className
         )}
         {...props}
       >
-        <div className="mx-auto mt-4 h-2 min-h-2 w-[100px] rounded-full bg-muted" />
+        <div className="bg-muted mx-auto mt-4 h-2 min-h-2 w-[100px] rounded-full" />
         <div className="overflow-y-auto">{children}</div>
       </DrawerPrimitive.Content>
     </DrawerPortal>
@@ -92,7 +92,7 @@ function DrawerTitle({
     <DrawerPrimitive.Title
       data-slot="drawer-title"
       className={cn(
-        "text-lg font-semibold leading-none tracking-tight",
+        "text-lg leading-none font-semibold tracking-tight",
         className
       )}
       {...props}
@@ -107,7 +107,7 @@ function DrawerDescription({
   return (
     <DrawerPrimitive.Description
       data-slot="drawer-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
   )

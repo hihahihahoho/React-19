@@ -18,7 +18,7 @@ import { CloseCircle } from "../custom-icons"
 import { Label } from "../label"
 
 const Form = FormProvider
-const compositionClass = " items-center relative flex-shrink-0 flex"
+const compositionClass = " items-center relative shrink-0 flex"
 
 // Define your variants as before
 const inputSizeVariants = cva("", {
@@ -90,22 +90,23 @@ const inputSizeVariants = cva("", {
 })
 
 const inputContainerVariants = cva(
-  "flex w-full cursor-text gap-2 rounded-lg bg-transparent px-3 outline-none ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "ring-offset-background flex w-full cursor-text gap-2 rounded-lg bg-transparent px-3 outline-hidden disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "border border-input shadow-sm dark:bg-neutral-900",
+        default:
+          "border-input dark:bg-input/30 border bg-transparent shadow-xs",
         white: "bg-background",
         ghost:
-          "rounded-none !border-0 bg-transparent !shadow-none !ring-0 !ring-offset-0",
+          "rounded-none border-0! bg-transparent shadow-none! ring-0! ring-offset-0!",
         empty:
-          "!block rounded-none !border-0 bg-transparent p-0 !shadow-none !ring-0 !ring-offset-0",
+          "block! rounded-none border-0! bg-transparent p-0 shadow-none! ring-0! ring-offset-0!",
         inline: "h-full border-none bg-transparent px-0 shadow-none",
       },
       focusWithin: {
-        true: "transition-shadow focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/20",
+        true: "focus-within:border-ring focus-within:ring-ring/20 transition-shadow focus-within:ring-[3px]",
         false:
-          "transition-shadow focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20",
+          "focus-visible:border-ring focus-visible:ring-ring/20 transition-shadow focus-visible:ring-[3px]",
       },
     },
     defaultVariants: {
@@ -190,7 +191,7 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="form-description"
       id={formDescriptionId}
-      className={cn("text-[0.8rem] text-muted-foreground", className)}
+      className={cn("text-muted-foreground text-[0.8rem]", className)}
       {...props}
     />
   )
@@ -209,7 +210,7 @@ function FormMessage({
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={cn("text-[0.8rem] font-medium text-destructive", className)}
+      className={cn("text-destructive text-[0.8rem] font-medium", className)}
       {...props}
     >
       {body}
@@ -303,7 +304,7 @@ function FormLabel({
     >
       {children}{" "}
       {requiredSymbol && (
-        <span className="w-2 text-center text-destructive">*</span>
+        <span className="text-destructive w-2 text-center">*</span>
       )}
     </Label>
   )
@@ -451,11 +452,11 @@ function FormComposition({
         )}
         <div
           className={cn(
-            "grid min-w-0 max-w-full",
+            "grid max-w-full min-w-0",
             labelPosition === "horizontal" && newLayout.rightColClass
           )}
         >
-          <div className="flex flex-1 gap-2 -md:text-base">
+          <div className="-md:text-base flex flex-1 gap-2">
             {prefixOutside && (
               <FormPrefixOutside>{prefixOutside}</FormPrefixOutside>
             )}
@@ -524,7 +525,7 @@ function FormComposition({
                     }}
                     className={cn(
                       compositionClass,
-                      "-mr-1 cursor-pointer opacity-70 focus:outline-none",
+                      "-mr-1 cursor-pointer opacity-70 focus:outline-hidden",
                       inputSizeVariants({ size, isMinHeight: true })
                     )}
                   >
@@ -584,7 +585,7 @@ function FormComposition({
             </div>
 
             {subDescription && (
-              <div className="ml-auto mt-1.5 text-[0.8rem] text-muted-foreground">
+              <div className="text-muted-foreground mt-1.5 ml-auto text-[0.8rem]">
                 {subDescription}
               </div>
             )}
@@ -604,7 +605,7 @@ function FormSuffixOutside({
     <div
       data-slot="form-suffix-outside"
       onClick={(e) => e.stopPropagation()}
-      className={cn("flex-shrink-0", className)}
+      className={cn("shrink-0", className)}
       {...props}
     >
       {children}
@@ -620,7 +621,7 @@ function FormPrefixOutside({
     <div
       data-slot="form-prefix-outside"
       onClick={(e) => e.stopPropagation()}
-      className={cn("flex-shrink-0", className)}
+      className={cn("shrink-0", className)}
       {...props}
     >
       {children}

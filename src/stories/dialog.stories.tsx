@@ -229,7 +229,7 @@ export const AlertDialog: Story = {
         <Button variant="destructive">Delete Account</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader className="!pb-0">
+        <DialogHeader className="pb-0!">
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
             This action cannot be undone. This will permanently delete your

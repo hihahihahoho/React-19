@@ -50,7 +50,7 @@ function ScrollAreaTable({
         createPortal(
           <ScrollBar
             orientation="horizontal"
-            className={cn("!sticky empty:hidden", scrollbarClassName)}
+            className={cn("sticky! empty:hidden", scrollbarClassName)}
           />,
           srcollBarPortalRef?.current
         )}

@@ -16,12 +16,12 @@ const glassIconWraperVariants = cva("relative", {
 })
 
 const glassIconVariants = cva(
-  "absolute z-[1] flex items-center justify-center rounded-lg bg-gradient-to-tr from-white/80 to-white/0 text-white ring-1 ring-inset ring-white/40 backdrop-blur-md dark:ring-white/20",
+  "absolute z-1 flex items-center justify-center rounded-lg bg-linear-to-tr from-white/80 to-white/0 text-white ring-1 ring-white/40 backdrop-blur-md ring-inset dark:ring-white/20",
   {
     variants: {
       variant: {
-        default: "bottom-[3px] left-[3px] size-[34px]",
-        card: "bottom-[3px] left-[7px] h-[42px] w-[30px]",
+        default: "bottom-0.75 left-0.75 size-8.5",
+        card: "bottom-0.75 left-1.75 h-10.5 w-7.5",
       },
       size: {
         sm: "[&_svg]:size-6",
@@ -36,12 +36,12 @@ const glassIconVariants = cva(
       {
         variant: "default",
         size: "lg",
-        className: "size-[52px] rounded-xl ring-2",
+        className: "size-13 rounded-xl ring-2",
       },
       {
         variant: "card",
         size: "lg",
-        className: "h-[64px] w-[45px] ring-2",
+        className: "h-16 w-11.25 ring-2",
       },
     ],
   }
@@ -76,11 +76,11 @@ const glassIconColorVariants = {
   gray: "bg-primary dark:bg-primary/30",
 }
 
-const glassIconBackgroundVariants = cva("absolute z-[0] rounded-lg", {
+const glassIconBackgroundVariants = cva("absolute z-0 rounded-lg", {
   variants: {
     variant: {
-      default: "absolute right-[5px] top-[4px] size-[34px] rotate-[15deg]",
-      card: "right-[6px] top-[7px] h-[34px] w-[30px] rotate-[15deg]",
+      default: "absolute top-[4px] right-[5px] size-[34px] rotate-[15deg]",
+      card: "top-[7px] right-[6px] h-[34px] w-[30px] rotate-[15deg]",
     },
     size: {
       sm: "",
@@ -97,12 +97,12 @@ const glassIconBackgroundVariants = cva("absolute z-[0] rounded-lg", {
     {
       variant: "default",
       size: "lg",
-      className: "right-[8px] top-[6px] size-[52px] rounded-xl",
+      className: "top-1.5 right-2 size-13 rounded-xl",
     },
     {
       variant: "card",
       size: "lg",
-      className: "right-[12px] top-[8px] h-[52px] w-[45px]",
+      className: "top-2 right-3 h-13 w-11.25",
     },
   ],
 })

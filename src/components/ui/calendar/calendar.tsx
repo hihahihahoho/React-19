@@ -57,11 +57,11 @@ function Calendar({
         ),
         day: "size-9 rounded-md border-0 p-0 first:rounded-l-md last:rounded-r-md hover:bg-accent [&:has(+_.invisible[aria-selected])]:rounded-r-md", // changed from cell
         range_middle:
-          "range-middle rounded-none bg-primary/10 !text-foreground hover:bg-primary/10 [&.invisible+.range-middle]:rounded-l-md [&:has(+_.invisible)]:rounded-r-md", // changed from day_range_middle
+          "range-middle rounded-none bg-primary/10 text-foreground! hover:bg-primary/10 [&.invisible+.range-middle]:rounded-l-md [&:has(+_.invisible)]:rounded-r-md", // changed from day_range_middle
         range_end:
-          "range-end rounded-l-none rounded-r-md !bg-primary !text-primary-foreground", // changed from day_range_end
+          "range-end rounded-l-none rounded-r-md bg-primary! text-primary-foreground!", // changed from day_range_end
         range_start:
-          "range-start rounded-l-md rounded-r-none !bg-primary !text-primary-foreground", // changed from day_range_start
+          "range-start rounded-l-md rounded-r-none bg-primary! text-primary-foreground!", // changed from day_range_start
         selected:
           "rounded-md bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground", // changed from day_selected
         today: "bg-accent", // changed from day_today
