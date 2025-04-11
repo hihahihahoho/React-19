@@ -25,7 +25,7 @@ const DataRow = ({
     <div
       data-slot="data-row"
       className={cn(
-        "form-wrapper-class grid grid-cols-12 items-start gap-x-6 gap-y-1 py-4 text-sm",
+        "form-wrapper-class grid grid-cols-12 items-start gap-x-6 gap-y-1 py-3 text-sm",
         className
       )}
       {...props}
@@ -44,7 +44,7 @@ const DataRowLabel = ({
     <div
       data-slot="data-row-label"
       className={cn(
-        "col-span-5 flex items-center gap-2 text-muted-foreground sm:col-span-4",
+        "text-muted-foreground col-span-5 flex items-center gap-2 sm:col-span-4",
         className
       )}
       {...props}
