@@ -11,17 +11,17 @@ import {
 } from "../tooltip"
 
 const badgeVariants = cva(
-  "inline-flex items-center justify-center gap-1 rounded-[6px] px-2.5 py-0.5 text-xs font-medium ring-inset transition-colors focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 [&_svg]:size-4 [&_svg]:shrink-0",
+  "focus:ring-ring inline-flex items-center justify-center gap-1 rounded-md px-2.5 py-0.5 text-xs font-medium transition-colors ring-inset focus:ring-2 focus:ring-offset-2 focus:outline-hidden [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/80",
+          "bg-primary text-primary-foreground hover:bg-primary/80 shadow-sm",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/80",
-        outline: "text-foreground ring-1 ring-primary/10",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/80 shadow-sm",
+        outline: "text-foreground ring-primary/10 ring-1",
         red: "bg-red-500/15 text-red-700 hover:bg-red-500/25 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20",
         orange:
           "bg-orange-500/15 text-orange-700 hover:bg-orange-500/25 dark:bg-orange-500/10 dark:text-orange-400 dark:hover:bg-orange-500/20",
@@ -52,7 +52,7 @@ const badgeVariants = cva(
       },
       size: {
         xs: "min-h-5 min-w-5 px-2 py-0.5 text-xs",
-        sm: "min-h-6 min-w-6 px-2.5 py-0.5 text-xs",
+        sm: "min-h-6 min-w-6 px-2 py-0.5 text-xs",
         md: "min-h-7 min-w-7 px-2.5 py-0.5 text-xs",
         lg: "rounded-4 min-h-8 min-w-8 px-4 py-1 text-sm",
       },
@@ -66,7 +66,7 @@ const badgeVariants = cva(
       { hasLeftIcon: true, size: "sm", className: "pl-1.5" },
       { hasLeftIcon: true, size: ["md", "lg"], className: "pl-2" },
       { hasRightIcon: true, size: "xs", className: "pr-1" },
-      { hasRightIcon: true, size: "sm", className: "pr-2" },
+      { hasRightIcon: true, size: "sm", className: "pr-1.5" },
       { hasRightIcon: true, size: ["md", "lg"], className: "pr-2" },
       { clearBtn: true, size: ["md", "lg"], className: "pr-1.5" },
       { clearBtn: true, size: "sm", className: "pr-1" },
