@@ -425,7 +425,7 @@ function FormComposition({
   ...props
 }: FormCompositionProps) {
   const defaultLayout = {
-    leftColClass: "md:col-span-4 -md:min-h-0",
+    leftColClass: "md:col-span-4 max-md:min-h-0",
     rightColClass: "md:col-span-8",
   }
   const newLayout = { ...defaultLayout, ...layout }
@@ -456,7 +456,7 @@ function FormComposition({
             labelPosition === "horizontal" && newLayout.rightColClass
           )}
         >
-          <div className="-md:text-base flex flex-1 gap-2">
+          <div className="flex flex-1 gap-2 max-md:text-base">
             {prefixOutside && (
               <FormPrefixOutside>{prefixOutside}</FormPrefixOutside>
             )}

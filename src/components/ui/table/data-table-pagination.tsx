@@ -11,9 +11,9 @@ export function DataTablePagination() {
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-2 p-4 md:gap-4 -sm:px-2">
+    <div className="flex flex-wrap items-center justify-between gap-2 p-4 max-sm:px-2 md:gap-4">
       <div className="flex items-center gap-2 text-sm">
-        <span className="-sm:hidden">Hiển thị</span>
+        <span className="max-sm:hidden">Hiển thị</span>
         <div className="w-18 md:w-20">
           <Select
             formComposition={{ inputClear: false }}
@@ -29,7 +29,7 @@ export function DataTablePagination() {
             value={table.getState().pagination.pageSize.toString()}
           />
         </div>
-        <span className="-sm:hidden">Bản ghi / trang</span>
+        <span className="max-sm:hidden">Bản ghi / trang</span>
       </div>
 
       <CombinedPagination

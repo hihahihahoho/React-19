@@ -426,7 +426,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
         className={cn(
           "w-[160px] space-y-1 px-2 py-3",
           !isDesktop &&
-            "flex w-full gap-1 space-y-0 overflow-x-auto whitespace-nowrap border-b"
+            "flex w-full gap-1 space-y-0 overflow-x-auto border-b whitespace-nowrap"
         )}
       >
         {Object.entries(presetRanges).map(([key, preset]) => (
@@ -479,7 +479,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
           modifiers={finalModifiers}
           localeString={localeString}
         />
-        <div className="sticky bottom-0 flex items-center gap-4 border-t p-4 backdrop-blur-xl -md:flex-col">
+        <div className="sticky bottom-0 flex items-center gap-4 border-t p-4 backdrop-blur-xl max-md:flex-col">
           <div className="flex flex-1 items-center justify-center gap-2">
             <FormComposition
               iconRight={<CalendarIcon />}
@@ -500,7 +500,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
                 </DateGroup>
               </div>
             </FormComposition>
-            <ArrowRightIcon className="size-4 text-muted-foreground" />
+            <ArrowRightIcon className="text-muted-foreground size-4" />
             <FormComposition
               iconRight={<CalendarIcon />}
               showErrorMsg={false}
@@ -522,7 +522,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
             </FormComposition>
           </div>
           {showConfirmButton && (
-            <div className="flex grid-cols-2 gap-3 -md:grid -md:w-full">
+            <div className="flex grid-cols-2 gap-3 max-md:grid max-md:w-full">
               <Button variant={"secondary"} onClick={handleCancel}>
                 Hủy bỏ
               </Button>

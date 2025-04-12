@@ -144,7 +144,7 @@ function SelectCommandItem({
       value={option.value}
       onSelect={onSelect}
     >
-      <div className="flex flex-1 items-center gap-3 -md:text-base [&_svg]:shrink-0">
+      <div className="flex flex-1 items-center gap-3 max-md:text-base [&_svg]:shrink-0">
         <div className="flex flex-1 items-center gap-2">
           <BadgeComp
             {...(option?.badgeProps?.variant
@@ -166,7 +166,7 @@ function SelectCommandItem({
                 <div
                   className={cn(
                     !option?.badgeProps?.variant &&
-                      "[&_svg]:size-4 [&_svg]:text-muted-foreground -md:[&_svg]:size-5"
+                      "[&_svg]:text-muted-foreground [&_svg]:size-4 max-md:[&_svg]:size-5"
                   )}
                 >
                   {option.icon}
@@ -175,7 +175,7 @@ function SelectCommandItem({
             <div className="space-y-0.5">
               <div className="item">{option.label || option.value}</div>
               {option.description && (
-                <div className="text-xs text-muted-foreground">
+                <div className="text-muted-foreground text-xs">
                   {option.description}
                 </div>
               )}
@@ -191,7 +191,7 @@ function SelectCommandItem({
           isSelected && (
             <Check
               className={cn(
-                "size-4 text-foreground!",
+                "text-foreground! size-4",
                 isSelected ? "opacity-100" : "opacity-0"
               )}
             />
@@ -281,7 +281,7 @@ function SelectCommand({
                 <div>Chọn tất cả</div>
               </Badge>
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-muted-foreground text-sm">
               {selected.length} / {flattenItems.length}
             </div>
           </div>

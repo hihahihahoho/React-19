@@ -509,7 +509,7 @@ export const FormDemoExample: Story = {
               name="file_upload"
               formComposition={{
                 layout: {
-                  leftColClass: "md:col-span-3 -md:min-h-0",
+                  leftColClass: "md:col-span-3 max-md:min-h-0",
                   rightColClass: "md:col-span-9",
                 },
                 label: "File Upload",
@@ -525,7 +525,7 @@ export const FormDemoExample: Story = {
               display="list"
               formComposition={{
                 layout: {
-                  leftColClass: "md:col-span-3 -md:min-h-0",
+                  leftColClass: "md:col-span-3 max-md:min-h-0",
                   rightColClass: "md:col-span-9",
                 },
                 label: "PDF Upload",
