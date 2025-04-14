@@ -11,60 +11,131 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
+import { Route as AuthedImport } from './routes/_authed'
+import { Route as AuthedPlaygroundIndexImport } from './routes/_authed/_playground/index'
+import { Route as AuthedPlaygroundStarredRouteImport } from './routes/_authed/_playground/starred/route'
+import { Route as AuthedPlaygroundHistoryRouteImport } from './routes/_authed/_playground/history/route'
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+const AuthedRoute = AuthedImport.update({
+  id: '/_authed',
   getParentRoute: () => rootRoute,
 } as any)
+
+const AuthedPlaygroundIndexRoute = AuthedPlaygroundIndexImport.update({
+  id: '/_playground/',
+  path: '/',
+  getParentRoute: () => AuthedRoute,
+} as any)
+
+const AuthedPlaygroundStarredRouteRoute =
+  AuthedPlaygroundStarredRouteImport.update({
+    id: '/_playground/starred',
+    path: '/starred',
+    getParentRoute: () => AuthedRoute,
+  } as any)
+
+const AuthedPlaygroundHistoryRouteRoute =
+  AuthedPlaygroundHistoryRouteImport.update({
+    id: '/_playground/history',
+    path: '/history',
+    getParentRoute: () => AuthedRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/_authed': {
+      id: '/_authed'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthedImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authed/_playground/history': {
+      id: '/_authed/_playground/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AuthedPlaygroundHistoryRouteImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/_playground/starred': {
+      id: '/_authed/_playground/starred'
+      path: '/starred'
+      fullPath: '/starred'
+      preLoaderRoute: typeof AuthedPlaygroundStarredRouteImport
+      parentRoute: typeof AuthedImport
+    }
+    '/_authed/_playground/': {
+      id: '/_authed/_playground/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthedPlaygroundIndexImport
+      parentRoute: typeof AuthedImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthedRouteChildren {
+  AuthedPlaygroundHistoryRouteRoute: typeof AuthedPlaygroundHistoryRouteRoute
+  AuthedPlaygroundStarredRouteRoute: typeof AuthedPlaygroundStarredRouteRoute
+  AuthedPlaygroundIndexRoute: typeof AuthedPlaygroundIndexRoute
+}
+
+const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedPlaygroundHistoryRouteRoute: AuthedPlaygroundHistoryRouteRoute,
+  AuthedPlaygroundStarredRouteRoute: AuthedPlaygroundStarredRouteRoute,
+  AuthedPlaygroundIndexRoute: AuthedPlaygroundIndexRoute,
+}
+
+const AuthedRouteWithChildren =
+  AuthedRoute._addFileChildren(AuthedRouteChildren)
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '': typeof AuthedRouteWithChildren
+  '/history': typeof AuthedPlaygroundHistoryRouteRoute
+  '/starred': typeof AuthedPlaygroundStarredRouteRoute
+  '/': typeof AuthedPlaygroundIndexRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/history': typeof AuthedPlaygroundHistoryRouteRoute
+  '/starred': typeof AuthedPlaygroundStarredRouteRoute
+  '/': typeof AuthedPlaygroundIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/_authed': typeof AuthedRouteWithChildren
+  '/_authed/_playground/history': typeof AuthedPlaygroundHistoryRouteRoute
+  '/_authed/_playground/starred': typeof AuthedPlaygroundStarredRouteRoute
+  '/_authed/_playground/': typeof AuthedPlaygroundIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '' | '/history' | '/starred' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/history' | '/starred' | '/'
+  id:
+    | '__root__'
+    | '/_authed'
+    | '/_authed/_playground/history'
+    | '/_authed/_playground/starred'
+    | '/_authed/_playground/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AuthedRoute: typeof AuthedRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AuthedRoute: AuthedRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +148,28 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/_authed"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/_authed": {
+      "filePath": "_authed.tsx",
+      "children": [
+        "/_authed/_playground/history",
+        "/_authed/_playground/starred",
+        "/_authed/_playground/"
+      ]
+    },
+    "/_authed/_playground/history": {
+      "filePath": "_authed/_playground/history/route.tsx",
+      "parent": "/_authed"
+    },
+    "/_authed/_playground/starred": {
+      "filePath": "_authed/_playground/starred/route.tsx",
+      "parent": "/_authed"
+    },
+    "/_authed/_playground/": {
+      "filePath": "_authed/_playground/index.tsx",
+      "parent": "/_authed"
     }
   }
 }
