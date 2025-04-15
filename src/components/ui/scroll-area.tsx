@@ -61,20 +61,29 @@ function ScrollAreaTable({
 
 function ScrollArea({
   className,
+  classNames,
   children,
   ...props
-}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+}: React.ComponentProps<typeof ScrollAreaPrimitive.Root> & {
+  classNames?: {
+    viewport?: string
+    scrollbar?: string
+    corner?: string
+  }
+}) {
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
       className={cn("relative overflow-hidden", className)}
       {...props}
     >
-      <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+      <ScrollAreaPrimitive.Viewport
+        className={cn("h-full w-full", classNames?.viewport)}
+      >
         {children}
       </ScrollAreaPrimitive.Viewport>
-      <ScrollBar />
-      <ScrollAreaPrimitive.Corner />
+      <ScrollBar className={classNames?.scrollbar} />
+      <ScrollAreaPrimitive.Corner className={classNames?.corner} />
     </ScrollAreaPrimitive.Root>
   )
 }
@@ -89,7 +98,7 @@ function ScrollBar({
       data-slot="scroll-bar"
       orientation={orientation}
       className={cn(
-        "flex touch-none select-none transition-colors",
+        "flex touch-none transition-colors select-none",
         orientation === "vertical" &&
           "h-full w-2.5 border-l border-l-transparent p-[1px]",
         orientation === "horizontal" &&
@@ -98,7 +107,7 @@ function ScrollBar({
       )}
       {...props}
     >
-      <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border" />
+      <ScrollAreaPrimitive.ScrollAreaThumb className="bg-border relative flex-1 rounded-full" />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
   )
 }
