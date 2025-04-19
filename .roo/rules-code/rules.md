@@ -27,11 +27,11 @@ This document provides essential guidelines for AI agents and ML systems working
 
 ### Documentation Priority
 
-> **CRITICAL**: Before implementing any component, agents MUST first read the corresponding documentation file in the `agents` folder matching the component name. Do not consult other documentation or implementation details unless explicitly specified or as a last resort.
+> **CRITICAL**: Before implementing any component, agents MUST first read the corresponding documentation file in the `rules-code` folder matching the component name. Do not consult other documentation or implementation details unless explicitly specified or as a last resort.
 
 ```tsx
 // Example: When implementing Button component
-// FIRST: Read e:\work-out\react-19\agents\button.md for specific guidelines
+// FIRST: Read e:\work-out\react-19\.roo\rules-code\button.md for specific guidelines
 // DO NOT examine existing button implementations unless directed or as last resort
 ```
 
