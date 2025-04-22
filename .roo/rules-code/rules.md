@@ -59,7 +59,7 @@ import { ComponentName } from "@/components/ui/component-name"
 
 ```tsx
 // CORRECT - Preserving original className
-<Button className="existing-class">Submit</Button>
+<Button>Submit</Button>
 
 // INCORRECT - Modifying without instruction
 <Button className="my-custom-class">Submit</Button>
