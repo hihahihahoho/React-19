@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { vi } from "react-day-picker/locale"
 import { buttonVariants } from "../button"
 import { Select } from "../select/select"
+import "./calendar.css"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   localeString?: string
@@ -33,6 +34,7 @@ function Calendar({
   }
   return (
     <DayPicker
+      animate
       locale={
         localeString === "vi" || localeString === "vi-VN" ? vi : undefined
       }
@@ -49,24 +51,24 @@ function Calendar({
         month_grid: "w-full border-collapse space-y-1 border-0", // changed from table
         weekdays: "flex", // changed from head_row
         weekday:
-          "w-9 rounded-md text-[0.8rem] font-normal text-muted-foreground", // changed from head_cell
+          "text-muted-foreground w-9 rounded-md text-[0.8rem] font-normal", // changed from head_cell
         week: "mt-2 flex w-full", // changed from row
         day_button: cn(
           // cell is now day
-          "relative size-9 min-w-0 p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-primary first:[&:has([aria-selected])]:rounded-l-md [&:has([aria-selected].outside)]:bg-primary/50 [&:has([aria-selected].range-end)]:rounded-r-md"
+          "[&:has([aria-selected])]:bg-primary [&:has([aria-selected].outside)]:bg-primary/50 relative size-9 min-w-0 p-0 text-center text-sm focus-within:relative focus-within:z-20 first:[&:has([aria-selected])]:rounded-l-md [&:has([aria-selected].range-end)]:rounded-r-md"
         ),
-        day: "size-9 rounded-md border-0 p-0 first:rounded-l-md last:rounded-r-md hover:bg-accent [&:has(+_.invisible[aria-selected])]:rounded-r-md", // changed from cell
+        day: "hover:bg-accent size-9 rounded-md border-0 p-0 first:rounded-l-md last:rounded-r-md [&:has(+_.invisible[aria-selected])]:rounded-r-md", // changed from cell
         range_middle:
-          "range-middle rounded-none bg-primary/10 text-foreground! hover:bg-primary/10 [&.invisible+.range-middle]:rounded-l-md [&:has(+_.invisible)]:rounded-r-md", // changed from day_range_middle
+          "range-middle bg-primary/10 text-foreground! hover:bg-primary/10 rounded-none [&.invisible+.range-middle]:rounded-l-md [&:has(+_.invisible)]:rounded-r-md", // changed from day_range_middle
         range_end:
-          "range-end rounded-l-none rounded-r-md bg-primary! text-primary-foreground!", // changed from day_range_end
+          "range-end bg-primary! text-primary-foreground! rounded-l-none rounded-r-md", // changed from day_range_end
         range_start:
-          "range-start rounded-l-md rounded-r-none bg-primary! text-primary-foreground!", // changed from day_range_start
+          "range-start bg-primary! text-primary-foreground! rounded-l-md rounded-r-none", // changed from day_range_start
         selected:
-          "rounded-md bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground", // changed from day_selected
+          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground rounded-md", // changed from day_selected
         today: "bg-accent", // changed from day_today
         outside:
-          "outside text-muted-foreground opacity-50 aria-selected:bg-primary/50 aria-selected:text-muted-foreground aria-selected:opacity-30", // changed from day_outside
+          "outside text-muted-foreground aria-selected:bg-primary/50 aria-selected:text-muted-foreground opacity-50 aria-selected:opacity-30", // changed from day_outside
         disabled: "text-muted-foreground opacity-50", // changed from day_disabled
         hidden: "invisible", // changed from day_hidden
         button_previous: cn(

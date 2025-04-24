@@ -180,6 +180,11 @@
           "path": "src/components/ui/calendar/calendar.tsx",
           "type": "registry:component",
           "target": "components/ui/calendar/calendar.tsx"
+        },
+        {
+          "path": "src/components/ui/calendar/calendar.css",
+          "type": "registry:file",
+          "target": "components/ui/calendar/calendar.css"
         }
       ]
     },
