@@ -15,7 +15,7 @@ import {
 
 // Define Line variant CVA
 const lineTabsListVariants = cva(
-  "text-muted-foreground relative z-10 flex max-w-full items-stretch justify-start gap-4 overflow-auto overscroll-contain rounded-none! border-b",
+  "text-muted-foreground relative z-10 flex max-w-full items-stretch justify-start gap-4 overflow-auto overscroll-contain",
   {
     variants: {
       size: {
@@ -24,8 +24,8 @@ const lineTabsListVariants = cva(
         lg: "min-h-10 gap-2",
       },
       orientation: {
-        horizontal: "flex-row",
-        vertical: "flex-col gap-4 border-r! border-b-0!",
+        horizontal: "flex-row border-b",
+        vertical: "flex-col gap-4 border-r",
       },
     },
     defaultVariants: {
@@ -36,7 +36,7 @@ const lineTabsListVariants = cva(
 )
 
 const lineTabsTriggerVariants = cva(
-  "ring-offset-background focus-visible:ring-ring data-[state=active]:text-foreground relative inline-flex items-center justify-center border-b-2 border-transparent px-2 font-medium whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
+  "focus-visible:ring-ring data-[state=active]:text-foreground relative inline-flex items-center justify-center px-2 font-medium whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:outline-hidden focus-visible:ring-inset disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       size: {
@@ -45,9 +45,9 @@ const lineTabsTriggerVariants = cva(
         lg: "gap-2 py-1.5 pt-2.5 pb-2",
       },
       orientation: {
-        horizontal: "",
+        horizontal: "border-b-2 border-transparent",
         vertical:
-          "w-full justify-start border-r-2 border-b-0 pt-0 pr-3 pb-0 text-left",
+          "w-full justify-start border-r-2 border-transparent pt-0 pr-3 pb-0 text-left",
       },
     },
     defaultVariants: {
@@ -57,26 +57,23 @@ const lineTabsTriggerVariants = cva(
   }
 )
 
-const lineTabsIndicatorVariants = cva(
-  "bg-primary absolute right-0 -bottom-0.5 left-0 -z-1 h-0.5 w-full rounded-none",
-  {
-    variants: {
-      size: {
-        sm: "",
-        default: "",
-        lg: "",
-      },
-      orientation: {
-        horizontal: "",
-        vertical: "-bottom-auto -right-0.5 bottom-0 left-auto h-full w-0.5",
-      },
+const lineTabsIndicatorVariants = cva("bg-primary absolute -z-1 h-0.5 w-full", {
+  variants: {
+    size: {
+      sm: "",
+      default: "",
+      lg: "",
     },
-    defaultVariants: {
-      size: "default",
-      orientation: "horizontal",
+    orientation: {
+      horizontal: "right-0 -bottom-0.5 left-0",
+      vertical: "-bottom-auto -right-0.5 bottom-0 left-auto h-full w-0.5",
     },
-  }
-)
+  },
+  defaultVariants: {
+    size: "default",
+    orientation: "horizontal",
+  },
+})
 
 const lineTabsContentVariants = cva(
   "ring-offset-background focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden",
