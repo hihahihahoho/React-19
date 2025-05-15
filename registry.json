@@ -273,7 +273,7 @@
       ]
     },
     {
-      "name": "tabs",
+      "name": "tabs-core",
       "author": "hihahihahoho",
       "dependencies": [
         "@radix-ui/react-tabs",
@@ -288,9 +288,39 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "src/components/ui/tabs.tsx",
+          "path": "src/components/ui/tabs/tabs-core.tsx",
           "type": "registry:component",
-          "target": "components/ui/tabs.tsx"
+          "target": "src/components/ui/tabs/tabs-core.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "author": "hihahihahoho",
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/tabs-core.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/tabs/tabs.tsx",
+          "type": "registry:component",
+          "target": "src/components/ui/tabs/tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tabs-line",
+      "author": "hihahihahoho",
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/tabs-core.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/tabs/tabs-line.tsx",
+          "type": "registry:component",
+          "target": "src/components/ui/tabs/tabs-line.tsx"
         }
       ]
     },

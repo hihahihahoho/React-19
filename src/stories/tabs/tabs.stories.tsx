@@ -1,10 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Badge } from "@/components/ui/badge/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs/tabs"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import type { Meta, StoryObj } from "@storybook/react"
 import {
-  Code,
   Cog,
   FileText,
   Home,
@@ -12,18 +16,17 @@ import {
   MessageSquare,
   Music,
   Settings,
-  Terminal,
   User,
   Video,
 } from "lucide-react"
 import React from "react"
 
 /**
- * Tabs organize content into multiple sections and allow users to navigate between them.
- * Use tabs to separate different categories of content that occupy the same space.
+ * Default Tabs organize content into multiple sections and allow users to navigate between them.
+ * They provide a standard appearance with backgrounds and borders.
  */
 const meta = {
-  title: "Controls/Tabs",
+  title: "Controls/Tabs/Default",
   component: Tabs,
   parameters: {
     docs: {
@@ -53,14 +56,6 @@ They organize content into separate views where only one view is visible at a ti
     },
   },
   argTypes: {
-    variant: {
-      control: "select",
-      options: ["default", "line"],
-      description: "Controls the visual style of the tabs",
-      table: {
-        defaultValue: { summary: "default" },
-      },
-    },
     size: {
       control: "select",
       options: ["sm", "default", "lg"],
@@ -95,271 +90,154 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /**
- * The standard tabs with different styles: default and line variants.
+ * The standard tabs with the default style.
  */
-export const BasicVariants: Story = {
+export const Basic: Story = {
   render: () => (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h3 className="mb-2 text-sm font-medium">Default Variant</h3>
-        <Tabs defaultValue="account">
-          <TabsList>
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
-          </TabsList>
-          <TabsContent value="account">
-            <div className="rounded-lg border p-4">
-              <h3 className="text-lg font-medium">Account Settings</h3>
-              <p className="text-sm text-muted-foreground">
-                Manage your account settings and preferences.
-              </p>
-            </div>
-          </TabsContent>
-          <TabsContent value="password">
-            <div className="rounded-lg border p-4">
-              <h3 className="text-lg font-medium">Password</h3>
-              <p className="text-sm text-muted-foreground">
-                Change your password here. After saving, you'll be logged out.
-              </p>
-            </div>
-          </TabsContent>
-          <TabsContent value="settings">
-            <div className="rounded-lg border p-4">
-              <h3 className="text-lg font-medium">Settings</h3>
-              <p className="text-sm text-muted-foreground">
-                Configure your application settings.
-              </p>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
-
-      <div>
-        <h3 className="mb-2 text-sm font-medium">Line Variant</h3>
-        <Tabs defaultValue="overview" variant="line">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="reports">Reports</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          </TabsList>
-          <TabsContent value="overview">
-            <div className="rounded-lg border p-4">
-              <h3 className="text-lg font-medium">Overview</h3>
-              <p className="text-sm text-muted-foreground">
-                View a summary of your account activity.
-              </p>
-            </div>
-          </TabsContent>
-          <TabsContent value="analytics">
-            <div className="rounded-lg border p-4">
-              <h3 className="text-lg font-medium">Analytics</h3>
-              <p className="text-sm text-muted-foreground">
-                View detailed analytics for your account.
-              </p>
-            </div>
-          </TabsContent>
-          <TabsContent value="reports">
-            <div className="rounded-lg border p-4">
-              <h3 className="text-lg font-medium">Reports</h3>
-              <p className="text-sm text-muted-foreground">
-                Download and view reports.
-              </p>
-            </div>
-          </TabsContent>
-          <TabsContent value="notifications">
-            <div className="rounded-lg border p-4">
-              <h3 className="text-lg font-medium">Notifications</h3>
-              <p className="text-sm text-muted-foreground">
-                Manage your notification preferences.
-              </p>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
+    <div>
+      <h3 className="mb-2 text-sm font-medium">Default Variant</h3>
+      <Tabs defaultValue="account">
+        <TabsList>
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="password">Password</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          <div className="rounded-lg border p-4">
+            <h3 className="text-lg font-medium">Account Settings</h3>
+            <p className="text-muted-foreground text-sm">
+              Manage your account settings and preferences.
+            </p>
+          </div>
+        </TabsContent>
+        <TabsContent value="password">
+          <div className="rounded-lg border p-4">
+            <h3 className="text-lg font-medium">Password</h3>
+            <p className="text-muted-foreground text-sm">
+              Change your password here. After saving, you'll be logged out.
+            </p>
+          </div>
+        </TabsContent>
+        <TabsContent value="settings">
+          <div className="rounded-lg border p-4">
+            <h3 className="text-lg font-medium">Settings</h3>
+            <p className="text-muted-foreground text-sm">
+              Configure your application settings.
+            </p>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story:
-          "The two primary tab variants: default (with background) and line (with underline indicator).",
+        story: "The standard tab appearance with background and borders.",
       },
     },
   },
 }
 
 /**
- * Example of tabs with different sizes in both variants.
+ * Example of tabs with different sizes.
  */
-export const SizesAndVariants: Story = {
+export const Sizes: Story = {
   render: () => (
-    <div className="flex flex-col gap-8">
+    <div className="grid gap-6">
       <div>
-        <h3 className="mb-2 text-sm font-medium">Default Variant</h3>
-        <div className="grid gap-6">
-          <Tabs defaultValue="sm" size="sm">
-            <TabsList>
-              <TabsTrigger value="sm">Small</TabsTrigger>
-              <TabsTrigger value="md">Medium</TabsTrigger>
-              <TabsTrigger value="lg">Large</TabsTrigger>
-            </TabsList>
-            <TabsContent value="sm">
-              <div className="rounded-lg border p-3">
-                <p className="text-xs">Small tabs content - default variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="md">
-              <div className="rounded-lg border p-3">
-                <p className="text-xs">Medium tabs content - default variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="lg">
-              <div className="rounded-lg border p-3">
-                <p className="text-xs">Large tabs content - default variant</p>
-              </div>
-            </TabsContent>
-          </Tabs>
-
-          <Tabs defaultValue="sm">
-            <TabsList>
-              <TabsTrigger value="sm">Small</TabsTrigger>
-              <TabsTrigger value="md">Medium</TabsTrigger>
-              <TabsTrigger value="lg">Large</TabsTrigger>
-            </TabsList>
-            <TabsContent value="sm">
-              <div className="rounded-lg border p-4">
-                <p className="text-sm">Small tabs content - default variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="md">
-              <div className="rounded-lg border p-4">
-                <p className="text-sm">Medium tabs content - default variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="lg">
-              <div className="rounded-lg border p-4">
-                <p className="text-sm">Large tabs content - default variant</p>
-              </div>
-            </TabsContent>
-          </Tabs>
-
-          <Tabs defaultValue="sm" size="lg">
-            <TabsList>
-              <TabsTrigger value="sm">Small</TabsTrigger>
-              <TabsTrigger value="md">Medium</TabsTrigger>
-              <TabsTrigger value="lg">Large</TabsTrigger>
-            </TabsList>
-            <TabsContent value="sm">
-              <div className="rounded-lg border p-4">
-                <p>Small tabs content - default variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="md">
-              <div className="rounded-lg border p-4">
-                <p>Medium tabs content - default variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="lg">
-              <div className="rounded-lg border p-4">
-                <p>Large tabs content - default variant</p>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+        <h3 className="mb-2 text-sm font-medium">Small Size</h3>
+        <Tabs defaultValue="sm" size="sm">
+          <TabsList>
+            <TabsTrigger value="sm">Small</TabsTrigger>
+            <TabsTrigger value="md">Medium</TabsTrigger>
+            <TabsTrigger value="lg">Large</TabsTrigger>
+          </TabsList>
+          <TabsContent value="sm">
+            <div className="rounded-lg border p-3">
+              <p className="text-xs">Small tabs content - default variant</p>
+            </div>
+          </TabsContent>
+          <TabsContent value="md">
+            <div className="rounded-lg border p-3">
+              <p className="text-xs">Medium tabs content - default variant</p>
+            </div>
+          </TabsContent>
+          <TabsContent value="lg">
+            <div className="rounded-lg border p-3">
+              <p className="text-xs">Large tabs content - default variant</p>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
 
       <div>
-        <h3 className="mb-2 text-sm font-medium">Line Variant</h3>
-        <div className="grid gap-6">
-          <Tabs defaultValue="sm" variant="line" size="sm">
-            <TabsList>
-              <TabsTrigger value="sm">Small</TabsTrigger>
-              <TabsTrigger value="md">Medium</TabsTrigger>
-              <TabsTrigger value="lg">Large</TabsTrigger>
-            </TabsList>
-            <TabsContent value="sm">
-              <div className="rounded-lg border p-3">
-                <p className="text-xs">Small tabs content - line variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="md">
-              <div className="rounded-lg border p-3">
-                <p className="text-xs">Medium tabs content - line variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="lg">
-              <div className="rounded-lg border p-3">
-                <p className="text-xs">Large tabs content - line variant</p>
-              </div>
-            </TabsContent>
-          </Tabs>
+        <h3 className="mb-2 text-sm font-medium">Default Size</h3>
+        <Tabs defaultValue="sm">
+          <TabsList>
+            <TabsTrigger value="sm">Small</TabsTrigger>
+            <TabsTrigger value="md">Medium</TabsTrigger>
+            <TabsTrigger value="lg">Large</TabsTrigger>
+          </TabsList>
+          <TabsContent value="sm">
+            <div className="rounded-lg border p-4">
+              <p className="text-sm">Small tabs content - default variant</p>
+            </div>
+          </TabsContent>
+          <TabsContent value="md">
+            <div className="rounded-lg border p-4">
+              <p className="text-sm">Medium tabs content - default variant</p>
+            </div>
+          </TabsContent>
+          <TabsContent value="lg">
+            <div className="rounded-lg border p-4">
+              <p className="text-sm">Large tabs content - default variant</p>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
 
-          <Tabs defaultValue="sm" variant="line">
-            <TabsList>
-              <TabsTrigger value="sm">Small</TabsTrigger>
-              <TabsTrigger value="md">Medium</TabsTrigger>
-              <TabsTrigger value="lg">Large</TabsTrigger>
-            </TabsList>
-            <TabsContent value="sm">
-              <div className="rounded-lg border p-4">
-                <p className="text-sm">Small tabs content - line variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="md">
-              <div className="rounded-lg border p-4">
-                <p className="text-sm">Medium tabs content - line variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="lg">
-              <div className="rounded-lg border p-4">
-                <p className="text-sm">Large tabs content - line variant</p>
-              </div>
-            </TabsContent>
-          </Tabs>
-
-          <Tabs defaultValue="sm" variant="line" size="lg">
-            <TabsList>
-              <TabsTrigger value="sm">Small</TabsTrigger>
-              <TabsTrigger value="md">Medium</TabsTrigger>
-              <TabsTrigger value="lg">Large</TabsTrigger>
-            </TabsList>
-            <TabsContent value="sm">
-              <div className="rounded-lg border p-4">
-                <p>Small tabs content - line variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="md">
-              <div className="rounded-lg border p-4">
-                <p>Medium tabs content - line variant</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="lg">
-              <div className="rounded-lg border p-4">
-                <p>Large tabs content - line variant</p>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+      <div>
+        <h3 className="mb-2 text-sm font-medium">Large Size</h3>
+        <Tabs defaultValue="sm" size="lg">
+          <TabsList>
+            <TabsTrigger value="sm">Small</TabsTrigger>
+            <TabsTrigger value="md">Medium</TabsTrigger>
+            <TabsTrigger value="lg">Large</TabsTrigger>
+          </TabsList>
+          <TabsContent value="sm">
+            <div className="rounded-lg border p-4">
+              <p>Small tabs content - default variant</p>
+            </div>
+          </TabsContent>
+          <TabsContent value="md">
+            <div className="rounded-lg border p-4">
+              <p>Medium tabs content - default variant</p>
+            </div>
+          </TabsContent>
+          <TabsContent value="lg">
+            <div className="rounded-lg border p-4">
+              <p>Large tabs content - default variant</p>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   ),
   parameters: {
     docs: {
       description: {
-        story:
-          "Comparison of different tab sizes with both default and line variants.",
+        story: "Different tab sizes for various space requirements.",
       },
     },
   },
 }
+
 /**
  * Showcase of tabs with icons to enhance visual recognition.
  */
 export const WithIcons: Story = {
   render: () => (
-    <div className="flex flex-col gap-8">
+    <div>
       <Tabs defaultValue="home">
         <TabsList>
           <TabsTrigger value="home">
@@ -382,7 +260,7 @@ export const WithIcons: Story = {
         <TabsContent value="home">
           <div className="rounded-lg border p-4">
             <h3 className="text-lg font-medium">Home</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Welcome to your dashboard. Here's an overview of your activity.
             </p>
           </div>
@@ -390,7 +268,7 @@ export const WithIcons: Story = {
         <TabsContent value="messages">
           <div className="rounded-lg border p-4">
             <h3 className="text-lg font-medium">Messages</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               View and manage your conversations.
             </p>
           </div>
@@ -398,7 +276,7 @@ export const WithIcons: Story = {
         <TabsContent value="settings">
           <div className="rounded-lg border p-4">
             <h3 className="text-lg font-medium">Settings</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Configure your application preferences.
             </p>
           </div>
@@ -406,49 +284,8 @@ export const WithIcons: Story = {
         <TabsContent value="user">
           <div className="rounded-lg border p-4">
             <h3 className="text-lg font-medium">Profile</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Manage your profile information and preferences.
-            </p>
-          </div>
-        </TabsContent>
-      </Tabs>
-
-      <Tabs defaultValue="code" variant="line">
-        <TabsList>
-          <TabsTrigger value="code">
-            <Code />
-            Code
-          </TabsTrigger>
-          <TabsTrigger value="terminal">
-            <Terminal />
-            Terminal
-          </TabsTrigger>
-          <TabsTrigger value="settings">
-            <Cog />
-            Settings
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="code">
-          <div className="rounded-lg border p-4">
-            <h3 className="text-lg font-medium">Code Editor</h3>
-            <p className="text-sm text-muted-foreground">
-              Write and edit your code here.
-            </p>
-          </div>
-        </TabsContent>
-        <TabsContent value="terminal">
-          <div className="rounded-lg border p-4">
-            <h3 className="text-lg font-medium">Terminal</h3>
-            <p className="text-sm text-muted-foreground">
-              Access your command line interface.
-            </p>
-          </div>
-        </TabsContent>
-        <TabsContent value="settings">
-          <div className="rounded-lg border p-4">
-            <h3 className="text-lg font-medium">Editor Settings</h3>
-            <p className="text-sm text-muted-foreground">
-              Configure your editor preferences.
             </p>
           </div>
         </TabsContent>
@@ -492,7 +329,7 @@ export const ScrollableTabs: Story = {
           <TabsContent key={i} value={`tab${i + 1}`}>
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Tab {i + 1} Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 This is the content for tab {i + 1}.
               </p>
             </div>
@@ -511,17 +348,14 @@ export const ScrollableTabs: Story = {
   },
 }
 
-// ...existing code...
-
 /**
  * Showcase of vertical oriented tabs.
  */
 export const VerticalTabs: Story = {
   render: () => (
     <div className="space-y-8">
-      {/* Default variant vertical tabs */}
       <div>
-        <h3 className="mb-2 text-sm font-medium">Default Variant</h3>
+        <h3 className="mb-2 text-sm font-medium">Vertical Tabs</h3>
         <Tabs
           defaultValue="general"
           orientation="vertical"
@@ -545,7 +379,7 @@ export const VerticalTabs: Story = {
             <TabsContent value="general">
               <div className="rounded-lg border p-4">
                 <h3 className="text-lg font-medium">General Settings</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Configure general application settings.
                 </p>
               </div>
@@ -553,7 +387,7 @@ export const VerticalTabs: Story = {
             <TabsContent value="account">
               <div className="rounded-lg border p-4">
                 <h3 className="text-lg font-medium">Account Settings</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Manage your account information.
                 </p>
               </div>
@@ -561,7 +395,7 @@ export const VerticalTabs: Story = {
             <TabsContent value="security">
               <div className="rounded-lg border p-4">
                 <h3 className="text-lg font-medium">Security Settings</h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   Manage your security preferences.
                 </p>
               </div>
@@ -570,52 +404,8 @@ export const VerticalTabs: Story = {
         </Tabs>
       </div>
 
-      {/* Line variant vertical tabs */}
       <div>
-        <h3 className="mb-2 text-sm font-medium">Line Variant</h3>
-        <Tabs
-          defaultValue="profile"
-          orientation="vertical"
-          variant="line"
-          className="flex max-w-3xl"
-        >
-          <TabsList className="w-36">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="preferences">Preferences</TabsTrigger>
-            <TabsTrigger value="billing">Billing</TabsTrigger>
-          </TabsList>
-          <div className="flex-1">
-            <TabsContent value="profile">
-              <div className="rounded-lg border p-4">
-                <h3 className="text-lg font-medium">Profile</h3>
-                <p className="text-sm text-muted-foreground">
-                  Manage your personal information.
-                </p>
-              </div>
-            </TabsContent>
-            <TabsContent value="preferences">
-              <div className="rounded-lg border p-4">
-                <h3 className="text-lg font-medium">Preferences</h3>
-                <p className="text-sm text-muted-foreground">
-                  Customize your experience.
-                </p>
-              </div>
-            </TabsContent>
-            <TabsContent value="billing">
-              <div className="rounded-lg border p-4">
-                <h3 className="text-lg font-medium">Billing</h3>
-                <p className="text-sm text-muted-foreground">
-                  Manage subscription and payments.
-                </p>
-              </div>
-            </TabsContent>
-          </div>
-        </Tabs>
-      </div>
-
-      {/* Scrollable vertical tabs */}
-      <div>
-        <h3 className="mb-2 text-sm font-medium">Scrollable Tabs</h3>
+        <h3 className="mb-2 text-sm font-medium">Scrollable Vertical Tabs</h3>
         <Tabs
           defaultValue="tab1"
           orientation="vertical"
@@ -633,7 +423,7 @@ export const VerticalTabs: Story = {
               <TabsContent key={i} value={`tab${i + 1}`}>
                 <div className="rounded-lg border p-4">
                   <h3 className="text-lg font-medium">Content {i + 1}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     This is the content for tab {i + 1}.
                   </p>
                 </div>
@@ -643,7 +433,6 @@ export const VerticalTabs: Story = {
         </Tabs>
       </div>
 
-      {/* Responsive example */}
       <div>
         <h3 className="mb-2 text-sm font-medium">
           Responsive (Resize Browser)
@@ -700,7 +489,7 @@ function ResponsiveTabsExample() {
 }
 
 /**
- * Examples of various tab customizations for different design needs.
+ * Examples of various tab customizations.
  */
 export const Customization: Story = {
   render: () => (
@@ -717,7 +506,7 @@ export const Customization: Story = {
           <TabsContent value="overview" className="text-center">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Overview Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Centered tabs work well for main page sections.
               </p>
             </div>
@@ -725,7 +514,7 @@ export const Customization: Story = {
           <TabsContent value="analytics" className="text-center">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Analytics Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 View your data analytics here.
               </p>
             </div>
@@ -733,7 +522,7 @@ export const Customization: Story = {
           <TabsContent value="reports" className="text-center">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Reports Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Access and download your reports.
               </p>
             </div>
@@ -766,7 +555,7 @@ export const Customization: Story = {
           <TabsContent value="image">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Images</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Custom-sized icon tabs provide a compact interface.
               </p>
             </div>
@@ -774,7 +563,7 @@ export const Customization: Story = {
           <TabsContent value="video">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Videos</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 View and manage your video files.
               </p>
             </div>
@@ -782,7 +571,7 @@ export const Customization: Story = {
           <TabsContent value="music">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Music</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Access your music collection.
               </p>
             </div>
@@ -790,7 +579,7 @@ export const Customization: Story = {
           <TabsContent value="document">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Documents</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Manage your document files.
               </p>
             </div>
@@ -837,7 +626,7 @@ export const Customization: Story = {
           <TabsContent value="inbox">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Inbox (3)</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 You have 3 unread messages.
               </p>
             </div>
@@ -845,7 +634,7 @@ export const Customization: Story = {
           <TabsContent value="sent">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Sent (12)</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 You sent 12 messages this week.
               </p>
             </div>
@@ -853,7 +642,7 @@ export const Customization: Story = {
           <TabsContent value="drafts">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Drafts (5)</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 You have 5 draft messages.
               </p>
             </div>
@@ -879,7 +668,7 @@ export const Customization: Story = {
           <TabsContent value="tab1">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">First Tab Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Full-width tabs distribute space evenly.
               </p>
             </div>
@@ -887,7 +676,7 @@ export const Customization: Story = {
           <TabsContent value="tab2">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Second Tab Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Each tab takes up an equal portion of space.
               </p>
             </div>
@@ -895,7 +684,7 @@ export const Customization: Story = {
           <TabsContent value="tab3">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Third Tab Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Good for a small number of equally important tabs.
               </p>
             </div>
@@ -910,21 +699,21 @@ export const Customization: Story = {
           <TabsList className="grid w-full grid-cols-3 bg-transparent p-0">
             <TabsTrigger
               value="home"
-              className="rounded-b-none rounded-t-lg border border-b-0 border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background"
+              className="border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background rounded-t-lg rounded-b-none border border-b-0"
             >
               <Home />
               Home
             </TabsTrigger>
             <TabsTrigger
               value="dashboard"
-              className="rounded-b-none rounded-t-lg border border-b-0 border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background"
+              className="border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background rounded-t-lg rounded-b-none border border-b-0"
             >
               <MessageSquare />
               Dashboard
             </TabsTrigger>
             <TabsTrigger
               value="settings"
-              className="rounded-b-none rounded-t-lg border border-b-0 border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background"
+              className="border-muted bg-muted/50 data-[state=active]:border-border data-[state=active]:bg-background rounded-t-lg rounded-b-none border border-b-0"
             >
               <Settings />
               Settings
@@ -933,19 +722,19 @@ export const Customization: Story = {
           <div className="rounded-b-lg border border-t-0 p-4">
             <TabsContent value="home">
               <h3 className="text-lg font-medium">Home</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Custom tabs with unique styling that resemble browser tabs.
               </p>
             </TabsContent>
             <TabsContent value="dashboard">
               <h3 className="text-lg font-medium">Dashboard</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 View your dashboard statistics and information.
               </p>
             </TabsContent>
             <TabsContent value="settings">
               <h3 className="text-lg font-medium">Settings</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 Configure your application settings.
               </p>
             </TabsContent>
@@ -958,16 +747,15 @@ export const Customization: Story = {
     docs: {
       description: {
         story: `
-Various ways to customize the tabs component:
+Various ways to customize the default tabs component:
 
 - **Centered Tabs**: Perfect for main page navigation with equal emphasis on options
 - **Icon-only Tabs**: Great for compact interfaces with limited space
 - **Tabs with Badges**: Useful for showing counts or status indicators
 - **Full-width Justified Tabs**: Evenly distribute tabs across available space
-- **Vertical Tabs**: Ideal for settings pages or when you have many tab options
 - **Custom Styled Tabs**: Create unique tab designs to match your application's style
 
-These customizations can be combined to create the perfect tab interface for your specific use case. Remember to maintain accessibility by using proper ARIA attributes and ensuring good keyboard navigation.
+These customizations can be combined to create the perfect tab interface for your specific use case.
         `,
       },
     },
@@ -985,19 +773,19 @@ export const ControlledTabs: Story = {
       <div className="space-y-6">
         <div className="flex items-center gap-2">
           <button
-            className="rounded-md bg-primary px-3 py-1 text-xs text-primary-foreground"
+            className="bg-primary text-primary-foreground rounded-md px-3 py-1 text-xs"
             onClick={() => setActiveTab("first")}
           >
             Activate First Tab
           </button>
           <button
-            className="rounded-md bg-primary px-3 py-1 text-xs text-primary-foreground"
+            className="bg-primary text-primary-foreground rounded-md px-3 py-1 text-xs"
             onClick={() => setActiveTab("second")}
           >
             Activate Second Tab
           </button>
           <button
-            className="rounded-md bg-primary px-3 py-1 text-xs text-primary-foreground"
+            className="bg-primary text-primary-foreground rounded-md px-3 py-1 text-xs"
             onClick={() => setActiveTab("third")}
           >
             Activate Third Tab
@@ -1013,7 +801,7 @@ export const ControlledTabs: Story = {
           <TabsContent value="first">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">First Tab Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 This is the content of the first tab.
               </p>
             </div>
@@ -1021,7 +809,7 @@ export const ControlledTabs: Story = {
           <TabsContent value="second">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Second Tab Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 This is the content of the second tab.
               </p>
             </div>
@@ -1029,14 +817,14 @@ export const ControlledTabs: Story = {
           <TabsContent value="third">
             <div className="rounded-lg border p-4">
               <h3 className="text-lg font-medium">Third Tab Content</h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 This is the content of the third tab.
               </p>
             </div>
           </TabsContent>
         </Tabs>
 
-        <div className="rounded-md bg-muted p-2 text-xs">
+        <div className="bg-muted rounded-md p-2 text-xs">
           <p>
             Current active tab: <strong>{activeTab}</strong>
           </p>
