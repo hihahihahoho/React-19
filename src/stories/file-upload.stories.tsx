@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button"
 import { FileUpload } from "@/components/ui/file-upload/file-upload"
 import { FileUploadForm } from "@/components/ui/file-upload/file-upload-form"
+import { FileUploadList } from "@/components/ui/file-upload/file-upload-list"
+import { FileUploadListForm } from "@/components/ui/file-upload/file-upload-list-form"
 import { Form } from "@/components/ui/form/form"
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import { createRemoteFileProxy } from "@/lib/utils-plus"
@@ -25,6 +27,10 @@ const meta = {
         component: `
 \`\`\`bash
 pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/file-upload.json
+\`\`\`
+
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/file-upload-list.json
 \`\`\`
 
 FileUpload component allows users to upload files with drag-and-drop functionality, file previews, and validation.
@@ -51,13 +57,6 @@ FileUpload component allows users to upload files with drag-and-drop functionali
     maxFiles: {
       control: { type: "number" },
       description: "Maximum number of files allowed to be uploaded",
-    },
-    display: {
-      control: { type: "radio", options: ["grid", "list"] },
-      description: "Display style for uploaded files",
-      table: {
-        defaultValue: { summary: "grid" },
-      },
     },
     accept: {
       description: "Array of accepted MIME types",
@@ -99,7 +98,6 @@ type Story = StoryObj<typeof meta>
 export const Basic: Story = {
   args: {
     maxFiles: 5,
-    display: "grid",
     accept: ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
     maxFileSize: 500000,
   },
@@ -117,7 +115,6 @@ export const Basic: Story = {
  */
 export const ListDisplay: Story = {
   args: {
-    display: "list",
     maxFiles: 5,
     accept: ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
     maxFileSize: 500000,
@@ -138,7 +135,6 @@ export const ListDisplay: Story = {
 export const SingleFileUpload: Story = {
   args: {
     maxFiles: 1,
-    display: "grid",
     accept: ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
     maxFileSize: 500000,
   },
@@ -162,7 +158,6 @@ export const CustomFileTypes: Story = {
       "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ],
-    display: "list",
     maxFileSize: 1000000,
   },
   parameters: {
@@ -181,7 +176,6 @@ export const CustomFileTypes: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-    display: "grid",
     maxFiles: 5,
     accept: ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
     maxFileSize: 500000,
@@ -200,7 +194,6 @@ export const Disabled: Story = {
  */
 export const WithFormComposition: Story = {
   args: {
-    display: "grid",
     maxFiles: 3,
     accept: ["image/jpeg", "image/jpg", "image/png"],
     maxFileSize: 500000,
@@ -257,7 +250,6 @@ export const WithFormIntegration: Story = {
             <FileUploadForm
               control={form.control}
               name="files"
-              display="grid"
               formComposition={{
                 label: "Upload Images",
                 description: "Please upload at least one image (max 3)",
@@ -345,7 +337,6 @@ export const CompleteFormExample: Story = {
               control={form.control}
               name="profilePhoto"
               maxFiles={1}
-              display="grid"
               formComposition={{
                 label: "Profile Photo",
                 description: "Upload a profile photo (JPEG, JPG, PNG only)",
@@ -353,10 +344,9 @@ export const CompleteFormExample: Story = {
               }}
             />
 
-            <FileUploadForm
+            <FileUploadListForm
               control={form.control}
               name="documents"
-              display="list"
               formComposition={{
                 label: "Documents",
                 description:
@@ -368,7 +358,6 @@ export const CompleteFormExample: Story = {
             <FileUploadForm
               control={form.control}
               name="galleryImages"
-              display="grid"
               formComposition={{
                 label: "Gallery Images",
                 description: "Upload additional images for your gallery",
@@ -423,16 +412,14 @@ export const WithPredefinedFiles: Story = {
         <FileUpload
           defaultValue={[sampleFile]}
           maxFiles={1}
-          display="grid"
           formComposition={{
             label: "Profile Picture",
             description: "Change your profile picture",
           }}
         />
 
-        <FileUpload
+        <FileUploadList
           defaultValue={[samplePdf]}
-          display="list"
           formComposition={{
             label: "Documents",
             description: "Your uploaded documents",
@@ -519,10 +506,9 @@ export const FormDemoExample: Story = {
               }}
             />
 
-            <FileUploadForm
+            <FileUploadListForm
               control={form.control}
               name="file_upload_native"
-              display="list"
               formComposition={{
                 layout: {
                   leftColClass: "md:col-span-3 max-md:min-h-0",
@@ -586,7 +572,6 @@ export const DisplayVariantsComparison: Story = {
         <h3 className="text-lg font-medium">Grid Display</h3>
         <FileUpload
           defaultValue={sampleFiles}
-          display="grid"
           formComposition={{
             label: "Grid Display",
             description: "Files displayed in a grid layout",
@@ -594,9 +579,8 @@ export const DisplayVariantsComparison: Story = {
         />
 
         <h3 className="mt-8 text-lg font-medium">List Display</h3>
-        <FileUpload
+        <FileUploadList
           defaultValue={sampleFiles}
-          display="list"
           formComposition={{
             label: "List Display",
             description: "Files displayed in a list layout",

@@ -954,6 +954,19 @@
       ]
     },
     {
+      "name": "use-file-upload",
+      "author": "hihahihahoho",
+      "dependencies": [],
+      "type": "registry:hook",
+      "files": [
+        {
+          "path": "src/hooks/use-file-upload.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-file-upload.ts"
+        }
+      ]
+    },
+    {
       "name": "use-is-mounted",
       "author": "hihahihahoho",
       "dependencies": [],
@@ -1420,6 +1433,40 @@
       ]
     },
     {
+      "name": "file-upload-list",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "react-hook-form",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/custom-icons.json",
+        "https://react-19.octung112.workers.dev/r/dialog.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/glass-icon.json",
+        "https://react-19.octung112.workers.dev/r/sonner.json",
+        "https://react-19.octung112.workers.dev/r/file-size.json",
+        "https://react-19.octung112.workers.dev/r/const.json",
+        "utils",
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/use-file-upload.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/file-upload/file-upload-list.tsx",
+          "type": "registry:component",
+          "target": "components/ui/file-upload/file-upload-list.tsx"
+        },
+        {
+          "path": "src/components/ui/file-upload/file-upload-list-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/file-upload/file-upload-list-form.tsx"
+        }
+      ]
+    },
+    {
       "name": "file-upload",
       "author": "hihahihahoho",
       "dependencies": [
@@ -1436,7 +1483,8 @@
         "https://react-19.octung112.workers.dev/r/file-size.json",
         "https://react-19.octung112.workers.dev/r/const.json",
         "utils",
-        "https://react-19.octung112.workers.dev/r/utils-plus.json"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/use-file-upload.json"
       ],
       "type": "registry:component",
       "files": [

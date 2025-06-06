@@ -1,3 +1,5 @@
+// components/file-upload-list.tsx
+
 "use client"
 
 import { useFileUpload } from "@/hooks/use-file-upload"
@@ -12,9 +14,9 @@ import {
   Music,
   Play,
   SquareArrowOutUpRight,
-  X,
 } from "lucide-react"
 import { Button } from "../button"
+import { CloseCircle } from "../custom-icons"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../dialog"
 import {
   FormComposition,
@@ -48,7 +50,7 @@ const fileIcon = {
   ),
 }
 
-export interface FileUploadGridProps
+export interface FileUploadListProps
   extends Omit<
     React.ComponentProps<"input">,
     "value" | "accept" | "defaultValue"
@@ -66,7 +68,7 @@ export interface FileUploadGridProps
 
 const MAX_FILE_SIZE = 500000 // 500
 
-function FileUploadGrid({
+function FileUploadList({
   onFileChange,
   maxFiles = 5,
   accept = ACCEPTED_IMAGE_TYPES,
@@ -76,7 +78,7 @@ function FileUploadGrid({
   value,
   defaultValue,
   ...props
-}: FileUploadGridProps) {
+}: FileUploadListProps) {
   const {
     inputRef,
     isDragOver,
@@ -123,8 +125,7 @@ function FileUploadGrid({
           "min-h-[126px] w-full items-center justify-center rounded-xl border border-dashed p-3 transition-all",
           isDragOver && "ring-primary ring-2 ring-offset-2",
           (internalFiles.length < maxFiles || maxFiles === 1) &&
-            "cursor-pointer",
-          disabled && "cursor-not-allowed opacity-50"
+            "cursor-pointer"
         )}
       >
         <FormControl>
@@ -140,24 +141,41 @@ function FileUploadGrid({
           />
         </FormControl>
         {internalFiles.length > 0 ? (
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            {internalFiles.map((fileMeta) => (
-              <div key={fileMeta.id} className="group relative">
+          <div className="grid gap-3">
+            {(internalFiles.length < maxFiles || maxFiles === 1) && (
+              <div className="text-muted-foreground flex min-h-6 items-center gap-2 text-xs">
+                <CloudUpload />
+                <div className="flex-1">
+                  {maxFiles === 1 ? (
+                    <>Chọn lại</>
+                  ) : (
+                    <>
+                      <span className="text-primary">Tải lên</span> hoặc kéo thả
+                      vào đây
+                    </>
+                  )}
+                </div>
+                {maxFiles !== 1 && internalFiles.length + "/" + maxFiles}
+              </div>
+            )}
+            {internalFiles.map((fileMeta) => {
+              return (
                 <div
-                  className="h-[100px] cursor-default"
+                  key={fileMeta.id}
+                  className="bg-secondary flex min-w-0 cursor-default items-center gap-3 rounded-lg p-2"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {fileMeta.file.type.startsWith("image/") ? (
                     <img
                       src={previewUrls[fileMeta.id] || ""}
-                      alt={fileMeta.file.name}
-                      className="h-full w-full rounded-lg border object-cover"
+                      alt={getDisplayName(fileMeta)}
+                      className="size-12 rounded-lg border object-cover"
                       onError={(e) => {
                         ;(e.target as HTMLImageElement).style.display = "none"
                       }}
                     />
                   ) : (
-                    <div className="bg-secondary flex h-full w-full flex-col items-center justify-center gap-2 rounded-lg px-3">
+                    <div className="flex size-12 items-center justify-center">
                       {fileMeta.file.type.startsWith("image/")
                         ? fileIcon.image
                         : fileMeta.file.type.startsWith("audio/")
@@ -165,61 +183,46 @@ function FileUploadGrid({
                           : fileMeta.file.type.startsWith("video/")
                             ? fileIcon.video
                             : fileIcon.other}
-                      <div className="text-muted-foreground w-full space-y-[2px] text-center text-xs">
-                        <div className="truncate">
-                          {getDisplayName(fileMeta)}
-                        </div>
-                        <div className="">
-                          {fileMeta.file.type.split("/")[1].toUpperCase()} -{" "}
-                          {""}
-                          {formatFileSize(fileMeta.file.size)}
-                        </div>
-                      </div>
                     </div>
                   )}
+                  <div className="grid flex-1 gap-1">
+                    <div className="truncate text-sm">
+                      {getDisplayName(fileMeta)}
+                    </div>
+                    <div className="text-muted-foreground text-xs">
+                      {fileMeta.file.type.split("/")[1].toUpperCase()} -{" "}
+                      {formatFileSize(fileMeta.file.size)}
+                    </div>
+                  </div>
+                  <div className="flex gap-0">
+                    <Button
+                      variant="ghost"
+                      isRounded
+                      iconOnly
+                      className="size-8 min-w-0 border-0 opacity-70 hover:opacity-100"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handlePreviewFile(fileMeta)
+                      }}
+                    >
+                      <Eye className="size-5!" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      isRounded
+                      iconOnly
+                      className="size-8 min-w-0 border-0 opacity-70 hover:opacity-100"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        removeFile(fileMeta.id)
+                      }}
+                    >
+                      <CloseCircle className="size-5!" />
+                    </Button>
+                  </div>
                 </div>
-                <div className="absolute top-1 right-1 flex gap-1">
-                  <Button
-                    size="xs"
-                    variant="ghost"
-                    isRounded
-                    iconOnly
-                    className="size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur-sm"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handlePreviewFile(fileMeta)
-                    }}
-                    iconLeft={<Eye className="size-3.5!" />}
-                  />
-                  <Button
-                    size="xs"
-                    variant="ghost"
-                    isRounded
-                    iconOnly
-                    className="size-5 min-w-0 border-0 bg-black/60 text-white backdrop-blur-sm"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      removeFile(fileMeta.id)
-                    }}
-                    iconLeft={<X />}
-                  />
-                </div>
-              </div>
-            ))}
-            {(internalFiles.length < maxFiles || maxFiles === 1) && (
-              <div className="flex h-[100px] flex-col items-center justify-center gap-3 rounded-lg border border-dashed">
-                <GlassIcon>
-                  <CloudUpload />
-                </GlassIcon>
-                <div className="text-muted-foreground text-xs">
-                  {maxFiles === 1 ? (
-                    <>Chọn lại</>
-                  ) : (
-                    internalFiles.length + "/" + maxFiles
-                  )}
-                </div>
-              </div>
-            )}
+              )
+            })}
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3">
@@ -279,7 +282,4 @@ function FileUploadGrid({
   )
 }
 
-export {
-  FileUploadGrid as FileUpload,
-  type FileUploadGridProps as FileUploadProps,
-}
+export { FileUploadList }
