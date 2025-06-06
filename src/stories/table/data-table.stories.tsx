@@ -5,6 +5,8 @@ import DemoTableBasic from "./basic-table-demo"
 
 const meta = {
   title: "Data Display/Data Table",
+  tags: ["todo"],
+
   component: Drawer,
 } satisfies Meta<typeof Drawer>
 
