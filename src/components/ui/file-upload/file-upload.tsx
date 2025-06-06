@@ -150,7 +150,7 @@ function FileUploadGrid({
                   {fileMeta.file.type.startsWith("image/") ? (
                     <img
                       src={previewUrls[fileMeta.id] || ""}
-                      alt={fileMeta.file.name}
+                      alt={getDisplayName(fileMeta)}
                       className="h-full w-full rounded-lg border object-cover"
                       onError={(e) => {
                         ;(e.target as HTMLImageElement).style.display = "none"
