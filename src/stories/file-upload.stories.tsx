@@ -19,6 +19,7 @@ import { z } from "zod"
  */
 const meta = {
   title: "Forms/File Upload",
+  tags: ["refactor_story"],
   component: FileUpload,
   parameters: {
     layout: "centered",
