@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { Meta, StoryObj } from "@storybook/react"
+import { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 
 import { GlassIcon } from "@/components/ui/glass-icon"

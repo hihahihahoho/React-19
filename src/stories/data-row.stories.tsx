@@ -5,7 +5,7 @@ import {
   DataRowValue,
   DataRowWrapper,
 } from "@/components/ui/data-row"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Edit, ExternalLink, Github, Mail, Phone } from "lucide-react"
 
 /**

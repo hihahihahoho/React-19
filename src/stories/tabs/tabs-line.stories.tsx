@@ -6,7 +6,7 @@ import {
   TabsTriggerLine,
 } from "@/components/ui/tabs/tabs-line"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Code, Cog, Terminal } from "lucide-react"
 
 /**

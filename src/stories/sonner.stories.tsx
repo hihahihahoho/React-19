@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { sonnerToast, Toaster } from "@/components/ui/sonner"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { Bell, Clock, Coffee, Heart, MailWarning } from "lucide-react"
 
 /**

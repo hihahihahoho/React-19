@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/selection-controls/radio-group-form"
 import { SelectionGroup } from "@/components/ui/selection-controls/selection-group"
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"

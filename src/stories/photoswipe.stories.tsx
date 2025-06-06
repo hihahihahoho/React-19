@@ -1,6 +1,6 @@
 import { PhotoSwipe } from "@/components/ui/photoswipe"
 import { Select } from "@/components/ui/select/select"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta = {
   title: "Utilities/Photo Swipe",

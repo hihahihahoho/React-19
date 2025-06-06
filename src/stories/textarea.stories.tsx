@@ -4,7 +4,7 @@ import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import { Textarea } from "@/components/ui/textarea/textarea"
 import { TextareaForm } from "@/components/ui/textarea/textarea-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
   AlertCircle,
   Check,

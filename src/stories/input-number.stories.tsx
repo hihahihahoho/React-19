@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/input/input-number"
 import { InputNumberForm } from "@/components/ui/input/input-number-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { DollarSign, Hash, Percent, TrendingUp } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"

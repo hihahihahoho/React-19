@@ -1,5 +1,5 @@
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 
 // Meta Configuration
 

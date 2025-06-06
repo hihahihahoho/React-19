@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 
 /**
  * Separator component is used to visually divide content into distinct sections.

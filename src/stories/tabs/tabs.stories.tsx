@@ -7,7 +7,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs/tabs"
 import { useMediaQuery } from "@/hooks/use-media-query"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
   Cog,
   FileText,

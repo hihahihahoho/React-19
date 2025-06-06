@@ -6,7 +6,7 @@ import { SelectionGroup } from "@/components/ui/selection-controls/selection-gro
 import { Switch } from "@/components/ui/selection-controls/switch"
 import { SwitchForm } from "@/components/ui/selection-controls/switch-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Meta, StoryObj } from "@storybook/react"
+import { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"

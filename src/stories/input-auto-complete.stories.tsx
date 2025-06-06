@@ -5,7 +5,7 @@ import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import { InputAutoComplete } from "@/components/ui/input/input-auto-complete"
 import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import {

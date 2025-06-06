@@ -9,7 +9,7 @@ import {
   SelectItems,
 } from "@/components/ui/select/select-interface"
 import { zodResolver } from "@hookform/resolvers/zod"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 import {
   QueryClient,
   QueryClientProvider,

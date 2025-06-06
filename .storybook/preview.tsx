@@ -1,11 +1,10 @@
-import type { Preview } from "@storybook/react"
+import type { Preview } from "@storybook/react-vite"
 import { AlertDialogContainer } from "../src/components/ui/alert-dialog/alert-dialog-container"
 import { Toaster } from "../src/components/ui/toast/toaster"
 
 import { sonnerToast } from "../src/components/ui/sonner"
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
-import React from "react"
 import { Toaster as SonnerToaster } from "sonner"
 import "swiper/css"
 import "swiper/css/navigation"
@@ -61,6 +60,9 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+    },
+    docs: {
+      codePanel: true,
     },
     themes: {
       default: "light", // Ensure the themes parameter is defined

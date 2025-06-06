@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-vite"
 
 import { Drawer } from "@/components/ui/drawer"
 import DemoTableBasic from "./basic-table-demo"
