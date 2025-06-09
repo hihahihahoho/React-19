@@ -2,6 +2,6 @@
   "name": "react-19",
   "compatibility_date": "2025-03-27",
   "assets": {
-    "directory": "./dist",
+    "directory": "./storybook-static",
   },
 }

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpx shadcn build && tsc -b && vite build",
+    "build": "pnpx shadcn build && tsc -b && build-storybook && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",

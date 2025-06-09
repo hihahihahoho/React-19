@@ -1,5 +1,4 @@
 import { PhotoSwipe } from "@/components/ui/photoswipe"
-import { Select } from "@/components/ui/select/select"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
 const meta = {
@@ -18,7 +17,7 @@ PhotoSwipe provides a responsive, touch-friendly image gallery with zoom and swi
       },
     },
   },
-} satisfies Meta<typeof Select>
+} satisfies Meta<typeof PhotoSwipe>
 
 export default meta
 type Story = StoryObj<typeof meta>
