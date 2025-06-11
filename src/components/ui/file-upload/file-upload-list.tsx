@@ -1,5 +1,3 @@
-// components/file-upload-list.tsx
-
 "use client"
 
 import { useFileUpload } from "@/hooks/use-file-upload"
