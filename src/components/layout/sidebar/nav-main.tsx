@@ -29,6 +29,7 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { Link } from "@tanstack/react-router"
 import React from "react"
 
 export interface NavItem {
@@ -94,13 +95,14 @@ function renderDropdownItem(item: NavItem, idx: number): React.ReactNode {
   // If item is a leaf node, render as menu item
   return (
     <DropdownMenuItem asChild key={idx}>
-      <a
-        href={item.url ?? "#"}
+      {/* this is for Tanstack start */}
+      <Link
+        to={item.url ?? "#"}
         className={`flex w-full items-center gap-2 ${item.isActive ? "bg-accent/50" : ""}`}
       >
         {item.icon && <item.icon className="h-4 w-4" />}
         <span>{item.title}</span>
-      </a>
+      </Link>
     </DropdownMenuItem>
   )
 }
@@ -126,10 +128,11 @@ function Tree({ item }: { item: NavItem }) {
           isActive={item.isActive}
           tooltip={tooltipContent}
         >
-          <a href={item.url ?? "#"}>
+          {/* this is for Tanstack start */}
+          <Link to={item.url ?? "#"}>
             {item.icon && <item.icon />}
             <span className={isCollapsed ? "sr-only" : ""}>{item.title}</span>
-          </a>
+          </Link>
         </SidebarMenuButton>
       </SidebarMenuSubItem>
     )

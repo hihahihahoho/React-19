@@ -18,7 +18,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar"
-import { NavMain } from "./nav-main"
+import { NavGroup, NavMain } from "./nav-main"
 import { NavUser } from "./nav-user"
 import { TeamSwitcher } from "./team-switcher"
 
@@ -54,13 +54,9 @@ const data = {
           title: "Playground",
           url: "#",
           icon: SquareTerminal,
-          isActive: true,
           items: [
             {
               title: "History",
-              items: [
-                // ...existing nested items...
-              ],
             },
             {
               title: "Starred",
@@ -72,9 +68,6 @@ const data = {
               items: [
                 {
                   title: "History",
-                  items: [
-                    // ...existing nested items...
-                  ],
                 },
                 {
                   title: "Starred",
@@ -168,14 +161,17 @@ const data = {
   ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  navMain,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { navMain?: NavGroup[] }) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain || data.navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
