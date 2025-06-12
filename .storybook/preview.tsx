@@ -6,6 +6,12 @@ import { sonnerToast } from "../src/components/ui/sonner"
 
 import { withThemeByClassName } from "@storybook/addon-themes"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import {
+  RouterProvider,
+  createMemoryHistory,
+  createRootRoute,
+  createRouter,
+} from "@tanstack/react-router"
 import { Toaster as SonnerToaster } from "sonner"
 import "swiper/css"
 import "swiper/css/navigation"
@@ -35,7 +41,14 @@ const preview: Preview = {
       })
       return (
         <QueryClientProvider client={queryClient}>
-          <Story />
+          <RouterProvider
+            router={createRouter({
+              history: createMemoryHistory(),
+              routeTree: createRootRoute({
+                component: Story,
+              }),
+            })}
+          />
           <Toaster />
           <SonnerToaster />
           <AlertDialogContainer />
