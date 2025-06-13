@@ -61,7 +61,7 @@
     "react-hook-form": "^7.56.1",
     "react-photoswipe-gallery": "^3.1.1",
     "react-remove-scroll": "^2.6.3",
-    "shadcn": "2.4.0-canary.18",
+    "shadcn": "2.6.0-canary.3",
     "sonner": "^2.0.3",
     "swiper": "^11.2.6",
     "tailwind-merge": "^3.3.0",
