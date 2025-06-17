@@ -21,7 +21,7 @@ body,
   @apply border-border outline-ring/50;
 }
 body {
-  @apply bg-background text-foreground;
+  @apply bg-base-background text-foreground;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -101,4 +101,7 @@ body {
 
 .max-h-\[calc\(100vh_-_32px\)\] {
   max-height: calc(100svh - 32px);
+}
+.sidebar-menu-sub-item .menu-sub-item span {
+  font-weight: 400 !important;
 }

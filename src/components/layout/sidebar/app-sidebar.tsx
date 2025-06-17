@@ -1,6 +1,13 @@
 "use client"
 
 import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+} from "@/components/ui/sidebar"
+import { SVGInline } from "@/components/ui/SVGInline/SVGInline"
+import {
   AudioWaveform,
   BookOpen,
   Bot,
@@ -11,16 +18,8 @@ import {
   SquareTerminal,
 } from "lucide-react"
 import * as React from "react"
-
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-} from "@/components/ui/sidebar"
-import { NavGroup, NavMain } from "./nav-main"
+import { NavMain } from "./nav-main"
 import { NavUser } from "./nav-user"
-import { TeamSwitcher } from "./team-switcher"
 
 // This is sample data.
 const data = {
@@ -164,11 +163,14 @@ const data = {
 export function AppSidebar({
   navMain,
   ...props
-}: React.ComponentProps<typeof Sidebar> & { navMain?: NavGroup[] }) {
+}: React.ComponentProps<typeof Sidebar> & { navMain?: any[] }) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+      <SidebarHeader className="border-base-border-light box-content flex h-10 justify-start border-b p-4">
+        <SVGInline
+          src={"/public/images/logo/Logo.svg"}
+          className="h-full w-fit"
+        />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navMain || data.navMain} />

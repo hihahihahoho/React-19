@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronRight, LinkIcon, type LucideIcon } from "lucide-react"
+import { ChevronRight, LinkIcon } from "lucide-react"
 
 import {
   Collapsible,
@@ -22,20 +22,20 @@ import {
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuSub,
   SidebarMenuSubItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { SVGInline } from "@/components/ui/SVGInline/SVGInline"
 import { Link } from "@tanstack/react-router"
 import React from "react"
 
 export interface NavItem {
   title: string
   url?: string
-  icon?: LucideIcon
+  icon?: string
   isActive?: boolean
   items?: NavItem[]
 }
@@ -55,11 +55,9 @@ export function NavMain({ items }: { items: NavGroup[] }) {
         <React.Fragment key={groupIdx}>
           {groupIdx > 0 && isCollapsed && <Separator className="mx-3 w-auto" />}
           <SidebarGroup>
-            <SidebarGroupLabel>{group.groupLabel}</SidebarGroupLabel>
+            {/* <SidebarGroupLabel>{group.groupLabel}</SidebarGroupLabel> */}
             <SidebarMenu>
-              {group.items.map((item, idx) => (
-                <Tree key={idx} item={item} />
-              ))}
+              {group?.items?.map((item, idx) => <Tree key={idx} item={item} />)}
             </SidebarMenu>
           </SidebarGroup>
         </React.Fragment>
@@ -76,8 +74,8 @@ function renderDropdownItem(item: NavItem, idx: number): React.ReactNode {
     return (
       <DropdownMenuSub key={idx}>
         <DropdownMenuSubTrigger className="flex items-center gap-2">
-          {item.icon && <item.icon className="h-4 w-4" />}
-          <span>{item.title}</span>
+          {/* {item.icon && <item.icon className="h-4 w-4" />} */}
+          <span className="text-font-size-sm">{item.title}</span>
         </DropdownMenuSubTrigger>
         <DropdownMenuPortal>
           <DropdownMenuSubContent className="w-48">
@@ -100,7 +98,7 @@ function renderDropdownItem(item: NavItem, idx: number): React.ReactNode {
         to={item.url ?? "#"}
         className={`flex w-full items-center gap-2 ${item.isActive ? "bg-accent/50" : ""}`}
       >
-        {item.icon && <item.icon className="h-4 w-4" />}
+        {/* {item.icon && <item.icon className="h-4 w-4" />} */}
         <span>{item.title}</span>
       </Link>
     </DropdownMenuItem>
@@ -130,8 +128,15 @@ function Tree({ item }: { item: NavItem }) {
         >
           {/* this is for Tanstack start */}
           <Link to={item.url ?? "#"}>
-            {item.icon && <item.icon />}
-            <span className={isCollapsed ? "sr-only" : ""}>{item.title}</span>
+            {item.icon && item.isActive && (
+              <SVGInline src={item.icon} className="h-full w-fit" />
+            )}
+            {item.icon && !item.isActive && (
+              <SVGInline src={item.icon} className="h-full w-fit" />
+            )}
+            <span className={isCollapsed ? "sr-only" : "font-medium"}>
+              {item.title}
+            </span>
           </Link>
         </SidebarMenuButton>
       </SidebarMenuSubItem>
@@ -177,8 +182,12 @@ function Tree({ item }: { item: NavItem }) {
             className="group/collapsible w-full"
             tooltip={tooltipContent}
           >
-            {item.icon && <item.icon />}
-            <span className={isCollapsed ? "sr-only" : ""}>{item.title}</span>
+            {item.icon && (
+              <SVGInline src={item.icon} className="h-full w-fit" />
+            )}
+            <span className={isCollapsed ? "sr-only" : "font-medium"}>
+              {item.title}
+            </span>
             <ChevronRight
               className={`${isCollapsed ? "hidden" : "ml-auto"} transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90`}
             />

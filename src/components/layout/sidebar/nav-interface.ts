@@ -3,13 +3,13 @@ import { type LucideIcon } from "lucide-react"
 
 export interface NavItemTanstack {
   title: string
-  url?: LinkProps['to']
+  url?: LinkProps["to"]
   icon?: LucideIcon
   isActive?: boolean
   items?: NavItemTanstack[]
 }
 
 export interface NavGroupTanstack {
-  groupLabel: string
+  groupLabel?: string
   items: NavItemTanstack[]
 }

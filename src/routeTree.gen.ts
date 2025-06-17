@@ -8,50 +8,125 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthedRouteImport } from './routes/_authed'
+import { Route as AuthedPlaygroundIndexRouteImport } from './routes/_authed/_playground/index'
+import { Route as AuthedPlaygroundStarredRouteRouteImport } from './routes/_authed/_playground/starred/route'
+import { Route as AuthedPlaygroundManageAccUserRouteRouteImport } from './routes/_authed/_playground/manage-acc-user/route'
+import { Route as AuthedPlaygroundHomeRouteRouteImport } from './routes/_authed/_playground/home/route'
+import { Route as AuthedPlaygroundHistoryRouteRouteImport } from './routes/_authed/_playground/history/route'
+import { Route as AuthedPlaygroundDetailAccountRouteRouteImport } from './routes/_authed/_playground/detail-account/route'
+import { Route as AuthedPlaygroundHistoryDetailRouteRouteImport } from './routes/_authed/_playground/history/detail/route'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as AuthedImport } from './routes/_authed'
-import { Route as AuthedPlaygroundIndexImport } from './routes/_authed/_playground/index'
-import { Route as AuthedPlaygroundStarredRouteImport } from './routes/_authed/_playground/starred/route'
-import { Route as AuthedPlaygroundHistoryRouteImport } from './routes/_authed/_playground/history/route'
-import { Route as AuthedPlaygroundHistoryDetailRouteImport } from './routes/_authed/_playground/history/detail/route'
-
-// Create/Update Routes
-
-const AuthedRoute = AuthedImport.update({
+const AuthedRoute = AuthedRouteImport.update({
   id: '/_authed',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const AuthedPlaygroundIndexRoute = AuthedPlaygroundIndexImport.update({
+const AuthedPlaygroundIndexRoute = AuthedPlaygroundIndexRouteImport.update({
   id: '/_playground/',
   path: '/',
   getParentRoute: () => AuthedRoute,
 } as any)
-
 const AuthedPlaygroundStarredRouteRoute =
-  AuthedPlaygroundStarredRouteImport.update({
+  AuthedPlaygroundStarredRouteRouteImport.update({
     id: '/_playground/starred',
     path: '/starred',
     getParentRoute: () => AuthedRoute,
   } as any)
-
+const AuthedPlaygroundManageAccUserRouteRoute =
+  AuthedPlaygroundManageAccUserRouteRouteImport.update({
+    id: '/_playground/manage-acc-user',
+    path: '/manage-acc-user',
+    getParentRoute: () => AuthedRoute,
+  } as any)
+const AuthedPlaygroundHomeRouteRoute =
+  AuthedPlaygroundHomeRouteRouteImport.update({
+    id: '/_playground/home',
+    path: '/home',
+    getParentRoute: () => AuthedRoute,
+  } as any)
 const AuthedPlaygroundHistoryRouteRoute =
-  AuthedPlaygroundHistoryRouteImport.update({
+  AuthedPlaygroundHistoryRouteRouteImport.update({
     id: '/_playground/history',
     path: '/history',
     getParentRoute: () => AuthedRoute,
   } as any)
-
+const AuthedPlaygroundDetailAccountRouteRoute =
+  AuthedPlaygroundDetailAccountRouteRouteImport.update({
+    id: '/_playground/detail-account',
+    path: '/detail-account',
+    getParentRoute: () => AuthedRoute,
+  } as any)
 const AuthedPlaygroundHistoryDetailRouteRoute =
-  AuthedPlaygroundHistoryDetailRouteImport.update({
+  AuthedPlaygroundHistoryDetailRouteRouteImport.update({
     id: '/detail',
     path: '/detail',
     getParentRoute: () => AuthedPlaygroundHistoryRouteRoute,
   } as any)
 
-// Populate the FileRoutesByPath interface
+export interface FileRoutesByFullPath {
+  '/detail-account': typeof AuthedPlaygroundDetailAccountRouteRoute
+  '/history': typeof AuthedPlaygroundHistoryRouteRouteWithChildren
+  '/home': typeof AuthedPlaygroundHomeRouteRoute
+  '/manage-acc-user': typeof AuthedPlaygroundManageAccUserRouteRoute
+  '/starred': typeof AuthedPlaygroundStarredRouteRoute
+  '/': typeof AuthedPlaygroundIndexRoute
+  '/history/detail': typeof AuthedPlaygroundHistoryDetailRouteRoute
+}
+export interface FileRoutesByTo {
+  '/detail-account': typeof AuthedPlaygroundDetailAccountRouteRoute
+  '/history': typeof AuthedPlaygroundHistoryRouteRouteWithChildren
+  '/home': typeof AuthedPlaygroundHomeRouteRoute
+  '/manage-acc-user': typeof AuthedPlaygroundManageAccUserRouteRoute
+  '/starred': typeof AuthedPlaygroundStarredRouteRoute
+  '/': typeof AuthedPlaygroundIndexRoute
+  '/history/detail': typeof AuthedPlaygroundHistoryDetailRouteRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/_authed': typeof AuthedRouteWithChildren
+  '/_authed/_playground/detail-account': typeof AuthedPlaygroundDetailAccountRouteRoute
+  '/_authed/_playground/history': typeof AuthedPlaygroundHistoryRouteRouteWithChildren
+  '/_authed/_playground/home': typeof AuthedPlaygroundHomeRouteRoute
+  '/_authed/_playground/manage-acc-user': typeof AuthedPlaygroundManageAccUserRouteRoute
+  '/_authed/_playground/starred': typeof AuthedPlaygroundStarredRouteRoute
+  '/_authed/_playground/': typeof AuthedPlaygroundIndexRoute
+  '/_authed/_playground/history/detail': typeof AuthedPlaygroundHistoryDetailRouteRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/detail-account'
+    | '/history'
+    | '/home'
+    | '/manage-acc-user'
+    | '/starred'
+    | '/'
+    | '/history/detail'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/detail-account'
+    | '/history'
+    | '/home'
+    | '/manage-acc-user'
+    | '/starred'
+    | '/'
+    | '/history/detail'
+  id:
+    | '__root__'
+    | '/_authed'
+    | '/_authed/_playground/detail-account'
+    | '/_authed/_playground/history'
+    | '/_authed/_playground/home'
+    | '/_authed/_playground/manage-acc-user'
+    | '/_authed/_playground/starred'
+    | '/_authed/_playground/'
+    | '/_authed/_playground/history/detail'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  AuthedRoute: typeof AuthedRouteWithChildren
+}
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
@@ -59,41 +134,60 @@ declare module '@tanstack/react-router' {
       id: '/_authed'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthedImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authed/_playground/history': {
-      id: '/_authed/_playground/history'
-      path: '/history'
-      fullPath: '/history'
-      preLoaderRoute: typeof AuthedPlaygroundHistoryRouteImport
-      parentRoute: typeof AuthedImport
-    }
-    '/_authed/_playground/starred': {
-      id: '/_authed/_playground/starred'
-      path: '/starred'
-      fullPath: '/starred'
-      preLoaderRoute: typeof AuthedPlaygroundStarredRouteImport
-      parentRoute: typeof AuthedImport
+      preLoaderRoute: typeof AuthedRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authed/_playground/': {
       id: '/_authed/_playground/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof AuthedPlaygroundIndexImport
-      parentRoute: typeof AuthedImport
+      preLoaderRoute: typeof AuthedPlaygroundIndexRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/_playground/starred': {
+      id: '/_authed/_playground/starred'
+      path: '/starred'
+      fullPath: '/starred'
+      preLoaderRoute: typeof AuthedPlaygroundStarredRouteRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/_playground/manage-acc-user': {
+      id: '/_authed/_playground/manage-acc-user'
+      path: '/manage-acc-user'
+      fullPath: '/manage-acc-user'
+      preLoaderRoute: typeof AuthedPlaygroundManageAccUserRouteRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/_playground/home': {
+      id: '/_authed/_playground/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthedPlaygroundHomeRouteRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/_playground/history': {
+      id: '/_authed/_playground/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AuthedPlaygroundHistoryRouteRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/_playground/detail-account': {
+      id: '/_authed/_playground/detail-account'
+      path: '/detail-account'
+      fullPath: '/detail-account'
+      preLoaderRoute: typeof AuthedPlaygroundDetailAccountRouteRouteImport
+      parentRoute: typeof AuthedRoute
     }
     '/_authed/_playground/history/detail': {
       id: '/_authed/_playground/history/detail'
       path: '/detail'
       fullPath: '/history/detail'
-      preLoaderRoute: typeof AuthedPlaygroundHistoryDetailRouteImport
-      parentRoute: typeof AuthedPlaygroundHistoryRouteImport
+      preLoaderRoute: typeof AuthedPlaygroundHistoryDetailRouteRouteImport
+      parentRoute: typeof AuthedPlaygroundHistoryRouteRoute
     }
   }
 }
-
-// Create and export the route tree
 
 interface AuthedPlaygroundHistoryRouteRouteChildren {
   AuthedPlaygroundHistoryDetailRouteRoute: typeof AuthedPlaygroundHistoryDetailRouteRoute
@@ -111,14 +205,22 @@ const AuthedPlaygroundHistoryRouteRouteWithChildren =
   )
 
 interface AuthedRouteChildren {
+  AuthedPlaygroundDetailAccountRouteRoute: typeof AuthedPlaygroundDetailAccountRouteRoute
   AuthedPlaygroundHistoryRouteRoute: typeof AuthedPlaygroundHistoryRouteRouteWithChildren
+  AuthedPlaygroundHomeRouteRoute: typeof AuthedPlaygroundHomeRouteRoute
+  AuthedPlaygroundManageAccUserRouteRoute: typeof AuthedPlaygroundManageAccUserRouteRoute
   AuthedPlaygroundStarredRouteRoute: typeof AuthedPlaygroundStarredRouteRoute
   AuthedPlaygroundIndexRoute: typeof AuthedPlaygroundIndexRoute
 }
 
 const AuthedRouteChildren: AuthedRouteChildren = {
+  AuthedPlaygroundDetailAccountRouteRoute:
+    AuthedPlaygroundDetailAccountRouteRoute,
   AuthedPlaygroundHistoryRouteRoute:
     AuthedPlaygroundHistoryRouteRouteWithChildren,
+  AuthedPlaygroundHomeRouteRoute: AuthedPlaygroundHomeRouteRoute,
+  AuthedPlaygroundManageAccUserRouteRoute:
+    AuthedPlaygroundManageAccUserRouteRoute,
   AuthedPlaygroundStarredRouteRoute: AuthedPlaygroundStarredRouteRoute,
   AuthedPlaygroundIndexRoute: AuthedPlaygroundIndexRoute,
 }
@@ -126,93 +228,9 @@ const AuthedRouteChildren: AuthedRouteChildren = {
 const AuthedRouteWithChildren =
   AuthedRoute._addFileChildren(AuthedRouteChildren)
 
-export interface FileRoutesByFullPath {
-  '': typeof AuthedRouteWithChildren
-  '/history': typeof AuthedPlaygroundHistoryRouteRouteWithChildren
-  '/starred': typeof AuthedPlaygroundStarredRouteRoute
-  '/': typeof AuthedPlaygroundIndexRoute
-  '/history/detail': typeof AuthedPlaygroundHistoryDetailRouteRoute
-}
-
-export interface FileRoutesByTo {
-  '/history': typeof AuthedPlaygroundHistoryRouteRouteWithChildren
-  '/starred': typeof AuthedPlaygroundStarredRouteRoute
-  '/': typeof AuthedPlaygroundIndexRoute
-  '/history/detail': typeof AuthedPlaygroundHistoryDetailRouteRoute
-}
-
-export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/_authed': typeof AuthedRouteWithChildren
-  '/_authed/_playground/history': typeof AuthedPlaygroundHistoryRouteRouteWithChildren
-  '/_authed/_playground/starred': typeof AuthedPlaygroundStarredRouteRoute
-  '/_authed/_playground/': typeof AuthedPlaygroundIndexRoute
-  '/_authed/_playground/history/detail': typeof AuthedPlaygroundHistoryDetailRouteRoute
-}
-
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/history' | '/starred' | '/' | '/history/detail'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/history' | '/starred' | '/' | '/history/detail'
-  id:
-    | '__root__'
-    | '/_authed'
-    | '/_authed/_playground/history'
-    | '/_authed/_playground/starred'
-    | '/_authed/_playground/'
-    | '/_authed/_playground/history/detail'
-  fileRoutesById: FileRoutesById
-}
-
-export interface RootRouteChildren {
-  AuthedRoute: typeof AuthedRouteWithChildren
-}
-
 const rootRouteChildren: RootRouteChildren = {
   AuthedRoute: AuthedRouteWithChildren,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/_authed"
-      ]
-    },
-    "/_authed": {
-      "filePath": "_authed.tsx",
-      "children": [
-        "/_authed/_playground/history",
-        "/_authed/_playground/starred",
-        "/_authed/_playground/"
-      ]
-    },
-    "/_authed/_playground/history": {
-      "filePath": "_authed/_playground/history/route.tsx",
-      "parent": "/_authed",
-      "children": [
-        "/_authed/_playground/history/detail"
-      ]
-    },
-    "/_authed/_playground/starred": {
-      "filePath": "_authed/_playground/starred/route.tsx",
-      "parent": "/_authed"
-    },
-    "/_authed/_playground/": {
-      "filePath": "_authed/_playground/index.tsx",
-      "parent": "/_authed"
-    },
-    "/_authed/_playground/history/detail": {
-      "filePath": "_authed/_playground/history/detail/route.tsx",
-      "parent": "/_authed/_playground/history"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
