@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils"
-import { DocumentText1, FolderOpen } from "iconsax-reactjs"
-import { CircleMinus, CirclePlus } from "lucide-react"
+import { CircleMinus, CirclePlus, FileText, FolderOpen } from "lucide-react"
 import React, { useCallback, useMemo, useState } from "react"
 import { Checkbox } from "./checkbox"
 
@@ -239,16 +238,9 @@ export function CheckboxTreeItem({
         ) : (
           <>
             {hasChildren ? (
-              <FolderOpen
-                size={16}
-                className="text-base-primary mx-2"
-                variant="Bulk"
-              />
+              <FolderOpen size={16} className="text-base-primary mx-2" />
             ) : (
-              <DocumentText1
-                size={16}
-                className="text-base-muted-foreground mx-2"
-              />
+              <FileText size={16} className="text-base-muted-foreground mx-2" />
             )}
             <label
               className={cn("cursor-pointer py-1.5", {
