@@ -17,21 +17,23 @@ function Checkbox({
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "peer focus-visible:ring-ring data-[state=checked]:text-primary-foreground data-[state=unchecked]:border-secondary size-4 shrink-0 shadow-sm focus-visible:ring-1 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 data-[state=unchecked]:border-1",
+        "peer border-primary focus-visible:ring-ring data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground size-4 shrink-0 rounded-sm border shadow focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        className={cn("flex items-center justify-center")}
+        className={cn(
+          "!text-primary-foreground flex items-center justify-center"
+        )}
       >
         {isIndeterminate ? (
           <>
-            <Minus className="bg-base-primary size-4 rounded-xs text-white" />
+            <Minus className="!size-[14px]" />
           </>
         ) : (
           <>
-            <Check className="bg-base-primary size-4 rounded-xs text-white" />
+            <Check className="!size-[14px]" />
           </>
         )}
       </CheckboxPrimitive.Indicator>

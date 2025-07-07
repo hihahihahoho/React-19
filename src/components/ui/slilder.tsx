@@ -151,7 +151,7 @@ const Slider = React.forwardRef<
             {indicatorPositions.map((pos) => (
               <div
                 key={pos}
-                className="flex h-8 w-10 cursor-pointer flex-col items-center gap-1 text-sm"
+                className="flex cursor-pointer flex-col items-center gap-1 text-xs"
                 onClick={() => handleIndicatorClick(pos)}
               >
                 <span className="inline-block">
@@ -196,7 +196,7 @@ const Slider = React.forwardRef<
                   {label && labelPosition !== "static" && (
                     <div
                       className={cn(
-                        "bg-primary text-primary-foreground absolute left-1/2 flex w-auto -translate-x-1/2 items-start justify-center gap-0.5 rounded-md px-2",
+                        "bg-primary text-primary-foreground absolute left-1/2 flex w-auto -translate-x-1/2 items-end justify-center gap-0.5 rounded-md px-2 text-xs",
                         labelPosition === "top" && "-top-7",
                         labelPosition === "bottom" && "top-6"
                       )}
