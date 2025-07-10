@@ -1389,263 +1389,265 @@
           "path": "src/components/ui/selection-controls/checkbox-tree-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/checkbox-tree-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "react-hook-form",
+        "@radix-ui/react-radio-group"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/selection-group.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/selection-controls/radio-group.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/radio-group.tsx"
         },
         {
-          "name": "radio-group",
-          "author": "hihahihahoho",
-          "dependencies": [
-            "react-hook-form",
-            "@radix-ui/react-radio-group"
-          ],
-          "registryDependencies": [
-            "https://react-19.octung112.workers.dev/r/form.json",
-            "https://react-19.octung112.workers.dev/r/selection-group.json",
-            "utils"
-          ],
+          "path": "src/components/ui/selection-controls/radio-group-form.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/selection-controls/radio-group.tsx",
-              "type": "registry:component",
-              "target": "components/ui/selection-controls/radio-group.tsx"
-            },
-            {
-              "path": "src/components/ui/selection-controls/radio-group-form.tsx",
-              "type": "registry:component",
-              "target": "components/ui/selection-controls/radio-group-form.tsx"
-            }
-          ]
+          "target": "components/ui/selection-controls/radio-group-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "selection-group",
+      "author": "hihahihahoho",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/selection-controls/selection-group.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/selection-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "react-hook-form",
+        "@radix-ui/react-switch"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/selection-controls/switch.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/switch.tsx"
         },
         {
-          "name": "selection-group",
-          "author": "hihahihahoho",
-          "dependencies": [],
-          "registryDependencies": [
-            "utils"
-          ],
+          "path": "src/components/ui/selection-controls/switch-form.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/selection-controls/selection-group.tsx",
-              "type": "registry:component",
-              "target": "components/ui/selection-controls/selection-group.tsx"
-            }
-          ]
+          "target": "components/ui/selection-controls/switch-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "file-upload-list",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "react-hook-form",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/custom-icons.json",
+        "https://react-19.octung112.workers.dev/r/dialog.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/glass-icon.json",
+        "https://react-19.octung112.workers.dev/r/sonner.json",
+        "https://react-19.octung112.workers.dev/r/file-size.json",
+        "https://react-19.octung112.workers.dev/r/const.json",
+        "utils",
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/use-file-upload.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/file-upload/file-upload-list.tsx",
+          "type": "registry:component",
+          "target": "components/ui/file-upload/file-upload-list.tsx"
         },
         {
-          "name": "switch",
-          "author": "hihahihahoho",
-          "dependencies": [
-            "react-hook-form",
-            "@radix-ui/react-switch"
-          ],
-          "registryDependencies": [
-            "https://react-19.octung112.workers.dev/r/form.json",
-            "utils"
-          ],
+          "path": "src/components/ui/file-upload/file-upload-list-form.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/selection-controls/switch.tsx",
-              "type": "registry:component",
-              "target": "components/ui/selection-controls/switch.tsx"
-            },
-            {
-              "path": "src/components/ui/selection-controls/switch-form.tsx",
-              "type": "registry:component",
-              "target": "components/ui/selection-controls/switch-form.tsx"
-            }
-          ]
+          "target": "components/ui/file-upload/file-upload-list-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "file-upload",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "react-hook-form",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/custom-icons.json",
+        "https://react-19.octung112.workers.dev/r/dialog.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/glass-icon.json",
+        "https://react-19.octung112.workers.dev/r/sonner.json",
+        "https://react-19.octung112.workers.dev/r/file-size.json",
+        "https://react-19.octung112.workers.dev/r/const.json",
+        "utils",
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/use-file-upload.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/file-upload/file-upload.tsx",
+          "type": "registry:component",
+          "target": "components/ui/file-upload/file-upload.tsx"
         },
         {
-          "name": "file-upload-list",
-          "author": "hihahihahoho",
-          "dependencies": [
-            "react-hook-form",
-            "lucide-react"
-          ],
-          "registryDependencies": [
-            "https://react-19.octung112.workers.dev/r/button.json",
-            "https://react-19.octung112.workers.dev/r/custom-icons.json",
-            "https://react-19.octung112.workers.dev/r/dialog.json",
-            "https://react-19.octung112.workers.dev/r/form.json",
-            "https://react-19.octung112.workers.dev/r/glass-icon.json",
-            "https://react-19.octung112.workers.dev/r/sonner.json",
-            "https://react-19.octung112.workers.dev/r/file-size.json",
-            "https://react-19.octung112.workers.dev/r/const.json",
-            "utils",
-            "https://react-19.octung112.workers.dev/r/utils-plus.json",
-            "https://react-19.octung112.workers.dev/r/use-file-upload.json"
-          ],
+          "path": "src/components/ui/file-upload/file-upload-form.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/file-upload/file-upload-list.tsx",
-              "type": "registry:component",
-              "target": "components/ui/file-upload/file-upload-list.tsx"
-            },
-            {
-              "path": "src/components/ui/file-upload/file-upload-list-form.tsx",
-              "type": "registry:component",
-              "target": "components/ui/file-upload/file-upload-list-form.tsx"
-            }
-          ]
+          "target": "components/ui/file-upload/file-upload-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@radix-ui/react-toast",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/toast/toast.tsx",
+          "type": "registry:component",
+          "target": "components/ui/toast/toast.tsx"
         },
         {
-          "name": "file-upload",
-          "author": "hihahihahoho",
-          "dependencies": [
-            "react-hook-form",
-            "lucide-react"
-          ],
-          "registryDependencies": [
-            "https://react-19.octung112.workers.dev/r/button.json",
-            "https://react-19.octung112.workers.dev/r/custom-icons.json",
-            "https://react-19.octung112.workers.dev/r/dialog.json",
-            "https://react-19.octung112.workers.dev/r/form.json",
-            "https://react-19.octung112.workers.dev/r/glass-icon.json",
-            "https://react-19.octung112.workers.dev/r/sonner.json",
-            "https://react-19.octung112.workers.dev/r/file-size.json",
-            "https://react-19.octung112.workers.dev/r/const.json",
-            "utils",
-            "https://react-19.octung112.workers.dev/r/utils-plus.json",
-            "https://react-19.octung112.workers.dev/r/use-file-upload.json"
-          ],
+          "path": "src/components/ui/toast/toaster.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/file-upload/file-upload.tsx",
-              "type": "registry:component",
-              "target": "components/ui/file-upload/file-upload.tsx"
-            },
-            {
-              "path": "src/components/ui/file-upload/file-upload-form.tsx",
-              "type": "registry:component",
-              "target": "components/ui/file-upload/file-upload-form.tsx"
-            }
-          ]
+          "target": "components/ui/toast/toaster.tsx"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "author": "hihahihahoho",
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/table/table.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "data-table",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@tanstack/react-table",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/table.json",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/empty-state.json",
+        "https://react-19.octung112.workers.dev/r/scroll-area.json",
+        "https://react-19.octung112.workers.dev/r/pagination.json",
+        "https://react-19.octung112.workers.dev/r/select.json",
+        "https://react-19.octung112.workers.dev/r/select-command.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/table/data-table.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/data-table.tsx"
         },
         {
-          "name": "toast",
-          "author": "hihahihahoho",
-          "dependencies": [
-            "@radix-ui/react-toast",
-            "class-variance-authority",
-            "lucide-react"
-          ],
-          "registryDependencies": [
-            "utils"
-          ],
+          "path": "src/components/ui/table/data-table-cell.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/toast/toast.tsx",
-              "type": "registry:component",
-              "target": "components/ui/toast/toast.tsx"
-            },
-            {
-              "path": "src/components/ui/toast/toaster.tsx",
-              "type": "registry:component",
-              "target": "components/ui/toast/toaster.tsx"
-            }
-          ]
+          "target": "components/ui/table/data-table-cell.tsx"
         },
         {
-          "name": "table",
-          "author": "hihahihahoho",
-          "dependencies": [],
-          "registryDependencies": [
-            "utils"
-          ],
+          "path": "src/components/ui/table/data-table-context.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/table/table.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/table.tsx"
-            }
-          ]
+          "target": "components/ui/table/data-table-context.tsx"
         },
         {
-          "name": "data-table",
-          "author": "hihahihahoho",
-          "dependencies": [
-            "@tanstack/react-table",
-            "class-variance-authority",
-            "lucide-react"
-          ],
-          "registryDependencies": [
-            "https://react-19.octung112.workers.dev/r/table.json",
-            "https://react-19.octung112.workers.dev/r/button.json",
-            "https://react-19.octung112.workers.dev/r/empty-state.json",
-            "https://react-19.octung112.workers.dev/r/scroll-area.json",
-            "https://react-19.octung112.workers.dev/r/pagination.json",
-            "https://react-19.octung112.workers.dev/r/select.json",
-            "https://react-19.octung112.workers.dev/r/select-command.json",
-            "utils"
-          ],
+          "path": "src/components/ui/table/data-table-header-cell.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/table/data-table.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/data-table.tsx"
-            },
-            {
-              "path": "src/components/ui/table/data-table-cell.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/data-table-cell.tsx"
-            },
-            {
-              "path": "src/components/ui/table/data-table-context.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/data-table-context.tsx"
-            },
-            {
-              "path": "src/components/ui/table/data-table-header-cell.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/data-table-header-cell.tsx"
-            },
-            {
-              "path": "src/components/ui/table/data-table-pagination.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/data-table-pagination.tsx"
-            },
-            {
-              "path": "src/components/ui/table/data-table-selection.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/data-table-selection.tsx"
-            },
-            {
-              "path": "src/components/ui/table/data-table-floating-header.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/data-table-floating-header.tsx"
-            },
-            {
-              "path": "src/components/ui/table/header-ref-context.tsx",
-              "type": "registry:component",
-              "target": "components/ui/table/header-ref-context.tsx"
-            }
-          ]
+          "target": "components/ui/table/data-table-header-cell.tsx"
         },
         {
-          "name": "accordion",
-          "author": "hihahihahoho",
-          "dependencies": [
-            "@radix-ui/react-accordion",
-            "lucide-react"
-          ],
-          "registryDependencies": [
-            "utils"
-          ],
+          "path": "src/components/ui/table/data-table-pagination.tsx",
           "type": "registry:component",
-          "files": [
-            {
-              "path": "src/components/ui/accordion/accordion.tsx",
-              "type": "registry:component",
-              "target": "components/ui/accordion/accordion.tsx"
-            }
-          ]
+          "target": "components/ui/table/data-table-pagination.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-selection.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/data-table-selection.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-floating-header.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/data-table-floating-header.tsx"
+        },
+        {
+          "path": "src/components/ui/table/header-ref-context.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/header-ref-context.tsx"
+        }
+      ]
+    },
+    {
+      "name": "accordion",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@radix-ui/react-accordion",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/accordion/accordion.tsx",
+          "type": "registry:component",
+          "target": "components/ui/accordion/accordion.tsx"
         }
       ]
     }
+  ]
+}
