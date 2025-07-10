@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { CircleMinus, CirclePlus, FileText, FolderOpen } from "lucide-react"
+import { ChevronDown, ChevronRight, FileText, FolderOpen } from "lucide-react"
 import React, { useCallback, useMemo, useState } from "react"
 import { Checkbox } from "./checkbox"
 
@@ -208,16 +208,20 @@ export function CheckboxTreeItem({
   return (
     <div key={node.id} className="w-full">
       {/* Node container */}
-      <div className="custom-text-body-default-regular flex items-center py-1">
+      <div className="flex items-center gap-2">
         {/* Expand/Collapse button - only show for nodes with children */}
         {hasChildren ? (
           <button
             onClick={onToggleExpand}
-            className="custom-text-body-default-medium text-base-muted-foreground mr-2 flex items-center justify-center rounded"
+            className="text-muted-foreground flex items-center justify-center rounded"
             aria-label={isExpanded ? "Collapse" : "Expand"}
             type="button"
           >
-            {isExpanded ? <CircleMinus size={20} /> : <CirclePlus size={20} />}
+            {isExpanded ? (
+              <ChevronDown size={16} />
+            ) : (
+              <ChevronRight size={16} />
+            )}
           </button>
         ) : (
           // Spacer for leaf nodes to maintain alignment
@@ -227,35 +231,33 @@ export function CheckboxTreeItem({
         {/* Checkbox */}
         <Checkbox
           checked={isChecked}
-          className="mx-2"
           onCheckedChange={onCheckedChange}
           isIndeterminate={isChecked === "indeterminate"}
         />
 
-        {/* Custom content or default label */}
-        {renderContent ? (
-          renderContent(node, hasChildren)
-        ) : (
-          <>
-            {hasChildren ? (
-              <FolderOpen size={16} className="text-base-primary mx-2" />
-            ) : (
-              <FileText size={16} className="text-base-muted-foreground mx-2" />
-            )}
-            <label
-              className={cn("cursor-pointer py-1.5", {
-                "custom-text-body-default-medium": hasChildren,
-              })}
-              onClick={onCheckedChange}
-            >
+        <label
+          className={cn("flex cursor-pointer items-center gap-2 py-1.5")}
+          onClick={onCheckedChange}
+        >
+          {/* Custom content or default label */}
+          {renderContent ? (
+            renderContent(node, hasChildren)
+          ) : (
+            <>
+              {hasChildren ? (
+                <FolderOpen className="text-muted-foreground" size={16} />
+              ) : (
+                <FileText className="text-muted-foreground" size={16} />
+              )}
+
               {node.label}
-            </label>
-          </>
-        )}
+            </>
+          )}
+        </label>
       </div>
 
       {/* Children container - only render if expanded and has children */}
-      {hasChildren && isExpanded && <div className="ml-10">{children}</div>}
+      {hasChildren && isExpanded && <div className="ml-6">{children}</div>}
     </div>
   )
 }
