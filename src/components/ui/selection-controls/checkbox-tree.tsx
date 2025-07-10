@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { ChevronDown, ChevronRight, FileText, FolderOpen } from "lucide-react"
+import { ChevronDown, ChevronRight } from "lucide-react"
 import React, { useCallback, useMemo, useState } from "react"
 import { Checkbox } from "./checkbox"
 
@@ -206,29 +206,24 @@ export function CheckboxTreeItem({
   renderContent,
 }: CheckboxTreeItemProps) {
   return (
-    <div key={node.id} className="w-full">
-      {/* Node container */}
-      <div className="flex items-center gap-2">
-        {/* Expand/Collapse button - only show for nodes with children */}
-        {hasChildren ? (
-          <button
-            onClick={onToggleExpand}
-            className="text-muted-foreground flex items-center justify-center rounded"
-            aria-label={isExpanded ? "Collapse" : "Expand"}
-            type="button"
-          >
-            {isExpanded ? (
-              <ChevronDown size={16} />
-            ) : (
-              <ChevronRight size={16} />
-            )}
-          </button>
-        ) : (
-          // Spacer for leaf nodes to maintain alignment
-          <div className="h-4 w-4" />
-        )}
+    <div
+      key={node.id}
+      className="grid w-full grid-cols-[auto_1fr] items-center gap-x-2"
+    >
+      {hasChildren ? (
+        <button
+          onClick={onToggleExpand}
+          className="text-muted-foreground flex items-center justify-center rounded"
+          aria-label={isExpanded ? "Collapse" : "Expand"}
+          type="button"
+        >
+          {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+        </button>
+      ) : (
+        <div className="h-4 w-4" />
+      )}
 
-        {/* Checkbox */}
+      <div className="flex items-center gap-2">
         <Checkbox
           checked={isChecked}
           onCheckedChange={onCheckedChange}
@@ -239,16 +234,15 @@ export function CheckboxTreeItem({
           className={cn("flex cursor-pointer items-center gap-2 py-1.5")}
           onClick={onCheckedChange}
         >
-          {/* Custom content or default label */}
           {renderContent ? (
             renderContent(node, hasChildren)
           ) : (
             <>
-              {hasChildren ? (
+              {/* {hasChildren ? (
                 <FolderOpen className="text-muted-foreground" size={16} />
               ) : (
                 <FileText className="text-muted-foreground" size={16} />
-              )}
+              )} */}
 
               {node.label}
             </>
@@ -256,8 +250,10 @@ export function CheckboxTreeItem({
         </label>
       </div>
 
-      {/* Children container - only render if expanded and has children */}
-      {hasChildren && isExpanded && <div className="ml-6">{children}</div>}
+      <div className="flex h-full justify-center">
+        <div className="h-full border-l"></div>
+      </div>
+      {hasChildren && isExpanded && <div className="">{children}</div>}
     </div>
   )
 }
