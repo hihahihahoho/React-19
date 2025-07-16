@@ -2,15 +2,19 @@ import React from "react"
 import { z } from "zod"
 
 type ZodSchemaContextValue = {
-  schema: z.ZodObject<{
-    [k: string]: z.ZodType
-  }>
+  schema:
+    | z.ZodObject<{
+        [k: string]: z.ZodType
+      }>
+    | z.ZodType
 }
 
 interface ZodSchemaProviderProps {
-  schema: z.ZodObject<{
-    [k: string]: z.ZodType
-  }>
+  schema:
+    | z.ZodObject<{
+        [k: string]: z.ZodType
+      }>
+    | z.ZodType
   children: React.ReactNode
 }
 
