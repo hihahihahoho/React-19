@@ -71,6 +71,7 @@ const CheckboxTreeForm = <
         return (
           <FormComposition
             requiredSymbol={!isOptional()}
+            isMinHeight
             {...formComposition}
             variant="empty"
           >
