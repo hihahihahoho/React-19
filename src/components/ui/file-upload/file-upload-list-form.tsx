@@ -4,7 +4,7 @@ import { useZodSchema } from "../form/zod-schema-context"
 import { FileUploadList, FileUploadListProps } from "./file-upload-list"
 
 type JsonDescriptionType = {
-  accept?: string
+  accepted?: string[]
   maxFiles?: number
   maxFileSize?: number
 }
@@ -46,7 +46,7 @@ const FileUploadListForm = <
           <FileUploadList
             maxFileSize={jsonDescription.maxFileSize}
             maxFiles={jsonDescription.maxFiles}
-            accept={jsonDescription.accept?.split(",")}
+            accept={jsonDescription.accepted}
             {...props}
             ref={ref}
             value={value || []}
