@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@import "./styles/safe-area";
+@import "tailwindcss";
+@import "./styles/photoswipe";
 @import "./styles/base.css" layer(base);
 @import "./styles/embla.css" layer(base);
 @import "./styles/base.utilities.css" layer(utilities);

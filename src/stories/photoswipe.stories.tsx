@@ -34,10 +34,6 @@ export const Default: Story = {
       {
         type: "video",
         src: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
-        thumbnail:
-          "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&auto=format&fit=crop&q=60",
-        poster:
-          "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&auto=format&fit=crop&q=60",
         alt: "Flower video",
       },
       {
@@ -54,10 +50,21 @@ export const Default: Story = {
           "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400&auto=format&fit=crop&q=60",
         alt: "Forest river",
       },
+      {
+        type: "iframe",
+        src: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&rel=0",
+        thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+        alt: "YouTube video",
+        width: 1280,
+        height: 720,
+        allow:
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share",
+        allowFullScreen: true,
+      },
     ]
     return (
       <Gallery>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-6">
           {items.map((item, i) => (
             <GalleryItem key={i} media={item} index={i} />
           ))}

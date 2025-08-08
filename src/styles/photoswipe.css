@@ -1,0 +1,18 @@
+.pswp__button.pswp__button--zoom,
+.pswp__button.pswp__button--close {
+  @apply !flex size-12 items-center justify-center rounded-full text-white;
+  text-shadow: 1px 1px 3px var(--pswp-icon-color-secondary);
+  @apply text-white;
+}
+
+.pswp__counter {
+  @apply !mt-2;
+}
+
+.pswp--open {
+  pointer-events: all !important;
+}
+
+[data-pswp-iframe-slide] {
+  @apply size-full;
+}
