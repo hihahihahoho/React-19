@@ -2,6 +2,7 @@
 
 import { useScrollIntoView } from "@/hooks/use-scroll-into-view"
 import { useWheelScroll } from "@/hooks/use-wheel-scroll"
+import { Slottable } from "@radix-ui/react-slot"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
 import { motion } from "motion/react"
 import * as React from "react"
@@ -179,7 +180,7 @@ export function TabCoreTrigger({
       data-orientation={orientation}
       {...props}
     >
-      {children}
+      <Slottable>{children}</Slottable>
       {activeTab === value && (
         <motion.div
           className={indicatorClassName}
