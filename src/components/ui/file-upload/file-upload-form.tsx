@@ -29,6 +29,7 @@ const FileUploadForm = <
   const jsonDescription: JsonDescriptionType = JSON.parse(
     _def.description || "{}"
   )
+  console.log(jsonDescription)
   return (
     <FormField
       name={name}

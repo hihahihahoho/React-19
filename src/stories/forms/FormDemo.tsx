@@ -19,21 +19,19 @@ import {
   RadioGroupForm,
 } from "@/components/ui/selection-controls/radio-group-form"
 import { TextareaForm } from "@/components/ui/textarea/textarea-form"
-import { ACCEPTED_PDF_TYPES, FORMAT_DATE } from "@/lib/const"
+import {
+  ACCEPTED_IMAGE_TYPES,
+  ACCEPTED_PDF_TYPES,
+  ACCEPTED_VIDEO_TYPES,
+  FORMAT_DATE,
+  MAX_FILE_SIZE,
+} from "@/lib/const"
 import { createRemoteFileProxy } from "@/lib/utils-plus"
 import { zodDate, zodDateRange, zodFile, zodRequiredString } from "@/lib/zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { parse } from "date-fns"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
-const MAX_FILE_SIZE = 3000000 // 3MB
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "application/pdf",
-]
 
 const itemsCheckbox: ItemCheckboxType[] = [
   {
@@ -102,7 +100,7 @@ const FormSchema = z.object({
     length: { min: 0, max: 1 },
   }).optional(),
   file_upload: zodFile({
-    accepted: ACCEPTED_IMAGE_TYPES,
+    accepted: [...ACCEPTED_IMAGE_TYPES, ...ACCEPTED_VIDEO_TYPES],
     maxFileSize: MAX_FILE_SIZE,
     length: { min: 1, max: 7 },
   }),

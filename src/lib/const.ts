@@ -7,6 +7,19 @@ const ACCEPTED_IMAGE_TYPES = [
   "application/pdf",
 ]
 
+const ACCEPTED_VIDEO_TYPES = [
+  "video/mp4",
+  "video/webm",
+  "video/ogg",
+  "video/quicktime",
+  "video/x-msvideo",
+]
 const ACCEPTED_PDF_TYPES = ["application/pdf"]
 
-export { ACCEPTED_IMAGE_TYPES, ACCEPTED_PDF_TYPES, FORMAT_DATE, MAX_FILE_SIZE }
+const ACCEPTED_EXCEL_TYPES = [
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+]
+
+export { ACCEPTED_EXCEL_TYPES, ACCEPTED_IMAGE_TYPES, ACCEPTED_PDF_TYPES, ACCEPTED_VIDEO_TYPES, FORMAT_DATE, MAX_FILE_SIZE }
+

@@ -112,25 +112,6 @@ export const Basic: Story = {
 }
 
 /**
- * File upload component in list display mode.
- */
-export const ListDisplay: Story = {
-  args: {
-    maxFiles: 5,
-    accept: ["image/jpeg", "image/jpg", "image/png", "application/pdf"],
-    maxFileSize: 500000,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "File upload component with list display mode for uploaded files.",
-      },
-    },
-  },
-}
-
-/**
  * File upload component limited to a single file.
  */
 export const SingleFileUpload: Story = {
