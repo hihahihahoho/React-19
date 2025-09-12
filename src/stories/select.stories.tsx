@@ -765,7 +765,7 @@ export const VirtualizedSelect: Story = {
                 minItemsToShowSearch: 5,
                 virtualizerOptions: {
                   overscan: 20,
-                  estimateSize: () => 50,
+                  estimateSize: () => 54,
                 },
               }}
               virtualComponents={SelectCommandVirtualize}
