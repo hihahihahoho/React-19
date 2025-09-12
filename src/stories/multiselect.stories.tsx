@@ -947,8 +947,8 @@ export const VirtualizedMultiSelect: Story = {
         icon: user.avatar ? (
           user.avatar
         ) : (
-          <div className="flex size-9 items-center justify-center rounded-full bg-gray-200 text-gray-500">
-            <User2 className="size-6" />
+          <div className="flex size-5 items-center justify-center rounded-full bg-gray-200 text-gray-500">
+            <User2 className="size-3.5" />
           </div>
         ),
       }))
