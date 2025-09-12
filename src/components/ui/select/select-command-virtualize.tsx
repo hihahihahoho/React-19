@@ -118,7 +118,7 @@ function SelectCommandVirtualize({
     if (parentRef.current && filter.length > 0) {
       virtualizer.scrollToIndex(0)
     }
-  }, [filter, filteredItemIndices.length, virtualizer])
+  }, [filter, virtualizer])
 
   // Scroll to the selected item on first open (when there is a selection and no active filter)
   const didInitialScrollRef = React.useRef(false)
