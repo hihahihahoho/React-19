@@ -263,8 +263,15 @@ function SelectCommand({
 
   return (
     <Comp {...compProps}>
-      {flattenItems.length > minItemsToShowSearch && showSearch && (
-        <CommandInput placeholder="Tìm kiếm..." {...commandInputProps} />
+      {flattenItems.length > minItemsToShowSearch && showSearch ? (
+        <CommandInput
+          value={searchValue}
+          onValueChange={setSearchValue}
+          placeholder="Tìm kiếm..."
+          {...commandInputProps}
+        />
+      ) : (
+        <button autoFocus aria-hidden="true" className="sr-only" />
       )}
 
       {isCheckAll && (
