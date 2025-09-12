@@ -7,6 +7,7 @@ type OverflowState = "collapse" | "none"
 export interface UseItemOverflowProps {
   totalItems: number
   maxShownItems?: number
+  maxLine?: number
   minShowItems?: number
   itemClassName?: string
   plusItemClassName?: string
@@ -24,6 +25,7 @@ interface UseItemOverflowReturn {
 export const useItemOverflow = ({
   totalItems,
   maxShownItems = Infinity,
+  maxLine = 1,
   minShowItems = 1,
   itemClassName = "measured-item",
   plusItemClassName = "measured-plus",
@@ -52,47 +54,127 @@ export const useItemOverflow = ({
     const itemArray = Array.from(itemNodes)
     const plusWidth = (plusNode?.getBoundingClientRect().width || 0) + itemGap
 
-    let widthSoFar = 0
-    let count = 0
+    // Branch: single line logic (existing behavior) vs multi-line
+    if (maxLine <= 1) {
+      let widthSoFar = 0
+      let count = 0
+      for (let i = 0; i < itemArray.length; i++) {
+        const w = itemArray[i].getBoundingClientRect().width + itemGap
+        if (widthSoFar + w <= containerWidth) {
+          widthSoFar += w
+          count++
+          if (count >= maxShownItems) break
+        } else {
+          break
+        }
+      }
 
-    // Count how many items can fit in the container
-    for (let i = 0; i < itemArray.length; i++) {
+      if (overflowState === "none") {
+        setVisibleCount(Math.min(totalItems, maxShownItems))
+        return
+      }
+
+      if (count === totalItems) {
+        setVisibleCount(count)
+      } else {
+        while (count > 0) {
+          let testWidth = 0
+          for (let i = 0; i < count; i++) {
+            testWidth += itemArray[i].getBoundingClientRect().width + itemGap
+          }
+          if (testWidth + plusWidth <= containerWidth) {
+            setVisibleCount(Math.max(count, minShowItems))
+            return
+          }
+          count--
+        }
+        setVisibleCount(minShowItems)
+      }
+      return
+    }
+
+    // Multi-line logic: simulate wrapping similarly to the single-line branch.
+    // Build full lines up to maxLine-1, then fill the last line and reserve
+    // space for the "+N" indicator exactly once if overflow remains.
+    if (overflowState === "none") {
+      let line = 1
+      let widthUsed = 0
+      let shown = 0
+      for (let i = 0; i < itemArray.length; i++) {
+        const w = itemArray[i].getBoundingClientRect().width + itemGap
+        if (widthUsed === 0 ? w <= containerWidth : widthUsed + w <= containerWidth) {
+          widthUsed += w
+          shown++
+        } else {
+          line++
+          if (line > maxLine) break
+          widthUsed = 0
+          i-- // retry this item on the new line
+        }
+        if (shown >= maxShownItems) break
+      }
+      setVisibleCount(Math.min(shown, maxShownItems, totalItems))
+      return
+    }
+
+    // Collapse behavior with explicit last-line plus reservation (only once)
+    let line = 1
+    let visible = 0
+    let i = 0
+    let widthUsed = 0
+
+    // Fill complete lines before the last allowed line
+    for (; i < itemArray.length && line < maxLine;) {
       const w = itemArray[i].getBoundingClientRect().width + itemGap
-      if (widthSoFar + w <= containerWidth) {
-        widthSoFar += w
-        count++
-        if (count >= maxShownItems) break
+      if (widthUsed === 0 ? w <= containerWidth : widthUsed + w <= containerWidth) {
+        widthUsed += w
+        visible++
+        i++
+        if (visible >= maxShownItems) {
+          setVisibleCount(Math.min(visible, maxShownItems))
+          return
+        }
+      } else {
+        line++
+        widthUsed = 0
+      }
+    }
+
+    // Handle the last allowed line
+    widthUsed = 0
+    const lastLineWidths: number[] = []
+    let added = 0
+    for (; i < itemArray.length; i++) {
+      const w = itemArray[i].getBoundingClientRect().width + itemGap
+      if (widthUsed === 0 ? w <= containerWidth : widthUsed + w <= containerWidth) {
+        widthUsed += w
+        lastLineWidths.push(w)
+        added++
+        if (visible + added >= maxShownItems) break
       } else {
         break
       }
     }
 
-    // If overflow state is 'none', show all items up to maxShownItems
-    if (overflowState === "none") {
-      setVisibleCount(Math.min(totalItems, maxShownItems))
-      return
+    // If we didn't consume all items, we need a "+N" indicator.
+    const overflowRemains = i < itemArray.length
+    if (overflowRemains) {
+      // Ensure there is room for the plus (reserve once). If not, remove
+      // items from the end until the plus fits.
+      while (added > 0 && widthUsed + plusWidth > containerWidth) {
+        widthUsed -= lastLineWidths.pop()!
+        added--
+      }
     }
 
-    // Otherwise use the collapse behavior
-    if (count === totalItems) {
-      setVisibleCount(count)
-    } else {
-      while (count > 0) {
-        let testWidth = 0
-        for (let i = 0; i < count; i++) {
-          testWidth += itemArray[i].getBoundingClientRect().width + itemGap
-        }
-        if (testWidth + plusWidth <= containerWidth) {
-          setVisibleCount(Math.max(count, minShowItems))
-          return
-        }
-        count--
-      }
-      setVisibleCount(minShowItems)
-    }
+    visible += added
+    if (visible < minShowItems) visible = minShowItems
+    visible = Math.min(visible, maxShownItems, totalItems)
+    setVisibleCount(visible)
   }, [
     totalItems,
     maxShownItems,
+    maxLine,
     minShowItems,
     itemClassName,
     plusItemClassName,

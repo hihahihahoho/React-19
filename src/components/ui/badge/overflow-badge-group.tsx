@@ -32,6 +32,7 @@ function OverflowBadgeGroup({
   overflowState = "collapse",
   badgeProps,
   reverseOrder = false,
+  maxLine = 1,
   ...props
 }: OverflowBadgeGroupProps) {
   const { containerRef, overflowCount, isVisible } = useItemOverflow({
@@ -41,6 +42,7 @@ function OverflowBadgeGroup({
     itemClassName: badgeMeasureClassName,
     plusItemClassName: overflowMeasureClassName,
     overflowState,
+    maxLine,
   })
 
   // Create a copy of items array to avoid mutating the original
@@ -51,8 +53,8 @@ function OverflowBadgeGroup({
       ref={containerRef}
       data-slot="overflow-badge-group"
       className={cn(
-        "relative flex h-full w-full items-center gap-1 overflow-hidden whitespace-nowrap",
-        overflowState === "collapse" ? "flex-nowrap" : "flex-wrap py-[3px]",
+        "relative flex h-full w-full flex-wrap items-center gap-1 whitespace-nowrap",
+        (overflowState === "collapse" || maxLine > 1) && "py-[3px]",
         className
       )}
       {...props}

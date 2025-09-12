@@ -575,7 +575,7 @@ export const ButtonVariant: Story = {
             variant="button"
             formComposition={{
               iconRight: null,
-              iconLeft: <ListIcon className="size-4 text-primary" />,
+              iconLeft: <ListIcon className="text-primary size-4" />,
               prefix: "Status",
               className: "bg-primary/5 border-primary/20",
             }}
@@ -1267,6 +1267,31 @@ export const BadgeOverflowStates: Story = {
             bagdeGroupProps={{
               maxShownItems: maxBadges,
               overflowState: "collapse", // Default behavior
+            }}
+            defaultValue={[
+              "javascript",
+              "typescript",
+              "python",
+              "java",
+              "csharp",
+              "cpp",
+              "php",
+            ]}
+          />
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="text-sm font-medium">Max Line Mode</h3>
+          <MultiSelect
+            options={languageOptions}
+            formComposition={{
+              label: "Programming Languages",
+              description: `Allows up to 2 lines (maxLine=2) and collapses overflow with +X indicator`,
+            }}
+            placeholder="Select languages"
+            bagdeGroupProps={{
+              maxLine: 2,
+              overflowState: "collapse",
             }}
             defaultValue={[
               "javascript",
