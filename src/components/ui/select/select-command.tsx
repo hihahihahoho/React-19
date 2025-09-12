@@ -241,6 +241,8 @@ function SelectCommand({
   const flattenItems = flatItems(items)
   const modifyItemsNew = modifyItems(items)
   const Comp = commandWrapper ? Command : React.Fragment
+  const commandListRef = React.useRef<HTMLDivElement>(null)
+  const [searchValue, setSearchValue] = React.useState("")
 
   const uniqueId = React.useId()
 
@@ -256,6 +258,12 @@ function SelectCommand({
     defaultSelect,
     items,
   })
+
+  React.useEffect(() => {
+    if (commandListRef.current && searchValue) {
+      commandListRef.current.scrollTop = 0
+    }
+  }, [searchValue])
 
   const compProps = commandWrapper
     ? { defaultValue: selected.at(-1), ...props }

@@ -1,6 +1,6 @@
 import { fuzzyFilterStrings } from "@/lib/fuzzy-search"
 import { getNodeText } from "@/lib/get-node-text"
-import { useVirtualizer } from "@tanstack/react-virtual"
+import { useVirtualizer, VirtualizerOptions } from "@tanstack/react-virtual"
 import { CheckCheck } from "lucide-react"
 import React from "react"
 import { Badge } from "../badge/badge"
@@ -23,7 +23,7 @@ import {
 
 export interface SelectCommandVirtualizeProps extends SelectCommandProps {
   height?: string | number
-  virtualizerOptions?: Partial<typeof useVirtualizer<HTMLDivElement, Element>>
+  virtualizerOptions?: Partial<VirtualizerOptions<HTMLDivElement, Element>>
 }
 
 function SelectCommandVirtualize({
@@ -108,16 +108,36 @@ function SelectCommandVirtualize({
     overscan: 10,
     measureElement: (element) => {
       // Get the actual height of the element after rendering
-      return element.getBoundingClientRect().height
+      return element.clientHeight
     },
     ...virtualizerOptions,
   })
 
   React.useEffect(() => {
-    if (parentRef.current) {
-      parentRef.current.scrollTop = 0
+    console.log(filter.length)
+    if (parentRef.current && filter.length > 0) {
+      virtualizer.scrollToIndex(0)
     }
   }, [filter, filteredItemIndices.length, virtualizer])
+
+  // Scroll to the selected item on first open (when there is a selection and no active filter)
+  const didInitialScrollRef = React.useRef(false)
+  React.useEffect(() => {
+    if (didInitialScrollRef.current) return
+    if (filter) return
+    if (!selected || selected.length === 0) return
+
+    const lastSelected = selected.at(-1)
+    if (!lastSelected) return
+
+    const targetIndex = filteredItems.findIndex(
+      (it) => it.value === lastSelected
+    )
+    if (targetIndex >= 0) {
+      virtualizer.scrollToIndex(targetIndex, { align: "center" })
+      didInitialScrollRef.current = true
+    }
+  }, [filter, selected, filteredItems, virtualizer])
 
   const virtualRows = virtualizer.getVirtualItems()
 
@@ -149,7 +169,7 @@ function SelectCommandVirtualize({
                 <div>Chọn tất cả</div>
               </Badge>
             </div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-muted-foreground text-sm">
               {selected.length} / {flattenItems.length}
             </div>
           </div>

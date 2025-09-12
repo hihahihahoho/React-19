@@ -757,6 +757,7 @@ export const VirtualizedSelect: Story = {
                 label: "Select Item",
                 description: "Virtualized select with 1000 items",
                 requiredSymbol: true,
+                inputClear: true,
               }}
               placeholder="Choose from 1000 items"
               selectCommandProps={{
@@ -764,7 +765,7 @@ export const VirtualizedSelect: Story = {
                 minItemsToShowSearch: 5,
                 virtualizerOptions: {
                   overscan: 20,
-                  estimateSize: () => 40,
+                  estimateSize: () => 50,
                 },
               }}
               virtualComponents={SelectCommandVirtualize}
