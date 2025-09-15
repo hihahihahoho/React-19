@@ -149,6 +149,7 @@ function Select({
     >
       <SelectComponentToUse
         {...selectCommandProps}
+        artificialFocus={true}
         items={options}
         selected={[currentValue || ""]}
         setSelected={(values) => handleValueChange(values[0])}

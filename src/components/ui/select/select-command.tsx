@@ -218,6 +218,7 @@ export interface SelectCommandProps
   showSelectedItems?: boolean
   showEmptyState?: boolean
   contentBefore?: React.ReactNode
+  artificialFocus?: boolean
 }
 
 function SelectCommand({
@@ -236,6 +237,7 @@ function SelectCommand({
   commandInputProps,
   showEmptyState = true,
   contentBefore,
+  artificialFocus = false,
   ...props
 }: SelectCommandProps) {
   const flattenItems = flatItems(items)
@@ -279,7 +281,9 @@ function SelectCommand({
           {...commandInputProps}
         />
       ) : (
-        <button autoFocus aria-hidden="true" className="sr-only" />
+        artificialFocus && (
+          <button autoFocus aria-hidden="true" className="sr-only" />
+        )
       )}
 
       {isCheckAll && (
