@@ -18,7 +18,7 @@ const SelectForm = <
   ...props
 }: Omit<SelectFormProps<TFieldValues, TName>, "render">) => {
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional } = getSchemaFromPath(name)
+  const { isRequired } = getSchemaFromPath(name)
   return (
     <FormField
       name={name}
@@ -37,7 +37,7 @@ const SelectForm = <
             onValueChange={onChange}
             formComposition={{
               onClear: handleClear,
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
             }}
           />

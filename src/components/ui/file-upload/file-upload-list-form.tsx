@@ -28,10 +28,8 @@ const FileUploadListForm = <
   ...props
 }: FileUploadListFormProps<TFieldValues, TName>) => {
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional, _def } = getSchemaFromPath(name)
-  const jsonDescription: JsonDescriptionType = JSON.parse(
-    _def.description || "{}"
-  )
+  const { isRequired, description } = getSchemaFromPath(name)
+  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}")
   return (
     <FormField
       name={name}
@@ -52,7 +50,7 @@ const FileUploadListForm = <
             value={value || []}
             onFileChange={handleFileChange}
             formComposition={{
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
             }}
           />

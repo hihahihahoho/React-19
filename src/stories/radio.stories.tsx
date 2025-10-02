@@ -99,7 +99,7 @@ const itemsRadio: ItemRadioType[] = [
 
 const FormSchema = z.object({
   radioGroupDemo: z.enum(["include", "exclude", "pending", "radioDisabled"], {
-    required_error: "You need to select an option.",
+    error: "You need to select an option.",
   }),
 })
 
@@ -219,7 +219,7 @@ export const LabelVariants: Story = {
           <SelectionGroup control={<RadioGroupItem value="detail1" />}>
             <div className="flex flex-col">
               <span>Radio with description</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 Additional details about this option
               </span>
             </div>
@@ -227,7 +227,7 @@ export const LabelVariants: Story = {
           <SelectionGroup control={<RadioGroupItem value="detail2" />}>
             <div className="flex flex-col">
               <span>Pre-selected option</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 This is the recommended choice
               </span>
             </div>
@@ -379,7 +379,7 @@ export const ControlledExample: Story = {
             >
               <div className="flex flex-col">
                 <span>{option.label}</span>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-muted-foreground text-xs">
                   {option.description}
                 </span>
               </div>
@@ -409,10 +409,10 @@ export const AdvancedForm: Story = {
   render: () => {
     const formSchema = z.object({
       subscriptionPlan: z.enum(["free", "premium", "enterprise"], {
-        required_error: "Please select a subscription plan",
+        error: "Please select a subscription plan",
       }),
       contactPreference: z.enum(["email", "phone", "mail"], {
-        required_error: "Please select how you'd like to be contacted",
+        error: "Please select how you'd like to be contacted",
       }),
     })
 
@@ -478,7 +478,7 @@ export const AdvancedForm: Story = {
                   label: (
                     <div className="flex flex-col">
                       <span className="font-medium">{plan.label}</span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-muted-foreground text-xs">
                         {plan.description}
                       </span>
                     </div>
@@ -537,7 +537,7 @@ export const CustomStyledRadios: Story = {
           >
             <div className="flex flex-col">
               <span className="font-medium">Credit Card</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 Pay securely with your card
               </span>
             </div>
@@ -553,7 +553,7 @@ export const CustomStyledRadios: Story = {
           >
             <div className="flex flex-col">
               <span className="font-medium">PayPal</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 Fast and secure payment
               </span>
             </div>
@@ -569,7 +569,7 @@ export const CustomStyledRadios: Story = {
           >
             <div className="flex flex-col">
               <span className="font-medium">Bank Transfer</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 Direct payment from your bank
               </span>
             </div>
@@ -615,7 +615,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Basic Plan</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               All essential features for beginners
             </p>
           </div>
@@ -630,7 +630,7 @@ export const CardVariants: Story = {
               <h3 className="font-medium">Premium Plan</h3>
               <Badge variant={"blue"}>Popular</Badge>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Advanced features with priority support
             </p>
           </div>
@@ -642,7 +642,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Team Plan</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Collaboration tools for teams (disabled)
             </p>
           </div>
@@ -654,7 +654,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Enterprise Plan</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Custom solutions for large organizations
             </p>
           </div>

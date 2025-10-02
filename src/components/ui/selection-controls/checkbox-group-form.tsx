@@ -40,7 +40,7 @@ const CheckboxGroupForm = <
 }: CheckboxFormProps<TFieldValues, TName>) => {
   const { control: contextControl } = useFormContext<TFieldValues>()
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional } = getSchemaFromPath(name)
+  const { isRequired } = getSchemaFromPath(name)
 
   return (
     <FormField<TFieldValues, TName>
@@ -51,7 +51,7 @@ const CheckboxGroupForm = <
 
         return (
           <FormComposition
-            requiredSymbol={!isOptional()}
+            requiredSymbol={isRequired}
             {...formComposition}
             isMinHeight
             variant="empty"

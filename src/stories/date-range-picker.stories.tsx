@@ -455,7 +455,7 @@ export const DateRangePickerInForm: Story = {
     const today = new Date()
     const formSchema = z.object({
       bookingPeriod: zodDateRange({
-        required_error: "Please select a booking period",
+        error: "Please select a booking period",
         minDate: today,
         maxDate: addMonths(today, 6),
         minRange: 1,

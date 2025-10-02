@@ -433,12 +433,12 @@ export const DatePickerInForm: Story = {
     const today = new Date()
     const formSchema = z.object({
       eventDate: zodDate({
-        required_error: "Please select an event date",
+        error: "Please select an event date",
         minDate: today,
         maxDate: addMonths(today, 6),
       }),
       birthDate: zodDate({
-        required_error: "Please enter your birth date",
+        error: "Please enter your birth date",
         minDate: new Date(1900, 0, 1),
         maxDate: subDays(today, 1),
       }),

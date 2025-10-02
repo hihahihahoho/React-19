@@ -1,6 +1,6 @@
 import { CheckboxProps } from "@radix-ui/react-checkbox"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
-import { FormCompositionProps, FormField } from "../form/form"
+import { FormCompositionProps, FormField, FormMessage } from "../form/form"
 import { Checkbox } from "./checkbox"
 import { SelectionGroup, SelectionGroupProps } from "./selection-group"
 
@@ -39,6 +39,7 @@ const CheckboxForm = <
           {...selectionGroup}
         >
           {children}
+          <FormMessage className="mt-1" />
         </SelectionGroup>
       )}
     />

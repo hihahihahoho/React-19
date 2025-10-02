@@ -1,13 +1,8 @@
+import { ZodFileMeta } from "@/lib/zod"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
 import { FormField } from "../form/form"
 import { useZodSchema } from "../form/zod-schema-context"
 import { FileUpload, FileUploadProps } from "./file-upload"
-
-type JsonDescriptionType = {
-  accepted?: string[]
-  maxFiles?: number
-  maxFileSize?: number
-}
 
 export interface FileUploadFormProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -25,11 +20,8 @@ const FileUploadForm = <
   ...props
 }: FileUploadFormProps<TFieldValues, TName>) => {
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional, _def } = getSchemaFromPath(name)
-  const jsonDescription: JsonDescriptionType = JSON.parse(
-    _def.description || "{}"
-  )
-  console.log(jsonDescription)
+  const { isRequired, meta } = getSchemaFromPath(name)
+  const metadata = meta() as ZodFileMeta | undefined
   return (
     <FormField
       name={name}
@@ -42,15 +34,15 @@ const FileUploadForm = <
 
         return (
           <FileUpload
-            maxFileSize={jsonDescription.maxFileSize}
-            maxFiles={jsonDescription.maxFiles}
-            accept={jsonDescription.accepted}
+            maxFileSize={metadata?.maxFileSize}
+            maxFiles={metadata?.maxFiles}
+            accept={metadata?.accepted}
             {...props}
             ref={ref}
             value={value || []}
             onFileChange={handleFileChange}
             formComposition={{
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
             }}
           />

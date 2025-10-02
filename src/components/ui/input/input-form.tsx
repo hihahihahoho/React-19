@@ -17,7 +17,7 @@ const InputForm = <
   ...props
 }: Omit<InputFormProps<TFieldValues, TName>, "render">) => {
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional } = getSchemaFromPath(name)
+  const { isRequired } = getSchemaFromPath(name)
   return (
     <FormField
       name={name}
@@ -49,7 +49,7 @@ const InputForm = <
             {...props}
             onChange={handleChange}
             formComposition={{
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
               onClear: handleClear,
             }}

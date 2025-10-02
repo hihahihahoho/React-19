@@ -21,7 +21,7 @@ const InputAutoCompleteForm = <
   ...props
 }: Omit<InputAutoCompleteFormProps<TFieldValues, TName>, "render">) => {
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional } = getSchemaFromPath(name)
+  const { isRequired } = getSchemaFromPath(name)
   return (
     <FormField
       name={name}
@@ -40,7 +40,7 @@ const InputAutoCompleteForm = <
             onValueChange={onChange}
             formComposition={{
               onClear: handleClear,
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
             }}
           />

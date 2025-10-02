@@ -20,14 +20,13 @@ import {
 } from "@/components/ui/selection-controls/radio-group-form"
 import { TextareaForm } from "@/components/ui/textarea/textarea-form"
 import {
-  ACCEPTED_IMAGE_TYPES,
   ACCEPTED_PDF_TYPES,
   ACCEPTED_VIDEO_TYPES,
   FORMAT_DATE,
   MAX_FILE_SIZE,
 } from "@/lib/const"
 import { createRemoteFileProxy } from "@/lib/utils-plus"
-import { zodDate, zodDateRange, zodFile, zodRequiredString } from "@/lib/zod"
+import { zodDate, zodDateRange, zodFile } from "@/lib/zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { parse } from "date-fns"
 import { useForm } from "react-hook-form"
@@ -73,15 +72,17 @@ const itemsRadioGroup: ItemRadioType[] = [
 ]
 
 const FormSchema = z.object({
-  username: zodRequiredString("Please enter your username."),
+  username: z.string({
+    error: "Please enter username.",
+  }),
   money: z
     .number({
-      required_error: "Please enter money.",
+      error: "Please enter money.",
     })
     .gt(100000),
-  textarea: zodRequiredString("Please enter a description.").max(230),
-  select: zodRequiredString("Please select an option."),
-  auto_complete: zodRequiredString("Please type to search."),
+  textarea: z.string({ error: "Please enter a description." }).max(230),
+  select: z.string({ error: "Please select an option." }),
+  auto_complete: z.string({ error: "Please type to search." }),
   multi_select: z
     .array(z.string())
     .min(2, { message: "Select at least 2 options." }),
@@ -100,7 +101,7 @@ const FormSchema = z.object({
     length: { min: 0, max: 1 },
   }).optional(),
   file_upload: zodFile({
-    accepted: [...ACCEPTED_IMAGE_TYPES, ...ACCEPTED_VIDEO_TYPES],
+    accepted: [...ACCEPTED_VIDEO_TYPES],
     maxFileSize: MAX_FILE_SIZE,
     length: { min: 1, max: 7 },
   }),
@@ -108,7 +109,7 @@ const FormSchema = z.object({
     .array(z.string())
     .min(2, { message: "Select at least 2 option." }),
   radio_group: z.enum(["include", "exclude"], {
-    required_error: "You need to select a notification type.",
+    error: "You need to select a notification type.",
   }),
   checkbox_term: z.boolean().refine((val) => val === true, {
     message: "Please read and accept the terms and conditions",
@@ -119,7 +120,6 @@ function FormDemo() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      username: "tungnt2",
       money: 1000000,
       multi_select: ["honda", "chevrolet"],
       datepicker: new Date("2024-10-28"),

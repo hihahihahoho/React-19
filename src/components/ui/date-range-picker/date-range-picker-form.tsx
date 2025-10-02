@@ -1,5 +1,6 @@
 "use client"
 
+import { ZodDateRangeMeta } from "@/lib/zod"
 import { isBefore } from "date-fns"
 import {
   ControllerProps,
@@ -14,12 +15,6 @@ import {
   DateRangePickerProps,
   OnValueChangeDateRangePicker,
 } from "./date-range-picker" // <-- Update import to your actual path
-type JsonDescriptionType = {
-  minDate?: Date
-  maxDate?: Date
-  minRange?: number
-  maxRange?: number
-}
 
 export interface DateRangePickerFormProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -44,11 +39,9 @@ const DateRangePickerForm = <
   })
 
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional, _def } = getSchemaFromPath(name)
+  const { isRequired, meta } = getSchemaFromPath(name)
 
-  const jsonDescription: JsonDescriptionType = JSON.parse(
-    _def.description || "{}"
-  )
+  const metadata = meta() as ZodDateRangeMeta | undefined
 
   return (
     <FormField
@@ -71,19 +64,13 @@ const DateRangePickerForm = <
             onValueChange={handleValueChange}
             {...props}
             calendarProps={{
-              minRange: jsonDescription.minRange,
-              maxRange: jsonDescription.maxRange,
+              minRange: metadata?.minRange,
+              maxRange: metadata?.maxRange,
               disabled: (date) => {
-                if (
-                  jsonDescription.minDate &&
-                  isBefore(date, jsonDescription.minDate)
-                ) {
+                if (metadata?.minDate && isBefore(date, metadata?.minDate)) {
                   return true
                 }
-                if (
-                  jsonDescription.maxDate &&
-                  isBefore(jsonDescription.maxDate, date)
-                ) {
+                if (metadata?.maxDate && isBefore(metadata?.maxDate, date)) {
                   return true
                 }
                 return false
@@ -91,7 +78,7 @@ const DateRangePickerForm = <
               ...props.calendarProps,
             }}
             formComposition={{
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
               onClear: handleClear,
             }}

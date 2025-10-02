@@ -35,7 +35,7 @@ const CheckboxTreeForm = <
   ...props
 }: CheckboxTreeFormProps<TFieldValues, TName>) => {
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional } = getSchemaFromPath(name)
+  const { isRequired } = getSchemaFromPath(name)
 
   const defaultRenderNode = React.useCallback(
     (nodeProps: {
@@ -70,7 +70,7 @@ const CheckboxTreeForm = <
 
         return (
           <FormComposition
-            requiredSymbol={!isOptional()}
+            requiredSymbol={isRequired}
             isMinHeight
             {...formComposition}
             variant="empty"

@@ -8,24 +8,27 @@ import {
   startOfDay,
 } from "date-fns"
 import { z } from "zod"
+import { $ZodErrorMap, $ZodIssueInvalidType } from "zod/v4/core"
 import { FORMAT_DATE } from "./const"
 import { formatFileSize } from "./file-size"
 
-const zodRequiredString = (message = "Required") =>
-  z.string({ required_error: message }).min(1, { message })
+
+export type ZodFileMeta = {
+  accepted?: string[]
+  maxFileSize?: number
+  maxFiles?: number
+}
 
 const zodFile = ({
   accepted,
   maxFileSize = 3000,
   length = { min: 1, max: 5 },
-  required_error = "Vui lòng tải lên ít nhất 1 file.",
-}: {
-  accepted?: string[]
-  maxFileSize?: number
-  length?: { min?: number; max?: number }
-  required_error?: string
+  error = "Vui lòng tải lên ít nhất 1 file.",
+}: ZodFileMeta & {
+  length?: { min?: number; max: number }
+  error?: string
 } = {}) => {
-  const describeObject = {
+  const describeObject: ZodFileMeta = {
     accepted,
     maxFileSize,
     maxFiles: length.max,
@@ -43,7 +46,7 @@ const zodFile = ({
         return minLength === 0
       }
       return files.length >= 1
-    }, required_error)
+    }, error)
   }
 
   // Additional length validations only apply when files are present
@@ -78,32 +81,34 @@ const zodFile = ({
       `Chỉ chấp nhận các file ${accepted.join(", ")}.`
     )
   }
-
-  return schema.describe(JSON.stringify(describeObject))
+  return schema.meta(describeObject)
 }
+
+export type ZodDateMeta = {
+  minDate?: Date
+  maxDate?: Date
+}
+
 const zodDate = ({
   minDate,
   maxDate,
-  required_error = "Ngày là bắt buộc.",
-  invalid_error = "Ngày không hợp lệ.",
+  error = (issue) => issue.input === undefined
+    ? "Ngày là bắt buộc."
+    : "Giá trị ngày không hợp lệ.",
   min_error,
   max_error,
-}: {
-  minDate?: Date
-  maxDate?: Date
-  required_error?: string
-  invalid_error?: string
+}: ZodDateMeta & {
+  error?: string | $ZodErrorMap<$ZodIssueInvalidType<unknown>>
   min_error?: string
   max_error?: string
 } = {}) => {
-  const describeObject = {
+  const describeObject: ZodDateMeta = {
     minDate: minDate,
     maxDate: maxDate,
   }
   // Create base schema
   let schema = z.date({
-    required_error,
-    invalid_type_error: invalid_error,
+    error: error
   })
 
   // Apply min date validation if provided
@@ -123,37 +128,40 @@ const zodDate = ({
   }
 
   // Return the schema with proper description
-  return schema.describe(JSON.stringify(describeObject))
+  return schema.meta(describeObject)
+}
+
+export type ZodDateRangeMeta = {
+  minDate?: Date
+  maxDate?: Date
+  minRange?: number // Minimum range in days
+  maxRange?: number // Maximum range in days
 }
 
 const zodDateRange = ({
   minDate,
   maxDate,
-  required_error = "Ngày là bắt buộc.",
-  invalid_error = "Ngày không hợp lệ.",
+  error = (issue) => issue.input === undefined
+    ? "Ngày là bắt buộc."
+    : "Giá trị ngày không hợp lệ.",
   min_error,
   max_error,
   minRange,
   maxRange,
-}: {
-  minDate?: Date
-  maxDate?: Date
-  required_error?: string
-  invalid_error?: string
+}: ZodDateRangeMeta & {
   min_error?: string
   max_error?: string
-  minRange?: number // Minimum range in days
-  maxRange?: number // Maximum range in days
+  error?: string | $ZodErrorMap<$ZodIssueInvalidType<unknown>>
 } = {}) => {
-  const describeObject = {
+  const describeObject: ZodDateRangeMeta = {
     minDate: minDate,
     maxDate: maxDate,
     minRange,
     maxRange,
   }
   const schema = z.object({
-    from: z.date({ required_error, invalid_type_error: invalid_error }),
-    to: z.date({ required_error, invalid_type_error: invalid_error }),
+    from: z.date({ error }),
+    to: z.date({ error }),
   })
 
   // Create all refinements as an array
@@ -243,13 +251,13 @@ const zodDateRange = ({
       for (const [check, error] of refinements) {
         if (!check(data)) {
           ctx.addIssue({
-            code: z.ZodIssueCode.custom,
+            code: "custom",
             message: error.message,
           })
         }
       }
     })
-    .describe(JSON.stringify(describeObject))
+    .meta(describeObject)
 }
 
-export { zodDate, zodDateRange, zodFile, zodRequiredString }
+export { zodDate, zodDateRange, zodFile }

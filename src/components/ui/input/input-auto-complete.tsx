@@ -1,7 +1,9 @@
 "use client"
 
 import { useMergedRef } from "@/hooks/use-merge-ref"
+import { getNodeText } from "@/lib/get-node-text"
 import { cn } from "@/lib/utils"
+import { lowercaseFirstChar } from "@/lib/utils-plus"
 import { PopoverAnchor, PopoverContentProps } from "@radix-ui/react-popover"
 import { Measurable } from "@radix-ui/rect"
 import { CommandInput } from "cmdk"
@@ -43,6 +45,7 @@ export interface InputAutoCompleteProps
 }
 
 function InputAutoComplete({
+  placeholder,
   options,
   formComposition,
   value: controlledValue,
@@ -196,6 +199,11 @@ function InputAutoComplete({
         >
           <CommandInput
             {...props}
+            placeholder={
+              placeholder ||
+              "Nhập " +
+                lowercaseFirstChar(getNodeText(formComposition?.label) || "")
+            }
             value={afterClose ? displayValue : searchTerm}
             onFocus={handleFocus}
             onValueChange={handleChange}

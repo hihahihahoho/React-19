@@ -31,7 +31,7 @@ const InputNumberForm = <
   })
 
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional } = getSchemaFromPath(name)
+  const { isRequired } = getSchemaFromPath(name)
 
   return (
     <FormField
@@ -53,7 +53,7 @@ const InputNumberForm = <
             value={fieldValue || ""}
             onValueChange={handleChange}
             formComposition={{
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
               onClear: handleClear,
             }}

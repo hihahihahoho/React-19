@@ -1,3 +1,4 @@
+import { ZodDateMeta } from "@/lib/zod"
 import { isBefore } from "date-fns"
 import {
   ControllerProps,
@@ -12,11 +13,6 @@ import {
   DatePickerProps,
   OnValueChangeDatePicker,
 } from "./datepicker"
-
-type JsonDescriptionType = {
-  minDate?: Date
-  maxDate?: Date
-}
 
 export interface DatePickerFormProps<
   TFieldValues extends FieldValues = FieldValues,
@@ -40,11 +36,8 @@ const DatePickerForm = <
     name: name,
   })
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional, _def } = getSchemaFromPath(name)
-
-  const jsonDescription: JsonDescriptionType = JSON.parse(
-    _def.description || "{}"
-  )
+  const { isRequired, meta } = getSchemaFromPath(name)
+  const metadata = meta() as ZodDateMeta | undefined
   return (
     <FormField
       name={name}
@@ -67,23 +60,17 @@ const DatePickerForm = <
             {...props}
             calendarProps={{
               disabled: (date) => {
-                if (
-                  jsonDescription.minDate &&
-                  isBefore(date, jsonDescription.minDate)
-                ) {
+                if (metadata?.minDate && isBefore(date, metadata?.minDate)) {
                   return true
                 }
-                if (
-                  jsonDescription.maxDate &&
-                  isBefore(jsonDescription.maxDate, date)
-                ) {
+                if (metadata?.maxDate && isBefore(metadata?.maxDate, date)) {
                   return true
                 }
                 return false
               },
             }}
             formComposition={{
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
               onClear: handleClear,
             }}

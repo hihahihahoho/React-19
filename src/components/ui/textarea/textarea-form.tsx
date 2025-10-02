@@ -19,7 +19,7 @@ const TextareaForm = <
   ...props
 }: Omit<TextareaFormProps<TFieldValues, TName>, "render">) => {
   const { getSchemaFromPath } = useZodSchema()
-  const { isOptional, maxLength } = getSchemaFromPath<ZodString>(name)
+  const { isRequired, maxLength } = getSchemaFromPath<ZodString>(name)
   return (
     <FormField
       name={name}
@@ -43,7 +43,7 @@ const TextareaForm = <
             {...props}
             onChange={handleChange}
             formComposition={{
-              requiredSymbol: !isOptional(),
+              requiredSymbol: isRequired,
               ...props.formComposition,
               onClear: handleClear,
             }}

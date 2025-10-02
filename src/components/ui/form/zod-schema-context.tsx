@@ -37,7 +37,9 @@ const useZodSchema = () => {
 
   const getSchemaFromPath = <T extends z.ZodType = z.ZodType>(
     inputPath: string
-  ): T => {
+  ): T & {
+    isRequired: boolean
+  } => {
     const parts = inputPath.split(".")
     let currentSchema: z.ZodType = context.schema
 
@@ -50,11 +52,11 @@ const useZodSchema = () => {
       else if (currentSchema instanceof z.ZodArray && !isNaN(Number(part))) {
         // For array items, we just need to get the element type
         // The index doesn't matter for schema definition
-        currentSchema = currentSchema.element
+        currentSchema = currentSchema.element as z.ZodType
       }
       // Handle nested arrays (array of objects) where we need to access a property after an index
       else if (currentSchema instanceof z.ZodArray) {
-        currentSchema = currentSchema.element
+        currentSchema = currentSchema.element as z.ZodType
 
         // If the element is an object and we're not at the end of the path,
         // we need to access the property of the array element
@@ -70,7 +72,11 @@ const useZodSchema = () => {
 
     // Create the result with the schema and optional description
     const result = currentSchema as unknown as T
-    return result
+    return {
+      ...result,
+      meta: result.meta,
+      isRequired: !result.safeParse(undefined).success,
+    }
   }
 
   return {
