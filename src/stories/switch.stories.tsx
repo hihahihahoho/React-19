@@ -129,16 +129,16 @@ export const LabelVariants: Story = {
         <div className="space-y-4">
           <SelectionGroup variant="card" control={<Switch />}>
             <div className="space-y-1">
-              <h4 className="font-medium leading-none">Email notifications</h4>
-              <p className="text-sm text-muted-foreground">
+              <h4 className="leading-none font-medium">Email notifications</h4>
+              <p className="text-muted-foreground text-sm">
                 Receive email notifications for account activity
               </p>
             </div>
           </SelectionGroup>
           <SelectionGroup variant="card" control={<Switch defaultChecked />}>
             <div className="space-y-1">
-              <h4 className="font-medium leading-none">Push notifications</h4>
-              <p className="text-sm text-muted-foreground">
+              <h4 className="leading-none font-medium">Push notifications</h4>
+              <p className="text-muted-foreground text-sm">
                 Receive push notifications on your mobile device
               </p>
             </div>
@@ -292,7 +292,7 @@ export const CustomStyledSwitches: Story = {
         >
           <div className="flex flex-col">
             <span className="font-medium">Analytics Dashboard</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Track your app performance
             </span>
           </div>
@@ -303,7 +303,7 @@ export const CustomStyledSwitches: Story = {
         >
           <div className="flex flex-col">
             <span className="font-medium">Team Collaboration</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Work together seamlessly
             </span>
           </div>
@@ -314,7 +314,7 @@ export const CustomStyledSwitches: Story = {
         >
           <div className="flex flex-col">
             <span className="font-medium">API Access</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Connect with your tools
             </span>
           </div>
@@ -343,13 +343,10 @@ export const CustomStyledSwitches: Story = {
 export const WithFormValidation: Story = {
   render: () => {
     const formSchema = z.object({
-      darkMode: z.boolean().default(false),
-      notifications: z
-        .boolean()
-        .default(true)
-        .refine((val) => val === true, {
-          message: "Notifications must be enabled for this application.",
-        }),
+      darkMode: z.boolean(),
+      notifications: z.boolean().refine((val) => val === true, {
+        error: "Notifications must be enabled for this application.",
+      }),
     })
 
     function FormValidationExample() {
@@ -451,7 +448,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Notifications</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Stay updated with important alerts
             </p>
           </div>
@@ -471,7 +468,7 @@ export const CardVariants: Story = {
               <h3 className="font-medium">Dark Mode</h3>
               <Badge variant={"blue"}>New</Badge>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Easier on the eyes at night
             </p>
           </div>
@@ -488,7 +485,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Analytics</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Help improve our services
             </p>
           </div>
@@ -506,7 +503,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Marketing Emails</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Disabled during free trial
             </p>
           </div>
@@ -578,7 +575,7 @@ export const CompleteShowcase: Story = {
           <SelectionGroup control={<Switch defaultChecked />}>
             <div className="flex items-center">
               <span>Auto-save</span>
-              <span className="ml-2 rounded bg-primary/10 px-1.5 py-0.5 text-xs">
+              <span className="bg-primary/10 ml-2 rounded px-1.5 py-0.5 text-xs">
                 Recommended
               </span>
             </div>
@@ -587,7 +584,7 @@ export const CompleteShowcase: Story = {
           <SelectionGroup control={<Switch />}>
             <div className="flex items-center gap-1">
               <span>Allow third-party cookies</span>
-              <a href="#" className="text-xs text-primary hover:underline">
+              <a href="#" className="text-primary text-xs hover:underline">
                 (Learn more)
               </a>
             </div>

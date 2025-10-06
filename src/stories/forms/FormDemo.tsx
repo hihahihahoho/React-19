@@ -85,7 +85,7 @@ const FormSchema = z.object({
   auto_complete: z.string({ error: "Please type to search." }),
   multi_select: z
     .array(z.string())
-    .min(2, { message: "Select at least 2 options." }),
+    .min(2, { error: "Select at least 2 options." }),
   datepicker: zodDate(),
   dob: zodDate({
     minDate: new Date("1900-01-01"),
@@ -94,7 +94,7 @@ const FormSchema = z.object({
   daterange: zodDateRange({
     minDate: new Date("1900-01-01"),
     maxDate: new Date(),
-  }).optional(),
+  }),
   file_upload_native: zodFile({
     accepted: ACCEPTED_PDF_TYPES,
     maxFileSize: MAX_FILE_SIZE,
@@ -107,12 +107,12 @@ const FormSchema = z.object({
   }),
   checkbox_group: z
     .array(z.string())
-    .min(2, { message: "Select at least 2 option." }),
+    .min(2, { error: "Select at least 2 option." }),
   radio_group: z.enum(["include", "exclude"], {
     error: "You need to select a notification type.",
   }),
   checkbox_term: z.boolean().refine((val) => val === true, {
-    message: "Please read and accept the terms and conditions",
+    error: "Please read and accept the terms and conditions",
   }),
 })
 

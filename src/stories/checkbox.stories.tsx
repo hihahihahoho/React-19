@@ -229,7 +229,7 @@ export const CheckboxGroupExample: Story = {
     const formSchema = z.object({
       notificationPreferences: z
         .array(z.string())
-        .min(2, { message: "Please select at least 2 notification channels" }),
+        .min(2, { error: "Please select at least 2 notification channels" }),
     })
 
     function CheckboxGroupFormExample() {
@@ -422,10 +422,10 @@ export const WithFormValidation: Story = {
   render: () => {
     const formSchema = z.object({
       acceptTerms: z.boolean().refine((value) => value === true, {
-        message: "You must accept the terms and conditions.",
+        error: "You must accept the terms and conditions.",
       }),
       preferences: z.array(z.string()).min(1, {
-        message: "Please select at least one preference.",
+        error: "Please select at least one preference.",
       }),
     })
 
@@ -521,7 +521,7 @@ export const CustomStyledCheckboxes: Story = {
         >
           <div className="flex flex-col">
             <span className="font-medium">Analytics Dashboard</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Track your app performance
             </span>
           </div>
@@ -534,7 +534,7 @@ export const CustomStyledCheckboxes: Story = {
         >
           <div className="flex flex-col">
             <span className="font-medium">Team Collaboration</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Work together seamlessly
             </span>
           </div>
@@ -547,7 +547,7 @@ export const CustomStyledCheckboxes: Story = {
         >
           <div className="flex flex-col">
             <span className="font-medium">API Access</span>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Connect with your tools
             </span>
           </div>
@@ -557,7 +557,7 @@ export const CustomStyledCheckboxes: Story = {
       <div className="rounded-lg bg-slate-50 p-4 dark:bg-slate-900">
         <SelectionGroup
           control={
-            <Checkbox className="h-5 w-5 rounded-full data-[state=checked]:bg-primary" />
+            <Checkbox className="data-[state=checked]:bg-primary h-5 w-5 rounded-full" />
           }
         >
           <span className="font-medium">Round checkbox style</span>
@@ -621,7 +621,7 @@ export const CompleteShowcase: Story = {
           <SelectionGroup control={<Checkbox />}>
             <div className="flex items-center">
               <span>Remember me</span>
-              <span className="ml-2 rounded bg-primary/10 px-1.5 py-0.5 text-xs">
+              <span className="bg-primary/10 ml-2 rounded px-1.5 py-0.5 text-xs">
                 Secure
               </span>
             </div>
@@ -684,7 +684,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Basic Plan</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               All essential features for beginners
             </p>
           </div>
@@ -704,7 +704,7 @@ export const CardVariants: Story = {
               <h3 className="font-medium">Premium Plan</h3>
               <Badge variant={"blue"}>Popular</Badge>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Advanced features with priority support
             </p>
           </div>
@@ -722,7 +722,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Team Plan</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Collaboration tools for teams (disabled)
             </p>
           </div>
@@ -739,7 +739,7 @@ export const CardVariants: Story = {
         >
           <div className="ml-2">
             <h3 className="font-medium">Enterprise Plan</h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Custom solutions for large organizations
             </p>
           </div>

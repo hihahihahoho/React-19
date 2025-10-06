@@ -496,7 +496,7 @@ export const DuplicateHandling: Story = {
           placeholder="Enter technologies..."
         />
 
-        <div className="text-sm text-muted-foreground">
+        <div className="text-muted-foreground text-sm">
           Try entering the same tag multiple times to see the behavior
           difference. When duplicates are allowed, a tooltip will show the
           count.
@@ -523,10 +523,10 @@ export const InForm: Story = {
     const formSchema = z.object({
       skills: z
         .array(z.string())
-        .min(2, { message: "Please select at least 2 skills" }),
+        .min(2, { error: "Please select at least 2 skills" }),
       categories: z
         .array(z.string())
-        .min(1, { message: "Please select at least one category" }),
+        .min(1, { error: "Please select at least one category" }),
     })
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -624,9 +624,9 @@ export const HistoryAndUndo: Story = {
           }}
         />
 
-        <div className="rounded-md bg-muted p-3 text-sm">
+        <div className="bg-muted rounded-md p-3 text-sm">
           <p className="font-medium">Keyboard shortcuts:</p>
-          <ul className="mt-2 list-disc pl-5 text-muted-foreground">
+          <ul className="text-muted-foreground mt-2 list-disc pl-5">
             <li>Add tags by typing and pressing Tab or comma</li>
             <li>Select a tag by clicking on it</li>
             <li>Delete selected tag with Delete or Backspace</li>
@@ -908,9 +908,9 @@ export const ServerSideFetchingInSimpleForm: Story = {
       const classes = form.watch("tailwind_classes")
       return (
         <div className="mt-4 rounded-lg border border-gray-200 p-4">
-          <p className="mb-2 text-xs text-muted-foreground">Preview:</p>
+          <p className="text-muted-foreground mb-2 text-xs">Preview:</p>
           <div className={classes.join(" ")}>Element with Tailwind classes</div>
-          <p className="mt-2 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-2 text-xs">
             Applied classes: <code>{classes.join(" ")}</code>
           </p>
         </div>
@@ -978,7 +978,7 @@ export const InputModes: Story = {
             }}
             placeholder="Enter technologies..."
           />
-          <div className="text-sm text-muted-foreground">
+          <div className="text-muted-foreground text-sm">
             In default mode, you can both create custom tags by typing and
             pressing Tab/comma, or select from the suggestion dropdown.
           </div>
@@ -996,7 +996,7 @@ export const InputModes: Story = {
             }}
             placeholder="Select technologies..."
           />
-          <div className="text-sm text-muted-foreground">
+          <div className="text-muted-foreground text-sm">
             In select mode, only tags from the predefined options can be
             selected. The component won't allow creating custom tags from free
             text.

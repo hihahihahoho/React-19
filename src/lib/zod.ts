@@ -166,7 +166,7 @@ const zodDateRange = ({
 
   // Create all refinements as an array
   const refinements: Array<
-    [(data: { from: Date; to: Date }) => boolean, { message: string }]
+    [(data: { from: Date; to: Date }) => boolean, { error: string }]
   > = []
 
   // Add basic refinement for date order - compare only the date parts
@@ -178,7 +178,7 @@ const zodDateRange = ({
       return isEqual(fromDay, toDay) || isAfter(toDay, fromDay)
     },
     {
-      message: "Ngày kết thúc phải sau ngày bắt đầu.",
+      error: "Ngày kết thúc phải sau ngày bắt đầu.",
     },
   ])
 
@@ -192,7 +192,7 @@ const zodDateRange = ({
         return isEqual(fromDay, minDay) || isAfter(fromDay, minDay)
       },
       {
-        message:
+        error:
           min_error || `Ngày bắt đầu phải sau ${minDate.toLocaleDateString()}.`,
       },
     ])
@@ -208,7 +208,7 @@ const zodDateRange = ({
         return isEqual(toDay, maxDay) || isBefore(toDay, maxDay)
       },
       {
-        message:
+        error:
           max_error ||
           `Ngày kết thúc phải trước hoặc bằng ${format(maxDate, FORMAT_DATE)}.`,
       },
@@ -225,7 +225,7 @@ const zodDateRange = ({
         return days >= minRange
       },
       {
-        message: `Khoảng thời gian phải ít nhất ${minRange} ngày.`,
+        error: `Khoảng thời gian phải ít nhất ${minRange} ngày.`,
       },
     ])
   }
@@ -240,7 +240,7 @@ const zodDateRange = ({
         return days <= maxRange
       },
       {
-        message: `Khoảng thời gian không được quá ${maxRange} ngày.`,
+        error: `Khoảng thời gian không được quá ${maxRange} ngày.`,
       },
     ])
   }
@@ -252,7 +252,7 @@ const zodDateRange = ({
         if (!check(data)) {
           ctx.addIssue({
             code: "custom",
-            message: error.message,
+            error: error.error,
           })
         }
       }
@@ -261,3 +261,4 @@ const zodDateRange = ({
 }
 
 export { zodDate, zodDateRange, zodFile }
+
