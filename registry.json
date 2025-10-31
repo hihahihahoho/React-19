@@ -164,7 +164,7 @@
         "https://react-19.octung112.workers.dev/r/calendar.json",
         "https://react-19.octung112.workers.dev/r/date-time-input.json",
         "https://react-19.octung112.workers.dev/r/separator.json",
-        "use-media-query",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json",
         "utils"
       ],
       "type": "registry:component",
@@ -1187,6 +1187,21 @@
           "path": "src/hooks/use-mobile.tsx",
           "type": "registry:hook",
           "target": "hooks/use-mobile.tsx"
+        }
+      ]
+    },
+    {
+      "name": "use-media-query",
+      "author": "hihahihahoho",
+      "title": "Use Media Query",
+      "description": "Hook for responsive media queries",
+      "dependencies": [],
+      "type": "registry:hook",
+      "files": [
+        {
+          "path": "src/hooks/use-media-query.tsx",
+          "type": "registry:hook",
+          "target": "hooks/use-media-query.tsx"
         }
       ]
     },
