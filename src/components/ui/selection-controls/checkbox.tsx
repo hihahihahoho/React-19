@@ -29,11 +29,11 @@ function Checkbox({
       >
         {isIndeterminate ? (
           <>
-            <Minus className="!size-[14px]" />
+            <Minus className="!size-3.5" />
           </>
         ) : (
           <>
-            <Check className="!size-[14px]" />
+            <Check className="!size-3.5" />
           </>
         )}
       </CheckboxPrimitive.Indicator>
