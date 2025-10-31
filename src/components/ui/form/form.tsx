@@ -481,7 +481,7 @@ function FormComposition({
                   className={cn(
                     compositionClass,
                     inputSizeVariants({ size, isMinHeight: true }),
-                    "form-icon -ml-[2px]"
+                    "form-icon -ml-0.5"
                   )}
                 >
                   {iconLeft}
