@@ -24,16 +24,16 @@ function Checkbox({
     >
       <CheckboxPrimitive.Indicator
         className={cn(
-          "!text-primary-foreground flex items-center justify-center"
+          "text-primary-foreground! flex items-center justify-center"
         )}
       >
         {isIndeterminate ? (
           <>
-            <Minus className="!size-3.5" />
+            <Minus className="size-3.5!" />
           </>
         ) : (
           <>
-            <Check className="!size-3.5" />
+            <Check className="size-3.5!" />
           </>
         )}
       </CheckboxPrimitive.Indicator>
