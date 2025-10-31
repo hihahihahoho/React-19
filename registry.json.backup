@@ -7,15 +7,14 @@
       "name": "utils-plus",
       "author": "hihahihahoho",
       "type": "registry:lib",
+      "homepage": "https://react-19.octung112.workers.dev/r/utils-plus.json",
       "files": [
         {
-          "path": "lib/utils-plus.ts",
+          "path": "src/lib/utils-plus.ts",
           "type": "registry:lib",
           "target": "lib/utils-plus.ts"
         }
-      ],
-      "title": "Utils Plus",
-      "description": "Additional utility functions extending the base utils library."
+      ]
     },
     {
       "name": "zod",
@@ -25,19 +24,17 @@
         "zod"
       ],
       "registryDependencies": [
-        "const",
-        "file-size"
+        "https://react-19.octung112.workers.dev/r/const.json",
+        "https://react-19.octung112.workers.dev/r/file-size.json"
       ],
       "type": "registry:lib",
       "files": [
         {
-          "path": "lib/zod.ts",
+          "path": "src/lib/zod.ts",
           "type": "registry:lib",
           "target": "lib/zod.ts"
         }
-      ],
-      "title": "Zod",
-      "description": "Zod schema utilities for form validation and data parsing."
+      ]
     },
     {
       "name": "transliterate-vietnamese",
@@ -46,13 +43,11 @@
       "type": "registry:lib",
       "files": [
         {
-          "path": "lib/transliterate-vietnamese.ts",
+          "path": "src/lib/transliterate-vietnamese.ts",
           "type": "registry:lib",
           "target": "lib/transliterate-vietnamese.ts"
         }
-      ],
-      "title": "Transliterate Vietnamese",
-      "description": "Utility for transliterating Vietnamese text."
+      ]
     },
     {
       "name": "locale-date",
@@ -61,13 +56,11 @@
       "type": "registry:lib",
       "files": [
         {
-          "path": "lib/locale-date.ts",
+          "path": "src/lib/locale-date.ts",
           "type": "registry:lib",
           "target": "lib/locale-date.ts"
         }
-      ],
-      "title": "Locale Date",
-      "description": "Date localization utilities."
+      ]
     },
     {
       "name": "get-node-text",
@@ -76,31 +69,27 @@
       "type": "registry:lib",
       "files": [
         {
-          "path": "lib/get-node-text.ts",
+          "path": "src/lib/get-node-text.ts",
           "type": "registry:lib",
           "target": "lib/get-node-text.ts"
         }
-      ],
-      "title": "Get Node Text",
-      "description": "Utility to extract text content from React nodes."
+      ]
     },
     {
       "name": "fuzzy-search",
       "author": "hihahihahoho",
       "dependencies": [],
       "registryDependencies": [
-        "transliterate-vietnamese"
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json"
       ],
       "type": "registry:lib",
       "files": [
         {
-          "path": "lib/fuzzy-search.ts",
+          "path": "src/lib/fuzzy-search.ts",
           "type": "registry:lib",
           "target": "lib/fuzzy-search.ts"
         }
-      ],
-      "title": "Fuzzy Search",
-      "description": "Fuzzy search utility for filtering and searching data."
+      ]
     },
     {
       "name": "file-size",
@@ -109,13 +98,11 @@
       "type": "registry:lib",
       "files": [
         {
-          "path": "lib/file-size.ts",
+          "path": "src/lib/file-size.ts",
           "type": "registry:lib",
           "target": "lib/file-size.ts"
         }
-      ],
-      "title": "File Size",
-      "description": "Utility for formatting file sizes."
+      ]
     },
     {
       "name": "const",
@@ -124,21 +111,18 @@
       "type": "registry:lib",
       "files": [
         {
-          "path": "lib/const.ts",
+          "path": "src/lib/const.ts",
           "type": "registry:lib",
           "target": "lib/const.ts"
         }
-      ],
-      "title": "Const",
-      "description": "Shared constants and configuration values."
+      ]
     },
     {
       "name": "button",
       "author": "hihahihahoho",
       "dependencies": [
         "@radix-ui/react-slot",
-        "class-variance-authority",
-        "lucide-react"
+        "class-variance-authority"
       ],
       "registryDependencies": [
         "utils"
@@ -146,13 +130,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/button.tsx",
+          "path": "src/components/ui/button.tsx",
           "type": "registry:component",
           "target": "components/ui/button.tsx"
         }
-      ],
-      "title": "Button",
-      "description": "A versatile button component with multiple variants."
+      ]
     },
     {
       "name": "calendar-range",
@@ -163,23 +145,21 @@
         "date-fns"
       ],
       "registryDependencies": [
-        "button",
-        "calendar",
-        "date-time-input",
-        "separator",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/calendar.json",
+        "https://react-19.octung112.workers.dev/r/date-time-input.json",
+        "https://react-19.octung112.workers.dev/r/separator.json",
         "use-media-query",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/calendar/calendar-range.tsx",
+          "path": "src/components/ui/calendar/calendar-range.tsx",
           "type": "registry:component",
           "target": "components/ui/calendar/calendar-range.tsx"
         }
-      ],
-      "title": "Calendar Range",
-      "description": "A calendar component for selecting date ranges."
+      ]
     },
     {
       "name": "calendar",
@@ -190,25 +170,23 @@
         "date-fns"
       ],
       "registryDependencies": [
-        "button",
-        "select",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/select.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/calendar/calendar.tsx",
+          "path": "src/components/ui/calendar/calendar.tsx",
           "type": "registry:component",
           "target": "components/ui/calendar/calendar.tsx"
         },
         {
-          "path": "components/ui/calendar/calendar.css",
+          "path": "src/components/ui/calendar/calendar.css",
           "type": "registry:file",
           "target": "components/ui/calendar/calendar.css"
         }
-      ],
-      "title": "Calendar",
-      "description": "A calendar component for date selection."
+      ]
     },
     {
       "name": "context-menu",
@@ -223,13 +201,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/context-menu.tsx",
+          "path": "src/components/ui/context-menu.tsx",
           "type": "registry:component",
           "target": "components/ui/context-menu.tsx"
         }
-      ],
-      "title": "Context Menu",
-      "description": "A context menu component for right-click interactions."
+      ]
     },
     {
       "name": "hover-card",
@@ -243,13 +219,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/hover-card.tsx",
+          "path": "src/components/ui/hover-card.tsx",
           "type": "registry:component",
           "target": "components/ui/hover-card.tsx"
         }
-      ],
-      "title": "Hover Card",
-      "description": "A hover card component for displaying content on hover."
+      ]
     },
     {
       "name": "collapsible",
@@ -260,13 +234,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/collapsible.tsx",
+          "path": "src/components/ui/collapsible.tsx",
           "type": "registry:component",
           "target": "components/ui/collapsible.tsx"
         }
-      ],
-      "title": "Collapsible",
-      "description": "A collapsible component for showing/hiding content."
+      ]
     },
     {
       "name": "data-row",
@@ -278,34 +250,27 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/data-row.tsx",
+          "path": "src/components/ui/data-row.tsx",
           "type": "registry:component",
           "target": "components/ui/data-row.tsx"
         }
-      ],
-      "title": "Data Row",
-      "description": "A component for displaying key-value data pairs."
+      ]
     },
     {
       "name": "alert",
       "author": "hihahihahoho",
-      "dependencies": [
-        "class-variance-authority",
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/alert.tsx",
+          "path": "src/components/ui/alert.tsx",
           "type": "registry:component",
           "target": "components/ui/alert.tsx"
         }
-      ],
-      "title": "Alert",
-      "description": "An alert component for displaying important messages."
+      ]
     },
     {
       "name": "tabs-core",
@@ -313,63 +278,50 @@
       "dependencies": [
         "@radix-ui/react-tabs",
         "class-variance-authority",
-        "motion",
-        "@radix-ui/react-slot"
+        "motion"
       ],
       "registryDependencies": [
-        "use-scroll-into-view",
-        "use-wheel-scroll",
+        "https://react-19.octung112.workers.dev/r/use-scroll-into-view.json",
+        "https://react-19.octung112.workers.dev/r/use-wheel-scroll.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/tabs/tabs-core.tsx",
+          "path": "src/components/ui/tabs/tabs-core.tsx",
           "type": "registry:component",
           "target": "src/components/ui/tabs/tabs-core.tsx"
         }
-      ],
-      "title": "Tabs Core",
-      "description": "Core tabs component with scroll and wheel navigation support."
+      ]
     },
     {
       "name": "tabs",
       "author": "hihahihahoho",
       "registryDependencies": [
-        "tabs-core"
+        "https://react-19.octung112.workers.dev/r/tabs-core.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/tabs/tabs.tsx",
+          "path": "src/components/ui/tabs/tabs.tsx",
           "type": "registry:component",
           "target": "src/components/ui/tabs/tabs.tsx"
         }
-      ],
-      "title": "Tabs",
-      "description": "A tabs component for organizing content into tabs.",
-      "dependencies": [
-        "class-variance-authority"
       ]
     },
     {
       "name": "tabs-line",
       "author": "hihahihahoho",
       "registryDependencies": [
-        "tabs-core"
+        "https://react-19.octung112.workers.dev/r/tabs-core.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/tabs/tabs-line.tsx",
+          "path": "src/components/ui/tabs/tabs-line.tsx",
           "type": "registry:component",
           "target": "src/components/ui/tabs/tabs-line.tsx"
         }
-      ],
-      "title": "Tabs Line",
-      "description": "A tabs component with underline indicator.",
-      "dependencies": [
-        "class-variance-authority"
       ]
     },
     {
@@ -384,13 +336,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/circle-progress.tsx",
+          "path": "src/components/ui/circle-progress.tsx",
           "type": "registry:component",
           "target": "components/ui/circle-progress.tsx"
         }
-      ],
-      "title": "Circle Progress",
-      "description": "A circular progress indicator component."
+      ]
     },
     {
       "name": "typography",
@@ -404,13 +354,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/typography.tsx",
+          "path": "src/components/ui/typography.tsx",
           "type": "registry:component",
           "target": "components/ui/typography.tsx"
         }
-      ],
-      "title": "Typography",
-      "description": "Typography components with consistent styling."
+      ]
     },
     {
       "name": "tooltip",
@@ -424,20 +372,17 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/tooltip.tsx",
+          "path": "src/components/ui/tooltip.tsx",
           "type": "registry:component",
           "target": "components/ui/tooltip.tsx"
         }
-      ],
-      "title": "Tooltip",
-      "description": "A tooltip component for displaying contextual information."
+      ]
     },
     {
       "name": "toggle",
       "author": "hihahihahoho",
       "dependencies": [
-        "@radix-ui/react-toggle",
-        "class-variance-authority"
+        "@radix-ui/react-toggle"
       ],
       "registryDependencies": [
         "utils"
@@ -445,54 +390,45 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/toggle.tsx",
+          "path": "src/components/ui/toggle.tsx",
           "type": "registry:component",
           "target": "components/ui/toggle.tsx"
         }
-      ],
-      "title": "Toggle",
-      "description": "A toggle button component."
+      ]
     },
     {
       "name": "toggle-group",
       "author": "hihahihahoho",
       "dependencies": [
-        "@radix-ui/react-toggle-group",
-        "class-variance-authority"
+        "@radix-ui/react-toggle-group"
       ],
       "registryDependencies": [
-        "toggle",
+        "https://react-19.octung112.workers.dev/r/toggle.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/toggle-group.tsx",
+          "path": "src/components/ui/toggle-group.tsx",
           "type": "registry:component",
           "target": "components/ui/toggle-group.tsx"
         }
-      ],
-      "title": "Toggle Group",
-      "description": "A group of toggle buttons."
+      ]
     },
     {
       "name": "sonner",
       "author": "hihahihahoho",
       "dependencies": [
-        "sonner",
-        "class-variance-authority",
-        "lucide-react"
+        "sonner"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/sonner.tsx",
+          "path": "src/components/ui/sonner.tsx",
           "type": "registry:component",
           "target": "components/ui/sonner.tsx"
         }
-      ],
-      "title": "Sonner",
-      "description": "Toast notifications using Sonner."
+      ]
     },
     {
       "name": "skeleton",
@@ -501,33 +437,26 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/skeleton.tsx",
+          "path": "src/components/ui/skeleton.tsx",
           "type": "registry:component",
           "target": "components/ui/skeleton.tsx"
         }
-      ],
-      "title": "Skeleton",
-      "description": "Skeleton loading component for placeholder content."
+      ]
     },
     {
       "name": "sheet",
       "author": "hihahihahoho",
       "dependencies": [
-        "@radix-ui/react-dialog",
-        "class-variance-authority",
-        "@radix-ui/react-slot",
-        "lucide-react"
+        "@radix-ui/react-dialog"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/sheet.tsx",
+          "path": "src/components/ui/sheet.tsx",
           "type": "registry:component",
           "target": "components/ui/sheet.tsx"
         }
-      ],
-      "title": "Sheet",
-      "description": "A sheet (drawer) component for side panels."
+      ]
     },
     {
       "name": "separator",
@@ -538,13 +467,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/separator.tsx",
+          "path": "src/components/ui/separator.tsx",
           "type": "registry:component",
           "target": "components/ui/separator.tsx"
         }
-      ],
-      "title": "Separator",
-      "description": "A separator component for dividing content."
+      ]
     },
     {
       "name": "scroll-area",
@@ -555,13 +482,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/scroll-area.tsx",
+          "path": "src/components/ui/scroll-area.tsx",
           "type": "registry:component",
           "target": "components/ui/scroll-area.tsx"
         }
-      ],
-      "title": "Scroll Area",
-      "description": "A custom scrollable area component."
+      ]
     },
     {
       "name": "popover",
@@ -572,31 +497,26 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/popover.tsx",
+          "path": "src/components/ui/popover.tsx",
           "type": "registry:component",
           "target": "components/ui/popover.tsx"
         }
-      ],
-      "title": "Popover",
-      "description": "A popover component for displaying floating content."
+      ]
     },
     {
       "name": "photoswipe",
       "author": "hihahihahoho",
       "dependencies": [
-        "photoswipe",
-        "lucide-react"
+        "photoswipe"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/photoswipe.tsx",
+          "path": "src/components/ui/photoswipe.tsx",
           "type": "registry:component",
           "target": "components/ui/photoswipe.tsx"
         }
-      ],
-      "title": "Photoswipe",
-      "description": "Image lightbox and gallery component using PhotoSwipe."
+      ]
     },
     {
       "name": "pagination",
@@ -605,53 +525,44 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button"
+        "https://react-19.octung112.workers.dev/r/button.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/pagination.tsx",
+          "path": "src/components/ui/pagination.tsx",
           "type": "registry:component",
           "target": "components/ui/pagination.tsx"
         }
-      ],
-      "title": "Pagination",
-      "description": "Pagination component for navigating through pages."
+      ]
     },
     {
       "name": "label",
       "author": "hihahihahoho",
       "dependencies": [
-        "@radix-ui/react-label",
-        "class-variance-authority"
+        "@radix-ui/react-label"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/label.tsx",
+          "path": "src/components/ui/label.tsx",
           "type": "registry:component",
           "target": "components/ui/label.tsx"
         }
-      ],
-      "title": "Label",
-      "description": "A label component for form inputs."
+      ]
     },
     {
       "name": "glass-icon",
       "author": "hihahihahoho",
-      "dependencies": [
-        "class-variance-authority"
-      ],
+      "dependencies": [],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/glass-icon.tsx",
+          "path": "src/components/ui/glass-icon.tsx",
           "type": "registry:component",
           "target": "components/ui/glass-icon.tsx"
         }
-      ],
-      "title": "Glass Icon",
-      "description": "Glassmorphism icon component."
+      ]
     },
     {
       "name": "empty-state",
@@ -662,13 +573,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/empty-state.tsx",
+          "path": "src/components/ui/empty-state.tsx",
           "type": "registry:component",
           "target": "components/ui/empty-state.tsx"
         }
-      ],
-      "title": "Empty State",
-      "description": "Empty state component for displaying when there's no data."
+      ]
     },
     {
       "name": "dropdown-menu",
@@ -680,13 +589,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/dropdown-menu.tsx",
+          "path": "src/components/ui/dropdown-menu.tsx",
           "type": "registry:component",
           "target": "components/ui/dropdown-menu.tsx"
         }
-      ],
-      "title": "Dropdown Menu",
-      "description": "A dropdown menu component."
+      ]
     },
     {
       "name": "drawer",
@@ -697,32 +604,26 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/drawer.tsx",
+          "path": "src/components/ui/drawer.tsx",
           "type": "registry:component",
           "target": "components/ui/drawer.tsx"
         }
-      ],
-      "title": "Drawer",
-      "description": "A drawer component for slide-out panels."
+      ]
     },
     {
       "name": "dialog",
       "author": "hihahihahoho",
       "dependencies": [
-        "@radix-ui/react-dialog",
-        "lucide-react",
-        "@radix-ui/react-slot"
+        "@radix-ui/react-dialog"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/dialog.tsx",
+          "path": "src/components/ui/dialog.tsx",
           "type": "registry:component",
           "target": "components/ui/dialog.tsx"
         }
-      ],
-      "title": "Dialog",
-      "description": "A dialog (modal) component."
+      ]
     },
     {
       "name": "custom-icons",
@@ -731,32 +632,26 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/custom-icons.tsx",
+          "path": "src/components/ui/custom-icons.tsx",
           "type": "registry:component",
           "target": "components/ui/custom-icons.tsx"
         }
-      ],
-      "title": "Custom Icons",
-      "description": "Custom icon components."
+      ]
     },
     {
       "name": "command",
       "author": "hihahihahoho",
       "dependencies": [
-        "cmdk",
-        "lucide-react",
-        "@radix-ui/react-dialog"
+        "cmdk"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/command.tsx",
+          "path": "src/components/ui/command.tsx",
           "type": "registry:component",
           "target": "components/ui/command.tsx"
         }
-      ],
-      "title": "Command",
-      "description": "A command menu component (like command palette)."
+      ]
     },
     {
       "name": "card",
@@ -765,49 +660,39 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/card.tsx",
+          "path": "src/components/ui/card.tsx",
           "type": "registry:component",
           "target": "components/ui/card.tsx"
         }
-      ],
-      "title": "Card",
-      "description": "A card component for content containers."
+      ]
     },
     {
       "name": "breadcrumb",
       "author": "hihahihahoho",
-      "dependencies": [
-        "lucide-react",
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": [],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/breadcrumb.tsx",
+          "path": "src/components/ui/breadcrumb.tsx",
           "type": "registry:component",
           "target": "components/ui/breadcrumb.tsx"
         }
-      ],
-      "title": "Breadcrumb",
-      "description": "A breadcrumb navigation component."
+      ]
     },
     {
       "name": "avatar",
       "author": "hihahihahoho",
       "dependencies": [
-        "@radix-ui/react-avatar",
-        "class-variance-authority"
+        "@radix-ui/react-avatar"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/avatar.tsx",
+          "path": "src/components/ui/avatar.tsx",
           "type": "registry:component",
           "target": "components/ui/avatar.tsx"
         }
-      ],
-      "title": "Avatar",
-      "description": "An avatar component for user profile pictures."
+      ]
     },
     {
       "name": "input",
@@ -816,27 +701,25 @@
         "react-hook-form"
       ],
       "registryDependencies": [
-        "form",
-        "use-merge-ref",
-        "get-node-text",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
         "utils",
-        "utils-plus"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/input/input.tsx",
+          "path": "src/components/ui/input/input.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input.tsx"
         },
         {
-          "path": "components/ui/input/input-form.tsx",
+          "path": "src/components/ui/input/input-form.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input-form.tsx"
         }
-      ],
-      "title": "Input",
-      "description": "Input field component with form integration."
+      ]
     },
     {
       "name": "input-number",
@@ -848,28 +731,26 @@
         "@maskito/react"
       ],
       "registryDependencies": [
-        "form",
-        "use-merge-ref",
-        "get-node-text",
-        "zod-schema-context",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
-        "utils-plus"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/input/input-number.tsx",
+          "path": "src/components/ui/input/input-number.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input-number.tsx"
         },
         {
-          "path": "components/ui/input/input-number-form.tsx",
+          "path": "src/components/ui/input/input-number-form.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input-number-form.tsx"
         }
-      ],
-      "title": "Input Number",
-      "description": "Number input with formatting and masking."
+      ]
     },
     {
       "name": "input-tag",
@@ -882,114 +763,101 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "avatar",
-        "badge",
-        "command",
-        "form",
-        "popover",
-        "tooltip",
-        "select",
-        "select-command",
-        "use-history-state",
-        "zod-schema-context",
+        "https://react-19.octung112.workers.dev/r/avatar.json",
+        "https://react-19.octung112.workers.dev/r/badge.json",
+        "https://react-19.octung112.workers.dev/r/command.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/popover.json",
+        "https://react-19.octung112.workers.dev/r/tooltip.json",
+        "https://react-19.octung112.workers.dev/r/select.json",
+        "https://react-19.octung112.workers.dev/r/select-command.json",
+        "https://react-19.octung112.workers.dev/r/use-history-state.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
-        "utils-plus"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/input/input-tag.tsx",
+          "path": "src/components/ui/input/input-tag.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input-tag.tsx"
         },
         {
-          "path": "components/ui/input/input-tag-form.tsx",
+          "path": "src/components/ui/input/input-tag-form.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input-tag-form.tsx"
         }
-      ],
-      "title": "Input Tag",
-      "description": "Tag input component for selecting multiple values."
+      ]
     },
     {
       "name": "input-auto-complete",
       "author": "hihahihahoho",
       "dependencies": [
         "react-hook-form",
-        "cmdk",
-        "@radix-ui/react-popover"
+        "cmdk"
       ],
       "registryDependencies": [
-        "command",
-        "form",
-        "popover",
-        "select-command",
-        "zod-schema-context",
+        "https://react-19.octung112.workers.dev/r/command.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/popover.json",
+        "https://react-19.octung112.workers.dev/r/select-command.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/input/input-auto-complete.tsx",
+          "path": "src/components/ui/input/input-auto-complete.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input-auto-complete.tsx"
         },
         {
-          "path": "components/ui/input/input-auto-complete-form.tsx",
+          "path": "src/components/ui/input/input-auto-complete-form.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input-auto-complete-form.tsx"
         }
-      ],
-      "title": "Input Auto Complete",
-      "description": "Auto-complete input component."
+      ]
     },
     {
       "name": "command-primitive-input",
       "author": "hihahihahoho",
-      "dependencies": [
-        "cmdk",
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
-        "command",
+        "https://react-19.octung112.workers.dev/r/command.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/input/command-primitive-input.tsx",
+          "path": "src/components/ui/input/command-primitive-input.tsx",
           "type": "registry:component",
           "target": "components/ui/input/command-primitive-input.tsx"
         }
-      ],
-      "title": "Command Primitive Input",
-      "description": "Input component for command primitives."
+      ]
     },
     {
       "name": "textarea",
       "author": "hihahihahoho",
       "dependencies": [
-        "react-hook-form",
-        "zod"
+        "react-hook-form"
       ],
       "registryDependencies": [
-        "form"
+        "https://react-19.octung112.workers.dev/r/form.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/textarea/textarea.tsx",
+          "path": "src/components/ui/textarea/textarea.tsx",
           "type": "registry:component",
           "target": "components/ui/textarea/textarea.tsx"
         },
         {
-          "path": "components/ui/textarea/textarea-form.tsx",
+          "path": "src/components/ui/textarea/textarea-form.tsx",
           "type": "registry:component",
           "target": "components/ui/textarea/textarea-form.tsx"
         }
-      ],
-      "title": "Textarea",
-      "description": "Textarea component with auto-resize support."
+      ]
     },
     {
       "name": "form",
@@ -1003,24 +871,22 @@
         "class-variance-authority"
       ],
       "registryDependencies": [
-        "label",
-        "button",
-        "custom-icons",
+        "https://react-19.octung112.workers.dev/r/label.json",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/custom-icons.json",
         "utils",
-        "zod-schema-context",
-        "zod",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
+        "https://react-19.octung112.workers.dev/r/zod.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/form/form.tsx",
+          "path": "src/components/ui/form/form.tsx",
           "type": "registry:component",
           "target": "components/ui/form/form.tsx"
         }
-      ],
-      "title": "Form",
-      "description": "Form components with validation and error handling."
+      ]
     },
     {
       "name": "zod-schema-context",
@@ -1029,18 +895,16 @@
         "zod"
       ],
       "registryDependencies": [
-        "zod"
+        "https://react-19.octung112.workers.dev/r/zod.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/form/zod-schema-context.tsx",
+          "path": "src/components/ui/form/zod-schema-context.tsx",
           "type": "registry:component",
           "target": "components/ui/form/zod-schema-context.tsx"
         }
-      ],
-      "title": "Zod Schema Context",
-      "description": "Context provider for Zod schema validation."
+      ]
     },
     {
       "name": "alert-dialog",
@@ -1051,51 +915,43 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/alert-dialog/alert-dialog.tsx",
+          "path": "src/components/ui/alert-dialog/alert-dialog.tsx",
           "type": "registry:component",
           "target": "components/ui/alert-dialog/alert-dialog.tsx"
         }
-      ],
-      "title": "Alert Dialog",
-      "description": "Alert dialog component for confirmations."
+      ]
     },
     {
       "name": "alert-dialog-container",
       "author": "hihahihahoho",
-      "dependencies": [
-        "lucide-react"
-      ],
+      "dependencies": [],
       "registryDependencies": [
-        "alert-dialog"
+        "https://react-19.octung112.workers.dev/r/alert-dialog.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/alert-dialog/alert-dialog-container.tsx",
+          "path": "src/components/ui/alert-dialog/alert-dialog-container.tsx",
           "type": "registry:component",
           "target": "components/ui/alert-dialog/alert-dialog-container.tsx"
         }
-      ],
-      "title": "Alert Dialog Container",
-      "description": "Container for managing alert dialogs."
+      ]
     },
     {
       "name": "use-scroll",
       "author": "hihahihahoho",
       "dependencies": [],
       "registryDependencies": [
-        "use-is-mounted"
+        "https://react-19.octung112.workers.dev/r/use-is-mounted.json"
       ],
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-scroll.ts",
+          "path": "src/hooks/use-scroll.ts",
           "type": "registry:hook",
           "target": "hooks/use-scroll.ts"
         }
-      ],
-      "title": "Use Scroll",
-      "description": "Hook for managing scroll behavior."
+      ]
     },
     {
       "name": "use-file-upload",
@@ -1104,13 +960,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-file-upload.ts",
+          "path": "src/hooks/use-file-upload.ts",
           "type": "registry:hook",
           "target": "hooks/use-file-upload.ts"
         }
-      ],
-      "title": "Use File Upload",
-      "description": "Hook for file upload functionality."
+      ]
     },
     {
       "name": "use-is-mounted",
@@ -1119,13 +973,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-is-mounted.ts",
+          "path": "src/hooks/use-is-mounted.ts",
           "type": "registry:hook",
           "target": "hooks/use-is-mounted.ts"
         }
-      ],
-      "title": "Use Is Mounted",
-      "description": "Hook to check if component is mounted."
+      ]
     },
     {
       "name": "use-resize-observer",
@@ -1134,13 +986,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-resize-observer.ts",
+          "path": "src/hooks/use-resize-observer.ts",
           "type": "registry:hook",
           "target": "hooks/use-resize-observer.ts"
         }
-      ],
-      "title": "Use Resize Observer",
-      "description": "Hook for observing element resize events."
+      ]
     },
     {
       "name": "use-scroll-position",
@@ -1149,13 +999,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-scroll-position.ts",
+          "path": "src/hooks/use-scroll-position.ts",
           "type": "registry:hook",
           "target": "hooks/use-scroll-position.ts"
         }
-      ],
-      "title": "Use Scroll Position",
-      "description": "Hook for tracking scroll position."
+      ]
     },
     {
       "name": "use-scroll-into-view",
@@ -1164,13 +1012,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-scroll-into-view.ts",
+          "path": "src/hooks/use-scroll-into-view.ts",
           "type": "registry:hook",
           "target": "hooks/use-scroll-into-view.ts"
         }
-      ],
-      "title": "Use Scroll Into View",
-      "description": "Hook for scrolling elements into view."
+      ]
     },
     {
       "name": "use-merge-ref",
@@ -1179,31 +1025,27 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-merge-ref.ts",
+          "path": "src/hooks/use-merge-ref.ts",
           "type": "registry:hook",
           "target": "hooks/use-merge-ref.ts"
         }
-      ],
-      "title": "Use Merge Ref",
-      "description": "Hook for merging multiple refs."
+      ]
     },
     {
       "name": "use-item-overflow",
       "author": "hihahihahoho",
       "dependencies": [],
       "registryDependencies": [
-        "use-resize-observer"
+        "https://react-19.octung112.workers.dev/r/use-resize-observer.json"
       ],
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-item-overflow.ts",
+          "path": "src/hooks/use-item-overflow.ts",
           "type": "registry:hook",
           "target": "hooks/use-item-overflow.ts"
         }
-      ],
-      "title": "Use Item Overflow",
-      "description": "Hook for detecting item overflow."
+      ]
     },
     {
       "name": "use-date-locale-config",
@@ -1212,13 +1054,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-date-locale-config.ts",
+          "path": "src/hooks/use-date-locale-config.ts",
           "type": "registry:hook",
           "target": "hooks/use-date-locale-config.ts"
         }
-      ],
-      "title": "Use Date Locale Config",
-      "description": "Hook for date localization configuration."
+      ]
     },
     {
       "name": "use-history-state",
@@ -1227,13 +1067,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-history-state.ts",
+          "path": "src/hooks/use-history-state.ts",
           "type": "registry:hook",
           "target": "hooks/use-history-state.ts"
         }
-      ],
-      "title": "Use History State",
-      "description": "Hook for managing history state."
+      ]
     },
     {
       "name": "use-wheel-scroll",
@@ -1242,13 +1080,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-wheel-scroll.ts",
+          "path": "src/hooks/use-wheel-scroll.ts",
           "type": "registry:hook",
           "target": "hooks/use-wheel-scroll.ts"
         }
-      ],
-      "title": "Use Wheel Scroll",
-      "description": "Hook for handling wheel scroll events."
+      ]
     },
     {
       "name": "use-toast",
@@ -1257,13 +1093,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-toast.ts",
+          "path": "src/hooks/use-toast.ts",
           "type": "registry:hook",
           "target": "hooks/use-toast.ts"
         }
-      ],
-      "title": "Use Toast",
-      "description": "Hook for displaying toast notifications."
+      ]
     },
     {
       "name": "use-sync-scroll",
@@ -1272,13 +1106,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-sync-scroll.ts",
+          "path": "src/hooks/use-sync-scroll.ts",
           "type": "registry:hook",
           "target": "hooks/use-sync-scroll.ts"
         }
-      ],
-      "title": "Use Sync Scroll",
-      "description": "Hook for synchronizing scroll between elements."
+      ]
     },
     {
       "name": "use-mobile",
@@ -1287,13 +1119,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-mobile.tsx",
+          "path": "src/hooks/use-mobile.tsx",
           "type": "registry:hook",
           "target": "hooks/use-mobile.tsx"
         }
-      ],
-      "title": "Use Mobile",
-      "description": "Hook for detecting mobile devices."
+      ]
     },
     {
       "name": "use-is-display-none",
@@ -1302,30 +1132,24 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-is-display-none.ts",
+          "path": "src/hooks/use-is-display-none.ts",
           "type": "registry:hook",
           "target": "hooks/use-is-display-none.ts"
         }
-      ],
-      "title": "Use Is Display None",
-      "description": "Hook to check if element has display:none."
+      ]
     },
     {
       "name": "use-alert-dialog",
       "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-alert-dialog"
-      ],
+      "dependencies": [],
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-alert-dialog.ts",
+          "path": "src/hooks/use-alert-dialog.ts",
           "type": "registry:hook",
           "target": "hooks/use-alert-dialog.ts"
         }
-      ],
-      "title": "Use Alert Dialog",
-      "description": "Hook for managing alert dialogs."
+      ]
     },
     {
       "name": "use-autosize-textarea",
@@ -1334,13 +1158,11 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "hooks/use-autosize-textarea.tsx",
+          "path": "src/hooks/use-autosize-textarea.tsx",
           "type": "registry:hook",
           "target": "hooks/use-autosize-textarea.tsx"
         }
-      ],
-      "title": "Use Autosize Textarea",
-      "description": "Hook for auto-resizing textareas."
+      ]
     },
     {
       "name": "date-time-input",
@@ -1349,147 +1171,130 @@
         "date-fns"
       ],
       "registryDependencies": [
-        "use-date-locale-config",
-        "locale-date"
+        "https://react-19.octung112.workers.dev/r/use-date-locale-config.json",
+        "https://react-19.octung112.workers.dev/r/locale-date.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/date-time-input/date-time-input.tsx",
+          "path": "src/components/ui/date-time-input/date-time-input.tsx",
           "type": "registry:component",
           "target": "components/ui/date-time-input/date-time-input.tsx"
         }
-      ],
-      "title": "Date Time Input",
-      "description": "Date and time input component."
+      ]
     },
     {
       "name": "date-time-input-group",
       "author": "hihahihahoho",
       "dependencies": [],
       "registryDependencies": [
-        "date-time-input"
+        "https://react-19.octung112.workers.dev/r/date-time-input.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/date-time-input/date-time-input-group.tsx",
+          "path": "src/components/ui/date-time-input/date-time-input-group.tsx",
           "type": "registry:component",
           "target": "components/ui/date-time-input/date-time-input-group.tsx"
         }
-      ],
-      "title": "Date Time Input Group",
-      "description": "Group of date/time inputs."
+      ]
     },
     {
       "name": "select-command",
       "author": "hihahihahoho",
       "dependencies": [
-        "cmdk",
-        "lucide-react"
+        "cmdk"
       ],
       "registryDependencies": [
-        "avatar",
-        "badge",
-        "command",
-        "checkbox",
-        "separator",
+        "https://react-19.octung112.workers.dev/r/avatar.json",
+        "https://react-19.octung112.workers.dev/r/badge.json",
+        "https://react-19.octung112.workers.dev/r/command.json",
+        "https://react-19.octung112.workers.dev/r/checkbox.json",
+        "https://react-19.octung112.workers.dev/r/separator.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/select/select-command.tsx",
+          "path": "src/components/ui/select/select-command.tsx",
           "type": "registry:component",
           "target": "components/ui/select/select-command.tsx"
         },
         {
-          "path": "components/ui/select/select-interface.ts",
+          "path": "src/components/ui/select/select-interface.ts",
           "type": "registry:component",
           "target": "components/ui/select/select-interface.ts"
         }
-      ],
-      "title": "Select Command",
-      "description": "Command-based select component with search."
+      ]
     },
     {
       "name": "select",
       "author": "hihahihahoho",
       "dependencies": [
         "react-hook-form",
-        "cmdk",
-        "@radix-ui/react-popover",
-        "lucide-react"
+        "cmdk"
       ],
       "registryDependencies": [
-        "avatar",
-        "badge",
-        "command",
-        "form",
-        "select-command",
-        "separator",
-        "zod-schema-context",
+        "https://react-19.octung112.workers.dev/r/avatar.json",
+        "https://react-19.octung112.workers.dev/r/badge.json",
+        "https://react-19.octung112.workers.dev/r/command.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/select-command.json",
+        "https://react-19.octung112.workers.dev/r/separator.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
-        "utils-plus",
-        "popover",
-        "get-node-text",
-        "use-media-query"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/select/select.tsx",
+          "path": "src/components/ui/select/select.tsx",
           "type": "registry:component",
           "target": "components/ui/select/select.tsx"
         },
         {
-          "path": "components/ui/select/select-form.tsx",
+          "path": "src/components/ui/select/select-form.tsx",
           "type": "registry:component",
           "target": "components/ui/select/select-form.tsx"
         },
         {
-          "path": "components/ui/select/select-popover.tsx",
+          "path": "src/components/ui/select/select-popover.tsx",
           "type": "registry:component",
           "target": "components/ui/select/select-popover.tsx"
         }
-      ],
-      "title": "Select",
-      "description": "Select dropdown component with search and multi-value support."
+      ]
     },
     {
       "name": "multiselect",
       "author": "hihahihahoho",
       "dependencies": [
         "react-hook-form",
-        "cmdk",
-        "lucide-react"
+        "cmdk"
       ],
       "registryDependencies": [
-        "avatar",
-        "badge",
-        "command",
-        "form",
-        "select-command",
-        "separator",
-        "zod-schema-context",
+        "https://react-19.octung112.workers.dev/r/avatar.json",
+        "https://react-19.octung112.workers.dev/r/badge.json",
+        "https://react-19.octung112.workers.dev/r/command.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/select-command.json",
+        "https://react-19.octung112.workers.dev/r/separator.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
-        "utils-plus"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/select/multiselect.tsx",
+          "path": "src/components/ui/select/multiselect.tsx",
           "type": "registry:component",
           "target": "components/ui/select/multiselect.tsx"
         },
         {
-          "path": "components/ui/select/multiselect-form.tsx",
+          "path": "src/components/ui/select/multiselect-form.tsx",
           "type": "registry:component",
           "target": "components/ui/select/multiselect-form.tsx"
         }
-      ],
-      "title": "Multiselect",
-      "description": "Multi-select dropdown component."
+      ]
     },
     {
       "name": "badge",
@@ -1499,73 +1304,66 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "tooltip",
+        "https://react-19.octung112.workers.dev/r/tooltip.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/badge/badge.tsx",
+          "path": "src/components/ui/badge/badge.tsx",
           "type": "registry:component",
           "target": "components/ui/badge/badge.tsx"
         }
-      ],
-      "title": "Badge",
-      "description": "Badge component for labels and tags."
+      ]
     },
     {
       "name": "overflow-badge-group",
       "author": "hihahihahoho",
       "dependencies": [],
       "registryDependencies": [
-        "badge",
-        "use-item-overflow",
+        "https://react-19.octung112.workers.dev/r/badge.json",
+        "https://react-19.octung112.workers.dev/r/use-item-overflow.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/badge/overflow-badge-group.tsx",
+          "path": "src/components/ui/badge/overflow-badge-group.tsx",
           "type": "registry:component",
           "target": "components/ui/badge/overflow-badge-group.tsx"
         }
-      ],
-      "title": "Overflow Badge Group",
-      "description": "Badge group with overflow handling."
+      ]
     },
     {
       "name": "checkbox",
       "author": "hihahihahoho",
       "dependencies": [
         "react-hook-form",
-        "@radix-ui/react-checkbox",
-        "lucide-react"
+        "@radix-ui/react-checkbox"
       ],
       "registryDependencies": [
-        "form",
-        "selection-group",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/selection-group.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/selection-controls/checkbox.tsx",
+          "path": "src/components/ui/selection-controls/checkbox.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/checkbox.tsx"
         },
         {
-          "path": "components/ui/selection-controls/checkbox-form.tsx",
+          "path": "src/components/ui/selection-controls/checkbox-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/checkbox-form.tsx"
         },
         {
-          "path": "components/ui/selection-controls/checkbox-group-form.tsx",
+          "path": "src/components/ui/selection-controls/checkbox-group-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/checkbox-group-form.tsx"
         }
-      ],
-      "title": "Checkbox",
-      "description": "Checkbox component with form integration."
+      ]
     },
     {
       "name": "checkbox-tree",
@@ -1575,76 +1373,66 @@
         "react-hook-form"
       ],
       "registryDependencies": [
-        "checkbox",
-        "form",
-        "zod-schema-context",
+        "https://react-19.octung112.workers.dev/r/checkbox.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/selection-controls/checkbox-tree.tsx",
+          "path": "src/components/ui/selection-controls/checkbox-tree.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/checkbox-tree.tsx"
         },
         {
-          "path": "components/ui/selection-controls/checkbox-tree-form.tsx",
+          "path": "src/components/ui/selection-controls/checkbox-tree-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/checkbox-tree-form.tsx"
         }
-      ],
-      "title": "Checkbox Tree",
-      "description": "Tree view checkbox component for hierarchical selection."
+      ]
     },
     {
       "name": "radio-group",
       "author": "hihahihahoho",
       "dependencies": [
         "react-hook-form",
-        "@radix-ui/react-radio-group",
-        "lucide-react"
+        "@radix-ui/react-radio-group"
       ],
       "registryDependencies": [
-        "form",
-        "selection-group",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/selection-group.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/selection-controls/radio-group.tsx",
+          "path": "src/components/ui/selection-controls/radio-group.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/radio-group.tsx"
         },
         {
-          "path": "components/ui/selection-controls/radio-group-form.tsx",
+          "path": "src/components/ui/selection-controls/radio-group-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/radio-group-form.tsx"
         }
-      ],
-      "title": "Radio Group",
-      "description": "Radio button group component."
+      ]
     },
     {
       "name": "selection-group",
       "author": "hihahihahoho",
-      "dependencies": [
-        "class-variance-authority",
-        "@radix-ui/react-slot"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/selection-controls/selection-group.tsx",
+          "path": "src/components/ui/selection-controls/selection-group.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/selection-group.tsx"
         }
-      ],
-      "title": "Selection Group",
-      "description": "Base component for selection controls."
+      ]
     },
     {
       "name": "switch",
@@ -1654,24 +1442,22 @@
         "@radix-ui/react-switch"
       ],
       "registryDependencies": [
-        "form",
+        "https://react-19.octung112.workers.dev/r/form.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/selection-controls/switch.tsx",
+          "path": "src/components/ui/selection-controls/switch.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/switch.tsx"
         },
         {
-          "path": "components/ui/selection-controls/switch-form.tsx",
+          "path": "src/components/ui/selection-controls/switch-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/switch-form.tsx"
         }
-      ],
-      "title": "Switch",
-      "description": "Switch toggle component."
+      ]
     },
     {
       "name": "file-upload-list",
@@ -1681,33 +1467,31 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button",
-        "custom-icons",
-        "dialog",
-        "form",
-        "glass-icon",
-        "sonner",
-        "file-size",
-        "const",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/custom-icons.json",
+        "https://react-19.octung112.workers.dev/r/dialog.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/glass-icon.json",
+        "https://react-19.octung112.workers.dev/r/sonner.json",
+        "https://react-19.octung112.workers.dev/r/file-size.json",
+        "https://react-19.octung112.workers.dev/r/const.json",
         "utils",
-        "utils-plus",
-        "use-file-upload"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/use-file-upload.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/file-upload/file-upload-list.tsx",
+          "path": "src/components/ui/file-upload/file-upload-list.tsx",
           "type": "registry:component",
           "target": "components/ui/file-upload/file-upload-list.tsx"
         },
         {
-          "path": "components/ui/file-upload/file-upload-list-form.tsx",
+          "path": "src/components/ui/file-upload/file-upload-list-form.tsx",
           "type": "registry:component",
           "target": "components/ui/file-upload/file-upload-list-form.tsx"
         }
-      ],
-      "title": "File Upload List",
-      "description": "File upload component with list view."
+      ]
     },
     {
       "name": "file-upload",
@@ -1717,33 +1501,31 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "button",
-        "custom-icons",
-        "dialog",
-        "form",
-        "glass-icon",
-        "sonner",
-        "file-size",
-        "const",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/custom-icons.json",
+        "https://react-19.octung112.workers.dev/r/dialog.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/glass-icon.json",
+        "https://react-19.octung112.workers.dev/r/sonner.json",
+        "https://react-19.octung112.workers.dev/r/file-size.json",
+        "https://react-19.octung112.workers.dev/r/const.json",
         "utils",
-        "utils-plus",
-        "use-file-upload"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/use-file-upload.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/file-upload/file-upload.tsx",
+          "path": "src/components/ui/file-upload/file-upload.tsx",
           "type": "registry:component",
           "target": "components/ui/file-upload/file-upload.tsx"
         },
         {
-          "path": "components/ui/file-upload/file-upload-form.tsx",
+          "path": "src/components/ui/file-upload/file-upload-form.tsx",
           "type": "registry:component",
           "target": "components/ui/file-upload/file-upload-form.tsx"
         }
-      ],
-      "title": "File Upload",
-      "description": "File upload component with drag and drop."
+      ]
     },
     {
       "name": "toast",
@@ -1759,18 +1541,16 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/toast/toast.tsx",
+          "path": "src/components/ui/toast/toast.tsx",
           "type": "registry:component",
           "target": "components/ui/toast/toast.tsx"
         },
         {
-          "path": "components/ui/toast/toaster.tsx",
+          "path": "src/components/ui/toast/toaster.tsx",
           "type": "registry:component",
           "target": "components/ui/toast/toaster.tsx"
         }
-      ],
-      "title": "Toast",
-      "description": "Toast notification component."
+      ]
     },
     {
       "name": "table",
@@ -1782,13 +1562,11 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/table/table.tsx",
+          "path": "src/components/ui/table/table.tsx",
           "type": "registry:component",
           "target": "components/ui/table/table.tsx"
         }
-      ],
-      "title": "Table",
-      "description": "Table component for displaying tabular data."
+      ]
     },
     {
       "name": "data-table",
@@ -1796,64 +1574,61 @@
       "dependencies": [
         "@tanstack/react-table",
         "class-variance-authority",
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
-        "table",
-        "button",
-        "empty-state",
-        "scroll-area",
-        "pagination",
-        "select",
-        "select-command",
+        "https://react-19.octung112.workers.dev/r/table.json",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/empty-state.json",
+        "https://react-19.octung112.workers.dev/r/scroll-area.json",
+        "https://react-19.octung112.workers.dev/r/pagination.json",
+        "https://react-19.octung112.workers.dev/r/select.json",
+        "https://react-19.octung112.workers.dev/r/select-command.json",
         "utils"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/table/data-table.tsx",
+          "path": "src/components/ui/table/data-table.tsx",
           "type": "registry:component",
           "target": "components/ui/table/data-table.tsx"
         },
         {
-          "path": "components/ui/table/data-table-cell.tsx",
+          "path": "src/components/ui/table/data-table-cell.tsx",
           "type": "registry:component",
           "target": "components/ui/table/data-table-cell.tsx"
         },
         {
-          "path": "components/ui/table/data-table-context.tsx",
+          "path": "src/components/ui/table/data-table-context.tsx",
           "type": "registry:component",
           "target": "components/ui/table/data-table-context.tsx"
         },
         {
-          "path": "components/ui/table/data-table-header-cell.tsx",
+          "path": "src/components/ui/table/data-table-header-cell.tsx",
           "type": "registry:component",
           "target": "components/ui/table/data-table-header-cell.tsx"
         },
         {
-          "path": "components/ui/table/data-table-pagination.tsx",
+          "path": "src/components/ui/table/data-table-pagination.tsx",
           "type": "registry:component",
           "target": "components/ui/table/data-table-pagination.tsx"
         },
         {
-          "path": "components/ui/table/data-table-selection.tsx",
+          "path": "src/components/ui/table/data-table-selection.tsx",
           "type": "registry:component",
           "target": "components/ui/table/data-table-selection.tsx"
         },
         {
-          "path": "components/ui/table/data-table-floating-header.tsx",
+          "path": "src/components/ui/table/data-table-floating-header.tsx",
           "type": "registry:component",
           "target": "components/ui/table/data-table-floating-header.tsx"
         },
         {
-          "path": "components/ui/table/header-ref-context.tsx",
+          "path": "src/components/ui/table/header-ref-context.tsx",
           "type": "registry:component",
           "target": "components/ui/table/header-ref-context.tsx"
         }
-      ],
-      "title": "Data Table",
-      "description": "Advanced data table with sorting, filtering, and pagination."
+      ]
     },
     {
       "name": "accordion",
@@ -1868,26 +1643,9 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/accordion/accordion.tsx",
+          "path": "src/components/ui/accordion/accordion.tsx",
           "type": "registry:component",
           "target": "components/ui/accordion/accordion.tsx"
-        }
-      ],
-      "title": "Accordion",
-      "description": "Accordion component for collapsible content sections."
-    },
-    {
-      "name": "use-media-query",
-      "author": "hihahihahoho",
-      "type": "registry:hook",
-      "title": "Use Media Query",
-      "description": "Hook for responsive media queries.",
-      "dependencies": [],
-      "files": [
-        {
-          "path": "hooks/use-media-query.tsx",
-          "type": "registry:hook",
-          "target": "hooks/use-media-query.tsx"
         }
       ]
     }
