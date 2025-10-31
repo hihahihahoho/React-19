@@ -1,0 +1,193 @@
+# TungShadcn
+
+> TungShadcn is a custom shadcn/ui registry featuring beautifully-designed, accessible React components. Built with TypeScript, Tailwind CSS, and Radix UI primitives. Includes advanced components like virtualized selects, file upload, data tables, and custom form controls. Open Source. Open Code. AI-Ready.
+
+## Overview
+
+- [Registry](https://react-19.octung112.workers.dev): Custom component registry with 92 items.
+- Installation: Use `npx shadcn@latest add https://react-19.octung112.workers.dev/r/[component].json` to install components.
+- Schema: Follows [shadcn/ui registry schema](https://ui.shadcn.com/schema/registry.json).
+
+## Components
+
+### Form & Input
+
+- [Form](https://react-19.octung112.workers.dev/r/form.json): Building forms with React Hook Form and Zod validation.
+- [Button](https://react-19.octung112.workers.dev/r/button.json): Button component with multiple variants.
+- [Input](https://react-19.octung112.workers.dev/r/input.json): Text input component with form integration.
+- [Input Number](https://react-19.octung112.workers.dev/r/input-number.json): Number input with formatting and masking using Maskito.
+- [Input Tag](https://react-19.octung112.workers.dev/r/input-tag.json): Tag input component for selecting multiple values with badges.
+- [Input Auto Complete](https://react-19.octung112.workers.dev/r/input-auto-complete.json): Auto-complete input component with search.
+- [Textarea](https://react-19.octung112.workers.dev/r/textarea.json): Multi-line text input component with auto-resize support.
+- [Checkbox](https://react-19.octung112.workers.dev/r/checkbox.json): Checkbox input component with form integration.
+- [Checkbox Tree](https://react-19.octung112.workers.dev/r/checkbox-tree.json): Tree view checkbox component for hierarchical selection.
+- [Radio Group](https://react-19.octung112.workers.dev/r/radio-group.json): Radio button group component with form support.
+- [Select](https://react-19.octung112.workers.dev/r/select.json): Advanced select dropdown with search, virtualization, and form integration.
+- [Select Command](https://react-19.octung112.workers.dev/r/select-command.json): Command-based select with search and keyboard navigation.
+- [Select Command Virtualize](https://react-19.octung112.workers.dev/r/select-command-virtualize.json): Virtualized select for handling large lists efficiently.
+- [Select Popover](https://react-19.octung112.workers.dev/r/select-popover.json): Popover wrapper component for select dropdowns with mobile drawer support.
+- [Select Interface](https://react-19.octung112.workers.dev/r/select-interface.json): TypeScript interface definitions for select components.
+- [Multiselect](https://react-19.octung112.workers.dev/r/multiselect.json): Multi-select dropdown component with search and badges.
+- [Switch](https://react-19.octung112.workers.dev/r/switch.json): Toggle switch component with form integration.
+- [Label](https://react-19.octung112.workers.dev/r/label.json): Form label component.
+- [Selection Group](https://react-19.octung112.workers.dev/r/selection-group.json): Base component for selection controls.
+
+### Layout & Navigation
+
+- [Accordion](https://react-19.octung112.workers.dev/r/accordion.json): Collapsible accordion component.
+- [Breadcrumb](https://react-19.octung112.workers.dev/r/breadcrumb.json): Breadcrumb navigation component.
+- [Tabs](https://react-19.octung112.workers.dev/r/tabs.json): Tabs component for organizing content with scroll support.
+- [Tabs Core](https://react-19.octung112.workers.dev/r/tabs-core.json): Core tabs component with scroll and wheel navigation support.
+- [Tabs Line](https://react-19.octung112.workers.dev/r/tabs-line.json): Tabs component with animated underline indicator.
+- [Separator](https://react-19.octung112.workers.dev/r/separator.json): Visual divider between content sections.
+- [Scroll Area](https://react-19.octung112.workers.dev/r/scroll-area.json): Custom scrollable area with styled scrollbars.
+
+### Overlays & Dialogs
+
+- [Dialog](https://react-19.octung112.workers.dev/r/dialog.json): Modal dialog component.
+- [Alert Dialog](https://react-19.octung112.workers.dev/r/alert-dialog.json): Alert dialog for confirmation prompts.
+- [Alert Dialog Container](https://react-19.octung112.workers.dev/r/alert-dialog-container.json): Container for managing alert dialogs programmatically.
+- [Sheet](https://react-19.octung112.workers.dev/r/sheet.json): Slide-out panel component (drawer).
+- [Drawer](https://react-19.octung112.workers.dev/r/drawer.json): Mobile-friendly drawer component using Vaul.
+- [Popover](https://react-19.octung112.workers.dev/r/popover.json): Floating popover component.
+- [Tooltip](https://react-19.octung112.workers.dev/r/tooltip.json): Tooltip component for additional context.
+- [Hover Card](https://react-19.octung112.workers.dev/r/hover-card.json): Card that appears on hover.
+- [Context Menu](https://react-19.octung112.workers.dev/r/context-menu.json): Right-click context menu.
+- [Dropdown Menu](https://react-19.octung112.workers.dev/r/dropdown-menu.json): Dropdown menu component.
+- [Command](https://react-19.octung112.workers.dev/r/command.json): Command palette component (cmdk).
+- [Command Primitive Input](https://react-19.octung112.workers.dev/r/command-primitive-input.json): Input component for command primitives.
+
+### Feedback & Status
+
+- [Alert](https://react-19.octung112.workers.dev/r/alert.json): Alert component for messages and notifications.
+- [Toast](https://react-19.octung112.workers.dev/r/toast.json): Toast notification component using Radix UI.
+- [Sonner](https://react-19.octung112.workers.dev/r/sonner.json): Toast notifications using Sonner library.
+- [Skeleton](https://react-19.octung112.workers.dev/r/skeleton.json): Skeleton loading placeholder.
+- [Badge](https://react-19.octung112.workers.dev/r/badge.json): Badge component for labels and status indicators with tooltip support.
+- [Overflow Badge Group](https://react-19.octung112.workers.dev/r/overflow-badge-group.json): Badge group with overflow handling.
+- [Empty State](https://react-19.octung112.workers.dev/r/empty-state.json): Empty state component for no data scenarios.
+- [Circle Progress](https://react-19.octung112.workers.dev/r/circle-progress.json): Circular progress indicator component.
+
+### Display & Media
+
+- [Avatar](https://react-19.octung112.workers.dev/r/avatar.json): Avatar component for user profiles.
+- [Card](https://react-19.octung112.workers.dev/r/card.json): Card container component.
+- [Table](https://react-19.octung112.workers.dev/r/table.json): Table component for displaying data.
+- [Data Table](https://react-19.octung112.workers.dev/r/data-table.json): Advanced data table with sorting, filtering, and pagination using TanStack Table.
+- [Data Row](https://react-19.octung112.workers.dev/r/data-row.json): Component for displaying key-value data pairs.
+- [Typography](https://react-19.octung112.workers.dev/r/typography.json): Typography styles and components.
+- [PhotoSwipe](https://react-19.octung112.workers.dev/r/photoswipe.json): Image lightbox and gallery component using PhotoSwipe.
+- [Glass Icon](https://react-19.octung112.workers.dev/r/glass-icon.json): Glassmorphism icon component.
+- [Custom Icons](https://react-19.octung112.workers.dev/r/custom-icons.json): Custom icon components.
+
+### Date & Time
+
+- [Calendar](https://react-19.octung112.workers.dev/r/calendar.json): Calendar component for date selection with react-day-picker.
+- [Calendar Range](https://react-19.octung112.workers.dev/r/calendar-range.json): Calendar component for selecting date ranges.
+- [Date Time Input](https://react-19.octung112.workers.dev/r/date-time-input.json): Date and time input component with locale support.
+- [Date Time Input Group](https://react-19.octung112.workers.dev/r/date-time-input-group.json): Group of date/time inputs.
+
+### File Upload
+
+- [File Upload](https://react-19.octung112.workers.dev/r/file-upload.json): File upload component with drag and drop support.
+- [File Upload List](https://react-19.octung112.workers.dev/r/file-upload-list.json): File upload component with list view and preview.
+
+### Misc
+
+- [Collapsible](https://react-19.octung112.workers.dev/r/collapsible.json): Collapsible container component.
+- [Toggle](https://react-19.octung112.workers.dev/r/toggle.json): Toggle button component.
+- [Toggle Group](https://react-19.octung112.workers.dev/r/toggle-group.json): Group of toggle buttons.
+- [Pagination](https://react-19.octung112.workers.dev/r/pagination.json): Pagination component for lists and tables.
+
+## Hooks
+
+- [use-scroll](https://react-19.octung112.workers.dev/r/use-scroll.json): Hook for managing scroll behavior.
+- [use-file-upload](https://react-19.octung112.workers.dev/r/use-file-upload.json): Hook for file upload functionality.
+- [use-is-mounted](https://react-19.octung112.workers.dev/r/use-is-mounted.json): Hook to check if component is mounted.
+- [use-resize-observer](https://react-19.octung112.workers.dev/r/use-resize-observer.json): Hook for observing element resize events.
+- [use-scroll-position](https://react-19.octung112.workers.dev/r/use-scroll-position.json): Hook for tracking scroll position.
+- [use-scroll-into-view](https://react-19.octung112.workers.dev/r/use-scroll-into-view.json): Hook for scrolling elements into view.
+- [use-merge-ref](https://react-19.octung112.workers.dev/r/use-merge-ref.json): Hook for merging multiple refs.
+- [use-item-overflow](https://react-19.octung112.workers.dev/r/use-item-overflow.json): Hook for detecting item overflow.
+- [use-date-locale-config](https://react-19.octung112.workers.dev/r/use-date-locale-config.json): Hook for date localization configuration.
+- [use-history-state](https://react-19.octung112.workers.dev/r/use-history-state.json): Hook for managing history state.
+- [use-wheel-scroll](https://react-19.octung112.workers.dev/r/use-wheel-scroll.json): Hook for handling wheel scroll events.
+- [use-toast](https://react-19.octung112.workers.dev/r/use-toast.json): Hook for displaying toast notifications.
+- [use-sync-scroll](https://react-19.octung112.workers.dev/r/use-sync-scroll.json): Hook for synchronizing scroll between elements.
+- [use-mobile](https://react-19.octung112.workers.dev/r/use-mobile.json): Hook for detecting mobile devices.
+- [use-media-query](https://react-19.octung112.workers.dev/r/use-media-query.json): Hook for responsive media queries.
+- [use-is-display-none](https://react-19.octung112.workers.dev/r/use-is-display-none.json): Hook to check if element has display:none.
+- [use-alert-dialog](https://react-19.octung112.workers.dev/r/use-alert-dialog.json): Hook for managing alert dialogs.
+- [use-autosize-textarea](https://react-19.octung112.workers.dev/r/use-autosize-textarea.json): Hook for auto-resizing textareas.
+
+## Libraries
+
+- [utils-plus](https://react-19.octung112.workers.dev/r/utils-plus.json): Additional utility functions extending the base utils library.
+- [zod](https://react-19.octung112.workers.dev/r/zod.json): Zod schema utilities for form validation and data parsing.
+- [transliterate-vietnamese](https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json): Utility for transliterating Vietnamese text.
+- [locale-date](https://react-19.octung112.workers.dev/r/locale-date.json): Date localization utilities.
+- [get-node-text](https://react-19.octung112.workers.dev/r/get-node-text.json): Utility to extract text content from React nodes.
+- [fuzzy-search](https://react-19.octung112.workers.dev/r/fuzzy-search.json): Fuzzy search utility for filtering and searching data.
+- [file-size](https://react-19.octung112.workers.dev/r/file-size.json): Utility for formatting file sizes.
+- [const](https://react-19.octung112.workers.dev/r/const.json): Shared constants and configuration values.
+
+## Form Utilities
+
+- [Zod Schema Context](https://react-19.octung112.workers.dev/r/zod-schema-context.json): Context provider for Zod schema validation in forms.
+
+## Installation Examples
+
+```bash
+# Install a component
+npx shadcn@latest add https://react-19.octung112.workers.dev/r/button.json
+
+# Install select with all dependencies
+npx shadcn@latest add https://react-19.octung112.workers.dev/r/select.json
+
+# Install a hook
+npx shadcn@latest add https://react-19.octung112.workers.dev/r/use-media-query.json
+
+# Install a library
+npx shadcn@latest add https://react-19.octung112.workers.dev/r/utils-plus.json
+
+# Install file upload with dependencies
+npx shadcn@latest add https://react-19.octung112.workers.dev/r/file-upload.json
+
+# Install data table with all features
+npx shadcn@latest add https://react-19.octung112.workers.dev/r/data-table.json
+```
+
+## Features
+
+- **92 Total Items**: 65 components, 19 hooks, 8 libraries
+- **Advanced Select System**: Virtualized, searchable selects with multi-select support
+- **Form Integration**: All form components work seamlessly with React Hook Form and Zod
+- **File Upload**: Advanced file upload with drag-and-drop, preview, and validation
+- **Data Table**: Powerful table component with TanStack Table integration
+- **Responsive**: Mobile-first design with drawer fallbacks for mobile devices
+- **TypeScript**: Full TypeScript support with proper type definitions
+- **Accessible**: Built on Radix UI primitives for accessibility
+- **Customizable**: Easy to customize with Tailwind CSS and CSS variables
+
+## Registry Schema
+
+This registry follows the [shadcn/ui registry schema](https://ui.shadcn.com/schema/registry.json). Each component includes:
+- Dependencies (npm packages)
+- Registry dependencies (other components/hooks/libs)
+- File paths with proper targets
+- Type definitions (component/hook/lib)
+- Author and metadata
+
+## Usage with AI
+
+This registry is optimized for AI assistants. You can:
+- Ask AI to "add the select component from TungShadcn registry"
+- Request "install file upload from react-19.octung112.workers.dev"
+- Query "what components are available in the TungShadcn registry"
+- Get help with "how to use the virtualized select component"
+
+## Links
+
+- Registry: https://react-19.octung112.workers.dev
+- GitHub: https://github.com/hihahihahoho/React-19
+- Schema: https://ui.shadcn.com/schema/registry.json

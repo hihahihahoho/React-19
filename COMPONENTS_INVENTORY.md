@@ -1,6 +1,6 @@
 # Registry Components List
 
-A complete inventory of all 89 items in the TungShadcn registry.
+A complete inventory of all 92 items in the TungShadcn registry.
 
 ---
 
@@ -19,7 +19,7 @@ A complete inventory of all 89 items in the TungShadcn registry.
 
 ---
 
-## 🎣 Hooks (18 items)
+## 🎣 Hooks (19 items)
 
 | Name                     | Description                                     |
 | ------------------------ | ----------------------------------------------- |
@@ -37,14 +37,14 @@ A complete inventory of all 89 items in the TungShadcn registry.
 | `use-toast`              | Hook for displaying toast notifications.        |
 | `use-sync-scroll`        | Hook for synchronizing scroll between elements. |
 | `use-mobile`             | Hook for detecting mobile devices.              |
+| `use-media-query`        | Hook for responsive media queries.              |
 | `use-is-display-none`    | Hook to check if element has display:none.      |
 | `use-alert-dialog`       | Hook for managing alert dialogs.                |
 | `use-autosize-textarea`  | Hook for auto-resizing textareas.               |
-| `use-media-query`        | Hook for responsive media queries.              |
 
 ---
 
-## 🎨 Components (63 items)
+## 🎨 Components (65 items)
 
 ### Core UI Components
 
@@ -116,11 +116,14 @@ A complete inventory of all 89 items in the TungShadcn registry.
 
 ### Select Components
 
-| Name             | Description                                                    |
-| ---------------- | -------------------------------------------------------------- |
-| `select`         | Select dropdown component with search and multi-value support. |
-| `select-command` | Command-based select component with search.                    |
-| `multiselect`    | Multi-select dropdown component.                               |
+| Name                        | Description                                                         |
+| --------------------------- | ------------------------------------------------------------------- |
+| `select-interface`          | TypeScript interface definitions for select components.             |
+| `select-command`            | Command-based select component with search and keyboard navigation. |
+| `select-command-virtualize` | Virtualized select for handling large lists efficiently.            |
+| `select-popover`            | Popover wrapper component for select dropdowns.                     |
+| `select`                    | Advanced select dropdown component with search and virtualization.  |
+| `multiselect`               | Multi-select dropdown component with search and badges.             |
 
 ### Date & Time
 
@@ -193,9 +196,9 @@ npx shadcn@latest add https://react-19.octung112.workers.dev/r/utils-plus.json
 
 ## 🔗 Registry Information
 
-- **Total Items:** 89
-- **Components:** 63
-- **Hooks:** 18
+- **Total Items:** 92
+- **Components:** 65
+- **Hooks:** 19
 - **Libraries:** 8
 - **Homepage:** https://react-19.octung112.workers.dev
 - **Schema:** https://ui.shadcn.com/schema/registry.json
