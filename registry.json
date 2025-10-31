@@ -34,6 +34,14 @@
           "path": "lib/zod.ts",
           "type": "registry:lib",
           "target": "lib/zod.ts"
+        },
+        {
+          "path": "lib/const.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "lib/file-size.ts",
+          "type": "registry:lib"
         }
       ],
       "title": "Zod",
@@ -97,6 +105,10 @@
           "path": "lib/fuzzy-search.ts",
           "type": "registry:lib",
           "target": "lib/fuzzy-search.ts"
+        },
+        {
+          "path": "lib/transliterate-vietnamese.ts",
+          "type": "registry:lib"
         }
       ],
       "title": "Fuzzy Search",
@@ -344,6 +356,10 @@
           "path": "components/ui/tabs/tabs.tsx",
           "type": "registry:component",
           "target": "src/components/ui/tabs/tabs.tsx"
+        },
+        {
+          "path": "components/ui/tabs/tabs-core.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Tabs",
@@ -364,6 +380,10 @@
           "path": "components/ui/tabs/tabs-line.tsx",
           "type": "registry:component",
           "target": "src/components/ui/tabs/tabs-line.tsx"
+        },
+        {
+          "path": "components/ui/tabs/tabs-core.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Tabs Line",
@@ -470,6 +490,10 @@
           "path": "components/ui/toggle-group.tsx",
           "type": "registry:component",
           "target": "components/ui/toggle-group.tsx"
+        },
+        {
+          "path": "components/ui/toggle.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Toggle Group",
@@ -489,6 +513,10 @@
           "path": "components/ui/sonner.tsx",
           "type": "registry:component",
           "target": "components/ui/sonner.tsx"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Sonner",
@@ -613,6 +641,10 @@
           "path": "components/ui/pagination.tsx",
           "type": "registry:component",
           "target": "components/ui/pagination.tsx"
+        },
+        {
+          "path": "components/ui/button.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Pagination",
@@ -753,6 +785,14 @@
           "path": "components/ui/command.tsx",
           "type": "registry:component",
           "target": "components/ui/command.tsx"
+        },
+        {
+          "path": "components/ui/dialog.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/input/command-primitive-input.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Command",
@@ -906,6 +946,10 @@
           "path": "components/ui/input/input-tag-form.tsx",
           "type": "registry:component",
           "target": "components/ui/input/input-tag-form.tsx"
+        },
+        {
+          "path": "components/ui/input/input.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Input Tag",
@@ -1074,6 +1118,10 @@
           "path": "components/ui/alert-dialog/alert-dialog-container.tsx",
           "type": "registry:component",
           "target": "components/ui/alert-dialog/alert-dialog-container.tsx"
+        },
+        {
+          "path": "components/ui/alert-dialog/alert-dialog.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Alert Dialog Container",
@@ -1137,6 +1185,10 @@
           "path": "hooks/use-resize-observer.ts",
           "type": "registry:hook",
           "target": "hooks/use-resize-observer.ts"
+        },
+        {
+          "path": "hooks/use-is-mounted.ts",
+          "type": "registry:hook"
         }
       ],
       "title": "Use Resize Observer",
@@ -1358,6 +1410,10 @@
           "path": "components/ui/date-time-input/date-time-input.tsx",
           "type": "registry:component",
           "target": "components/ui/date-time-input/date-time-input.tsx"
+        },
+        {
+          "path": "components/ui/date-time-input/date-time-input-group.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Date Time Input",
@@ -1451,6 +1507,18 @@
           "path": "components/ui/select/select-popover.tsx",
           "type": "registry:component",
           "target": "components/ui/select/select-popover.tsx"
+        },
+        {
+          "path": "components/ui/select/select-command.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/select/select-command-virtualize.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/select/select-interface.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Select",
@@ -1486,6 +1554,22 @@
           "path": "components/ui/select/multiselect-form.tsx",
           "type": "registry:component",
           "target": "components/ui/select/multiselect-form.tsx"
+        },
+        {
+          "path": "components/ui/select/select-command.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/select/select-command-virtualize.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/select/select-interface.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/select/select-popover.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Multiselect",
@@ -1562,6 +1646,10 @@
           "path": "components/ui/selection-controls/checkbox-group-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/checkbox-group-form.tsx"
+        },
+        {
+          "path": "components/ui/selection-controls/selection-group.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Checkbox",
@@ -1591,6 +1679,10 @@
           "path": "components/ui/selection-controls/checkbox-tree-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/checkbox-tree-form.tsx"
+        },
+        {
+          "path": "components/ui/selection-controls/checkbox.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Checkbox Tree",
@@ -1620,6 +1712,10 @@
           "path": "components/ui/selection-controls/radio-group-form.tsx",
           "type": "registry:component",
           "target": "components/ui/selection-controls/radio-group-form.tsx"
+        },
+        {
+          "path": "components/ui/selection-controls/selection-group.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Radio Group",
@@ -1850,6 +1946,10 @@
           "path": "components/ui/table/header-ref-context.tsx",
           "type": "registry:component",
           "target": "components/ui/table/header-ref-context.tsx"
+        },
+        {
+          "path": "components/ui/table/table.tsx",
+          "type": "registry:component"
         }
       ],
       "title": "Data Table",
