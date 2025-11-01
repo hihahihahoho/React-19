@@ -15,7 +15,6 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
     />
   )
 }
-Pagination.displayName = "Pagination"
 
 function PaginationContent({
   className,
@@ -29,14 +28,12 @@ function PaginationContent({
     />
   )
 }
-PaginationContent.displayName = "PaginationContent"
 
 function PaginationItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li data-slot="pagination-item" className={cn("", className)} {...props} />
   )
 }
-PaginationItem.displayName = "PaginationItem"
 
 type PaginationLinkProps = {
   isActive?: boolean
@@ -72,7 +69,6 @@ function PaginationLink({
     />
   )
 }
-PaginationLink.displayName = "PaginationLink"
 
 function PaginationPrevious({
   className,
@@ -93,7 +89,6 @@ function PaginationPrevious({
     </PaginationLink>
   )
 }
-PaginationPrevious.displayName = "PaginationPrevious"
 
 function PaginationNext({
   className,
@@ -114,7 +109,6 @@ function PaginationNext({
     </PaginationLink>
   )
 }
-PaginationNext.displayName = "PaginationNext"
 
 function PaginationEllipsis({
   className,
@@ -132,7 +126,6 @@ function PaginationEllipsis({
     </span>
   )
 }
-PaginationEllipsis.displayName = "PaginationEllipsis"
 
 export type CombinedPaginationProps = {
   currentPage: number

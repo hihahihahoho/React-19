@@ -88,6 +88,4 @@ const CheckboxTreeForm = <
   )
 }
 
-CheckboxTreeForm.displayName = "CheckboxTreeForm"
-
 export { CheckboxTreeForm }

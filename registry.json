@@ -163,8 +163,8 @@
         "https://react-19.octung112.workers.dev/r/button.json",
         "https://react-19.octung112.workers.dev/r/calendar.json",
         "https://react-19.octung112.workers.dev/r/date-time-input.json",
-        "https://react-19.octung112.workers.dev/r/separator.json",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json",
+        "separator",
+        "use-media-query",
         "utils"
       ],
       "type": "registry:component",
@@ -219,39 +219,6 @@
           "path": "src/components/ui/context-menu.tsx",
           "type": "registry:component",
           "target": "components/ui/context-menu.tsx"
-        }
-      ]
-    },
-    {
-      "name": "hover-card",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-hover-card"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/hover-card.tsx",
-          "type": "registry:component",
-          "target": "components/ui/hover-card.tsx"
-        }
-      ]
-    },
-    {
-      "name": "collapsible",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-collapsible"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/collapsible.tsx",
-          "type": "registry:component",
-          "target": "components/ui/collapsible.tsx"
         }
       ]
     },
@@ -386,25 +353,6 @@
       ]
     },
     {
-      "name": "tooltip",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-tooltip"
-      ],
-      "registryDependencies": [
-        "utils",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/tooltip.tsx",
-          "type": "registry:component",
-          "target": "components/ui/tooltip.tsx"
-        }
-      ]
-    },
-    {
       "name": "toggle",
       "author": "hihahihahoho",
       "dependencies": [
@@ -415,30 +363,6 @@
       ],
       "type": "registry:component",
       "files": [
-        {
-          "path": "src/components/ui/toggle.tsx",
-          "type": "registry:component",
-          "target": "components/ui/toggle.tsx"
-        }
-      ]
-    },
-    {
-      "name": "toggle-group",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-toggle-group"
-      ],
-      "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/toggle.json",
-        "utils"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/toggle-group.tsx",
-          "type": "registry:component",
-          "target": "components/ui/toggle-group.tsx"
-        },
         {
           "path": "src/components/ui/toggle.tsx",
           "type": "registry:component",
@@ -464,62 +388,6 @@
           "type": "registry:component",
           "target": "components/ui/button.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils",
-        "https://react-19.octung112.workers.dev/r/button.json"
-      ]
-    },
-    {
-      "name": "skeleton",
-      "author": "hihahihahoho",
-      "dependencies": [],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/skeleton.tsx",
-          "type": "registry:component",
-          "target": "components/ui/skeleton.tsx"
-        }
-      ],
-      "registryDependencies": [
-        "utils"
-      ]
-    },
-    {
-      "name": "sheet",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-dialog"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/sheet.tsx",
-          "type": "registry:component",
-          "target": "components/ui/sheet.tsx"
-        }
-      ],
-      "registryDependencies": [
-        "utils"
-      ]
-    },
-    {
-      "name": "separator",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-separator"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/separator.tsx",
-          "type": "registry:component",
-          "target": "components/ui/separator.tsx"
-        }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
@@ -535,37 +403,13 @@
           "type": "registry:component",
           "target": "components/ui/scroll-area.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils",
-        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
-        "https://react-19.octung112.workers.dev/r/use-scroll-position.json"
-      ]
-    },
-    {
-      "name": "popover",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-popover"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/popover.tsx",
-          "type": "registry:component",
-          "target": "components/ui/popover.tsx"
-        }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
       "name": "photoswipe",
       "author": "hihahihahoho",
       "dependencies": [
-        "photoswipe",
-        "react-photoswipe-gallery"
+        "photoswipe"
       ],
       "type": "registry:component",
       "files": [
@@ -584,7 +428,7 @@
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/button.json",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json"
+        "use-media-query"
       ],
       "type": "registry:component",
       "files": [
@@ -601,24 +445,6 @@
       ]
     },
     {
-      "name": "label",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-label"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/label.tsx",
-          "type": "registry:component",
-          "target": "components/ui/label.tsx"
-        }
-      ],
-      "registryDependencies": [
-        "utils"
-      ]
-    },
-    {
       "name": "glass-icon",
       "author": "hihahihahoho",
       "dependencies": [],
@@ -629,9 +455,6 @@
           "type": "registry:component",
           "target": "components/ui/glass-icon.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
@@ -647,28 +470,6 @@
           "type": "registry:component",
           "target": "components/ui/empty-state.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils"
-      ]
-    },
-    {
-      "name": "dropdown-menu",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-dropdown-menu",
-        "lucide-react"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/dropdown-menu.tsx",
-          "type": "registry:component",
-          "target": "components/ui/dropdown-menu.tsx"
-        }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
@@ -684,9 +485,6 @@
           "type": "registry:component",
           "target": "components/ui/drawer.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
@@ -702,9 +500,6 @@
           "type": "registry:component",
           "target": "components/ui/dialog.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
@@ -743,28 +538,6 @@
           "type": "registry:component",
           "target": "components/ui/input/command-primitive-input.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils",
-        "https://react-19.octung112.workers.dev/r/get-node-text.json",
-        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
-        "https://react-19.octung112.workers.dev/r/form.json"
-      ]
-    },
-    {
-      "name": "card",
-      "author": "hihahihahoho",
-      "dependencies": [],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/card.tsx",
-          "type": "registry:component",
-          "target": "components/ui/card.tsx"
-        }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
@@ -778,9 +551,6 @@
           "type": "registry:component",
           "target": "components/ui/breadcrumb.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
@@ -796,17 +566,12 @@
           "type": "registry:component",
           "target": "components/ui/avatar.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils"
       ]
     },
     {
       "name": "input",
       "author": "hihahihahoho",
-      "dependencies": [
-        "react-hook-form"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/form.json",
         "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
@@ -832,7 +597,6 @@
       "name": "input-number",
       "author": "hihahihahoho",
       "dependencies": [
-        "react-hook-form",
         "@maskito/core",
         "@maskito/kit",
         "@maskito/react"
@@ -863,10 +627,7 @@
       "name": "input-tag",
       "author": "hihahihahoho",
       "dependencies": [
-        "react-hook-form",
-        "@radix-ui/react-popover",
         "@radix-ui/rect",
-        "cmdk",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -874,8 +635,8 @@
         "https://react-19.octung112.workers.dev/r/badge.json",
         "https://react-19.octung112.workers.dev/r/command.json",
         "https://react-19.octung112.workers.dev/r/form.json",
-        "https://react-19.octung112.workers.dev/r/popover.json",
-        "https://react-19.octung112.workers.dev/r/tooltip.json",
+        "react-popover",
+        "tooltip",
         "https://react-19.octung112.workers.dev/r/select.json",
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/use-history-state.json",
@@ -906,14 +667,11 @@
     {
       "name": "input-auto-complete",
       "author": "hihahihahoho",
-      "dependencies": [
-        "react-hook-form",
-        "cmdk"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/command.json",
         "https://react-19.octung112.workers.dev/r/form.json",
-        "https://react-19.octung112.workers.dev/r/popover.json",
+        "react-popover",
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
@@ -959,16 +717,12 @@
     {
       "name": "textarea",
       "author": "hihahihahoho",
-      "dependencies": [
-        "react-hook-form"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/form.json",
         "https://react-19.octung112.workers.dev/r/utils-plus.json",
         "https://react-19.octung112.workers.dev/r/use-autosize-textarea.json",
-        "https://react-19.octung112.workers.dev/r/circle-progress.json",
-        "utils",
-        "https://react-19.octung112.workers.dev/r/get-node-text.json"
+        "https://react-19.octung112.workers.dev/r/circle-progress.json"
       ],
       "type": "registry:component",
       "files": [
@@ -991,12 +745,11 @@
         "@hookform/resolvers",
         "react-hook-form",
         "zod",
-        "@radix-ui/react-label",
         "@radix-ui/react-slot",
         "class-variance-authority"
       ],
       "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/label.json",
+        "label",
         "https://react-19.octung112.workers.dev/r/button.json",
         "https://react-19.octung112.workers.dev/r/custom-icons.json",
         "utils",
@@ -1044,10 +797,6 @@
           "type": "registry:component",
           "target": "components/ui/alert-dialog/alert-dialog.tsx"
         }
-      ],
-      "registryDependencies": [
-        "utils",
-        "https://react-19.octung112.workers.dev/r/button.json"
       ]
     },
     {
@@ -1102,10 +851,6 @@
           "type": "registry:hook",
           "target": "hooks/use-file-upload.ts"
         }
-      ],
-      "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/sonner.json",
-        "https://react-19.octung112.workers.dev/r/const.json"
       ]
     },
     {
@@ -1205,9 +950,6 @@
           "type": "registry:hook",
           "target": "hooks/use-date-locale-config.ts"
         }
-      ],
-      "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/locale-date.json"
       ]
     },
     {
@@ -1247,9 +989,6 @@
           "type": "registry:hook",
           "target": "hooks/use-toast.ts"
         }
-      ],
-      "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/toast.json"
       ]
     },
     {
@@ -1275,21 +1014,6 @@
           "path": "src/hooks/use-mobile.tsx",
           "type": "registry:hook",
           "target": "hooks/use-mobile.tsx"
-        }
-      ]
-    },
-    {
-      "name": "use-media-query",
-      "author": "hihahihahoho",
-      "title": "Use Media Query",
-      "description": "Hook for responsive media queries",
-      "dependencies": [],
-      "type": "registry:hook",
-      "files": [
-        {
-          "path": "src/hooks/use-media-query.tsx",
-          "type": "registry:hook",
-          "target": "hooks/use-media-query.tsx"
         }
       ]
     },
@@ -1377,15 +1101,10 @@
       "author": "hihahihahoho",
       "title": "Select Interface",
       "description": "TypeScript interface definitions for select components",
-      "dependencies": [
-        "cmdk"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/badge.json",
-        "https://react-19.octung112.workers.dev/r/command.json",
-        "https://react-19.octung112.workers.dev/r/get-node-text.json",
-        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
-        "https://react-19.octung112.workers.dev/r/form.json"
+        "https://react-19.octung112.workers.dev/r/command.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1402,7 +1121,6 @@
       "title": "Select Command",
       "description": "Command-based select dropdown component with search and keyboard navigation",
       "dependencies": [
-        "cmdk",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1410,7 +1128,7 @@
         "https://react-19.octung112.workers.dev/r/badge.json",
         "https://react-19.octung112.workers.dev/r/command.json",
         "https://react-19.octung112.workers.dev/r/checkbox.json",
-        "https://react-19.octung112.workers.dev/r/separator.json",
+        "separator",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/get-node-text.json",
@@ -1431,7 +1149,6 @@
       "title": "Select Command Virtualize",
       "description": "Virtualized version of select command for handling large lists efficiently",
       "dependencies": [
-        "cmdk",
         "lucide-react",
         "@tanstack/react-virtual"
       ],
@@ -1442,9 +1159,9 @@
         "https://react-19.octung112.workers.dev/r/get-node-text.json",
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
-        "https://react-19.octung112.workers.dev/r/separator.json",
+        "separator",
         "utils",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json"
+        "use-media-query"
       ],
       "type": "registry:component",
       "files": [
@@ -1460,18 +1177,13 @@
       "author": "hihahihahoho",
       "title": "Select Popover",
       "description": "Popover wrapper component for select dropdowns",
-      "dependencies": [
-        "@radix-ui/react-popover"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/drawer.json",
-        "https://react-19.octung112.workers.dev/r/popover.json",
+        "react-popover",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json",
-        "utils",
-        "https://react-19.octung112.workers.dev/r/get-node-text.json",
-        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
-        "https://react-19.octung112.workers.dev/r/form.json"
+        "use-media-query",
+        "utils"
       ],
       "type": "registry:component",
       "files": [
@@ -1487,10 +1199,7 @@
       "author": "hihahihahoho",
       "title": "Select",
       "description": "Advanced select component with search, virtualization, and form integration",
-      "dependencies": [
-        "react-hook-form",
-        "cmdk"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/avatar.json",
         "https://react-19.octung112.workers.dev/r/badge.json",
@@ -1500,7 +1209,7 @@
         "https://react-19.octung112.workers.dev/r/select-command-virtualize.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "https://react-19.octung112.workers.dev/r/select-popover.json",
-        "https://react-19.octung112.workers.dev/r/separator.json",
+        "separator",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/utils-plus.json"
@@ -1524,10 +1233,7 @@
       "author": "hihahihahoho",
       "title": "Multi Select",
       "description": "Multi-selection component with search, badges, and form integration",
-      "dependencies": [
-        "react-hook-form",
-        "cmdk"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/avatar.json",
         "https://react-19.octung112.workers.dev/r/badge.json",
@@ -1537,7 +1243,7 @@
         "https://react-19.octung112.workers.dev/r/select-command-virtualize.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "https://react-19.octung112.workers.dev/r/select-popover.json",
-        "https://react-19.octung112.workers.dev/r/separator.json",
+        "separator",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/utils-plus.json",
@@ -1565,9 +1271,9 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/tooltip.json",
+        "tooltip",
         "utils",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json"
+        "use-media-query"
       ],
       "type": "registry:component",
       "files": [
@@ -1586,7 +1292,7 @@
         "https://react-19.octung112.workers.dev/r/badge.json",
         "https://react-19.octung112.workers.dev/r/use-item-overflow.json",
         "utils",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json"
+        "use-media-query"
       ],
       "type": "registry:component",
       "files": [
@@ -1601,7 +1307,6 @@
       "name": "checkbox",
       "author": "hihahihahoho",
       "dependencies": [
-        "react-hook-form",
         "@radix-ui/react-checkbox"
       ],
       "registryDependencies": [
@@ -1637,8 +1342,7 @@
       "name": "checkbox-tree",
       "author": "hihahihahoho",
       "dependencies": [
-        "lucide-react",
-        "react-hook-form"
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/checkbox.json",
@@ -1669,7 +1373,6 @@
       "name": "radio-group",
       "author": "hihahihahoho",
       "dependencies": [
-        "react-hook-form",
         "@radix-ui/react-radio-group"
       ],
       "registryDependencies": [
@@ -1717,7 +1420,6 @@
       "name": "switch",
       "author": "hihahihahoho",
       "dependencies": [
-        "react-hook-form",
         "@radix-ui/react-switch"
       ],
       "registryDependencies": [
@@ -1742,7 +1444,6 @@
       "name": "file-upload-list",
       "author": "hihahihahoho",
       "dependencies": [
-        "react-hook-form",
         "lucide-react"
       ],
       "registryDependencies": [
@@ -1776,7 +1477,6 @@
       "name": "file-upload",
       "author": "hihahihahoho",
       "dependencies": [
-        "react-hook-form",
         "lucide-react"
       ],
       "registryDependencies": [

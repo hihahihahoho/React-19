@@ -47,6 +47,4 @@ const InputTagForm = <
   )
 }
 
-InputTagForm.displayName = "InputTagForm"
-
 export { InputTagForm }

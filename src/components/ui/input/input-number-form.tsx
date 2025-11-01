@@ -64,6 +64,4 @@ const InputNumberForm = <
   )
 }
 
-InputNumberForm.displayName = "InputNumberForm"
-
 export { InputNumberForm }

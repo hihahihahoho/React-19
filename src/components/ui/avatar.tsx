@@ -35,7 +35,6 @@ function Avatar({ className, size, ...props }: AvatarProps) {
     />
   )
 }
-Avatar.displayName = AvatarPrimitive.Root.displayName
 
 function AvatarImage({
   className,
@@ -49,7 +48,6 @@ function AvatarImage({
     />
   )
 }
-AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
 function AvatarFallback({
   className,
@@ -59,13 +57,12 @@ function AvatarFallback({
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        "flex h-full w-full items-center justify-center rounded-full bg-muted",
+        "bg-muted flex h-full w-full items-center justify-center rounded-full",
         className
       )}
       {...props}
     />
   )
 }
-AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
 
 export { Avatar, AvatarFallback, AvatarImage }

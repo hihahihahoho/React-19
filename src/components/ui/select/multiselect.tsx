@@ -213,6 +213,4 @@ function MultiSelect({
   )
 }
 
-MultiSelect.displayName = "MultiSelect"
-
 export { MultiSelect }

@@ -7,10 +7,29 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Slottable } from "@radix-ui/react-slot"
 
-const Dialog = DialogPrimitive.Root
-const DialogTrigger = DialogPrimitive.Trigger
-const DialogPortal = DialogPrimitive.Portal
-const DialogClose = DialogPrimitive.Close
+function Dialog({
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Root>) {
+  return <DialogPrimitive.Root data-slot="dialog" {...props} />
+}
+
+function DialogTrigger({
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
+}
+
+function DialogPortal({
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Portal>) {
+  return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
+}
+
+function DialogClose({
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
+}
 
 function DialogOverlay({
   className,
@@ -32,8 +51,10 @@ function DialogContent({
   className,
   children,
   innerScroll,
+  showCloseButton,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
+  showCloseButton?: boolean
   innerScroll?: boolean
 }) {
   const [currentScroll, setCurrentScroll] = React.useState(0)
@@ -48,24 +69,26 @@ function DialogContent({
           className={cn(
             "margin-auto bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative top-0 my-4 max-h-[calc(100vh_-_32px)] w-[calc(100%_-_32px)] max-w-xl gap-4 overflow-auto rounded-lg border p-0 shadow-lg max-md:border-0",
             innerScroll
-              ? "flex flex-col gap-0 overflow-hidden **:data-[slot=dialog-inner]:overflow-y-auto"
+              ? "**:data-[slot=dialog-inner]:overflow-y-auto flex flex-col gap-0 overflow-hidden"
               : "overflow-auto",
             className
           )}
           {...props}
         >
-          <div className="sticky top-0 z-50 w-full">
-            <DialogPrimitive.Close
-              className={cn(
-                "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-2 right-2 flex size-8 items-center justify-center rounded-full backdrop-blur-sm transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none",
-                currentScroll > 20 &&
-                  "bg-foreground/70 text-background shadow-xs"
-              )}
-            >
-              <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
-            </DialogPrimitive.Close>
-          </div>
+          {showCloseButton && (
+            <div className="sticky top-0 z-50 w-full">
+              <DialogPrimitive.Close
+                className={cn(
+                  "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground focus:outline-hidden absolute right-2 top-2 flex size-8 items-center justify-center rounded-full backdrop-blur-sm transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none",
+                  currentScroll > 20 &&
+                    "bg-foreground/70 text-background shadow-xs"
+                )}
+              >
+                <X className="h-4 w-4" />
+                <span className="sr-only">Close</span>
+              </DialogPrimitive.Close>
+            </div>
+          )}
           <Slottable>{children}</Slottable>
         </DialogPrimitive.Content>
       </DialogOverlay>
@@ -73,10 +96,7 @@ function DialogContent({
   )
 }
 
-function DialogHeader({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
@@ -89,10 +109,7 @@ function DialogHeader({
   )
 }
 
-function DialogFooter({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-footer"
@@ -113,7 +130,7 @@ function DialogTitle({
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cn(
-        "text-lg leading-none font-semibold tracking-tight",
+        "text-lg font-semibold leading-none tracking-tight",
         className
       )}
       {...props}
@@ -138,7 +155,7 @@ function DialogInner({
   className,
   children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-inner"

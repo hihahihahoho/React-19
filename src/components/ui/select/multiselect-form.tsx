@@ -50,6 +50,4 @@ const MultiSelectForm = <
   )
 }
 
-MultiSelectForm.displayName = "MultiSelectForm"
-
 export { MultiSelectForm }

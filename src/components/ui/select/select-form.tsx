@@ -47,6 +47,4 @@ const SelectForm = <
   )
 }
 
-SelectForm.displayName = "SelectForm"
-
 export { SelectForm }

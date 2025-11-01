@@ -89,6 +89,4 @@ const CheckboxGroupForm = <
   )
 }
 
-CheckboxGroupForm.displayName = "CheckboxGroupForm"
-
 export { CheckboxGroupForm }

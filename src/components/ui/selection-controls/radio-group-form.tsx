@@ -72,6 +72,4 @@ const RadioGroupForm = <
   )
 }
 
-RadioGroupForm.displayName = "RadioGroupForm"
-
 export { RadioGroupForm }

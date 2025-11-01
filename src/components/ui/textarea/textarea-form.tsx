@@ -54,6 +54,4 @@ const TextareaForm = <
   )
 }
 
-TextareaForm.displayName = "TextareaForm"
-
 export { TextareaForm }

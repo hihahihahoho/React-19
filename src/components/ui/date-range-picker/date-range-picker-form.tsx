@@ -89,6 +89,4 @@ const DateRangePickerForm = <
   )
 }
 
-DateRangePickerForm.displayName = "DateRangePickerForm"
-
 export { DateRangePickerForm }

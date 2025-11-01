@@ -7,7 +7,7 @@ import * as React from "react"
 import { Badge, BadgeProps } from "../badge/badge"
 
 export interface OverflowBadgeGroupProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends React.ComponentProps<"div">,
     Omit<UseItemOverflowProps, "totalItems"> {
   items: Array<{
     key: string

@@ -47,7 +47,7 @@ export type LightBoxImageType = {
   alt?: string
 }
 
-type LightboxItemProps = React.HTMLAttributes<HTMLDivElement> &
+type LightboxItemProps = React.ComponentProps<"div"> &
   Omit<LightBoxImageType, "thumb"> & {
     index: number
     selectedIndex: number
@@ -118,7 +118,6 @@ const LightboxItem = React.forwardRef<HTMLDivElement, LightboxItemProps>(
   }
 )
 
-LightboxItem.displayName = "LightboxItem"
 
 type LightboxRootProps = {
   images: LightBoxImageType[]

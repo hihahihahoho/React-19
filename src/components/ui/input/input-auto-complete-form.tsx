@@ -50,6 +50,4 @@ const InputAutoCompleteForm = <
   )
 }
 
-InputAutoCompleteForm.displayName = "InputAutoCompleteForm"
-
 export { InputAutoCompleteForm }

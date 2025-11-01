@@ -4,7 +4,7 @@
 
 ## Overview
 
-- [Registry](https://react-19.octung112.workers.dev): Custom component registry with 92 items.
+- [Registry](https://react-19.octung112.workers.dev): Custom component registry with 83 items (excluding native shadcn/ui components).
 - Installation: Use `npx shadcn@latest add https://react-19.octung112.workers.dev/r/[component].json` to install components.
 - Schema: Follows [shadcn/ui registry schema](https://ui.shadcn.com/schema/registry.json).
 
@@ -29,17 +29,14 @@
 - [Select Interface](https://react-19.octung112.workers.dev/r/select-interface.json): TypeScript interface definitions for select components.
 - [Multiselect](https://react-19.octung112.workers.dev/r/multiselect.json): Multi-select dropdown component with search and badges.
 - [Switch](https://react-19.octung112.workers.dev/r/switch.json): Toggle switch component with form integration.
-- [Label](https://react-19.octung112.workers.dev/r/label.json): Form label component.
 - [Selection Group](https://react-19.octung112.workers.dev/r/selection-group.json): Base component for selection controls.
 
 ### Layout & Navigation
 
 - [Accordion](https://react-19.octung112.workers.dev/r/accordion.json): Collapsible accordion component.
-- [Breadcrumb](https://react-19.octung112.workers.dev/r/breadcrumb.json): Breadcrumb navigation component.
 - [Tabs](https://react-19.octung112.workers.dev/r/tabs.json): Tabs component for organizing content with scroll support.
 - [Tabs Core](https://react-19.octung112.workers.dev/r/tabs-core.json): Core tabs component with scroll and wheel navigation support.
 - [Tabs Line](https://react-19.octung112.workers.dev/r/tabs-line.json): Tabs component with animated underline indicator.
-- [Separator](https://react-19.octung112.workers.dev/r/separator.json): Visual divider between content sections.
 - [Scroll Area](https://react-19.octung112.workers.dev/r/scroll-area.json): Custom scrollable area with styled scrollbars.
 
 ### Overlays & Dialogs
@@ -47,13 +44,8 @@
 - [Dialog](https://react-19.octung112.workers.dev/r/dialog.json): Modal dialog component.
 - [Alert Dialog](https://react-19.octung112.workers.dev/r/alert-dialog.json): Alert dialog for confirmation prompts.
 - [Alert Dialog Container](https://react-19.octung112.workers.dev/r/alert-dialog-container.json): Container for managing alert dialogs programmatically.
-- [Sheet](https://react-19.octung112.workers.dev/r/sheet.json): Slide-out panel component (drawer).
 - [Drawer](https://react-19.octung112.workers.dev/r/drawer.json): Mobile-friendly drawer component using Vaul.
-- [Popover](https://react-19.octung112.workers.dev/r/popover.json): Floating popover component.
-- [Tooltip](https://react-19.octung112.workers.dev/r/tooltip.json): Tooltip component for additional context.
-- [Hover Card](https://react-19.octung112.workers.dev/r/hover-card.json): Card that appears on hover.
 - [Context Menu](https://react-19.octung112.workers.dev/r/context-menu.json): Right-click context menu.
-- [Dropdown Menu](https://react-19.octung112.workers.dev/r/dropdown-menu.json): Dropdown menu component.
 - [Command](https://react-19.octung112.workers.dev/r/command.json): Command palette component (cmdk).
 - [Command Primitive Input](https://react-19.octung112.workers.dev/r/command-primitive-input.json): Input component for command primitives.
 
@@ -62,7 +54,6 @@
 - [Alert](https://react-19.octung112.workers.dev/r/alert.json): Alert component for messages and notifications.
 - [Toast](https://react-19.octung112.workers.dev/r/toast.json): Toast notification component using Radix UI.
 - [Sonner](https://react-19.octung112.workers.dev/r/sonner.json): Toast notifications using Sonner library.
-- [Skeleton](https://react-19.octung112.workers.dev/r/skeleton.json): Skeleton loading placeholder.
 - [Badge](https://react-19.octung112.workers.dev/r/badge.json): Badge component for labels and status indicators with tooltip support.
 - [Overflow Badge Group](https://react-19.octung112.workers.dev/r/overflow-badge-group.json): Badge group with overflow handling.
 - [Empty State](https://react-19.octung112.workers.dev/r/empty-state.json): Empty state component for no data scenarios.
@@ -71,7 +62,6 @@
 ### Display & Media
 
 - [Avatar](https://react-19.octung112.workers.dev/r/avatar.json): Avatar component for user profiles.
-- [Card](https://react-19.octung112.workers.dev/r/card.json): Card container component.
 - [Table](https://react-19.octung112.workers.dev/r/table.json): Table component for displaying data.
 - [Data Table](https://react-19.octung112.workers.dev/r/data-table.json): Advanced data table with sorting, filtering, and pagination using TanStack Table.
 - [Data Row](https://react-19.octung112.workers.dev/r/data-row.json): Component for displaying key-value data pairs.
@@ -94,9 +84,6 @@
 
 ### Misc
 
-- [Collapsible](https://react-19.octung112.workers.dev/r/collapsible.json): Collapsible container component.
-- [Toggle](https://react-19.octung112.workers.dev/r/toggle.json): Toggle button component.
-- [Toggle Group](https://react-19.octung112.workers.dev/r/toggle-group.json): Group of toggle buttons.
 - [Pagination](https://react-19.octung112.workers.dev/r/pagination.json): Pagination component for lists and tables.
 
 ## Hooks
@@ -115,7 +102,6 @@
 - [use-toast](https://react-19.octung112.workers.dev/r/use-toast.json): Hook for displaying toast notifications.
 - [use-sync-scroll](https://react-19.octung112.workers.dev/r/use-sync-scroll.json): Hook for synchronizing scroll between elements.
 - [use-mobile](https://react-19.octung112.workers.dev/r/use-mobile.json): Hook for detecting mobile devices.
-- [use-media-query](https://react-19.octung112.workers.dev/r/use-media-query.json): Hook for responsive media queries.
 - [use-is-display-none](https://react-19.octung112.workers.dev/r/use-is-display-none.json): Hook to check if element has display:none.
 - [use-alert-dialog](https://react-19.octung112.workers.dev/r/use-alert-dialog.json): Hook for managing alert dialogs.
 - [use-autosize-textarea](https://react-19.octung112.workers.dev/r/use-autosize-textarea.json): Hook for auto-resizing textareas.
@@ -159,7 +145,7 @@ npx shadcn@latest add https://react-19.octung112.workers.dev/r/data-table.json
 
 ## Features
 
-- **92 Total Items**: 65 components, 19 hooks, 8 libraries
+- **83 Total Items**: 56 components, 18 hooks, 8 libraries
 - **Advanced Select System**: Virtualized, searchable selects with multi-select support
 - **Form Integration**: All form components work seamlessly with React Hook Form and Zod
 - **File Upload**: Advanced file upload with drag-and-drop, preview, and validation

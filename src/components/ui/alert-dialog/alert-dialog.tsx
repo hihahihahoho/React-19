@@ -27,7 +27,6 @@ function AlertDialogOverlay({
     />
   )
 }
-AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName
 
 function AlertDialogContent({
   className,
@@ -56,12 +55,11 @@ function AlertDialogContent({
     </AlertDialogPortal>
   )
 }
-AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName
 
 function AlertDialogHeader({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="header"
@@ -73,13 +71,12 @@ function AlertDialogHeader({
     />
   )
 }
-AlertDialogHeader.displayName = "AlertDialogHeader"
 
 function AlertDialogFooter({
   className,
   footerOrientation = "horizontal",
   ...props
-}: React.HTMLAttributes<HTMLDivElement> & {
+}: React.ComponentProps<"div"> & {
   footerOrientation?: "horizontal" | "vertical"
 }) {
   return (
@@ -94,7 +91,6 @@ function AlertDialogFooter({
     />
   )
 }
-AlertDialogFooter.displayName = "AlertDialogFooter"
 
 function AlertDialogTitle({
   className,
@@ -108,7 +104,6 @@ function AlertDialogTitle({
     />
   )
 }
-AlertDialogTitle.displayName = AlertDialogPrimitive.Title.displayName
 
 function AlertDialogDescription({
   className,
@@ -122,8 +117,6 @@ function AlertDialogDescription({
     />
   )
 }
-AlertDialogDescription.displayName =
-  AlertDialogPrimitive.Description.displayName
 
 function AlertDialogAction({
   className,
@@ -137,7 +130,6 @@ function AlertDialogAction({
     />
   )
 }
-AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName
 
 function AlertDialogCancel({
   className,
@@ -155,7 +147,6 @@ function AlertDialogCancel({
     />
   )
 }
-AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName
 
 export {
   AlertDialog,

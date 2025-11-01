@@ -48,6 +48,4 @@ const SwitchForm = <
   )
 }
 
-SwitchForm.displayName = "SwitchForm"
-
 export { SwitchForm }

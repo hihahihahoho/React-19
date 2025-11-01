@@ -60,6 +60,4 @@ const FileUploadListForm = <
   )
 }
 
-FileUploadListForm.displayName = "FileUploadListForm"
-
 export { FileUploadListForm }

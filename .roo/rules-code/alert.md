@@ -12,7 +12,7 @@ import { Alert, type AlertProps } from "@/components/ui/alert"
 
 ## Props Explanation
 
-The Alert component extends React.HTMLAttributes<HTMLDivElement> to accept all standard HTML div attributes plus the following:
+The Alert component extends React.ComponentProps<"div"> to accept all standard HTML div attributes plus the following:
 
 | Prop          | Type                                                                            | Default   | Description                                                       |
 | ------------- | ------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------- |

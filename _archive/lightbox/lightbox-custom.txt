@@ -9,7 +9,7 @@ import {
 
 const LightBoxImageGrid = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
+  React.ComponentProps<"div"> & {
     images: LightBoxImageType[]
   }
 >(({ className, images, ...props }, ref) => {
@@ -48,6 +48,5 @@ const LightBoxImageGrid = React.forwardRef<
     </LightboxContext>
   )
 })
-LightBoxImageGrid.displayName = "LightBoxImageGrid"
 
 export { LightBoxImageGrid }

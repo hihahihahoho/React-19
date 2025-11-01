@@ -46,6 +46,4 @@ const CheckboxForm = <
   )
 }
 
-CheckboxForm.displayName = "CheckboxForm"
-
 export { CheckboxForm }
