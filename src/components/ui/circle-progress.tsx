@@ -58,10 +58,8 @@ const CircleProgress = ({
   const animatedValueRef = React.useRef(animatedValue)
 
   // Generate a unique gradient ID if not provided
-  const uniqueGradientId = React.useRef(
-    gradientId ||
-      `circle-progress-gradient-${Math.random().toString(36).substring(2, 9)}`
-  ).current
+  const autoId = React.useId()
+  const uniqueGradientId = gradientId || `circle-progress-gradient-${autoId}`
 
   // Update ref when state changes
   React.useEffect(() => {

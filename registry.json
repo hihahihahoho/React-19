@@ -396,6 +396,11 @@
       "dependencies": [
         "@radix-ui/react-scroll-area"
       ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/use-scroll-position.json",
+        "utils"
+      ],
       "type": "registry:component",
       "files": [
         {
@@ -463,6 +468,9 @@
       "dependencies": [
         "lucide-react"
       ],
+      "registryDependencies": [
+        "utils"
+      ],
       "type": "registry:component",
       "files": [
         {
@@ -478,6 +486,9 @@
       "dependencies": [
         "vaul"
       ],
+      "registryDependencies": [
+        "utils"
+      ],
       "type": "registry:component",
       "files": [
         {
@@ -492,6 +503,9 @@
       "author": "hihahihahoho",
       "dependencies": [
         "@radix-ui/react-dialog"
+      ],
+      "registryDependencies": [
+        "utils"
       ],
       "type": "registry:component",
       "files": [
@@ -521,6 +535,12 @@
       "dependencies": [
         "cmdk"
       ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
+        "https://react-19.octung112.workers.dev/r/command-primitive-input.json",
+        "utils"
+      ],
       "type": "registry:component",
       "files": [
         {
@@ -532,24 +552,6 @@
           "path": "src/components/ui/dialog.tsx",
           "type": "registry:component",
           "target": "components/ui/dialog.tsx"
-        },
-        {
-          "path": "src/components/ui/input/command-primitive-input.tsx",
-          "type": "registry:component",
-          "target": "components/ui/input/command-primitive-input.tsx"
-        }
-      ]
-    },
-    {
-      "name": "breadcrumb",
-      "author": "hihahihahoho",
-      "dependencies": [],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/breadcrumb.tsx",
-          "type": "registry:component",
-          "target": "components/ui/breadcrumb.tsx"
         }
       ]
     },
@@ -699,11 +701,11 @@
       "author": "hihahihahoho",
       "dependencies": [],
       "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/form.json",
         "https://react-19.octung112.workers.dev/r/command.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/get-node-text.json",
-        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
-        "https://react-19.octung112.workers.dev/r/form.json"
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json"
       ],
       "type": "registry:component",
       "files": [
@@ -790,6 +792,9 @@
       "dependencies": [
         "@radix-ui/react-alert-dialog"
       ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/button.json"
+      ],
       "type": "registry:component",
       "files": [
         {
@@ -844,6 +849,10 @@
       "name": "use-file-upload",
       "author": "hihahihahoho",
       "dependencies": [],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/sonner.json",
+        "https://react-19.octung112.workers.dev/r/const.json"
+      ],
       "type": "registry:hook",
       "files": [
         {
