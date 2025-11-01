@@ -47,6 +47,8 @@ function DateSegment({
   const [isFocused, setIsFocused] = useState(false)
   const [inputValue, setInputValue] = useState(value)
   const [isOverwriteMode, setIsOverwriteMode] = useState(true)
+  const [lastResetKey, setLastResetKey] = useState(resetKey)
+  const [lastValue, setLastValue] = useState(value)
 
   useEffect(() => {
     const node = ref.current
@@ -68,17 +70,17 @@ function DateSegment({
     }
   }, [segmentRefCallback])
 
-  useEffect(() => {
-    if (!isFocused) {
-      setInputValue(value)
-    }
-  }, [value, isFocused])
+  // Update input value when value prop changes (only when not focused)
+  if (!isFocused && value !== lastValue) {
+    setLastValue(value)
+    setInputValue(value)
+  }
 
-  useEffect(() => {
-    if (resetKey > 0) {
-      setInputValue("")
-    }
-  }, [resetKey])
+  // Reset input when resetKey changes
+  if (resetKey > 0 && resetKey !== lastResetKey) {
+    setLastResetKey(resetKey)
+    setInputValue("")
+  }
 
   const focusNextSegment = () => {
     if (dateGroup && ref.current) {
@@ -255,7 +257,7 @@ function DateSegment({
       <div
         ref={ref}
         role="spinbutton"
-        className={`relative cursor-text select-none rounded-md px-[1px] text-center tabular-nums caret-transparent outline-hidden ${
+        className={`relative cursor-text rounded-md px-[1px] text-center tabular-nums caret-transparent outline-hidden select-none ${
           !displayValue && "text-muted-foreground"
         } ${isFocused ? "bg-primary/20" : "hover:bg-primary/20"}`}
         id={id}
@@ -328,6 +330,10 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       isValid(value) ? format(value || "", "m") : ""
     )
 
+    const [lastValueProp, setLastValueProp] = useState(value)
+    const [lastDefaultValue, setLastDefaultValue] = useState(defaultValue)
+    const [lastGranularity, setLastGranularity] = useState(granularity)
+
     const segmentRefs = useRef<HTMLDivElement[]>([])
 
     const segmentRefCallback = (node: HTMLDivElement | null) => {
@@ -340,33 +346,39 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
       }
     }
 
-    useEffect(() => {
-      if (!value && defaultValue) {
-        if (granularity !== "time") {
-          setDay(format(defaultValue, "d"))
-          setMonth(format(defaultValue, "M"))
-          setYear(format(defaultValue, "yyyy"))
-        }
-        if (granularity !== "date") {
-          setHour(format(defaultValue, "H"))
-          setMinute(format(defaultValue, "m"))
-        }
+    // Handle defaultValue changes when value is not set
+    if (
+      !value &&
+      defaultValue &&
+      (defaultValue !== lastDefaultValue || granularity !== lastGranularity)
+    ) {
+      setLastDefaultValue(defaultValue)
+      setLastGranularity(granularity)
+      if (granularity !== "time") {
+        setDay(format(defaultValue, "d"))
+        setMonth(format(defaultValue, "M"))
+        setYear(format(defaultValue, "yyyy"))
       }
-    }, [value, defaultValue, granularity])
+      if (granularity !== "date") {
+        setHour(format(defaultValue, "H"))
+        setMinute(format(defaultValue, "m"))
+      }
+    }
 
-    useEffect(() => {
-      if (value) {
-        if (granularity !== "time") {
-          setDay(format(value, "d"))
-          setMonth(format(value, "M"))
-          setYear(format(value, "yyyy"))
-        }
-        if (granularity !== "date") {
-          setHour(format(value, "H"))
-          setMinute(format(value, "m"))
-        }
+    // Handle value prop changes
+    if (value && (value !== lastValueProp || granularity !== lastGranularity)) {
+      setLastValueProp(value)
+      setLastGranularity(granularity)
+      if (granularity !== "time") {
+        setDay(format(value, "d"))
+        setMonth(format(value, "M"))
+        setYear(format(value, "yyyy"))
       }
-    }, [value, granularity])
+      if (granularity !== "date") {
+        setHour(format(value, "H"))
+        setMinute(format(value, "m"))
+      }
+    }
 
     function updateFinalValue(
       d: string,
@@ -572,7 +584,7 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
 
     return (
       <div
-        className="mx-[-1px] flex select-none gap-[1px]"
+        className="mx-[-1px] flex gap-px select-none"
         aria-label="Date/Time Input"
       >
         {segmentDateIds.map((segId, index) => {

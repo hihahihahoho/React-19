@@ -47,6 +47,8 @@ export function useFileUpload({
     return initial
   })
 
+  const [lastValueProp, setLastValueProp] = useState(value)
+
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewFile, setPreviewFile] = useState<{
     url: string
@@ -77,15 +79,15 @@ export function useFileUpload({
     )
   }, [internalFiles, getRemoteUrl])
 
-  useEffect(() => {
-    if (isControlled) {
-      const newFiles = (value || []).map((file) => ({
-        id: generateFileId(file),
-        file,
-      }))
-      setInternalFiles(newFiles)
-    }
-  }, [value, isControlled])
+  // Update internal files when value prop changes (controlled mode)
+  if (isControlled && value !== lastValueProp) {
+    setLastValueProp(value)
+    const newFiles = (value || []).map((file) => ({
+      id: generateFileId(file),
+      file,
+    }))
+    setInternalFiles(newFiles)
+  }
 
   // Cleanup preview URLs
   useEffect(() => {
