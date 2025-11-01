@@ -392,7 +392,8 @@
         "@radix-ui/react-tooltip"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [
@@ -560,7 +561,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/button.json"
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [
@@ -824,7 +826,8 @@
         "https://react-19.octung112.workers.dev/r/use-history-state.json",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
-        "https://react-19.octung112.workers.dev/r/utils-plus.json"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/use-merge-ref.json"
       ],
       "type": "registry:component",
       "files": [
@@ -858,7 +861,11 @@
         "https://react-19.octung112.workers.dev/r/popover.json",
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
+        "https://react-19.octung112.workers.dev/r/utils-plus.json"
       ],
       "type": "registry:component",
       "files": [
@@ -880,7 +887,10 @@
       "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/command.json",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
+        "https://react-19.octung112.workers.dev/r/form.json"
       ],
       "type": "registry:component",
       "files": [
@@ -898,7 +908,10 @@
         "react-hook-form"
       ],
       "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/form.json"
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/use-autosize-textarea.json",
+        "https://react-19.octung112.workers.dev/r/circle-progress.json"
       ],
       "type": "registry:component",
       "files": [
@@ -981,7 +994,11 @@
       "author": "hihahihahoho",
       "dependencies": [],
       "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/alert-dialog.json"
+        "https://react-19.octung112.workers.dev/r/alert-dialog.json",
+        "utils",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/glass-icon.json",
+        "https://react-19.octung112.workers.dev/r/use-alert-dialog.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1321,7 +1338,9 @@
         "https://react-19.octung112.workers.dev/r/checkbox.json",
         "https://react-19.octung112.workers.dev/r/separator.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1350,7 +1369,8 @@
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "https://react-19.octung112.workers.dev/r/separator.json",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1443,7 +1463,8 @@
         "https://react-19.octung112.workers.dev/r/separator.json",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
-        "https://react-19.octung112.workers.dev/r/utils-plus.json"
+        "https://react-19.octung112.workers.dev/r/utils-plus.json",
+        "https://react-19.octung112.workers.dev/r/overflow-badge-group.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1468,7 +1489,8 @@
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/tooltip.json",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1486,7 +1508,8 @@
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/badge.json",
         "https://react-19.octung112.workers.dev/r/use-item-overflow.json",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1601,7 +1624,8 @@
       "author": "hihahihahoho",
       "dependencies": [],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/form.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1714,7 +1738,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-toast.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1762,7 +1787,10 @@
         "https://react-19.octung112.workers.dev/r/pagination.json",
         "https://react-19.octung112.workers.dev/r/select.json",
         "https://react-19.octung112.workers.dev/r/select-command.json",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/use-scroll-position.json",
+        "https://react-19.octung112.workers.dev/r/use-sync-scroll.json"
       ],
       "type": "registry:component",
       "files": [
