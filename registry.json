@@ -464,6 +464,10 @@
           "type": "registry:component",
           "target": "components/ui/button.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils",
+        "https://react-19.octung112.workers.dev/r/button.json"
       ]
     },
     {
@@ -477,6 +481,9 @@
           "type": "registry:component",
           "target": "components/ui/skeleton.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -492,6 +499,9 @@
           "type": "registry:component",
           "target": "components/ui/sheet.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -507,6 +517,9 @@
           "type": "registry:component",
           "target": "components/ui/separator.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -522,6 +535,11 @@
           "type": "registry:component",
           "target": "components/ui/scroll-area.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/use-scroll-position.json"
       ]
     },
     {
@@ -537,13 +555,17 @@
           "type": "registry:component",
           "target": "components/ui/popover.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
       "name": "photoswipe",
       "author": "hihahihahoho",
       "dependencies": [
-        "photoswipe"
+        "photoswipe",
+        "react-photoswipe-gallery"
       ],
       "type": "registry:component",
       "files": [
@@ -591,6 +613,9 @@
           "type": "registry:component",
           "target": "components/ui/label.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -604,6 +629,9 @@
           "type": "registry:component",
           "target": "components/ui/glass-icon.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -619,6 +647,9 @@
           "type": "registry:component",
           "target": "components/ui/empty-state.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -635,6 +666,9 @@
           "type": "registry:component",
           "target": "components/ui/dropdown-menu.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -650,6 +684,9 @@
           "type": "registry:component",
           "target": "components/ui/drawer.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -665,6 +702,9 @@
           "type": "registry:component",
           "target": "components/ui/dialog.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -703,6 +743,12 @@
           "type": "registry:component",
           "target": "components/ui/input/command-primitive-input.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
+        "https://react-19.octung112.workers.dev/r/form.json"
       ]
     },
     {
@@ -716,6 +762,9 @@
           "type": "registry:component",
           "target": "components/ui/card.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -729,6 +778,9 @@
           "type": "registry:component",
           "target": "components/ui/breadcrumb.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -744,6 +796,9 @@
           "type": "registry:component",
           "target": "components/ui/avatar.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils"
       ]
     },
     {
@@ -911,7 +966,9 @@
         "https://react-19.octung112.workers.dev/r/form.json",
         "https://react-19.octung112.workers.dev/r/utils-plus.json",
         "https://react-19.octung112.workers.dev/r/use-autosize-textarea.json",
-        "https://react-19.octung112.workers.dev/r/circle-progress.json"
+        "https://react-19.octung112.workers.dev/r/circle-progress.json",
+        "utils",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json"
       ],
       "type": "registry:component",
       "files": [
@@ -987,6 +1044,10 @@
           "type": "registry:component",
           "target": "components/ui/alert-dialog/alert-dialog.tsx"
         }
+      ],
+      "registryDependencies": [
+        "utils",
+        "https://react-19.octung112.workers.dev/r/button.json"
       ]
     },
     {
@@ -1041,6 +1102,10 @@
           "type": "registry:hook",
           "target": "hooks/use-file-upload.ts"
         }
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/sonner.json",
+        "https://react-19.octung112.workers.dev/r/const.json"
       ]
     },
     {
@@ -1140,6 +1205,9 @@
           "type": "registry:hook",
           "target": "hooks/use-date-locale-config.ts"
         }
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/locale-date.json"
       ]
     },
     {
@@ -1179,6 +1247,9 @@
           "type": "registry:hook",
           "target": "hooks/use-toast.ts"
         }
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/toast.json"
       ]
     },
     {
@@ -1311,7 +1382,10 @@
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/badge.json",
-        "https://react-19.octung112.workers.dev/r/command.json"
+        "https://react-19.octung112.workers.dev/r/command.json",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
+        "https://react-19.octung112.workers.dev/r/form.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1394,7 +1468,10 @@
         "https://react-19.octung112.workers.dev/r/popover.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "https://react-19.octung112.workers.dev/r/use-media-query.json",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
+        "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
+        "https://react-19.octung112.workers.dev/r/form.json"
       ],
       "type": "registry:component",
       "files": [
