@@ -257,7 +257,7 @@ function DateSegment({
       <div
         ref={ref}
         role="spinbutton"
-        className={`relative cursor-text rounded-md px-[1px] text-center tabular-nums caret-transparent outline-hidden select-none ${
+        className={`relative cursor-text rounded-md px-1 text-center tabular-nums caret-transparent outline-hidden select-none ${
           !displayValue && "text-muted-foreground"
         } ${isFocused ? "bg-primary/20" : "hover:bg-primary/20"}`}
         id={id}
@@ -584,7 +584,7 @@ const DateTimeInput = React.forwardRef<DateTimeInputHandle, DateTimeInputProps>(
 
     return (
       <div
-        className="mx-[-1px] flex gap-px select-none"
+        className="-mx-px flex gap-px select-none"
         aria-label="Date/Time Input"
       >
         {segmentDateIds.map((segId, index) => {
