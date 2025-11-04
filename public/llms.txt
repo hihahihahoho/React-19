@@ -33,7 +33,6 @@
 
 ### Layout & Navigation
 
-- [Accordion](https://react-19.octung112.workers.dev/r/accordion.json): Collapsible accordion component.
 - [Tabs](https://react-19.octung112.workers.dev/r/tabs.json): Tabs component for organizing content with scroll support.
 - [Tabs Core](https://react-19.octung112.workers.dev/r/tabs-core.json): Core tabs component with scroll and wheel navigation support.
 - [Tabs Line](https://react-19.octung112.workers.dev/r/tabs-line.json): Tabs component with animated underline indicator.
