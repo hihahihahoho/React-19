@@ -154,7 +154,7 @@ function Textarea({
       <FormControl>
         <textarea
           className={cn(
-            "h-full w-full grow border-none bg-transparent py-2 placeholder:text-muted-foreground focus:outline-hidden focus:ring-0",
+            "placeholder:text-muted-foreground h-full w-full grow border-none bg-transparent py-2 focus:ring-0 focus:outline-hidden",
             className
           )}
           placeholder={

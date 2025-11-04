@@ -724,6 +724,7 @@
         "https://react-19.octung112.workers.dev/r/form.json",
         "https://react-19.octung112.workers.dev/r/utils-plus.json",
         "https://react-19.octung112.workers.dev/r/use-autosize-textarea.json",
+        "https://react-19.octung112.workers.dev/r/get-node-text.json",
         "https://react-19.octung112.workers.dev/r/circle-progress.json"
       ],
       "type": "registry:component",

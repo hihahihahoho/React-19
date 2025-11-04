@@ -39,7 +39,7 @@ function SelectPopover({
           <PopoverTrigger asChild>{triggerContent}</PopoverTrigger>
           <PopoverContent
             data-slot="select-popover-content"
-            align="start"
+            align="center"
             className={cn(
               "p-0",
               popoverWidthFull && "popover-content-width-full"
