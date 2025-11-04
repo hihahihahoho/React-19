@@ -452,7 +452,9 @@
     {
       "name": "glass-icon",
       "author": "hihahihahoho",
-      "dependencies": [],
+      "dependencies": [
+        "utils"
+      ],
       "type": "registry:component",
       "files": [
         {
@@ -559,7 +561,8 @@
       "name": "avatar",
       "author": "hihahihahoho",
       "dependencies": [
-        "@radix-ui/react-avatar"
+        "@radix-ui/react-avatar",
+        "utils"
       ],
       "type": "registry:component",
       "files": [
@@ -952,6 +955,9 @@
       "name": "use-date-locale-config",
       "author": "hihahihahoho",
       "dependencies": [],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/locale-date.json"
+      ],
       "type": "registry:hook",
       "files": [
         {
