@@ -353,24 +353,6 @@
       ]
     },
     {
-      "name": "toggle",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-toggle"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/toggle.tsx",
-          "type": "registry:component",
-          "target": "components/ui/toggle.tsx"
-        }
-      ]
-    },
-    {
       "name": "sonner",
       "author": "hihahihahoho",
       "dependencies": [
