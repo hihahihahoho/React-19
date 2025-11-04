@@ -60,22 +60,26 @@ function useCheckboxTree(
 
   const isChecked = useCallback(
     (node: TreeNode): boolean | "indeterminate" => {
-      if (!node.children) {
-        return checkedNodes.has(node.id)
+      const checkNode = (n: TreeNode): boolean | "indeterminate" => {
+        if (!n.children) {
+          return checkedNodes.has(n.id)
+        }
+
+        const childrenChecked = n.children.map((child) => checkNode(child))
+        if (childrenChecked.every((status) => status === true)) {
+          return true
+        }
+        if (
+          childrenChecked.some(
+            (status) => status === true || status === "indeterminate"
+          )
+        ) {
+          return "indeterminate"
+        }
+        return false
       }
 
-      const childrenChecked = node.children.map((child) => isChecked(child))
-      if (childrenChecked.every((status) => status === true)) {
-        return true
-      }
-      if (
-        childrenChecked.some(
-          (status) => status === true || status === "indeterminate"
-        )
-      ) {
-        return "indeterminate"
-      }
-      return false
+      return checkNode(node)
     },
     [checkedNodes]
   )
@@ -105,13 +109,48 @@ function useCheckboxTree(
 
       toggleNode(node, newCheck)
 
+      // Update parent nodes based on their children's state
+      const updateParentNodes = (trees: TreeNode[]) => {
+        trees.forEach((n) => {
+          if (n.children) {
+            // First update all descendants
+            updateParentNodes(n.children)
+
+            // Then check if all children are checked
+            const allChildrenChecked = n.children.every((child) => {
+              if (child.children) {
+                // For parent nodes, check if they're in the set
+                return newCheckedNodes.has(child.id)
+              }
+              return newCheckedNodes.has(child.id)
+            })
+
+            // Check if any children are checked
+            const someChildrenChecked = n.children.some((child) =>
+              newCheckedNodes.has(child.id)
+            )
+
+            if (allChildrenChecked) {
+              newCheckedNodes.add(n.id)
+            } else if (!someChildrenChecked) {
+              newCheckedNodes.delete(n.id)
+            } else {
+              // Indeterminate state - parent should not be in checkedNodes
+              newCheckedNodes.delete(n.id)
+            }
+          }
+        })
+      }
+
+      updateParentNodes(initialTrees)
+
       if (onExternalChange) {
         onExternalChange(newCheckedNodes)
       } else {
         setInternalCheckedNodes(newCheckedNodes)
       }
     },
-    [checkedNodes, isChecked, onExternalChange]
+    [checkedNodes, isChecked, onExternalChange, initialTrees]
   )
 
   const handleToggleExpand = useCallback(

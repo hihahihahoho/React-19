@@ -28,8 +28,6 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
   const [{ width, height }, setSize] = React.useState<Size>(initialSize)
   const isMounted = useIsMounted()
   const previousSize = React.useRef<Size>({ ...initialSize })
-  const onResize = React.useRef<((size: Size) => void) | undefined>(undefined)
-  onResize.current = options.onResize
 
   React.useEffect(() => {
     if (!ref.current) return
@@ -56,8 +54,8 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
         previousSize.current.width = newWidth
         previousSize.current.height = newHeight
 
-        if (onResize.current) {
-          onResize.current(newSize)
+        if (options.onResize) {
+          options.onResize(newSize)
         } else {
           if (isMounted()) {
             setSize(newSize)
@@ -71,7 +69,7 @@ export function useResizeObserver<T extends HTMLElement = HTMLElement>(
     return () => {
       observer.disconnect()
     }
-  }, [box, ref, isMounted])
+  }, [box, ref, isMounted, options])
 
   return { width, height }
 }

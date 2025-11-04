@@ -7,7 +7,7 @@ import { lowercaseFirstChar } from "@/lib/utils-plus"
 import { maskitoTransform } from "@maskito/core"
 import { maskitoNumberOptionsGenerator, maskitoParseNumber } from "@maskito/kit"
 import { useMaskito } from "@maskito/react"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useMemo, useRef, useState } from "react"
 import {
   FormComposition,
   FormCompositionProps,
@@ -54,10 +54,13 @@ function InputNumber({
   const [isFocused, setIsFocused] = useState(false)
 
   // Maskito configuration
-  const mergedMaskitoOptions = {
-    ...defaultMaskitoOptions,
-    ...maskitoOptions,
-  }
+  const mergedMaskitoOptions = useMemo(
+    () => ({
+      ...defaultMaskitoOptions,
+      ...maskitoOptions,
+    }),
+    [maskitoOptions]
+  )
 
   const [internalValue, setInternalValue] = useState<string | undefined>(
     defaultValue !== undefined
@@ -99,16 +102,13 @@ function InputNumber({
         return
       }
 
-      const rawValue = maskitoParseNumber(
-        newValue,
-        mergedMaskitoOptions.decimalSeparator
-      )
+      const rawValue = maskitoParseNumber(newValue, mergedMaskitoOptions)
 
       setInternalValue(newValue)
       onValueChange?.({ maskedValue: newValue, unMaskedValue: rawValue })
       onInput?.(e)
     },
-    [onValueChange, onInput, mergedMaskitoOptions.decimalSeparator]
+    [onValueChange, onInput, mergedMaskitoOptions]
   )
 
   const handleClear = useCallback(() => {
@@ -147,7 +147,7 @@ function InputNumber({
         <input
           data-slot="input-number"
           className={cn(
-            "h-full w-full grow border-none bg-transparent placeholder:text-muted-foreground focus:outline-hidden focus:ring-0",
+            "placeholder:text-muted-foreground h-full w-full grow border-none bg-transparent focus:ring-0 focus:outline-hidden",
             className
           )}
           type="text"

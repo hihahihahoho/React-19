@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 interface ScrollAreaTableProps
   extends React.ComponentProps<typeof ScrollAreaPrimitive.Root> {
   viewportRef: React.RefObject<HTMLDivElement | null>
-  srcollBarPortalRef: React.RefObject<HTMLDivElement | null>
+  scrollBarPortalContainer?: HTMLDivElement | null
   scrollbarClassName?: string
 }
 
@@ -19,7 +19,7 @@ function ScrollAreaTable({
   className,
   children,
   viewportRef,
-  srcollBarPortalRef,
+  scrollBarPortalContainer,
   scrollbarClassName,
   ...props
 }: ScrollAreaTableProps) {
@@ -46,13 +46,13 @@ function ScrollAreaTable({
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
-      {srcollBarPortalRef?.current &&
+      {scrollBarPortalContainer &&
         createPortal(
           <ScrollBar
             orientation="horizontal"
             className={cn("sticky! empty:hidden", scrollbarClassName)}
           />,
-          srcollBarPortalRef?.current
+          scrollBarPortalContainer
         )}
       <ScrollAreaPrimitive.Corner />
     </ScrollAreaPrimitive.Root>

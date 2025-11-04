@@ -101,6 +101,7 @@ function SelectCommandVirtualize({
   )
 
   // Create virtualized list with dynamic measurement
+  // eslint-disable-next-line react-hooks/incompatible-library
   const virtualizer = useVirtualizer({
     count: filteredItems.length,
     getScrollElement: () => parentRef.current,
@@ -122,7 +123,6 @@ function SelectCommandVirtualize({
   })
 
   React.useEffect(() => {
-    console.log(filter.length)
     if (parentRef.current && filter.length > 0) {
       virtualizer.scrollToIndex(0)
     }

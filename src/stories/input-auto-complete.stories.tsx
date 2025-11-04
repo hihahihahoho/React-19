@@ -227,7 +227,7 @@ export const InitialStateSuggestions: Story = {
       <div className="flex flex-col gap-4 p-3">
         {/* Recent searches */}
         <div>
-          <div className="mb-2 flex items-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground mb-2 flex items-center text-sm">
             <History className="mr-2 size-4" />
             <span>Recent Searches</span>
           </div>
@@ -246,7 +246,7 @@ export const InitialStateSuggestions: Story = {
 
         {/* Trending searches */}
         <div>
-          <div className="mb-2 flex items-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground mb-2 flex items-center text-sm">
             <TrendingUp className="mr-2 size-4" />
             <span>Trending Searches</span>
           </div>
@@ -265,7 +265,7 @@ export const InitialStateSuggestions: Story = {
 
         {/* Popular destinations */}
         <div>
-          <div className="mb-2 flex items-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground mb-2 flex items-center text-sm">
             <Star className="mr-2 size-4" />
             <span>Popular Destinations</span>
           </div>
@@ -389,7 +389,7 @@ export const ServerSideFetchingOnSearch: Story = {
       <div className="flex flex-col gap-3 p-3">
         {/* Recent searches */}
         <div>
-          <div className="mb-2 flex items-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground mb-2 flex items-center text-sm">
             <Clock className="mr-2 size-4" />
             <span>Recent Searches</span>
           </div>
@@ -412,7 +412,7 @@ export const ServerSideFetchingOnSearch: Story = {
 
         {/* Suggested cities */}
         <div>
-          <div className="mb-2 flex items-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground mb-2 flex items-center text-sm">
             <Star className="mr-2 size-4" />
             <span>Suggested Capital Cities</span>
           </div>
@@ -433,7 +433,7 @@ export const ServerSideFetchingOnSearch: Story = {
           </div>
         </div>
 
-        <div className="mt-1 border-t pt-2 text-center text-xs text-muted-foreground">
+        <div className="text-muted-foreground mt-1 border-t pt-2 text-center text-xs">
           Type at least 2 characters to search for capital cities
         </div>
       </div>
@@ -609,7 +609,7 @@ export const LocationSearchWithAPI: Story = {
           ))}
         </div>
 
-        <div className="mt-1 border-t pt-2 text-center text-xs text-muted-foreground">
+        <div className="text-muted-foreground mt-1 border-t pt-2 text-center text-xs">
           Type at least 3 characters to search for locations
         </div>
       </div>
@@ -690,7 +690,7 @@ export const FormIntegrationWithHistory: Story = {
 
       const HistoryInitialState = () => (
         <div className="p-3">
-          <div className="mb-2 flex items-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground mb-2 flex items-center text-sm">
             <History className="mr-2 size-4" />
             <span>Previous Destinations</span>
           </div>
@@ -733,6 +733,7 @@ export const FormIntegrationWithHistory: Story = {
                 }}
                 placeholder="Enter destination"
                 mode="default"
+                // eslint-disable-next-line react-hooks/static-components
                 initialState={<HistoryInitialState />}
               />
 
@@ -892,7 +893,7 @@ export const FormIntegrationWithLocationSearch: Story = {
           ))}
         </div>
 
-        <div className="mt-1 border-t pt-2 text-center text-xs text-muted-foreground">
+        <div className="text-muted-foreground mt-1 border-t pt-2 text-center text-xs">
           Type at least 3 characters to search for locations
         </div>
       </div>

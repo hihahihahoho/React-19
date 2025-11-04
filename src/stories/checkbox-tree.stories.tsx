@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { FileText, Folder, Settings, Star } from "lucide-react"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
 
 /**
@@ -162,6 +162,11 @@ function BasicExample() {
     alert(`Selected ${data.selectedItems.length} items`)
   }
 
+  const selectedItems = useWatch({
+    control: form.control,
+    name: "selectedItems",
+  })
+
   return (
     <ZodSchemaProvider schema={formSchema}>
       <Form {...form}>
@@ -177,6 +182,9 @@ function BasicExample() {
                 "Choose the items you want to include in your selection.",
             }}
           />
+          <div className="text-muted-foreground mt-4 text-sm">
+            Selected: {selectedItems.length} items
+          </div>
           <Button type="submit" className="w-full">
             Submit Selection
           </Button>
@@ -294,6 +302,11 @@ function CustomRenderingExample() {
     )
   }
 
+  const selectedDepartments = useWatch({
+    control: form.control,
+    name: "selectedDepartments",
+  })
+
   return (
     <ZodSchemaProvider schema={formSchema}>
       <Form {...form}>
@@ -310,7 +323,7 @@ function CustomRenderingExample() {
             }}
           />
           <div className="text-muted-foreground mt-4 text-sm">
-            Selected: {form.watch("selectedDepartments").length} items
+            Selected: {selectedDepartments.length} items
           </div>
         </form>
       </Form>

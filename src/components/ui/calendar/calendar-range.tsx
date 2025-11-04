@@ -212,7 +212,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
       }
     }
     return draftRange?.from
-  }, [isSelecting, draftRange?.from, hoverDate])
+  }, [isSelecting, draftRange, hoverDate])
 
   const adjustedRangeEnd = React.useMemo(() => {
     if (isSelecting && draftRange?.from && hoverDate) {
@@ -222,7 +222,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
       return hoverDate
     }
     return draftRange?.to
-  }, [isSelecting, draftRange?.from, draftRange?.to, hoverDate])
+  }, [isSelecting, draftRange, hoverDate])
 
   const fullRangeMiddleModifier = React.useMemo(() => {
     if (isSelecting) return undefined
@@ -236,7 +236,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
       return { from: start, to: end }
     }
     return undefined
-  }, [isSelecting, draftRange?.from, draftRange?.to])
+  }, [isSelecting, draftRange])
 
   const selectedRangeModifier = React.useMemo(() => {
     const fromDate = draftRange?.from

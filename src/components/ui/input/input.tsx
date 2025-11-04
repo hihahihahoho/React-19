@@ -35,6 +35,7 @@ function Input({
   const mergedRef = useMergedRef(ref, internalRef)
   const [isFocused, setIsFocused] = useState(false)
   const [hasValueInteral, setHasValueInteral] = useState(false)
+  const [hasFileValue, setHasFileValue] = useState(false)
 
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
@@ -57,6 +58,7 @@ function Input({
       const { value: newValue, files } = e.target
       setHasValueInteral(Boolean(newValue && newValue.toString().length))
       if (type === "file") {
+        setHasFileValue(Boolean(files && files.length > 0))
         onValueFileChange?.(files)
       } else {
         onValueChange?.(newValue)
@@ -72,6 +74,7 @@ function Input({
       internalRef.current.focus()
     }
     setHasValueInteral(false)
+    setHasFileValue(false)
 
     if (type === "file") {
       onValueFileChange?.(null)
@@ -84,7 +87,7 @@ function Input({
   const currentValue = props.value || props.defaultValue || hasValueInteral
   const hasValue =
     type === "file"
-      ? Boolean(internalRef.current?.files?.length)
+      ? hasFileValue
       : Boolean(currentValue && currentValue.toString().length)
 
   return (
@@ -102,7 +105,7 @@ function Input({
         <input
           data-slot="input"
           className={cn(
-            "h-full w-full grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-0",
+            "file:text-foreground placeholder:text-muted-foreground h-full w-full grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium focus:ring-0 focus:outline-hidden",
             type === "file" && "h-auto self-center",
             className
           )}

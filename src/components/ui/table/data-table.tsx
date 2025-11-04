@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
+import * as React from "react"
 import { useRef } from "react"
 import { Button } from "../button"
 import { EmptyState } from "../empty-state"
@@ -42,7 +43,8 @@ export function DataTable({
   const tableRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLTableSectionElement>(null)
   const mainScrollRef = useRef<HTMLDivElement>(null)
-  const scrollBarAreaRef = useRef<HTMLDivElement>(null)
+  const [scrollBarContainer, setScrollBarContainer] =
+    React.useState<HTMLDivElement | null>(null)
 
   if (table.getRowModel().rows?.length <= 0)
     return (
@@ -58,7 +60,7 @@ export function DataTable({
       <div className="w-full" ref={tableRef}>
         <div className="relative">
           {variant === "rounded" && (
-            <div className="pointer-events-none absolute left-0 top-0 z-50 h-full w-full rounded-xl border"></div>
+            <div className="pointer-events-none absolute top-0 left-0 z-50 h-full w-full rounded-xl border"></div>
           )}
           <FloatingHeader
             mainScrollRef={mainScrollRef}
@@ -69,7 +71,7 @@ export function DataTable({
           <div className={cn(tableVariants({ variant }))}>
             <ScrollAreaTable
               type="always"
-              srcollBarPortalRef={scrollBarAreaRef}
+              scrollBarPortalContainer={scrollBarContainer}
               viewportRef={mainScrollRef}
               className="w-full"
             >
@@ -111,8 +113,8 @@ export function DataTable({
               </Table>
             </ScrollAreaTable>
           </div>
-          <div className="sticky bottom-0 z-30 mt-[-1px] border-t bg-card/90 backdrop-blur-sm">
-            <div ref={scrollBarAreaRef} />
+          <div className="bg-card/90 sticky bottom-0 z-30 -mt-px border-t backdrop-blur-sm">
+            <div ref={setScrollBarContainer} />
             {table.getRowModel().rows?.length > 0 && <DataTablePagination />}
           </div>
           <DataTableSelection />
