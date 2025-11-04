@@ -290,7 +290,7 @@ export function CheckboxTreeItem({
       </div>
 
       <div className="flex h-full justify-center">
-        <div className="ml-0.25 h-full border-l"></div>
+        <div className="ml-px h-full border-l"></div>
       </div>
       {hasChildren && isExpanded && <div className="">{children}</div>}
     </div>

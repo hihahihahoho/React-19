@@ -2,8 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { cva } from "class-variance-authority"
-import * as React from "react"
-import { useRef } from "react"
+import React, { useRef } from "react"
 import { Button } from "../button"
 import { EmptyState } from "../empty-state"
 import { ScrollAreaTable } from "../scroll-area"
@@ -20,11 +19,11 @@ const tableVariants = cva("", {
   variants: {
     variant: {
       default: "border-b",
-      rounded: "rounded-md border",
+      rounded: "overflow-hidden rounded-t-xl border",
     },
   },
   defaultVariants: {
-    variant: "default",
+    variant: "rounded",
   },
 })
 
@@ -32,12 +31,20 @@ interface DataTableProps {
   variant?: "default" | "rounded"
   fixedHeaderOffset?: string
   emptyState?: React.ReactNode
+  showPagination?: boolean
+  autoWidthTable?: boolean
+  tableWrapperClassName?: string
+  extendActions?: React.ReactNode
 }
 
 export function DataTable({
   variant,
   fixedHeaderOffset,
   emptyState,
+  showPagination = true,
+  autoWidthTable = false,
+  tableWrapperClassName,
+  extendActions,
 }: DataTableProps) {
   const { table } = useDataTable()
   const tableRef = useRef<HTMLDivElement>(null)
@@ -46,7 +53,7 @@ export function DataTable({
   const [scrollBarContainer, setScrollBarContainer] =
     React.useState<HTMLDivElement | null>(null)
 
-  if (table.getRowModel().rows?.length <= 0)
+  if (table.getRowCount() <= 0)
     return (
       emptyState || (
         <EmptyState className="rounded">
@@ -57,67 +64,86 @@ export function DataTable({
 
   return (
     <HeaderRefsProvider>
-      <div className="w-full" ref={tableRef}>
-        <div className="relative">
-          {variant === "rounded" && (
-            <div className="pointer-events-none absolute top-0 left-0 z-50 h-full w-full rounded-xl border"></div>
+      <div className="" ref={tableRef}>
+        <FloatingHeader
+          mainScrollRef={mainScrollRef}
+          tableRef={tableRef}
+          headerRef={headerRef}
+          fixedHeaderOffset={fixedHeaderOffset}
+          autoWidthTable={autoWidthTable}
+        />
+        <div
+          className={cn(
+            tableVariants({ variant }),
+            (table.getRowCount() <= 10 || !showPagination) && "rounded-b-xl",
+            autoWidthTable && "inline-flex max-w-full",
+            tableWrapperClassName
           )}
-          <FloatingHeader
-            mainScrollRef={mainScrollRef}
-            tableRef={tableRef}
-            headerRef={headerRef}
-            fixedHeaderOffset={fixedHeaderOffset}
-          />
-          <div className={cn(tableVariants({ variant }))}>
-            <ScrollAreaTable
-              type="always"
-              scrollBarPortalContainer={scrollBarContainer}
-              viewportRef={mainScrollRef}
-              className="w-full"
+        >
+          {/* {variant === "rounded" && (
+            <div className="pointer-events-none absolute top-0 left-0 z-50 h-full w-full rounded-3xl border"></div>
+          )} */}
+          <ScrollAreaTable
+            type="always"
+            scrollBarPortalContainer={scrollBarContainer}
+            viewportRef={mainScrollRef}
+            className="w-full"
+          >
+            <Table
+              style={{
+                minWidth: !autoWidthTable
+                  ? table.getVisibleFlatColumns().length * 120
+                  : undefined,
+              }}
             >
-              <Table
-                style={{ minWidth: table.getVisibleFlatColumns().length * 120 }}
-              >
-                <TableHeader ref={headerRef}>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id}>
-                      {headerGroup.headers.map((header) => (
-                        <DataTableHeaderCell key={header.id} header={header} />
+              <TableHeader ref={headerRef}>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <DataTableHeaderCell key={header.id} header={header} />
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <DataTableCell key={cell.id} cell={cell} />
                       ))}
                     </TableRow>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                      <TableRow
-                        key={row.id}
-                        data-state={row.getIsSelected() && "selected"}
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <DataTableCell key={cell.id} cell={cell} />
-                        ))}
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell
-                        colSpan={table.getAllColumns().length}
-                        className="h-24 text-center"
-                      >
-                        Không có dữ liệu.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </ScrollAreaTable>
-          </div>
-          <div className="bg-card/90 sticky bottom-0 z-30 -mt-px border-t backdrop-blur-sm">
-            <div ref={setScrollBarContainer} />
-            {table.getRowModel().rows?.length > 0 && <DataTablePagination />}
-          </div>
-          <DataTableSelection />
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={table.getAllColumns().length}
+                      className="h-24 text-center"
+                    >
+                      Không có dữ liệu.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </ScrollAreaTable>
+        </div>
+        <DataTableSelection extendActions={extendActions} />
+
+        <div
+          className={cn(
+            "bg-background/80 sticky bottom-0 z-30 -mt-px rounded-b-2xl border backdrop-blur-sm",
+            (table.getRowCount() <= 10 || !showPagination) &&
+              "opacity-0 has-data-[state=visible]:opacity-100"
+          )}
+        >
+          <div ref={setScrollBarContainer} className="border-b-0" />
+          {table.getRowCount() > 10 && showPagination && (
+            <DataTablePagination />
+          )}
         </div>
       </div>
     </HeaderRefsProvider>

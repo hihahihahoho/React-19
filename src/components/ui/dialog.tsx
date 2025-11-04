@@ -67,9 +67,9 @@ function DialogContent({
             setCurrentScroll(e.currentTarget.scrollTop)
           }}
           className={cn(
-            "margin-auto bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative top-0 my-4 max-h-[calc(100vh_-_32px)] w-[calc(100%_-_32px)] max-w-xl gap-4 overflow-auto rounded-lg border p-0 shadow-lg max-md:border-0",
+            "margin-auto bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative top-0 my-4 max-h-[calc(100vh-32px)] w-[calc(100%-32px)] max-w-xl gap-4 overflow-auto rounded-lg border p-0 shadow-lg max-md:border-0",
             innerScroll
-              ? "**:data-[slot=dialog-inner]:overflow-y-auto flex flex-col gap-0 overflow-hidden"
+              ? "flex flex-col gap-0 overflow-hidden **:data-[slot=dialog-inner]:overflow-y-auto"
               : "overflow-auto",
             className
           )}
@@ -79,7 +79,7 @@ function DialogContent({
             <div className="sticky top-0 z-50 w-full">
               <DialogPrimitive.Close
                 className={cn(
-                  "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground focus:outline-hidden absolute right-2 top-2 flex size-8 items-center justify-center rounded-full backdrop-blur-sm transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none",
+                  "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-2 right-2 flex size-8 items-center justify-center rounded-full backdrop-blur-sm transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none",
                   currentScroll > 20 &&
                     "bg-foreground/70 text-background shadow-xs"
                 )}
@@ -130,7 +130,7 @@ function DialogTitle({
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cn(
-        "text-lg font-semibold leading-none tracking-tight",
+        "text-lg leading-none font-semibold tracking-tight",
         className
       )}
       {...props}

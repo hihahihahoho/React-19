@@ -25,6 +25,10 @@ const meta = {
     docs: {
       description: {
         component: `
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/input-number.json
+\`\`\`
+
 InputNumber components are specialized inputs for numeric data with formatting capabilities.
 They support thousands separators, decimal places, and min/max constraints.
 
@@ -141,7 +145,8 @@ export const FormattingOptions: Story = {
         placeholder="Enter decimal number"
         defaultValue={1234.56}
         maskitoOptions={{
-          precision: 2,
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
         }}
       />
 
@@ -153,7 +158,8 @@ export const FormattingOptions: Story = {
         placeholder="European format"
         defaultValue={9876.54}
         maskitoOptions={{
-          precision: 2,
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
           thousandSeparator: " ",
           decimalSeparator: ",",
         }}
@@ -197,7 +203,7 @@ export const WithCustomization: Story = {
         }}
         placeholder="Enter amount"
         defaultValue={1250}
-        maskitoOptions={{ precision: 2 }}
+        maskitoOptions={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
       />
 
       <InputNumber
@@ -214,13 +220,13 @@ export const WithCustomization: Story = {
       <InputNumber
         formComposition={{
           label: "Exchange Rate",
-          prefix: <TrendingUp className="size-4 text-muted-foreground" />,
+          prefix: <TrendingUp className="text-muted-foreground size-4" />,
           inputClear: true,
           description: "Current exchange rate",
         }}
         placeholder="Enter rate"
         defaultValue={1.256}
-        maskitoOptions={{ precision: 3 }}
+        maskitoOptions={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
       />
 
       <InputNumber
@@ -353,7 +359,10 @@ export const WithFormValidation: Story = {
               <InputNumberForm
                 name="price"
                 control={form.control}
-                maskitoOptions={{ precision: 2 }}
+                maskitoOptions={{
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                }}
                 formComposition={{
                   label: "Price ($)",
                   iconLeft: <DollarSign />,

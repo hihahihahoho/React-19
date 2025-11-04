@@ -31,7 +31,6 @@ export interface InputNumberProps
 const defaultMaskitoOptions = {
   decimalSeparator: ".",
   thousandSeparator: ",",
-  precision: 0,
   // eslint-disable-next-line no-loss-of-precision
   max: 99999999999999999999999999999999999999999999,
 }

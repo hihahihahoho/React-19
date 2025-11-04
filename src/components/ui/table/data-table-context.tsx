@@ -4,6 +4,7 @@
 import {
   ColumnDef,
   ColumnPinningState,
+  RowSelectionState,
   SortingState,
   Table,
   getCoreRowModel,
@@ -33,6 +34,7 @@ interface DataTableContextProps<TData> {
   defaultPinLeft: string[]
   fixedPinRight: string[]
   fixedPinLeft: string[]
+  totalNumber: number
   handlePageChange: (page: number) => void
 }
 
@@ -47,6 +49,8 @@ function DataTableProvider<TData, TValue>({
   defaultPinLeft = [],
   fixedPinRight = ["actions-column"],
   fixedPinLeft = ["index"],
+  defaultSelection = {},
+  pageSize = 10,
 }: {
   children?: ReactNode
   columns: ColumnDef<TData, TValue>[]
@@ -54,14 +58,18 @@ function DataTableProvider<TData, TValue>({
   defaultPinLeft?: string[]
   fixedPinRight?: string[]
   fixedPinLeft?: string[]
+  pageSize?: number
+  defaultSelection?: RowSelectionState
 }) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({
     left: [...defaultPinLeft, ...fixedPinLeft],
     right: [...fixedPinRight],
   })
-  const [rowSelection, setRowSelection] = useState({})
+  const [rowSelection, setRowSelection] =
+    useState<RowSelectionState>(defaultSelection)
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable<TData>({
     data,
     columns,
@@ -81,6 +89,11 @@ function DataTableProvider<TData, TValue>({
       minSize: 56,
       size: "auto" as unknown as number,
       maxSize: 200,
+    },
+    initialState: {
+      pagination: {
+        pageSize: pageSize,
+      },
     },
   })
 
@@ -107,6 +120,7 @@ function DataTableProvider<TData, TValue>({
         defaultPinLeft,
         fixedPinRight,
         fixedPinLeft,
+        totalNumber: data?.length || 0,
       }}
     >
       {children}

@@ -13,6 +13,7 @@ interface FloatingHeaderProps {
   headerRef: React.RefObject<HTMLTableSectionElement | null>
   fixedHeaderOffset?: string
   mainScrollRef: React.RefObject<HTMLDivElement | null>
+  autoWidthTable?: boolean
 }
 
 export function FloatingHeader({
@@ -20,10 +21,11 @@ export function FloatingHeader({
   headerRef,
   fixedHeaderOffset,
   mainScrollRef,
+  autoWidthTable = false,
 }: FloatingHeaderProps) {
   const { table, setColumnPinning } = useDataTable()
   const { headerRefs } = useHeaderRefs()
-  // const { state, isMobile } = useSidebar()
+  // const { isMobile } = useSidebar()
   const [showClonedHeader, setShowClonedHeader] = useState(false)
   const [tableOffset, setTableOffset] = useState({ left: 0, width: 0 })
   const syncWithScrollRef = useRef<HTMLDivElement>(null)
@@ -96,10 +98,10 @@ export function FloatingHeader({
   return (
     <div
       className={cn(
-        "fixed top-0 z-30 overflow-hidden border-b-0 bg-background shadow-md",
+        "bg-background fixed top-0 z-30 overflow-hidden border-b-0",
         // state === "collapsed" && "top-12",
         // state === "expanded" && "top-16",
-        // isMobile && "top-16",
+        // isMobile && "top-14",
         fixedHeaderOffset
       )}
       style={{
@@ -118,9 +120,11 @@ export function FloatingHeader({
       >
         <Table
           style={{
-            minWidth: table.getVisibleFlatColumns().length * 120 || "none",
+            minWidth: !autoWidthTable
+              ? table.getVisibleFlatColumns().length * 120
+              : undefined,
           }}
-          className="table-fixed"
+          className={cn("table-fixed", autoWidthTable && "w-auto")}
         >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -3,12 +3,16 @@ import { AnimatePresence, motion } from "motion/react"
 import { Button } from "../button"
 import { useDataTable } from "./data-table-context"
 
-export function DataTableSelection() {
+function DataTableSelection({
+  extendActions,
+}: {
+  extendActions?: React.ReactNode
+}) {
   const { table } = useDataTable()
   return (
     <AnimatePresence>
       {table.getSelectedRowModel().rows.length > 0 && (
-        <div className="pointer-events-none sticky right-0 bottom-24 left-0 z-30 mb-4 flex items-center justify-center text-xs">
+        <div className="pointer-events-none sticky right-0 bottom-4 left-0 z-50 mb-2 flex items-center justify-center pt-2 text-xs">
           <motion.div
             className="bg-card/90 pointer-events-auto flex flex-wrap items-center gap-2 rounded-xl border px-4 py-3 backdrop-blur-sm max-sm:flex-col"
             initial={{
@@ -56,9 +60,12 @@ export function DataTableSelection() {
                 Bỏ chọn tất cả
               </Button>
             </div>
+            {extendActions}
           </motion.div>
         </div>
       )}
     </AnimatePresence>
   )
 }
+
+export { DataTableSelection }

@@ -5,9 +5,9 @@ import { ACCEPTED_IMAGE_TYPES } from "@/lib/const"
 import { formatFileSize } from "@/lib/file-size"
 import { cn } from "@/lib/utils"
 import {
-  AlignLeft,
   CloudUpload,
   Eye,
+  File,
   Image,
   Music,
   Play,
@@ -21,31 +21,14 @@ import {
   FormCompositionProps,
   FormControl,
 } from "../form/form"
-import { GlassIcon } from "../glass-icon"
 
 type TAccept = string
 
 const fileIcon = {
-  image: (
-    <GlassIcon color="blue" variant="card">
-      <Image />
-    </GlassIcon>
-  ),
-  audio: (
-    <GlassIcon color="blue" variant="card">
-      <Music />
-    </GlassIcon>
-  ),
-  video: (
-    <GlassIcon color="red" variant="card">
-      <Play />
-    </GlassIcon>
-  ),
-  other: (
-    <GlassIcon color="red" variant="card">
-      <AlignLeft />
-    </GlassIcon>
-  ),
+  image: <Image />,
+  audio: <Music />,
+  video: <Play />,
+  other: <File />,
 }
 
 export interface FileUploadGridProps
@@ -165,7 +148,7 @@ function FileUploadGrid({
                           : fileMeta.file.type.startsWith("video/")
                             ? fileIcon.video
                             : fileIcon.other}
-                      <div className="text-muted-foreground w-full space-y-[2px] text-center text-xs">
+                      <div className="text-muted-foreground w-full space-y-0.5 text-center text-xs">
                         <div className="truncate">
                           {getDisplayName(fileMeta)}
                         </div>
@@ -208,9 +191,9 @@ function FileUploadGrid({
             ))}
             {(internalFiles.length < maxFiles || maxFiles === 1) && (
               <div className="flex h-[100px] flex-col items-center justify-center gap-3 rounded-lg border border-dashed">
-                <GlassIcon>
+                <div className="bg-accent flex size-12 items-center justify-center rounded-2xl">
                   <CloudUpload />
-                </GlassIcon>
+                </div>
                 <div className="text-muted-foreground text-xs">
                   {maxFiles === 1 ? (
                     <>Chọn lại</>
@@ -223,9 +206,9 @@ function FileUploadGrid({
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3">
-            <GlassIcon>
+            <div className="bg-accent flex size-12 items-center justify-center rounded-2xl">
               <CloudUpload />
-            </GlassIcon>
+            </div>
             <div className="text-muted-foreground space-y-1 text-center text-xs">
               <div className="">
                 <span className="text-primary">Tải lên</span> hoặc kéo thả vào

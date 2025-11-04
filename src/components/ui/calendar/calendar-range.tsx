@@ -424,7 +424,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
     return (
       <div
         className={cn(
-          "w-[160px] space-y-1 px-2 py-3",
+          "w-40 space-y-1 px-2 py-3",
           !isDesktop &&
             "flex w-full gap-1 space-y-0 overflow-x-auto border-b whitespace-nowrap"
         )}
@@ -487,7 +487,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
               onFormCompositionClick={() => {
                 DateTimeInputFromRef.current?.focus()
               }}
-              className="min-w-[144px]"
+              className="min-w-36"
             >
               <div className="flex h-full flex-1 items-center">
                 <DateGroup onBlurWithin={handleInputBlur}>
@@ -507,7 +507,7 @@ const CalendarRange: React.FC<CalendarRangeProps> = ({
               onFormCompositionClick={() => {
                 DateTimeInputToRef.current?.focus()
               }}
-              className="min-w-[144px]"
+              className="min-w-36"
             >
               <div className="flex h-full flex-1 items-center">
                 <DateGroup onBlurWithin={handleInputBlur}>

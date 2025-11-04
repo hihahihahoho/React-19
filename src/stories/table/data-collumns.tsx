@@ -25,7 +25,7 @@ export const columns: ColumnDef<SegmentData>[] = [
     size: 56,
     meta: {
       align: "center",
-      hideActiionsButton: true,
+      hideActionsButton: true,
     },
   },
   {
@@ -64,7 +64,7 @@ export const columns: ColumnDef<SegmentData>[] = [
               {tinhKhaDung}
             </Badge>
             {tinhKhaDung.startsWith("Đang tính toán") && (
-              <div className="text-xs font-medium text-muted-foreground">
+              <div className="text-muted-foreground text-xs font-medium">
                 Còn khoảng 30p
               </div>
             )}
@@ -114,7 +114,7 @@ export const columns: ColumnDef<SegmentData>[] = [
     size: 56,
     meta: {
       align: "center",
-      hideActiionsButton: true,
+      hideActionsButton: true,
     },
     header: ({ table }) => (
       <Checkbox
@@ -139,7 +139,7 @@ export const columns: ColumnDef<SegmentData>[] = [
     size: 56,
     meta: {
       align: "center",
-      hideActiionsButton: true,
+      hideActionsButton: true,
     },
     cell: () => {
       return (

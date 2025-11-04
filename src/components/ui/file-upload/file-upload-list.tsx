@@ -5,9 +5,9 @@ import { ACCEPTED_IMAGE_TYPES } from "@/lib/const"
 import { formatFileSize } from "@/lib/file-size"
 import { cn } from "@/lib/utils"
 import {
-  AlignLeft,
   CloudUpload,
   Eye,
+  File,
   Image,
   Music,
   Play,
@@ -21,31 +21,14 @@ import {
   FormCompositionProps,
   FormControl,
 } from "../form/form"
-import { GlassIcon } from "../glass-icon"
 
 type TAccept = string
 
 const fileIcon = {
-  image: (
-    <GlassIcon color="blue" variant="card">
-      <Image />
-    </GlassIcon>
-  ),
-  audio: (
-    <GlassIcon color="blue" variant="card">
-      <Music />
-    </GlassIcon>
-  ),
-  video: (
-    <GlassIcon color="red" variant="card">
-      <Play />
-    </GlassIcon>
-  ),
-  other: (
-    <GlassIcon color="red" variant="card">
-      <AlignLeft />
-    </GlassIcon>
-  ),
+  image: <Image />,
+  audio: <Music />,
+  video: <Play />,
+  other: <File />,
 }
 
 export interface FileUploadListProps
@@ -173,7 +156,7 @@ function FileUploadList({
                       }}
                     />
                   ) : (
-                    <div className="flex size-12 items-center justify-center">
+                    <div className="bg-background text-muted-foreground flex size-12 items-center justify-center rounded-2xl">
                       {fileMeta.file.type.startsWith("image/")
                         ? fileIcon.image
                         : fileMeta.file.type.startsWith("audio/")
@@ -224,9 +207,9 @@ function FileUploadList({
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3">
-            <GlassIcon>
+            <div className="bg-accent flex size-12 items-center justify-center rounded-2xl">
               <CloudUpload />
-            </GlassIcon>
+            </div>
             <div className="text-muted-foreground space-y-1 text-center text-xs">
               <div className="">
                 <span className="text-primary">Tải lên</span> hoặc kéo thả vào

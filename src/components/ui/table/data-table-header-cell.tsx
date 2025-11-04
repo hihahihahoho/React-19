@@ -1,12 +1,7 @@
 import { cn } from "@/lib/utils"
 import { ColumnPinningState, flexRender, Header } from "@tanstack/react-table"
-import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  ChevronsUpDown,
-  Pin,
-} from "lucide-react"
+import { Sort } from "iconsax-reactjs"
+import { ArrowDown, ArrowUp, ArrowUpDown, Pin } from "lucide-react"
 import React from "react"
 import { Button } from "../button"
 import { SelectCommand } from "../select/select-command"
@@ -32,44 +27,28 @@ const toolbarOptions: SelectGroup[] = [
       {
         value: "asc",
         label: (
-          <>
+          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
             <ArrowUp />
             Tăng dần
-          </>
+          </div>
         ),
       },
       {
         value: "desc",
         label: (
-          <>
+          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
             <ArrowDown />
             Giảm dần
-          </>
+          </div>
         ),
       },
       {
         value: "no-sort",
         label: (
-          <>
+          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
             <ArrowUpDown />
             Bỏ sắp xếp
-          </>
-        ),
-      },
-    ],
-  },
-  {
-    heading: "Ghim",
-    value: "pin-group",
-    isMultiSelect: true,
-    options: [
-      {
-        value: "pin",
-        label: (
-          <>
-            <Pin />
-            Ghim
-          </>
+          </div>
         ),
       },
     ],
@@ -195,6 +174,7 @@ export function DataTableHeaderCell<TData, TValue>({
       key={header.id}
       ref={ref}
       className={cn(
+        "h-12",
         header.column.columnDef.meta?.align === "right" && "text-right",
         header.column.columnDef.meta?.align === "center" && "text-center",
         "whitespace-nowrap",
@@ -227,7 +207,7 @@ export function DataTableHeaderCell<TData, TValue>({
         )}
       >
         {header.isPlaceholder || triggerContent === null ? null : header.column
-            .columnDef.meta?.hideActiionsButton ? (
+            .columnDef.meta?.hideActionsButton ? (
           triggerContent
         ) : (
           <SelectPopover
@@ -238,21 +218,23 @@ export function DataTableHeaderCell<TData, TValue>({
                 variant="ghost"
                 size={"sm"}
                 className={cn(
-                  "h-auto gap-1 px-0 text-left",
+                  "txt-body-default-medium my-2 gap-1 px-0 text-left font-[Inter] normal-case",
                   header.column.columnDef.meta?.align === "right" && "ml-auto",
                   header.column.columnDef.meta?.align === "center" && "mx-auto",
                   pinnedClasses
                 )}
               >
-                {header.column.getIsPinned() && <Pin />}
-                {triggerContent}
-                {header.column.getCanSort() && (
-                  <>
-                    {sortState === "asc" && <ArrowUp />}
-                    {sortState === "desc" && <ArrowDown />}
-                    {sortState === false && <ChevronsUpDown />}
-                  </>
-                )}
+                <div className="flex items-center gap-2.5">
+                  {header.column.getIsPinned() && <Pin />}
+                  {triggerContent}
+                  {header.column.getCanSort() && (
+                    <span className="text-muted-foreground">
+                      {sortState === "asc" && <ArrowUp />}
+                      {sortState === "desc" && <ArrowDown />}
+                      {sortState === false && <Sort />}
+                    </span>
+                  )}
+                </div>
               </Button>
             }
             label={triggerContent}

@@ -14,7 +14,7 @@ export function DataTablePagination() {
     <div className="flex flex-wrap items-center justify-between gap-2 p-4 max-sm:px-2 md:gap-4">
       <div className="flex items-center gap-2 text-sm">
         <span className="max-sm:hidden">Hiển thị</span>
-        <div className="w-18 md:w-20">
+        <div className="w-16 md:w-20">
           <Select
             formComposition={{ inputClear: false }}
             onValueChange={(value) => {

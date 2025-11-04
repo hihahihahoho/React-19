@@ -812,7 +812,6 @@
         "https://react-19.octung112.workers.dev/r/alert-dialog.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/button.json",
-        "https://react-19.octung112.workers.dev/r/glass-icon.json",
         "https://react-19.octung112.workers.dev/r/use-alert-dialog.json"
       ],
       "type": "registry:component",
@@ -1460,7 +1459,6 @@
         "https://react-19.octung112.workers.dev/r/custom-icons.json",
         "https://react-19.octung112.workers.dev/r/dialog.json",
         "https://react-19.octung112.workers.dev/r/form.json",
-        "https://react-19.octung112.workers.dev/r/glass-icon.json",
         "https://react-19.octung112.workers.dev/r/sonner.json",
         "https://react-19.octung112.workers.dev/r/file-size.json",
         "https://react-19.octung112.workers.dev/r/const.json",
@@ -1493,7 +1491,6 @@
         "https://react-19.octung112.workers.dev/r/custom-icons.json",
         "https://react-19.octung112.workers.dev/r/dialog.json",
         "https://react-19.octung112.workers.dev/r/form.json",
-        "https://react-19.octung112.workers.dev/r/glass-icon.json",
         "https://react-19.octung112.workers.dev/r/sonner.json",
         "https://react-19.octung112.workers.dev/r/file-size.json",
         "https://react-19.octung112.workers.dev/r/const.json",
@@ -1619,6 +1616,11 @@
           "path": "src/components/ui/table/header-ref-context.tsx",
           "type": "registry:component",
           "target": "components/ui/table/header-ref-context.tsx"
+        },
+        {
+          "path": "src/components/ui/table/show-hide-collumn-button.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/show-hide-collumn-button.tsx"
         },
         {
           "path": "src/components/ui/table/table.tsx",
