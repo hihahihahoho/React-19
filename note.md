@@ -12,6 +12,7 @@ toggle-group
 sheet
 breadcrumb
 card
+accordion
 
 use-media-queries
 utils

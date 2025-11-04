@@ -1,3 +1,5 @@
+"use client"
+
 import { useMergedRef } from "@/hooks/use-merge-ref"
 import { getNodeText } from "@/lib/get-node-text"
 import { cn } from "@/lib/utils"

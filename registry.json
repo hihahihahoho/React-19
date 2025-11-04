@@ -1635,25 +1635,6 @@
           "target": "components/ui/table/table.tsx"
         }
       ]
-    },
-    {
-      "name": "accordion",
-      "author": "hihahihahoho",
-      "dependencies": [
-        "@radix-ui/react-accordion",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/accordion/accordion.tsx",
-          "type": "registry:component",
-          "target": "components/ui/accordion/accordion.tsx"
-        }
-      ]
     }
   ]
 }
