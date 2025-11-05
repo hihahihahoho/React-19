@@ -26,6 +26,7 @@ const meta = {
 \`\`\`bash
 pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/sortable.json
 \`\`\`
+### Credit to https://www.diceui.com/docs/components/sortable
 
 The Sortable component provides a flexible, accessible drag-and-drop interface for reordering items.
 It's built on top of @dnd-kit and provides a simpler API through composable primitives.
