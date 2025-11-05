@@ -15,7 +15,7 @@ const selectionGroupVariants = cva(
     variants: {
       variant: {
         default: "",
-        card: "rounded-xl p-4 ring-1 ring-border has-data-[state=checked]:bg-primary/[0.03] has-data-[state=checked]:ring-2 has-data-[state=checked]:ring-primary",
+        card: "ring-border has-data-[state=checked]:bg-primary/3 has-data-[state=checked]:ring-primary rounded-xl p-4 ring-1 has-data-[state=checked]:ring-2",
       },
     },
     defaultVariants: {
@@ -54,7 +54,7 @@ function SelectionGroup({
           </FormControl>
         </div>
       </div>
-      <div className="peer-disabled:cursor-not-allowed peer-disabled:opacity-60 group-has-[input:disabled]/group-selection:cursor-not-allowed group-has-[button:disabled]/group-selection:opacity-60 group-has-[input:disabled]/group-selection:opacity-60">
+      <div className="group-has-[button:disabled]/group-selection:opacity-60 group-has-[input:disabled]/group-selection:cursor-not-allowed group-has-[input:disabled]/group-selection:opacity-60 peer-disabled:cursor-not-allowed peer-disabled:opacity-60">
         {children}
       </div>
     </label>

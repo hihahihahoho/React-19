@@ -17,7 +17,7 @@ const defaultTabsListVariants = cva(
   {
     variants: {
       size: {
-        sm: "min-h-8 gap-1 p-[2px]",
+        sm: "min-h-8 gap-1 p-0.5",
         default: "min-h-9 gap-1.5",
         lg: "min-h-10 gap-2",
       },

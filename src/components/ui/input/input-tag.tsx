@@ -606,7 +606,7 @@ export function InputTag({
             onOpenAutoFocus={(e) => e.preventDefault()}
             align="start"
             className={cn(
-              "w-[var(--radix-popover-trigger-width)] p-0",
+              "w-(--radix-popover-trigger-width) p-0",
               "has-[[cmdk-group]:first-child:last-child>[cmdk-group-items]:empty]:hidden"
             )}
             onWheel={(e) => e.stopPropagation()}
@@ -644,7 +644,7 @@ export function InputTag({
             <PopoverContent
               onOpenAutoFocus={(e) => e.preventDefault()}
               align="start"
-              className="w-[var(--radix-popover-trigger-width)]"
+              className="w-(--radix-popover-trigger-width)"
               onWheel={(e) => e.stopPropagation()}
             >
               {initialState}
