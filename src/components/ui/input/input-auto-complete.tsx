@@ -1,6 +1,6 @@
 "use client"
 
-import { useMergedRef } from "@/hooks/use-merge-ref"
+import { useComposedRefs } from "@/lib/compose-refs"
 import { getNodeText } from "@/lib/get-node-text"
 import { cn } from "@/lib/utils"
 import { lowercaseFirstChar } from "@/lib/utils-plus"
@@ -65,7 +65,7 @@ function InputAutoComplete({
   ...props
 }: InputAutoCompleteProps) {
   const internalRef = React.useRef<HTMLInputElement>(null)
-  const mergeRef = useMergedRef(internalRef, ref)
+  const mergeRef = useComposedRefs(internalRef, ref)
   const formCompositionRef = React.useRef<HTMLDivElement>(null)
   const prevValueRef = React.useRef(controlledValue)
   const [isFocused, setIsFocused] = React.useState(false)

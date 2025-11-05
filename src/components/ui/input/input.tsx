@@ -1,6 +1,6 @@
 "use client"
 
-import { useMergedRef } from "@/hooks/use-merge-ref"
+import { useComposedRefs } from "@/lib/compose-refs"
 import { getNodeText } from "@/lib/get-node-text"
 import { cn } from "@/lib/utils"
 import { lowercaseFirstChar } from "@/lib/utils-plus"
@@ -34,7 +34,7 @@ function Input({
   ...props
 }: InputProps) {
   const internalRef = useRef<HTMLInputElement>(null)
-  const mergedRef = useMergedRef(ref, internalRef)
+  const mergedRef = useComposedRefs(ref, internalRef)
   const [isFocused, setIsFocused] = useState(false)
   const [hasValueInteral, setHasValueInteral] = useState(false)
   const [hasFileValue, setHasFileValue] = useState(false)

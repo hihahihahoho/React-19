@@ -1,7 +1,7 @@
 "use client"
 
 import { useHistoryState } from "@/hooks/use-history-state"
-import { useMergedRef } from "@/hooks/use-merge-ref"
+import { useComposedRefs } from "@/lib/compose-refs"
 import { cn } from "@/lib/utils"
 import { PopoverAnchor } from "@radix-ui/react-popover"
 import { Measurable } from "@radix-ui/rect"
@@ -106,7 +106,7 @@ export function InputTag({
 }: InputTagProps) {
   // Refs setup
   const internalRef = React.useRef<HTMLInputElement>(null)
-  const mergeRef = useMergedRef(internalRef, ref)
+  const mergeRef = useComposedRefs(internalRef, ref)
   const formCompositionRef = React.useRef<HTMLDivElement>(null)
   const containerRef = React.useRef<HTMLDivElement>(null)
 
@@ -560,7 +560,7 @@ export function InputTag({
           onKeyDown={handleKeyDown}
           onFocus={handleFocus}
           onPaste={handlePaste}
-          className="h-full w-full grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-0"
+          className="file:text-foreground placeholder:text-muted-foreground h-full w-full grow border-none bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium focus:ring-0 focus:outline-hidden"
           placeholder={
             currentTags.length > 0 ? "Thêm..." : "Gõ để nhập tags..."
           }
@@ -680,7 +680,7 @@ function AddNewButton({
         {...props}
       >
         {isDuplicate ? (
-          <AlertCircle className="size-4 text-destructive" />
+          <AlertCircle className="text-destructive size-4" />
         ) : (
           <PlusCircle className="size-4" />
         )}

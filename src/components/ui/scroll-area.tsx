@@ -4,8 +4,8 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 import * as React from "react"
 import { createPortal } from "react-dom"
 
-import { useMergedRef } from "@/hooks/use-merge-ref"
 import useScrollPosition from "@/hooks/use-scroll-position"
+import { useComposedRefs } from "@/lib/compose-refs"
 import { cn } from "@/lib/utils"
 
 interface ScrollAreaTableProps
@@ -25,7 +25,7 @@ function ScrollAreaTable({
 }: ScrollAreaTableProps) {
   const internalViewportRef = React.useRef<HTMLDivElement>(null)
   const { isReachLeft, isReachRight } = useScrollPosition(internalViewportRef)
-  const mergeRef = useMergedRef(internalViewportRef, viewportRef)
+  const mergeRef = useComposedRefs(internalViewportRef, viewportRef)
 
   return (
     <ScrollAreaPrimitive.Root

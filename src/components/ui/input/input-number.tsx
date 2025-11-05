@@ -1,6 +1,6 @@
 "use client"
 
-import { useMergedRef } from "@/hooks/use-merge-ref"
+import { useComposedRefs } from "@/lib/compose-refs"
 import { getNodeText } from "@/lib/get-node-text"
 import { cn } from "@/lib/utils"
 import { lowercaseFirstChar } from "@/lib/utils-plus"
@@ -73,7 +73,7 @@ function InputNumber({
   const maskitoOption = maskitoNumberOptionsGenerator(mergedMaskitoOptions)
   const maskitoInputRef = useMaskito({ options: maskitoOption })
 
-  const mergedRef = useMergedRef(ref, internalRef, maskitoInputRef)
+  const mergedRef = useComposedRefs(ref, internalRef, maskitoInputRef)
 
   const handleFocus = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {

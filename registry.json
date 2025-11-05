@@ -379,7 +379,7 @@
         "@radix-ui/react-scroll-area"
       ],
       "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/compose-refs.json",
         "https://react-19.octung112.workers.dev/r/use-scroll-position.json",
         "utils"
       ],
@@ -561,7 +561,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/form.json",
-        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/compose-refs.json",
         "https://react-19.octung112.workers.dev/r/get-node-text.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/utils-plus.json"
@@ -590,7 +590,7 @@
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/form.json",
-        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/compose-refs.json",
         "https://react-19.octung112.workers.dev/r/get-node-text.json",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
@@ -630,7 +630,7 @@
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/utils-plus.json",
-        "https://react-19.octung112.workers.dev/r/use-merge-ref.json"
+        "https://react-19.octung112.workers.dev/r/compose-refs.json"
       ],
       "type": "registry:component",
       "files": [
@@ -662,7 +662,7 @@
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
-        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/compose-refs.json",
         "https://react-19.octung112.workers.dev/r/get-node-text.json",
         "https://react-19.octung112.workers.dev/r/transliterate-vietnamese.json",
         "https://react-19.octung112.workers.dev/r/utils-plus.json"
@@ -905,15 +905,15 @@
       ]
     },
     {
-      "name": "use-merge-ref",
+      "name": "compose-refs",
       "author": "hihahihahoho",
       "dependencies": [],
-      "type": "registry:hook",
+      "type": "registry:lib",
       "files": [
         {
-          "path": "src/hooks/use-merge-ref.ts",
-          "type": "registry:hook",
-          "target": "hooks/use-merge-ref.ts"
+          "path": "src/lib/compose-refs.ts",
+          "type": "registry:lib",
+          "target": "lib/compose-refs.ts"
         }
       ]
     },
@@ -1560,7 +1560,7 @@
         "https://react-19.octung112.workers.dev/r/select.json",
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "utils",
-        "https://react-19.octung112.workers.dev/r/use-merge-ref.json",
+        "https://react-19.octung112.workers.dev/r/compose-refs.json",
         "https://react-19.octung112.workers.dev/r/use-scroll-position.json",
         "https://react-19.octung112.workers.dev/r/use-sync-scroll.json"
       ],
