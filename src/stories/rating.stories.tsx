@@ -544,89 +544,60 @@ export const WithFormValidation: Story = {
               onSubmit={form.handleSubmit(onSubmit)}
               className="w-full space-y-6 md:w-96"
             >
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Product Quality
-                </label>
-                <RatingForm
-                  name="productRating"
-                  control={form.control}
-                  icon={Star}
-                  totalRating={5}
-                />
-                {form.formState.errors.productRating && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {form.formState.errors.productRating.message}
-                  </p>
-                )}
-              </div>
+              <RatingForm
+                name="productRating"
+                control={form.control}
+                icon={Star}
+                totalRating={5}
+                formComposition={{
+                  label: "Product Quality",
+                }}
+              />
 
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Customer Service
-                </label>
-                <RatingForm
-                  name="serviceRating"
-                  control={form.control}
-                  icon={Star}
-                  totalRating={5}
-                />
-                {form.formState.errors.serviceRating && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {form.formState.errors.serviceRating.message}
-                  </p>
-                )}
-              </div>
+              <RatingForm
+                name="serviceRating"
+                control={form.control}
+                icon={Star}
+                totalRating={5}
+                formComposition={{
+                  label: "Customer Service",
+                }}
+              />
 
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Would Recommend?
-                </label>
-                <RatingForm
-                  name="wouldRecommend"
-                  control={form.control}
-                  clearable
-                  icon={ThumbsUp}
-                  totalRating={5}
-                />
-                {form.formState.errors.wouldRecommend && (
-                  <p className="mt-1 text-sm text-red-500">
-                    {form.formState.errors.wouldRecommend.message}
-                  </p>
-                )}
-              </div>
+              <RatingForm
+                name="wouldRecommend"
+                control={form.control}
+                clearable
+                icon={ThumbsUp}
+                totalRating={5}
+                formComposition={{
+                  label: "Would Recommend?",
+                }}
+              />
 
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Average Rating (Read-only)
-                </label>
-                <RatingForm
-                  name="readOnlyRating"
-                  control={form.control}
-                  icon={Star}
-                  totalRating={5}
-                  readOnly
-                />
-                <p className="text-muted-foreground mt-1 text-sm">
-                  This rating cannot be changed
-                </p>
-              </div>
+              <RatingForm
+                name="readOnlyRating"
+                control={form.control}
+                icon={Star}
+                totalRating={5}
+                readOnly
+                formComposition={{
+                  label: "Average Rating (Read-only)",
+                  description: "This rating cannot be changed",
+                }}
+              />
 
-              <div>
-                <label className="mb-2 block text-sm font-medium">
-                  Disabled Rating
-                </label>
-                <RatingForm
-                  name="disabledRating"
-                  control={form.control}
-                  icon={Star}
-                  totalRating={5}
-                  disabled
-                />
-                <p className="text-muted-foreground mt-1 text-sm">
-                  This rating is disabled
-                </p>
-              </div>
+              <RatingForm
+                name="disabledRating"
+                control={form.control}
+                icon={Star}
+                totalRating={5}
+                disabled
+                formComposition={{
+                  label: "Disabled Rating",
+                  description: "This rating is disabled",
+                }}
+              />
 
               <Button type="submit" className="w-full">
                 Submit Review
