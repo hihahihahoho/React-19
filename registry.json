@@ -1528,6 +1528,29 @@
       ]
     },
     {
+      "name": "sortable",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@dnd-kit/core",
+        "@dnd-kit/modifiers",
+        "@dnd-kit/sortable",
+        "@dnd-kit/utilities",
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [
+        "utils",
+        "https://react-19.octung112.workers.dev/r/compose-refs.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/sortable.tsx",
+          "type": "registry:component",
+          "target": "components/ui/sortable.tsx"
+        }
+      ]
+    },
+    {
       "name": "table",
       "author": "hihahihahoho",
       "dependencies": [],
@@ -1610,11 +1633,36 @@
           "path": "src/components/ui/table/show-hide-collumn-button.tsx",
           "type": "registry:component",
           "target": "components/ui/table/show-hide-collumn-button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sortable-table",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "utils",
+        "@tanstack/react-table",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/table.json",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/empty-state.json",
+        "https://react-19.octung112.workers.dev/r/scroll-area.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/table/sortable-table.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/sortable-table.tsx"
         },
         {
-          "path": "src/components/ui/table/table.tsx",
+          "path": "src/components/ui/table/data-table-cell.tsx",
           "type": "registry:component",
-          "target": "components/ui/table/table.tsx"
+          "target": "components/ui/table/data-table-cell.tsx"
         }
       ]
     }

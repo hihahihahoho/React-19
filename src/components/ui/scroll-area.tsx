@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils"
 
 interface ScrollAreaTableProps
   extends React.ComponentProps<typeof ScrollAreaPrimitive.Root> {
-  viewportRef: React.RefObject<HTMLDivElement | null>
+  viewportRef?: React.RefObject<HTMLDivElement | null>
   scrollBarPortalContainer?: HTMLDivElement | null
   scrollbarClassName?: string
 }
