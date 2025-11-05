@@ -1,3 +1,5 @@
+"use client"
+
 import { CheckboxProps } from "@radix-ui/react-checkbox"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
 import { FormCompositionProps, FormField, FormMessage } from "../form/form"

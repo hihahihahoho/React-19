@@ -1,3 +1,5 @@
+"use client"
+
 import { ZodFileMeta } from "@/lib/zod"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
 import { FormField } from "../form/form"

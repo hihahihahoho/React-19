@@ -1,3 +1,5 @@
+"use client"
+
 import { useLocaleDateConfig } from "@/hooks/use-date-locale-config"
 import { SegmentDateId } from "@/lib/locale-date"
 import { format, getDaysInMonth, isValid, parse } from "date-fns"

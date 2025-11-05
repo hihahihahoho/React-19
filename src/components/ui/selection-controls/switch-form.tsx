@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { SwitchProps } from "@radix-ui/react-switch"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"

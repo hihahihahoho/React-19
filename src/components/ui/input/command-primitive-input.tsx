@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { Command } from "cmdk"
 import { Search } from "lucide-react"
@@ -64,7 +66,7 @@ function CommandPrimitiveInput({
         <Command.Input
           {...props}
           className={cn(
-            "h-full w-full grow border-none bg-transparent placeholder:text-muted-foreground focus:outline-hidden focus:ring-0",
+            "placeholder:text-muted-foreground h-full w-full grow border-none bg-transparent focus:ring-0 focus:outline-hidden",
             className
           )}
           value={inputValue}

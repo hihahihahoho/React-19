@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { RadioGroupItemProps } from "@radix-ui/react-radio-group"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"

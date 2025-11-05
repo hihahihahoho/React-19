@@ -1665,6 +1665,49 @@
           "target": "components/ui/table/data-table-cell.tsx"
         }
       ]
+    },
+    {
+      "name": "visually-hidden-input",
+      "author": "hihahihahoho",
+      "dependencies": [],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/visually-hidden-input.tsx",
+          "type": "registry:component",
+          "target": "components/ui/visually-hidden-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "rating",
+      "author": "hihahihahoho",
+      "title": "Rating",
+      "description": "Interactive star rating component with keyboard navigation, half-star support, and form integration",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/visually-hidden-input.json",
+        "https://react-19.octung112.workers.dev/r/compose-refs.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/rating/rating.tsx",
+          "type": "registry:component",
+          "target": "components/ui/rating/rating.tsx"
+        },
+        {
+          "path": "src/components/ui/rating/rating-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/rating/rating-form.tsx"
+        }
+      ]
     }
   ]
 }
