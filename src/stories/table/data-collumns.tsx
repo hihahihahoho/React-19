@@ -112,6 +112,7 @@ export const columns: ColumnDef<SegmentData>[] = [
   {
     id: "select",
     size: 56,
+    enableHiding: false,
     meta: {
       align: "center",
       hideActionsButton: true,
