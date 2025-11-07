@@ -218,7 +218,7 @@ export function DataTableHeaderCell<TData, TValue>({
                 variant="ghost"
                 size={"sm"}
                 className={cn(
-                  "txt-body-default-medium my-2 gap-1 px-0 text-left font-[Inter] normal-case",
+                  "txt-body-default-medium my-2 -ml-2 gap-1 px-2 text-left font-[Inter] normal-case",
                   header.column.columnDef.meta?.align === "right" && "ml-auto",
                   header.column.columnDef.meta?.align === "center" && "mx-auto",
                   pinnedClasses

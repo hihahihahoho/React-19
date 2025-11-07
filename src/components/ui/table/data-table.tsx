@@ -98,7 +98,10 @@ export function DataTable({
             >
               <TableHeader ref={headerRef}>
                 {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
+                  <TableRow
+                    className="hover:bg-transparent"
+                    key={headerGroup.id}
+                  >
                     {headerGroup.headers.map((header) => (
                       <DataTableHeaderCell key={header.id} header={header} />
                     ))}

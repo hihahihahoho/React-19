@@ -128,7 +128,7 @@ export function FloatingHeader({
         >
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow className="hover:bg-transparent" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   const domNode = headerRefs.current.get(header.column.id)
                   const width = domNode?.offsetWidth || 0
