@@ -51,7 +51,7 @@ function DialogContent({
   className,
   children,
   innerScroll,
-  showCloseButton,
+  showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
@@ -78,6 +78,7 @@ function DialogContent({
           {showCloseButton && (
             <div className="sticky top-0 z-50 w-full">
               <DialogPrimitive.Close
+                tabIndex={-1}
                 className={cn(
                   "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-2 right-2 flex size-8 items-center justify-center rounded-full backdrop-blur-sm transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none",
                   currentScroll > 20 &&
