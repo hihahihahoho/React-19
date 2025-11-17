@@ -67,7 +67,7 @@ function DialogContent({
             setCurrentScroll(e.currentTarget.scrollTop)
           }}
           className={cn(
-            "margin-auto bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative top-0 my-4 max-h-[calc(100vh-32px)] w-[calc(100%-32px)] max-w-xl gap-4 overflow-auto rounded-lg border p-0 shadow-lg max-md:border-0",
+            "margin-auto bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative top-0 my-4 max-h-[calc(100svh-32px)] w-[calc(100%-32px)] max-w-xl gap-4 overflow-auto rounded-lg border p-0 shadow-lg max-md:border-0",
             innerScroll
               ? "flex flex-col gap-0 overflow-hidden **:data-[slot=dialog-inner]:overflow-y-auto"
               : "overflow-auto",
