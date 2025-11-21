@@ -622,7 +622,7 @@
         "https://react-19.octung112.workers.dev/r/badge.json",
         "https://react-19.octung112.workers.dev/r/command.json",
         "https://react-19.octung112.workers.dev/r/form.json",
-        "react-popover",
+        "popover",
         "tooltip",
         "https://react-19.octung112.workers.dev/r/select.json",
         "https://react-19.octung112.workers.dev/r/select-command.json",
@@ -658,7 +658,7 @@
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/command.json",
         "https://react-19.octung112.workers.dev/r/form.json",
-        "react-popover",
+        "popover",
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
@@ -1190,7 +1190,7 @@
       "dependencies": [],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/drawer.json",
-        "react-popover",
+        "popover",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "https://react-19.octung112.workers.dev/r/use-media-query.json",
         "utils"
