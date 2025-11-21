@@ -839,7 +839,7 @@
         {
           "path": "src/hooks/use-media-query.ts",
           "type": "registry:hook",
-          "target": "hooks/use-media-query.ts"
+          "target": "hooks/use-media-query.tsx"
         }
       ]
     },
