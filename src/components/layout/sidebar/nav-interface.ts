@@ -10,6 +10,6 @@ export interface NavItemTanstack {
 }
 
 export interface NavGroupTanstack {
-  groupLabel: string
+  groupLabel?: string
   items: NavItemTanstack[]
 }

@@ -1269,8 +1269,7 @@
       ],
       "registryDependencies": [
         "tooltip",
-        "utils",
-        "use-media-query"
+        "utils"
       ],
       "type": "registry:component",
       "files": [

@@ -1,7 +1,7 @@
 import { AppSidebar } from "@/components/layout/sidebar/app-sidebar"
 import {
-  NavGroupTanstack,
-  NavItemTanstack,
+  type NavGroupTanstack,
+  type NavItemTanstack,
 } from "@/components/layout/sidebar/nav-interface"
 import { Separator } from "@/components/ui/separator"
 import {

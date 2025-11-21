@@ -1,4 +1,4 @@
-import { format, FormatOptions } from "date-fns";
+import { format, type FormatOptions } from "date-fns";
 
 const DEFAULT_DATE_FORMAT = "dd/MM/yyyy"
 

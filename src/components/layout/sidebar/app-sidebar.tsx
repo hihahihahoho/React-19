@@ -18,7 +18,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar"
-import { NavGroup, NavMain } from "./nav-main"
+import { type NavGroup, NavMain } from "./nav-main"
 import { NavUser } from "./nav-user"
 import { TeamSwitcher } from "./team-switcher"
 

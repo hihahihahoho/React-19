@@ -3,7 +3,7 @@ import {
   formatDate,
   formatDateRange,
 } from "@/lib/general-formats"
-import { Meta, StoryObj } from "@storybook/react-vite"
+import { type Meta, type StoryObj } from "@storybook/react-vite"
 import { addDays, subDays } from "date-fns"
 
 /**
