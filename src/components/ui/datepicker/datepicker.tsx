@@ -217,14 +217,30 @@ function DatePicker({
   )
 
   const calendarContent = (
-    <Calendar
-      {...calendarProps}
-      localeString={localeConfig.locale}
-      defaultMonth={currentDate}
-      mode="single"
-      selected={currentDate}
-      onSelect={handleCalendarSelect}
-    />
+    <>
+      <Calendar
+        {...calendarProps}
+        localeString={localeConfig.locale}
+        defaultMonth={currentDate}
+        mode="single"
+        selected={currentDate}
+        onSelect={handleCalendarSelect}
+      />
+      <div className="p-4 pt-0">
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => {
+            const today = new Date()
+            setInternalDate(today)
+            onValueChange?.(today)
+            setOpen(false)
+          }}
+        >
+          Hôm nay
+        </Button>
+      </div>
+    </>
   )
 
   return (
