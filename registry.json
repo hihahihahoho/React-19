@@ -164,7 +164,7 @@
         "https://react-19.octung112.workers.dev/r/calendar.json",
         "https://react-19.octung112.workers.dev/r/date-time-input.json",
         "separator",
-        "use-media-query",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json",
         "utils"
       ],
       "type": "registry:component",
@@ -415,7 +415,7 @@
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/button.json",
-        "use-media-query"
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [
@@ -831,6 +831,19 @@
       ]
     },
     {
+      "name": "https://react-19.octung112.workers.dev/r/use-media-query.json",
+      "author": "hihahihahoho",
+      "dependencies": [],
+      "type": "registry:hook",
+      "files": [
+        {
+          "path": "src/hooks/use-media-query.ts",
+          "type": "registry:hook",
+          "target": "hooks/use-media-query.ts"
+        }
+      ]
+    },
+    {
       "name": "use-file-upload",
       "author": "hihahihahoho",
       "dependencies": [],
@@ -1158,7 +1171,7 @@
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "separator",
         "utils",
-        "use-media-query"
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1179,7 +1192,7 @@
         "https://react-19.octung112.workers.dev/r/drawer.json",
         "react-popover",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
-        "use-media-query",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json",
         "utils"
       ],
       "type": "registry:component",
@@ -1269,7 +1282,8 @@
       ],
       "registryDependencies": [
         "tooltip",
-        "utils"
+        "utils",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1288,7 +1302,7 @@
         "https://react-19.octung112.workers.dev/r/badge.json",
         "https://react-19.octung112.workers.dev/r/use-item-overflow.json",
         "utils",
-        "use-media-query"
+        "https://react-19.octung112.workers.dev/r/use-media-query.json"
       ],
       "type": "registry:component",
       "files": [

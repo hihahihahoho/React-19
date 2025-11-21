@@ -41,7 +41,7 @@ export interface NavItem {
 }
 
 export interface NavGroup {
-  groupLabel: string
+  groupLabel?: string
   items: NavItem[]
 }
 
@@ -186,7 +186,9 @@ function Tree({ item }: { item: NavItem }) {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <SidebarMenuSub>
-            {item.items?.map((child, idx) => <Tree key={idx} item={child} />)}
+            {item.items?.map((child, idx) => (
+              <Tree key={idx} item={child} />
+            ))}
           </SidebarMenuSub>
         </CollapsibleContent>
       </Collapsible>
