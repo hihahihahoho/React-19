@@ -1721,6 +1721,76 @@
           "target": "components/ui/rating/rating-form.tsx"
         }
       ]
+    },
+    {
+      "name": "datepicker",
+      "author": "hihahihahoho",
+      "title": "Date Picker",
+      "description": "Date picker component with calendar popup, time input support, and form integration",
+      "dependencies": [
+        "lucide-react",
+        "date-fns",
+        "@radix-ui/rect"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/calendar.json",
+        "https://react-19.octung112.workers.dev/r/date-time-input.json",
+        "https://react-19.octung112.workers.dev/r/date-time-input-group.json",
+        "https://react-19.octung112.workers.dev/r/drawer.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "popover",
+        "https://react-19.octung112.workers.dev/r/use-date-locale-config.json",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json",
+        "https://react-19.octung112.workers.dev/r/zod.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "components/ui/datepicker/datepicker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/datepicker/datepicker-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "date-range-picker",
+      "author": "hihahihahoho",
+      "title": "Date Range Picker",
+      "description": "Date range picker component with calendar popup, range selection, and form integration",
+      "dependencies": [
+        "lucide-react",
+        "date-fns"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/calendar-range.json",
+        "https://react-19.octung112.workers.dev/r/drawer.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "popover",
+        "separator",
+        "https://react-19.octung112.workers.dev/r/use-date-locale-config.json",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json",
+        "https://react-19.octung112.workers.dev/r/zod.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "components/ui/date-range-picker/date-range-picker.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "components/ui/date-range-picker/date-range-picker-form.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
