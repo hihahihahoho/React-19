@@ -831,7 +831,7 @@
       ]
     },
     {
-      "name": "https://react-19.octung112.workers.dev/r/use-media-query.json",
+      "name": "use-media-query",
       "author": "hihahihahoho",
       "dependencies": [],
       "type": "registry:hook",
