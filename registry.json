@@ -1749,12 +1749,14 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/datepicker/datepicker.tsx",
-          "type": "registry:component"
+          "path": "src/components/ui/datepicker/datepicker.tsx",
+          "type": "registry:component",
+          "target": "components/ui/datepicker/datepicker.tsx"
         },
         {
-          "path": "components/ui/datepicker/datepicker-form.tsx",
-          "type": "registry:component"
+          "path": "src/components/ui/datepicker/datepicker-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/datepicker/datepicker-form.tsx"
         }
       ]
     },
@@ -1783,12 +1785,14 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "components/ui/date-range-picker/date-range-picker.tsx",
-          "type": "registry:component"
+          "path": "src/components/ui/date-range-picker/date-range-picker.tsx",
+          "type": "registry:component",
+          "target": "components/ui/date-range-picker/date-range-picker.tsx"
         },
         {
-          "path": "components/ui/date-range-picker/date-range-picker-form.tsx",
-          "type": "registry:component"
+          "path": "src/components/ui/date-range-picker/date-range-picker-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/date-range-picker/date-range-picker-form.tsx"
         }
       ]
     }
