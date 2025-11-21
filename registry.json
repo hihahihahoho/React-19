@@ -837,7 +837,7 @@
       "type": "registry:hook",
       "files": [
         {
-          "path": "src/hooks/use-media-query.ts",
+          "path": "src/hooks/use-media-query.tsx",
           "type": "registry:hook",
           "target": "hooks/use-media-query.tsx"
         }
