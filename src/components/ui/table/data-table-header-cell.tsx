@@ -257,16 +257,3 @@ export function DataTableHeaderCell<TData, TValue>({
     </TableHead>
   )
 }
-
-export const MemoizedDataTableHeaderCell = React.memo(
-  DataTableHeaderCell,
-  (prev, next) => {
-    return (
-      prev.header.id === next.header.id &&
-      prev.width === next.width &&
-      prev.isPin === next.isPin &&
-      prev.header.column.getIsSorted() === next.header.column.getIsSorted() &&
-      prev.header.column.getIsPinned() === next.header.column.getIsPinned()
-    )
-  }
-) as typeof DataTableHeaderCell

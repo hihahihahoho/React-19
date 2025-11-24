@@ -9,7 +9,7 @@ import { ScrollAreaTable } from "../scroll-area"
 import { DataTableCell } from "./data-table-cell"
 import { useDataTable } from "./data-table-context"
 import { FloatingHeader } from "./data-table-floating-header"
-import { DataTableHeaderCell } from "./data-table-header-cell"
+import { MemoizedDataTableHeaderCell } from "./data-table-header-cell"
 import { DataTablePagination } from "./data-table-pagination"
 import { DataTableSelection } from "./data-table-selection"
 import { HeaderRefsProvider } from "./header-ref-context"
@@ -103,7 +103,10 @@ export function DataTable({
                     key={headerGroup.id}
                   >
                     {headerGroup.headers.map((header) => (
-                      <DataTableHeaderCell key={header.id} header={header} />
+                      <MemoizedDataTableHeaderCell
+                        key={header.id}
+                        header={header}
+                      />
                     ))}
                   </TableRow>
                 ))}
