@@ -56,6 +56,7 @@ export function FloatingHeader({
   useEffect(() => {
     let isHeaderVisible = false
     let ticking = false
+    let resizeTicking = false
     let resizeObserver: ResizeObserver | undefined
 
     const handleScroll = () => {
@@ -83,16 +84,16 @@ export function FloatingHeader({
       }
     }
 
-    // Set up resize observer for the table
+    // Set up resize observer for the table with separate throttling
     if (tableRef.current) {
       resizeObserver = new ResizeObserver(() => {
-        // Debounce resize updates
-        if (!ticking) {
+        // Separate throttling for resize to avoid blocking scroll
+        if (!resizeTicking) {
           window.requestAnimationFrame(() => {
             updateTableOffset()
-            ticking = false
+            resizeTicking = false
           })
-          ticking = true
+          resizeTicking = true
         }
       })
       resizeObserver.observe(tableRef.current)

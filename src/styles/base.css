@@ -96,7 +96,7 @@ body {
   }
 }
 .column-pin-backdrop {
-  @apply bg-background dark:bg-card/80 absolute top-0 bottom-0 left-0 z-[-1] h-full w-full backdrop-blur-sm;
+  @apply bg-background dark:bg-card absolute top-0 bottom-0 left-0 z-[-1] h-full w-full;
 }
 
 .max-h-\[calc\(100vh_-_32px\)\] {

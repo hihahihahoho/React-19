@@ -6,7 +6,6 @@ import { Button } from "../button"
 import { SelectCommand } from "../select/select-command"
 import { SelectGroup, SelectItems } from "../select/select-interface"
 import { SelectPopover } from "../select/select-popover"
-import { useDataTable } from "./data-table-context"
 import { useHeaderRefs } from "./header-ref-context"
 import { TableHead } from "./table"
 
@@ -60,7 +59,6 @@ export function DataTableHeaderCell<TData, TValue>({
   width,
   isRegisterHeaderRef = true,
 }: DataTableHeaderCellProps<TData, TValue>) {
-  const { setColumnPinning, fixedPinLeft, fixedPinRight } = useDataTable()
   const sortState = header.column.getIsSorted()
   const ref = React.useRef<HTMLTableCellElement>(null)
   const initialSelected = ["no-sort"]
@@ -93,23 +91,6 @@ export function DataTableHeaderCell<TData, TValue>({
         )
         return [...withoutSort, selected]
       })
-    }
-
-    // Pinning logic
-    if (selected === "pin") {
-      if (selected.includes("pin")) {
-        // Unpin
-        setColumnPinning?.(() => ({
-          left: [...fixedPinLeft],
-          right: [...fixedPinRight],
-        }))
-      } else {
-        // Pin this column to the left
-        setColumnPinning?.(() => ({
-          left: [...fixedPinLeft, header.column.id],
-          right: [...fixedPinRight],
-        }))
-      }
     }
   }
 
