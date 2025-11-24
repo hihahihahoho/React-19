@@ -8,6 +8,7 @@ import { EmptyState } from "../empty-state"
 import { ScrollAreaTable } from "../scroll-area"
 import { DataTableCell } from "./data-table-cell"
 import { useDataTable } from "./data-table-context"
+import { FloatingHeader } from "./data-table-floating-header"
 import { DataTableHeaderCell } from "./data-table-header-cell"
 import { DataTablePagination } from "./data-table-pagination"
 import { DataTableSelection } from "./data-table-selection"
@@ -38,6 +39,7 @@ interface DataTableProps {
 
 export function DataTable({
   variant,
+  fixedHeaderOffset,
   emptyState,
   showPagination = true,
   autoWidthTable = false,
@@ -63,13 +65,13 @@ export function DataTable({
   return (
     <HeaderRefsProvider>
       <div className="" ref={tableRef}>
-        {/* <FloatingHeader
+        <FloatingHeader
           mainScrollRef={mainScrollRef}
           tableRef={tableRef}
           headerRef={headerRef}
           fixedHeaderOffset={fixedHeaderOffset}
           autoWidthTable={autoWidthTable}
-        /> */}
+        />
         <div
           className={cn(
             tableVariants({ variant }),
