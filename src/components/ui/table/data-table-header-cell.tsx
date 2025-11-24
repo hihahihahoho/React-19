@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils"
 import { ColumnPinningState, flexRender, Header } from "@tanstack/react-table"
-import { Sort } from "iconsax-reactjs"
 import { ArrowDown, ArrowUp, ArrowUpDown, Pin } from "lucide-react"
 import React from "react"
 import { Button } from "../button"
@@ -231,7 +230,7 @@ export function DataTableHeaderCell<TData, TValue>({
                     <span className="text-muted-foreground">
                       {sortState === "asc" && <ArrowUp />}
                       {sortState === "desc" && <ArrowDown />}
-                      {sortState === false && <Sort />}
+                      {sortState === false && <></>}
                     </span>
                   )}
                 </div>
@@ -258,3 +257,16 @@ export function DataTableHeaderCell<TData, TValue>({
     </TableHead>
   )
 }
+
+export const MemoizedDataTableHeaderCell = React.memo(
+  DataTableHeaderCell,
+  (prev, next) => {
+    return (
+      prev.header.id === next.header.id &&
+      prev.width === next.width &&
+      prev.isPin === next.isPin &&
+      prev.header.column.getIsSorted() === next.header.column.getIsSorted() &&
+      prev.header.column.getIsPinned() === next.header.column.getIsPinned()
+    )
+  }
+) as typeof DataTableHeaderCell

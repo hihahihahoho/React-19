@@ -2,7 +2,6 @@ import useScrollPosition from "@/hooks/use-scroll-position"
 import { useSyncScroll } from "@/hooks/use-sync-scroll"
 import { cn } from "@/lib/utils"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-// import { useSidebar } from "../sidebar"
 import { useDataTable } from "./data-table-context"
 import { DataTableHeaderCell } from "./data-table-header-cell"
 import { useHeaderRefs } from "./header-ref-context"
@@ -25,22 +24,31 @@ export function FloatingHeader({
 }: FloatingHeaderProps) {
   const { table, setColumnPinning } = useDataTable()
   const { headerRefs } = useHeaderRefs()
-  // const { isMobile } = useSidebar()
   const [showClonedHeader, setShowClonedHeader] = useState(false)
   const [tableOffset, setTableOffset] = useState({ left: 0, width: 0 })
   const syncWithScrollRef = useRef<HTMLDivElement>(null)
   const { isReachLeft, isReachRight } = useScrollPosition(syncWithScrollRef)
 
+  // Use refs to track previous values and avoid unnecessary state updates
+  const prevOffsetRef = useRef({ left: 0, width: 0 })
+
   useSyncScroll(syncWithScrollRef, mainScrollRef)
 
-  // Unified offset updater
+  // Unified offset updater with comparison to avoid unnecessary state updates
   const updateTableOffset = useCallback(() => {
     if (tableRef.current) {
       const rect = tableRef.current.getBoundingClientRect()
-      setTableOffset({
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      })
+      const newLeft = rect.left + window.scrollX
+      const newWidth = rect.width
+
+      // Only update state if values actually changed (with small threshold for floating point)
+      if (
+        Math.abs(prevOffsetRef.current.left - newLeft) > 1 ||
+        Math.abs(prevOffsetRef.current.width - newWidth) > 1
+      ) {
+        prevOffsetRef.current = { left: newLeft, width: newWidth }
+        setTableOffset({ left: newLeft, width: newWidth })
+      }
     }
   }, [tableRef])
 
@@ -64,7 +72,7 @@ export function FloatingHeader({
               setShowClonedHeader(shouldShowHeader)
             }
 
-            // Always update position when scrolling
+            // Only update position when header is visible AND position changed
             if (shouldShowHeader) {
               updateTableOffset()
             }
@@ -77,7 +85,16 @@ export function FloatingHeader({
 
     // Set up resize observer for the table
     if (tableRef.current) {
-      resizeObserver = new ResizeObserver(updateTableOffset)
+      resizeObserver = new ResizeObserver(() => {
+        // Debounce resize updates
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            updateTableOffset()
+            ticking = false
+          })
+          ticking = true
+        }
+      })
       resizeObserver.observe(tableRef.current)
     }
 
@@ -95,13 +112,13 @@ export function FloatingHeader({
     }
   }, [tableRef, headerRef, updateTableOffset])
 
+  // Memoize header groups to prevent unnecessary re-renders
+  const headerGroups = React.useMemo(() => table.getHeaderGroups(), [table])
+
   return (
     <div
       className={cn(
         "bg-background fixed top-0 z-30 overflow-hidden border-b-0",
-        // state === "collapsed" && "top-12",
-        // state === "expanded" && "top-16",
-        // isMobile && "top-14",
         fixedHeaderOffset
       )}
       style={{
@@ -127,7 +144,7 @@ export function FloatingHeader({
           className={cn("table-fixed", autoWidthTable && "w-auto")}
         >
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {headerGroups.map((headerGroup) => (
               <TableRow className="hover:bg-transparent" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   const domNode = headerRefs.current.get(header.column.id)
@@ -139,6 +156,7 @@ export function FloatingHeader({
                       header={header}
                       setColumnPinning={setColumnPinning}
                       width={width}
+                      isRegisterHeaderRef={false}
                     />
                   )
                 })}

@@ -7,6 +7,7 @@ const VARIANTS = {
   disconnected: "/images/empty-states/disconnected.svg",
   "empty-data": "/images/empty-states/empty-data.svg",
   maintain: "/images/empty-states/maintain.svg",
+  "not-found": "/images/empty-states/not-found.svg",
 } as const
 
 type VariantKey = keyof typeof VARIANTS
@@ -38,6 +39,10 @@ const getDefaultContent = (variant: VariantKey) => {
     maintain: {
       title: "Đang bảo trì",
       description: "Chúng tôi sẽ sớm trở lại với những cải tiến mới",
+    },
+    "not-found": {
+      title: "Không tìm thấy trang",
+      description: "Trang bạn đang tìm kiếm không tồn tại",
     },
   }
 
@@ -76,7 +81,7 @@ function EmptyState({
       </h3>
 
       {displayDescription && (
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-2 text-sm">
           {displayDescription}
         </p>
       )}

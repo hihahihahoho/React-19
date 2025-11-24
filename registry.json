@@ -779,7 +779,8 @@
         "@radix-ui/react-alert-dialog"
       ],
       "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/button.json"
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/use-alert-dialog.json"
       ],
       "type": "registry:component",
       "files": [
@@ -787,6 +788,11 @@
           "path": "src/components/ui/alert-dialog/alert-dialog.tsx",
           "type": "registry:component",
           "target": "components/ui/alert-dialog/alert-dialog.tsx"
+        },
+        {
+          "path": "src/components/ui/alert-dialog/alert-dialog-container.tsx",
+          "type": "registry:component",
+          "target": "components/ui/alert-dialog/alert-dialog-container.tsx"
         }
       ]
     },
