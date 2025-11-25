@@ -7,6 +7,7 @@ import {
   RowSelectionState,
   SortingState,
   Table,
+  TableOptions,
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -38,9 +39,22 @@ interface DataTableContextProps<TData> {
   handlePageChange: (page: number) => void
 }
 
-const DataTableContext = createContext<DataTableContextProps<any>>(
-  {} as DataTableContextProps<any>
+const DataTableContext = createContext<DataTableContextProps<unknown> | null>(
+  null
 )
+
+interface DataTableProviderProps<TData, TValue> {
+  children?: ReactNode
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  defaultPinLeft?: string[]
+  fixedPinRight?: string[]
+  fixedPinLeft?: string[]
+  pageSize?: number
+  defaultSelection?: RowSelectionState
+  /** Extend or override table options */
+  tableOptions?: Partial<Omit<TableOptions<TData>, "data" | "columns">>
+}
 
 function DataTableProvider<TData, TValue>({
   children,
@@ -51,16 +65,8 @@ function DataTableProvider<TData, TValue>({
   fixedPinLeft = ["index"],
   defaultSelection = {},
   pageSize = 10,
-}: {
-  children?: ReactNode
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  defaultPinLeft?: string[]
-  fixedPinRight?: string[]
-  fixedPinLeft?: string[]
-  pageSize?: number
-  defaultSelection?: RowSelectionState
-}) {
+  tableOptions,
+}: DataTableProviderProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({
     left: [...defaultPinLeft, ...fixedPinLeft],
@@ -80,11 +86,6 @@ function DataTableProvider<TData, TValue>({
     onColumnPinningChange: setColumnPinning,
     onRowSelectionChange: setRowSelection,
     enableRowSelection: true,
-    state: {
-      sorting,
-      columnPinning,
-      rowSelection,
-    },
     defaultColumn: {
       minSize: 56,
       size: "auto" as unknown as number,
@@ -94,6 +95,15 @@ function DataTableProvider<TData, TValue>({
       pagination: {
         pageSize: pageSize,
       },
+      ...tableOptions?.initialState,
+    },
+    ...tableOptions,
+    // Merge state - tableOptions.state extends our managed state
+    state: {
+      sorting,
+      columnPinning,
+      rowSelection,
+      ...tableOptions?.state,
     },
   })
 
@@ -104,30 +114,38 @@ function DataTableProvider<TData, TValue>({
     table.setPageIndex(page - 1)
   }
 
+  const contextValue: DataTableContextProps<TData> = {
+    table,
+    sorting,
+    setSorting,
+    columnPinning,
+    setColumnPinning,
+    rowSelection,
+    setRowSelection,
+    currentPage,
+    totalPages,
+    handlePageChange,
+    defaultPinLeft,
+    fixedPinRight,
+    fixedPinLeft,
+    totalNumber: data?.length || 0,
+  }
+
   return (
     <DataTableContext.Provider
-      value={{
-        table: table as Table<TData>,
-        sorting,
-        setSorting,
-        columnPinning,
-        setColumnPinning,
-        rowSelection,
-        setRowSelection,
-        currentPage,
-        totalPages,
-        handlePageChange,
-        defaultPinLeft,
-        fixedPinRight,
-        fixedPinLeft,
-        totalNumber: data?.length || 0,
-      }}
+      value={contextValue as DataTableContextProps<unknown>}
     >
       {children}
     </DataTableContext.Provider>
   )
 }
 
-const useDataTable = () => useContext(DataTableContext)
+function useDataTable<TData>() {
+  const context = useContext(DataTableContext)
+  if (!context) {
+    throw new Error("useDataTable must be used within a DataTableProvider")
+  }
+  return context as DataTableContextProps<TData>
+}
 
 export { DataTableProvider, useDataTable }

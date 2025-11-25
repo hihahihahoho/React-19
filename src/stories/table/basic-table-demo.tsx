@@ -11,7 +11,7 @@ export default function DemoTableBasic() {
     <DataTableProvider
       columns={columns}
       data={data}
-      fixedPinRight={["select", "actions-column"]}
+      fixedPinRight={["tinhKhaDung", "select", "actions-column"]}
     >
       <div className="space-y-4">
         <div className="flex justify-end">
