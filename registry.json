@@ -581,6 +581,23 @@
       ]
     },
     {
+      "name": "input-otp",
+      "author": "hihahihahoho",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "input-otp"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/input-otp-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/input-otp-form.tsx"
+        }
+      ]
+    },
+    {
       "name": "input-number",
       "author": "hihahihahoho",
       "dependencies": [

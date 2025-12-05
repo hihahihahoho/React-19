@@ -4,6 +4,12 @@ import { DatePickerForm } from "@/components/ui/datepicker/datepicker-form"
 import { FileUploadForm } from "@/components/ui/file-upload/file-upload-form"
 import { Form } from "@/components/ui/form/form"
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
+import {
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import { InputOTPForm } from "@/components/ui/input-otp-form"
 import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form"
 import { InputForm } from "@/components/ui/input/input-form"
 import { InputNumberForm } from "@/components/ui/input/input-number-form"
@@ -75,6 +81,7 @@ const FormSchema = z.object({
   username: z.string({
     error: "Please enter username.",
   }),
+  otp: z.string().length(6, { message: "OTP must be 6 characters." }),
   money: z
     .number({
       error: "Please enter money.",
@@ -120,6 +127,7 @@ function FormDemo() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      otp: "",
       money: 1000000,
       multi_select: ["honda", "chevrolet"],
       datepicker: new Date("2024-10-28"),
@@ -182,6 +190,28 @@ function FormDemo() {
               ),
             }}
           />
+          <InputOTPForm
+            control={form.control}
+            name="otp"
+            maxLength={6}
+            formComposition={{
+              label: "OTP Code",
+              description: "Enter 6-digit verification code",
+              labelPosition: "horizontal",
+            }}
+          >
+            <InputOTPGroup>
+              <InputOTPSlot index={0} />
+              <InputOTPSlot index={1} />
+              <InputOTPSlot index={2} />
+            </InputOTPGroup>
+            <InputOTPSeparator />
+            <InputOTPGroup>
+              <InputOTPSlot index={3} />
+              <InputOTPSlot index={4} />
+              <InputOTPSlot index={5} />
+            </InputOTPGroup>
+          </InputOTPForm>
           <InputNumberForm
             control={form.control}
             name="money"
