@@ -34,7 +34,7 @@ import {
 import { createRemoteFileProxy } from "@/lib/utils-plus"
 import { zodDate, zodDateRange, zodFile } from "@/lib/zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { parse } from "date-fns"
+import { addYears, parse } from "date-fns"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -95,12 +95,12 @@ const FormSchema = z.object({
     .min(2, { error: "Select at least 2 options." }),
   datepicker: zodDate(),
   dob: zodDate({
-    minDate: new Date("1900-01-01"),
-    maxDate: new Date(),
+    minDate: new Date("1920-01-01"),
+    maxDate: addYears(new Date(), 1),
   }),
   daterange: zodDateRange({
-    minDate: new Date("1900-01-01"),
-    maxDate: new Date(),
+    minDate: new Date("1920-01-01"),
+    maxDate: addYears(new Date(), 1),
   }),
   file_upload_native: zodFile({
     accepted: ACCEPTED_PDF_TYPES,

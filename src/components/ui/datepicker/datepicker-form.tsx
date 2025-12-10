@@ -19,7 +19,9 @@ import {
 export interface DatePickerFormProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends ControllerProps<TFieldValues, TName>,
+>
+  extends
+    ControllerProps<TFieldValues, TName>,
     Omit<
       DatePickerProps,
       "defaultValue" | "name" | "value" | "onValueChange"
@@ -70,6 +72,9 @@ const DatePickerForm = <
                 }
                 return false
               },
+              startMonth: metadata?.minDate || undefined,
+              endMonth: metadata?.maxDate || undefined,
+              ...props.calendarProps,
             }}
             formComposition={{
               requiredSymbol: isRequired,
