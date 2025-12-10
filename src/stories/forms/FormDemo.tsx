@@ -77,57 +77,112 @@ const itemsRadioGroup: ItemRadioType[] = [
   },
 ]
 
-const FormSchema = z.object({
-  username: z.string({
-    error: "Please enter username.",
-  }),
-  otp: z.string().length(6, { message: "OTP must be 6 characters." }),
-  money: z
-    .number({
-      error: "Please enter money.",
-    })
-    .gt(100000),
-  textarea: z.string({ error: "Please enter a description." }).max(230),
-  select: z.string({ error: "Please select an option." }),
-  auto_complete: z.string({ error: "Please type to search." }),
-  multi_select: z
-    .array(z.string())
-    .min(2, { error: "Select at least 2 options." }),
-  datepicker: zodDate(),
-  dob: zodDate({
-    minDate: new Date("1920-01-01"),
-    maxDate: addYears(new Date(), 1),
-  }),
-  daterange: zodDateRange({
-    minDate: new Date("1920-01-01"),
-    maxDate: addYears(new Date(), 1),
-  }),
-  file_upload_native: zodFile({
-    accepted: ACCEPTED_PDF_TYPES,
-    maxFileSize: MAX_FILE_SIZE,
-    length: { min: 0, max: 1 },
-  }).optional(),
-  file_upload: zodFile({
-    accepted: [...ACCEPTED_VIDEO_TYPES],
-    maxFileSize: MAX_FILE_SIZE,
-    length: { min: 1, max: 7 },
-  }),
-  checkbox_group: z
-    .array(z.string())
-    .min(2, { error: "Select at least 2 option." }),
-  radio_group: z.enum(["include", "exclude"], {
-    error: "You need to select a notification type.",
-  }),
-  checkbox_term: z.boolean().refine((val) => val === true, {
-    error: "Please read and accept the terms and conditions",
-  }),
-})
+const FormSchema = z
+  .object({
+    username: z.string({
+      error: "Please enter username.",
+    }),
+
+    password: z.string({ error: "Please enter password." }).optional(),
+    confirm_password: z.string({ error: "Please confirm password." }),
+    otp: z.string().length(6, { message: "OTP must be 6 characters." }),
+    money: z
+      .number({
+        error: "Please enter money.",
+      })
+      .gt(100000),
+    textarea: z.string({ error: "Please enter a description." }).max(230),
+    select: z.string({ error: "Please select an option." }),
+    auto_complete: z.string({ error: "Please type to search." }),
+    multi_select: z
+      .array(z.string())
+      .min(2, { error: "Select at least 2 options." }),
+    datepicker: zodDate(),
+    dob: zodDate({
+      minDate: new Date("1920-01-01"),
+      maxDate: addYears(new Date(), 1),
+    }),
+    daterange: zodDateRange({
+      minDate: new Date("1920-01-01"),
+      maxDate: addYears(new Date(), 1),
+    }),
+    file_upload_native: zodFile({
+      accepted: ACCEPTED_PDF_TYPES,
+      maxFileSize: MAX_FILE_SIZE,
+      length: { min: 0, max: 1 },
+    }).optional(),
+    file_upload: zodFile({
+      accepted: [...ACCEPTED_VIDEO_TYPES],
+      maxFileSize: MAX_FILE_SIZE,
+      length: { min: 1, max: 7 },
+    }),
+    checkbox_group: z
+      .array(z.string())
+      .min(2, { error: "Select at least 2 option." }),
+    radio_group: z.enum(["include", "exclude"], {
+      error: "You need to select a notification type.",
+    }),
+    checkbox_term: z.boolean().refine((val) => val === true, {
+      error: "Please read and accept the terms and conditions",
+    }),
+  })
+  // superRefine cho phép validate cross-field và thêm multiple errors
+  // Zod 4: sử dụng code: "custom" (string) thay vì z.ZodIssueCode.custom (deprecated)
+  .superRefine((data, ctx) => {
+    // Validate password strength
+    if (data.password) {
+      if (data.password.length < 8) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Password must be at least 8 characters.",
+          path: ["password"],
+          input: data.password,
+        })
+      }
+      if (!/[A-Z]/.test(data.password)) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Password must contain at least 1 uppercase letter.",
+          path: ["password"],
+          input: data.password,
+        })
+      }
+      if (!/[a-z]/.test(data.password)) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Password must contain at least 1 lowercase letter.",
+          path: ["password"],
+          input: data.password,
+        })
+      }
+      if (!/[0-9]/.test(data.password)) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Password must contain at least 1 number.",
+          path: ["password"],
+          input: data.password,
+        })
+      }
+    }
+
+    // Cross-field validation: Password matching
+    if (data.password !== data.confirm_password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Passwords do not match.",
+        path: ["confirm_password"],
+        input: data.confirm_password,
+      })
+    }
+  })
 
 function FormDemo() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       otp: "",
+      password: "",
+      confirm_password: "",
       money: 1000000,
       multi_select: ["honda", "chevrolet"],
       datepicker: new Date("2024-10-28"),
@@ -190,6 +245,31 @@ function FormDemo() {
               ),
             }}
           />
+
+          {/* Demo superRefine: Password validation */}
+          <InputForm
+            control={form.control}
+            name="password"
+            type="password"
+            placeholder="Enter password"
+            formComposition={{
+              label: "Password (superRefine)",
+              labelPosition: "horizontal",
+              description: "Min 8 chars, 1 uppercase, 1 lowercase, 1 number",
+            }}
+          />
+          <InputForm
+            control={form.control}
+            name="confirm_password"
+            type="password"
+            placeholder="Confirm password"
+            formComposition={{
+              label: "Confirm Password",
+              labelPosition: "horizontal",
+              description: "Must match password above",
+            }}
+          />
+
           <InputOTPForm
             control={form.control}
             name="otp"
