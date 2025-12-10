@@ -13,6 +13,7 @@ import { InputOTPForm } from "@/components/ui/input-otp-form"
 import { InputAutoCompleteForm } from "@/components/ui/input/input-auto-complete-form"
 import { InputForm } from "@/components/ui/input/input-form"
 import { InputNumberForm } from "@/components/ui/input/input-number-form"
+import { PasswordValidator } from "@/components/ui/password-validator"
 import { MultiSelectForm } from "@/components/ui/select/multiselect-form"
 import { SelectForm } from "@/components/ui/select/select-form"
 import { CheckboxForm } from "@/components/ui/selection-controls/checkbox-form"
@@ -35,7 +36,7 @@ import { createRemoteFileProxy } from "@/lib/utils-plus"
 import { zodDate, zodDateRange, zodFile } from "@/lib/zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { addYears, parse } from "date-fns"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
 
 const itemsCheckbox: ItemCheckboxType[] = [
@@ -77,14 +78,26 @@ const itemsRadioGroup: ItemRadioType[] = [
   },
 ]
 
+// Password validation schema for PasswordValidator component
+const passwordValidationSchema = z
+  .string()
+  .min(8, "At least 8 characters")
+  .regex(/[A-Z]/, "At least 1 uppercase letter")
+  .regex(/[a-z]/, "At least 1 lowercase letter")
+  .regex(/[0-9]/, "At least 1 number")
+
 const FormSchema = z
   .object({
     username: z.string({
       error: "Please enter username.",
     }),
 
-    password: z.string({ error: "Please enter password." }).optional(),
-    confirm_password: z.string({ error: "Please confirm password." }),
+    password: z
+      .string({ error: "Please enter password." })
+      .min(1, { message: "Please enter password." }),
+    confirm_password: z
+      .string({ error: "Please confirm password." })
+      .min(1, { message: "Please confirm password." }),
     otp: z.string().length(6, { message: "OTP must be 6 characters." }),
     money: z
       .number({
@@ -223,6 +236,8 @@ function FormDemo() {
     })
   }
 
+  const passwordValue = useWatch({ control: form.control, name: "password" })
+
   return (
     <ZodSchemaProvider schema={FormSchema}>
       <Form {...form}>
@@ -255,7 +270,13 @@ function FormDemo() {
             formComposition={{
               label: "Password (superRefine)",
               labelPosition: "horizontal",
-              description: "Min 8 chars, 1 uppercase, 1 lowercase, 1 number",
+
+              description: (
+                <PasswordValidator
+                  value={passwordValue}
+                  schema={passwordValidationSchema}
+                />
+              ),
             }}
           />
           <InputForm
@@ -266,7 +287,7 @@ function FormDemo() {
             formComposition={{
               label: "Confirm Password",
               labelPosition: "horizontal",
-              description: "Must match password above",
+              subDescription: "Must match password above",
             }}
           />
 

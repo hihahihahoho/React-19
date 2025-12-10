@@ -152,6 +152,25 @@
       ]
     },
     {
+      "name": "password-validator",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "lucide-react",
+        "zod"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/password-validator.tsx",
+          "type": "registry:component",
+          "target": "components/ui/password-validator.tsx"
+        }
+      ]
+    },
+    {
       "name": "calendar-range",
       "author": "hihahihahoho",
       "dependencies": [
