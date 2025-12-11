@@ -75,13 +75,15 @@ function Calendar({
           // changed from nav_button
           buttonVariants({
             variant: "outline",
-            className: "absolute left-3 size-8 min-w-7 p-0",
+            className:
+              "absolute left-3 size-8 min-w-7 p-0 aria-[disabled]:cursor-not-allowed aria-[disabled]:opacity-50",
           })
         ),
         button_next: cn(
           buttonVariants({
             variant: "outline",
-            className: "absolute right-3 size-8 min-w-7 p-0",
+            className:
+              "absolute right-3 size-8 min-w-7 p-0 aria-[disabled]:cursor-not-allowed aria-[disabled]:opacity-50",
           })
         ), // changed from nav_button_next
         ...classNames,

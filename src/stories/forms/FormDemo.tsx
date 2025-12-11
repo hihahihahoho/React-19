@@ -94,7 +94,8 @@ const FormSchema = z
 
     password: z
       .string({ error: "Please enter password." })
-      .min(1, { message: "Please enter password." }),
+      .min(1, { message: "Please enter password." })
+      .pipe(passwordValidationSchema),
     confirm_password: z
       .string({ error: "Please confirm password." })
       .min(1, { message: "Please confirm password." }),
@@ -139,45 +140,9 @@ const FormSchema = z
       error: "Please read and accept the terms and conditions",
     }),
   })
-  // superRefine cho phép validate cross-field và thêm multiple errors
-  // Zod 4: sử dụng code: "custom" (string) thay vì z.ZodIssueCode.custom (deprecated)
+  // superRefine dùng cho cross-field validation (validate giữa nhiều fields)
+  // Single-field validation nên dùng .pipe() hoặc chain trực tiếp trong field schema
   .superRefine((data, ctx) => {
-    // Validate password strength
-    if (data.password) {
-      if (data.password.length < 8) {
-        ctx.addIssue({
-          code: "custom",
-          message: "Password must be at least 8 characters.",
-          path: ["password"],
-          input: data.password,
-        })
-      }
-      if (!/[A-Z]/.test(data.password)) {
-        ctx.addIssue({
-          code: "custom",
-          message: "Password must contain at least 1 uppercase letter.",
-          path: ["password"],
-          input: data.password,
-        })
-      }
-      if (!/[a-z]/.test(data.password)) {
-        ctx.addIssue({
-          code: "custom",
-          message: "Password must contain at least 1 lowercase letter.",
-          path: ["password"],
-          input: data.password,
-        })
-      }
-      if (!/[0-9]/.test(data.password)) {
-        ctx.addIssue({
-          code: "custom",
-          message: "Password must contain at least 1 number.",
-          path: ["password"],
-          input: data.password,
-        })
-      }
-    }
-
     // Cross-field validation: Password matching
     if (data.password !== data.confirm_password) {
       ctx.addIssue({
@@ -270,7 +235,6 @@ function FormDemo() {
             formComposition={{
               label: "Password (superRefine)",
               labelPosition: "horizontal",
-
               description: (
                 <PasswordValidator
                   value={passwordValue}
