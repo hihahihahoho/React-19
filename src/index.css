@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tailwindcss";
+@import "swiper/swiper-bundle.css";
 @import "./styles/photoswipe";
 @import "./styles/base.css" layer(base);
 @import "./styles/embla.css" layer(base);

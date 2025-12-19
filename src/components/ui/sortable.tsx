@@ -176,33 +176,33 @@ function isGroupData(value: unknown[]): value is SortableGroupData[] {
   )
 }
 
-// Unified props - both modes use value/onValueChange
-type SortableRootProps<
-  T,
+// Export single mode as the default Sortable
+// For multi-container mode, use the groups prop to auto-detect
+function Sortable<T>(props: SingleModeProps<T>): React.ReactNode
+function Sortable<
   TGroup extends SortableGroupData<TItem>,
   TItem extends SortableGroupItem,
-> = SingleModeProps<T> | MultiModeProps<TGroup, TItem>
-
-function SortableRoot<
-  T,
-  TGroup extends SortableGroupData<TItem>,
-  TItem extends SortableGroupItem,
->(props: SortableRootProps<T, TGroup, TItem>) {
+>(props: MultiModeProps<TGroup, TItem>): React.ReactNode
+function Sortable(
+  props:
+    | SingleModeProps<unknown>
+    | MultiModeProps<SortableGroupData, SortableGroupItem>
+): React.ReactNode {
   // Detect mode based on data structure (groups have items property)
   const isMultiMode = isGroupData(props.value as unknown[])
 
   if (isMultiMode) {
     return (
       <SortableRootMulti
-        {...(props as unknown as MultiModeProps<TGroup, TItem>)}
+        {...(props as MultiModeProps<SortableGroupData, SortableGroupItem>)}
       />
     )
   }
-  return <SortableRootSingle {...(props as unknown as SingleModeProps<T>)} />
+  return <SortableRootSingle {...(props as SingleModeProps<unknown>)} />
 }
 
 // ============================================================
-// SortableRoot - Single Container Mode
+// SortableRootSingle - Single Container Mode
 // ============================================================
 
 function SortableRootSingle<T>(props: SingleModeProps<T>) {
@@ -1219,9 +1219,6 @@ function SortableOverlay(props: SortableOverlayProps) {
 // ============================================================
 // Exports
 // ============================================================
-
-// Rename SortableRoot to Sortable for export
-const Sortable = SortableRoot
 
 export {
   Sortable,

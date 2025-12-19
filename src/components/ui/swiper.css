@@ -1,0 +1,22 @@
+/* Swiper CSS imports - Core only, pagination uses custom SwiperDots */
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/scrollbar";
+@import "swiper/css/effect-fade";
+@import "swiper/css/effect-cube";
+@import "swiper/css/effect-coverflow";
+@import "swiper/css/effect-flip";
+@import "swiper/css/effect-cards";
+@import "swiper/css/effect-creative";
+@import "swiper/css/grid";
+@import "swiper/css/thumbs";
+@import "swiper/css/free-mode";
+
+/* Custom scrollbar overrides */
+.swiper-scrollbar {
+  background: hsl(var(--muted));
+}
+
+.swiper-scrollbar-drag {
+  background: hsl(var(--primary) / 0.5);
+}

@@ -13,10 +13,6 @@ import {
   createRouter,
 } from "@tanstack/react-router"
 import { Toaster as SonnerToaster } from "sonner"
-import "swiper/css"
-import "swiper/css/navigation"
-import "swiper/css/pagination"
-import "swiper/css/zoom"
 import "../src/index.css"
 import "./story-style.css"
 
