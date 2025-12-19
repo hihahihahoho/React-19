@@ -1,25 +1,26 @@
 import {
-  Container,
-  ContainerHandle,
-  Containers,
-  Item,
-  ItemHandle,
-  Items,
-  type NestedContainer,
-  type NestedItem,
-  Root,
-} from "@/components/ui/sortable-nested"
+  Sortable,
+  SortableContent,
+  SortableGroup,
+  SortableGroupContent,
+  SortableGroupHandle,
+  SortableItem,
+  SortableItemHandle,
+  type SortableGroupData,
+  type SortableGroupItem,
+} from "@/components/ui/sortable"
 import { cn } from "@/lib/utils"
 import { GripVertical, Move, Package, Palette } from "lucide-react"
 import { useState } from "react"
-// Types extending the base NestedItem and NestedContainer
-interface TaskItem extends NestedItem {
+
+// Types extending the base types
+interface TaskItem extends SortableGroupItem {
   id: string
   name: string
   color: string
 }
 
-interface TaskContainer extends NestedContainer<TaskItem> {
+interface TaskGroup extends SortableGroupData<TaskItem> {
   id: string
   title: string
   items: TaskItem[]
@@ -28,9 +29,9 @@ interface TaskContainer extends NestedContainer<TaskItem> {
 }
 
 // Sample data
-const initialContainers: TaskContainer[] = [
+const initialGroups: TaskGroup[] = [
   {
-    id: "container-1",
+    id: "group-1",
     title: "Design Tasks",
     bgColor: "bg-purple-500/10 border-purple-500/30",
     icon: "palette",
@@ -41,7 +42,7 @@ const initialContainers: TaskContainer[] = [
     ],
   },
   {
-    id: "container-2",
+    id: "group-2",
     title: "Development",
     bgColor: "bg-blue-500/10 border-blue-500/30",
     icon: "package",
@@ -51,7 +52,7 @@ const initialContainers: TaskContainer[] = [
     ],
   },
   {
-    id: "container-3",
+    id: "group-3",
     title: "Testing",
     bgColor: "bg-green-500/10 border-green-500/30",
     icon: "package",
@@ -61,14 +62,14 @@ const initialContainers: TaskContainer[] = [
     ],
   },
   {
-    id: "container-4",
+    id: "group-4",
     title: "Deployment",
     bgColor: "bg-orange-500/10 border-orange-500/30",
     icon: "package",
     items: [{ id: "item-8", name: "CI/CD Pipeline", color: "bg-orange-500" }],
   },
   {
-    id: "container-5",
+    id: "group-5",
     title: "Documentation",
     bgColor: "bg-pink-500/10 border-pink-500/30",
     icon: "package",
@@ -78,7 +79,7 @@ const initialContainers: TaskContainer[] = [
     ],
   },
   {
-    id: "container-6",
+    id: "group-6",
     title: "Review",
     bgColor: "bg-amber-500/10 border-amber-500/30",
     icon: "package",
@@ -87,7 +88,7 @@ const initialContainers: TaskContainer[] = [
 ]
 
 // Icon component
-const ContainerIcon = ({ type }: { type: "palette" | "package" }) => {
+const GroupIcon = ({ type }: { type: "palette" | "package" }) => {
   return type === "palette" ? (
     <Palette className="size-4" />
   ) : (
@@ -96,122 +97,118 @@ const ContainerIcon = ({ type }: { type: "palette" | "package" }) => {
 }
 
 /**
- * Nested Grid Demo - Grid with sortable containers AND sortable items.
- * - Containers can be reordered by dragging the Move icon
- * - Items can be sorted within containers using the grip handle
- * - Items can be dragged between containers
+ * Nested Grid Demo - Using UNIFIED Sortable component with multi-container mode
+ * - Groups can be reordered by dragging the Move icon
+ * - Items can be sorted within groups using the grip handle
+ * - Items can be dragged between groups
  */
 export const NestedGridExample = () => {
-  const [containers, setContainers] =
-    useState<TaskContainer[]>(initialContainers)
+  const [groups, setGroups] = useState<TaskGroup[]>(initialGroups)
 
   return (
     <div className="w-full max-w-5xl">
       <div className="mb-6">
-        <h3 className="text-lg font-semibold">Nested Sortable Grid</h3>
+        <h3 className="text-lg font-semibold">Unified Sortable - Multi Mode</h3>
         <p className="text-muted-foreground text-sm">
-          <strong>Containers:</strong> Drag the{" "}
+          <strong>Groups:</strong> Drag the{" "}
           <Move className="mb-0.5 inline size-4" /> icon to reorder grid cells.
           <br />
           <strong>Items:</strong> Drag the{" "}
           <GripVertical className="mb-0.5 inline size-4" /> handle to reorder
-          within or move between containers.
+          within or move between groups.
         </p>
       </div>
 
-      <Root containers={containers} onContainersChange={setContainers}>
-        <Containers className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          {containers.map((container) => (
-            <Container
-              key={container.id}
-              containerId={container.id}
+      {/* Multi-container mode: use value/onValueChange props */}
+      <Sortable value={groups} onValueChange={setGroups}>
+        <SortableGroupContent className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          {groups.map((group) => (
+            <SortableGroup
+              key={group.id}
+              value={group.id}
               className={cn(
                 "flex flex-col rounded-xl border-2 p-3",
-                container.bgColor,
+                group.bgColor,
                 "data-over:ring-primary/50 data-over:ring-2"
               )}
             >
-              {/* Container Header */}
+              {/* Group Header */}
               <div className="mb-3 flex items-center gap-2">
                 <div
                   className={cn(
                     "flex size-8 items-center justify-center rounded-lg",
-                    container.bgColor
+                    group.bgColor
                   )}
                 >
-                  <ContainerIcon type={container.icon} />
+                  <GroupIcon type={group.icon} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold">{container.title}</h3>
+                  <h3 className="text-sm font-semibold">{group.title}</h3>
                   <p className="text-muted-foreground text-xs">
-                    {container.items.length} items
+                    {group.items.length} items
                   </p>
                 </div>
-                <ContainerHandle className="text-muted-foreground hover:text-foreground rounded p-1 transition-colors hover:bg-black/5 dark:hover:bg-white/10">
+                <SortableGroupHandle className="text-muted-foreground hover:text-foreground rounded p-1 transition-colors hover:bg-black/5 dark:hover:bg-white/10">
                   <Move className="size-4" />
-                </ContainerHandle>
+                </SortableGroupHandle>
               </div>
 
-              {/* Items List */}
-              <Items
-                containerId={container.id}
-                items={container.items}
+              {/* Items List - SortableContent works inside SortableGroup */}
+              <SortableContent
+                items={group.items.map((item) => item.id)}
                 className="flex min-h-20 flex-1 flex-col gap-2"
               >
-                {container.items.length > 0 ? (
-                  container.items.map((item) => (
-                    <Item
+                {group.items.length > 0 ? (
+                  group.items.map((item) => (
+                    <SortableItem
                       key={item.id}
-                      itemId={item.id}
+                      value={item.id}
                       className="group flex items-center gap-2 rounded-md border bg-white p-2 dark:bg-zinc-900"
                     >
-                      <ItemHandle className="text-muted-foreground hover:text-foreground">
+                      <SortableItemHandle className="text-muted-foreground hover:text-foreground">
                         <GripVertical className="size-4" />
-                      </ItemHandle>
+                      </SortableItemHandle>
                       <div className={cn("size-3 rounded-full", item.color)} />
                       <span className="flex-1 truncate text-sm font-medium">
                         {item.name}
                       </span>
-                    </Item>
+                    </SortableItem>
                   ))
                 ) : (
                   <div className="text-muted-foreground/50 flex flex-1 items-center justify-center rounded-lg border-2 border-dashed text-xs">
                     Drop items here
                   </div>
                 )}
-              </Items>
-            </Container>
+              </SortableContent>
+            </SortableGroup>
           ))}
-        </Containers>
-      </Root>
+        </SortableGroupContent>
+      </Sortable>
 
       <div className="mt-6 rounded-lg border border-dashed p-4">
         <p className="text-muted-foreground text-sm">
-          <strong>Features:</strong>
-          <br />• <strong>Sortable containers:</strong> Drag the move icon to
-          reorder entire grid cells
-          <br />• <strong>Sortable items:</strong> Drag items within their
-          container
-          <br />• <strong>Cross-container:</strong> Drag items between any
-          containers
-          <br />• <strong>Visual feedback:</strong> Overlay shows the dragged
-          element
+          <strong>🎉 Using Unified Sortable Component!</strong>
+          <br />• Same <code>SortableItem</code> &{" "}
+          <code>SortableItemHandle</code> for both modes
+          <br />• <code>SortableGroup</code> + <code>SortableGroupHandle</code>{" "}
+          for multi-container
+          <br />• Cross-group drag using <code>onGroupsChange</code>
         </p>
       </div>
 
       {/* Debug info */}
       <div className="bg-muted/50 mt-4 rounded-lg border p-4">
         <h4 className="mb-2 text-sm font-semibold">
-          Container Order: {containers.map((c) => c.title).join(" → ")}
+          Group Order: {groups.map((g) => g.title).join(" → ")}
         </h4>
         <div className="grid grid-cols-2 gap-2 text-xs md:grid-cols-3">
-          {containers.map((container, index) => (
-            <div key={container.id} className="rounded border p-2">
+          {groups.map((group, index) => (
+            <div key={group.id} className="rounded border p-2">
               <div className="font-medium">
-                #{index + 1} {container.title}
+                #{index + 1} {group.title}
               </div>
               <div className="text-muted-foreground">
-                {container.items.map((item) => item.name).join(", ") || "Empty"}
+                {group.items.map((item) => item.name).join(", ") || "Empty"}
               </div>
             </div>
           ))}

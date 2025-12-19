@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button"
 import {
-  Content,
-  Item,
-  ItemHandle,
-  Overlay,
-  Root,
+  SortableContent,
+  SortableItem,
+  SortableItemHandle,
+  SortableOverlay,
+  Sortable,
 } from "@/components/ui/sortable"
 import { cn } from "@/lib/utils"
 import { GripVertical, Image, Music, Plus, Video, X } from "lucide-react"
@@ -18,30 +18,34 @@ export const BasicVerticalExample = () => {
 
   return (
     <div className="w-full max-w-md">
-      <Root value={items} onValueChange={setItems} orientation="vertical">
-        <Content className="space-y-2">
+      <Sortable
+        value={items}
+        onValueChange={setItems}
+        orientation="vertical"
+      >
+        <SortableContent className="space-y-2">
           {items.map((item) => (
-            <Item
+            <SortableItem
               key={item}
               value={item}
               className="bg-card flex items-center gap-3 rounded-lg border p-4"
             >
-              <ItemHandle className="text-muted-foreground hover:text-foreground">
+              <SortableItemHandle className="text-muted-foreground hover:text-foreground">
                 <GripVertical className="size-5" />
-              </ItemHandle>
+              </SortableItemHandle>
               <span className="font-medium">{item}</span>
-            </Item>
+            </SortableItem>
           ))}
-        </Content>
-        <Overlay>
+        </SortableContent>
+        <SortableOverlay>
           {({ value }) => (
             <div className="bg-card flex items-center gap-3 rounded-lg border p-4 shadow-lg">
               <GripVertical className="text-muted-foreground size-5" />
               <span className="font-medium">{value}</span>
             </div>
           )}
-        </Overlay>
-      </Root>
+        </SortableOverlay>
+      </Sortable>
     </div>
   )
 }
@@ -59,15 +63,15 @@ export const HorizontalCardsExample = () => {
 
   return (
     <div className="w-full max-w-4xl">
-      <Root
+      <Sortable
         value={items}
         onValueChange={setItems}
         orientation="horizontal"
         getItemValue={(item) => item.id}
       >
-        <Content className="flex gap-4">
+        <SortableContent className="flex gap-4">
           {items.map((item) => (
-            <Item
+            <SortableItem
               key={item.id}
               value={item.id}
               asHandle
@@ -79,10 +83,10 @@ export const HorizontalCardsExample = () => {
             >
               <span className="mb-2 text-4xl">{item.emoji}</span>
               <span className="font-medium">{item.title}</span>
-            </Item>
+            </SortableItem>
           ))}
-        </Content>
-        <Overlay>
+        </SortableContent>
+        <SortableOverlay>
           {({ value }) => {
             const item = items.find((i) => i.id === value)
             if (!item) return null
@@ -98,8 +102,8 @@ export const HorizontalCardsExample = () => {
               </div>
             )
           }}
-        </Overlay>
-      </Root>
+        </SortableOverlay>
+      </Sortable>
     </div>
   )
 }
@@ -132,30 +136,30 @@ export const GridExample = () => {
 
   return (
     <div className="w-full max-w-2xl">
-      <Root
+      <Sortable
         value={items}
         onValueChange={setItems}
         orientation="mixed"
         getItemValue={(item) => item.id}
       >
-        <Content className="grid grid-cols-3 gap-4">
+        <SortableContent className="grid grid-cols-3 gap-4">
           {items.map((item) => (
-            <Item
+            <SortableItem
               key={item.id}
               value={item.id}
               className="group bg-card relative flex aspect-square flex-col items-center justify-center rounded-lg border p-4 text-center"
             >
-              <ItemHandle className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100">
+              <SortableItemHandle className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100">
                 <GripVertical className="size-4" />
-              </ItemHandle>
+              </SortableItemHandle>
               <div className="text-muted-foreground mb-2">
                 {getIcon(item.type)}
               </div>
               <span className="text-sm font-medium">{item.name}</span>
-            </Item>
+            </SortableItem>
           ))}
-        </Content>
-        <Overlay>
+        </SortableContent>
+        <SortableOverlay>
           {({ value }) => {
             const item = items.find((i) => i.id === value)
             if (!item) return null
@@ -168,8 +172,8 @@ export const GridExample = () => {
               </div>
             )
           }}
-        </Overlay>
-      </Root>
+        </SortableOverlay>
+      </Sortable>
     </div>
   )
 }
@@ -234,22 +238,22 @@ export const TodoListExample = () => {
         </Button>
       </div>
 
-      <Root
+      <Sortable
         value={todos}
         onValueChange={setTodos}
         orientation="vertical"
         getItemValue={(item) => item.id}
       >
-        <Content className="space-y-2">
+        <SortableContent className="space-y-2">
           {todos.map((todo) => (
-            <Item
+            <SortableItem
               key={todo.id}
               value={todo.id}
               className="bg-card flex items-center gap-3 rounded-lg border p-3"
             >
-              <ItemHandle className="text-muted-foreground hover:text-foreground">
+              <SortableItemHandle className="text-muted-foreground hover:text-foreground">
                 <GripVertical className="size-4" />
-              </ItemHandle>
+              </SortableItemHandle>
               <input
                 type="checkbox"
                 checked={todo.completed}
@@ -272,10 +276,10 @@ export const TodoListExample = () => {
               >
                 <X className="size-4" />
               </Button>
-            </Item>
+            </SortableItem>
           ))}
-        </Content>
-        <Overlay>
+        </SortableContent>
+        <SortableOverlay>
           {({ value }) => {
             const todo = todos.find((t) => t.id === value)
             if (!todo) return null
@@ -299,8 +303,8 @@ export const TodoListExample = () => {
               </div>
             )
           }}
-        </Overlay>
-      </Root>
+        </SortableOverlay>
+      </Sortable>
 
       {todos.length === 0 && (
         <div className="text-muted-foreground rounded-lg border border-dashed p-8 text-center">
@@ -325,35 +329,35 @@ export const DisabledItemsExample = () => {
 
   return (
     <div className="w-full max-w-md">
-      <Root
+      <Sortable
         value={items}
         onValueChange={setItems}
         orientation="vertical"
         getItemValue={(item) => item.id}
       >
-        <Content className="space-y-2">
+        <SortableContent className="space-y-2">
           {items.map((item) => (
-            <Item
+            <SortableItem
               key={item.id}
               value={item.id}
               disabled={item.disabled}
               className="bg-card flex items-center gap-3 rounded-lg border p-4"
             >
-              <ItemHandle
+              <SortableItemHandle
                 disabled={item.disabled}
                 className="text-muted-foreground hover:text-foreground"
               >
                 <GripVertical className="size-5" />
-              </ItemHandle>
+              </SortableItemHandle>
               <span
                 className={cn("font-medium", item.disabled && "opacity-50")}
               >
                 {item.text}
               </span>
-            </Item>
+            </SortableItem>
           ))}
-        </Content>
-        <Overlay>
+        </SortableContent>
+        <SortableOverlay>
           {({ value }) => {
             const item = items.find((i) => i.id === value)
             if (!item) return null
@@ -364,8 +368,8 @@ export const DisabledItemsExample = () => {
               </div>
             )
           }}
-        </Overlay>
-      </Root>
+        </SortableOverlay>
+      </Sortable>
     </div>
   )
 }
@@ -391,15 +395,15 @@ export const CustomStylingExample = () => {
 
   return (
     <div className="w-full max-w-md">
-      <Root
+      <Sortable
         value={items}
         onValueChange={setItems}
         orientation="vertical"
         getItemValue={(item) => item.id}
       >
-        <Content className="space-y-3">
+        <SortableContent className="space-y-3">
           {items.map((item) => (
-            <Item
+            <SortableItem
               key={item.id}
               value={item.id}
               asHandle
@@ -411,10 +415,10 @@ export const CustomStylingExample = () => {
             >
               <GripVertical className="size-5 opacity-50" />
               <span className="font-semibold">{item.label}</span>
-            </Item>
+            </SortableItem>
           ))}
-        </Content>
-        <Overlay>
+        </SortableContent>
+        <SortableOverlay>
           {({ value }) => {
             const item = items.find((i) => i.id === value)
             if (!item) return null
@@ -430,8 +434,8 @@ export const CustomStylingExample = () => {
               </div>
             )
           }}
-        </Overlay>
-      </Root>
+        </SortableOverlay>
+      </Sortable>
     </div>
   )
 }

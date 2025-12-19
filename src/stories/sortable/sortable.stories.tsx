@@ -1,7 +1,8 @@
-import { Root } from "@/components/ui/sortable"
+import { Sortable } from "@/components/ui/sortable"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { KanbanExample } from "./KanbanDemo"
 import { NestedGridExample } from "./NestedGridDemo"
+import { NestedGridFormExample } from "./NestedGridFormDemo"
 import {
   BasicVerticalExample,
   CustomStylingExample,
@@ -10,6 +11,7 @@ import {
   HorizontalCardsExample,
   TodoListExample,
 } from "./SortableDemo"
+import { SortableWithFormExample } from "./SortableFormDemo"
 import {
   BasicTableExample,
   FormWithInputsExample,
@@ -23,7 +25,7 @@ import {
  */
 const meta = {
   title: "Interaction/Sortable",
-  component: Root,
+  component: Sortable,
   parameters: {
     layout: "centered",
     docs: {
@@ -214,15 +216,64 @@ export const NestedGrid: Story = {
     docs: {
       description: {
         story: `
+## Usage Pattern - Single Container
+
+\`\`\`tsx
+import {
+  Sortable,
+  SortableContent,
+  SortableItem,
+  SortableItemHandle,
+  SortableOverlay,
+} from "@/components/ui/sortable"
+
+<Sortable value={items} onValueChange={setItems}>
+  <SortableContent>
+    <SortableItem value="a">
+      <SortableItemHandle />
+    </SortableItem>
+  </SortableContent>
+  <SortableOverlay />
+</Sortable>
+\`\`\`
+
+## Usage Pattern - Multi Container (Groups)
+
+\`\`\`tsx
+import {
+  Sortable,
+  SortableContent,
+  SortableGroup,
+  SortableGroupContent,
+  SortableGroupHandle,
+  SortableItem,
+  SortableItemHandle,
+} from "@/components/ui/sortable"
+
+<Sortable value={groups} onValueChange={setGroups}>
+  <SortableGroupContent>
+    <SortableGroup value="group-1">
+      <SortableGroupHandle />
+      <SortableContent>
+        <SortableItem value="item-1">
+          <SortableItemHandle />
+        </SortableItem>
+      </SortableContent>
+    </SortableGroup>
+  </SortableGroupContent>
+</Sortable>
+\`\`\`
+
+---
+
 A complex nested grid with cross-container drag and drop:
 
 - **Grid layout**: Multiple containers arranged in a responsive grid
-- **Sortable items**: Each container has its own list of sortable items
+- **Sortable groups**: Drag the move icon to reorder entire containers
+- **Sortable items**: Each container has its own list of sortable items  
 - **Cross-container**: Drag items between any containers
 - **Visual feedback**: Overlay shows the dragged item, containers highlight on hover
 - **Empty state**: Empty containers show a drop zone placeholder
-
-This pattern is useful for project management boards, category organization, or any multi-list drag-and-drop interface.
         `,
       },
     },
@@ -246,6 +297,118 @@ A fully functional Kanban board with cross-column drag and drop:
 - **Visual feedback**: Overlay shows dragged task, columns highlight on hover
 
 This is a complete implementation of a Kanban board with all drag-and-drop features working.
+        `,
+      },
+    },
+  },
+}
+
+// ============ React Hook Form Example ============
+
+export const ReactHookForm: Story = {
+  render: () => <SortableWithFormExample />,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+## Usage with React Hook Form
+
+\`\`\`tsx
+import { useForm } from "react-hook-form"
+import { Sortable, SortableContent, SortableItem } from "@/components/ui/sortable"
+
+const form = useForm<FormValues>({
+  defaultValues: { items: [...] }
+})
+
+<FormField
+  control={form.control}
+  name="items"
+  render={({ field }) => (
+    <Sortable
+      value={field.value}
+      onValueChange={field.onChange}
+      getItemValue={(item) => item.id}
+    >
+      <SortableContent>
+        {field.value.map((item) => (
+          <SortableItem key={item.id} value={item.id}>
+            {item.label}
+          </SortableItem>
+        ))}
+      </SortableContent>
+    </Sortable>
+  )}\
+/>
+\`\`\`
+
+---
+
+A priority list with React Hook Form integration:
+
+- **Form validation**: Zod schema validates the priority list
+- **Drag to reorder**: Change priority by dragging items
+- **Add/Remove**: Add new priorities or remove existing ones
+- **Form submission**: Submit to see the final order
+- **Live preview**: Shows current order in real-time
+        `,
+      },
+    },
+  },
+}
+
+// ============ Nested Grid + React Hook Form ============
+
+export const NestedGridForm: Story = {
+  render: () => <NestedGridFormExample />,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+## Multi Container + React Hook Form
+
+\`\`\`tsx
+import { useForm } from "react-hook-form"
+import { Sortable, SortableGroup, SortableGroupContent, ... } from "@/components/ui/sortable"
+
+const form = useForm<FormValues>({
+  defaultValues: { groups: [...] }
+})
+
+<FormField
+  control={form.control}
+  name="groups"
+  render={({ field }) => (
+    <Sortable value={field.value} onValueChange={field.onChange}>
+      <SortableGroupContent>
+        {field.value.map((group) => (
+          <SortableGroup key={group.id} value={group.id}>
+            <SortableGroupHandle />
+            <SortableContent>
+              {group.items.map((item) => (
+                <SortableItem key={item.id} value={item.id}>
+                  <SortableItemHandle />
+                </SortableItem>
+              ))}
+            </SortableContent>
+          </SortableGroup>
+        ))}
+      </SortableGroupContent>
+    </Sortable>
+  )}
+/>
+\`\`\`
+
+---
+
+A complex nested grid with React Hook Form integration:
+
+- **Form validation**: Zod schema validates groups and items
+- **Drag groups**: Reorder entire groups by dragging
+- **Drag items**: Reorder items within groups or move between groups
+- **Add/Remove items**: Add new tasks or remove existing ones
+- **Form state tracking**: Shows dirty state and changes
+- **Submit & Reset**: Save changes or reset to initial state
         `,
       },
     },

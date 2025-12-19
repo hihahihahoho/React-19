@@ -2,21 +2,28 @@
 
 import { useComposedRefs } from "@/lib/compose-refs"
 import { cn } from "@/lib/utils"
+import type { Modifier } from "@dnd-kit/core"
 import {
   type Announcements,
   closestCenter,
   closestCorners,
+  CollisionDetection,
   defaultDropAnimationSideEffects,
   DndContext,
   type DndContextProps,
   type DragEndEvent,
   type DraggableAttributes,
   type DraggableSyntheticListeners,
+  DragOverEvent,
   DragOverlay,
   type DragStartEvent,
   type DropAnimation,
+  getFirstCollision,
   KeyboardSensor,
+  MeasuringStrategy,
   MouseSensor,
+  pointerWithin,
+  rectIntersection,
   type ScreenReaderInstructions,
   TouchSensor,
   type UniqueIdentifier,
@@ -31,6 +38,7 @@ import {
 import {
   arrayMove,
   horizontalListSortingStrategy,
+  rectSortingStrategy,
   SortableContext,
   type SortableContextProps,
   sortableKeyboardCoordinates,
@@ -41,6 +49,27 @@ import { CSS } from "@dnd-kit/utilities"
 import { Slot } from "@radix-ui/react-slot"
 import * as React from "react"
 import * as ReactDOM from "react-dom"
+
+// ============================================================
+// Types
+// ============================================================
+
+export interface SortableGroupItem {
+  id: UniqueIdentifier
+  [key: string]: unknown
+}
+
+export interface SortableGroupData<
+  T extends SortableGroupItem = SortableGroupItem,
+> {
+  id: UniqueIdentifier
+  items: T[]
+  [key: string]: unknown
+}
+
+// ============================================================
+// Config
+// ============================================================
 
 const orientationConfig = {
   vertical: {
@@ -55,7 +84,7 @@ const orientationConfig = {
   },
   mixed: {
     modifiers: [restrictToParentElement],
-    strategy: undefined,
+    strategy: rectSortingStrategy,
     collisionDetection: closestCorners,
   },
 }
@@ -65,6 +94,12 @@ const CONTENT_NAME = "SortableContent"
 const ITEM_NAME = "SortableItem"
 const ITEM_HANDLE_NAME = "SortableItemHandle"
 const OVERLAY_NAME = "SortableOverlay"
+const GROUP_NAME = "SortableGroup"
+const GROUP_HANDLE_NAME = "SortableGroupHandle"
+
+// ============================================================
+// Root Context (shared between single & multi mode)
+// ============================================================
 
 interface SortableRootContextValue<T> {
   id: string
@@ -75,6 +110,14 @@ interface SortableRootContextValue<T> {
   setActiveId: (id: UniqueIdentifier | null) => void
   getItemValue: (item: T) => UniqueIdentifier
   flatCursor: boolean
+  // Multi-container mode extras
+  mode: "single" | "multi"
+  activeType: "group" | "item" | null
+  groups: SortableGroupData[] | null
+  findGroup: (id: UniqueIdentifier) => SortableGroupData | null
+  isGroup: (id: UniqueIdentifier) => boolean
+  getGroupOfItem: (itemId: UniqueIdentifier) => UniqueIdentifier | null
+  groupsRef: React.MutableRefObject<HTMLElement | null>
 }
 
 const SortableRootContext =
@@ -88,15 +131,16 @@ function useSortableContext(consumerName: string) {
   return context
 }
 
+// ============================================================
+// SortableRoot - Unified component for single & multi mode
+// ============================================================
+
 interface GetItemValue<T> {
-  /**
-   * Callback that returns a unique identifier for each sortable item. Required for array of objects.
-   * @example getItemValue={(item) => item.id}
-   */
   getItemValue: (item: T) => UniqueIdentifier
 }
 
-type SortableRootProps<T> = DndContextProps &
+// Single container mode props
+type SingleModeProps<T> = DndContextProps &
   (T extends object ? GetItemValue<T> : Partial<GetItemValue<T>>) & {
     value: T[]
     onValueChange?: (items: T[]) => void
@@ -108,7 +152,60 @@ type SortableRootProps<T> = DndContextProps &
     flatCursor?: boolean
   }
 
-function SortableRoot<T>(props: SortableRootProps<T>) {
+// Multi container mode props (also uses value/onValueChange)
+interface MultiModeProps<
+  TGroup extends SortableGroupData<TItem>,
+  TItem extends SortableGroupItem,
+> extends Omit<DndContextProps, "onDragStart" | "onDragEnd" | "onDragOver"> {
+  value: TGroup[]
+  onValueChange: (groups: TGroup[]) => void
+  flatCursor?: boolean
+  restrictToParent?: boolean
+  orientation?: "vertical" | "horizontal" | "mixed"
+  children: React.ReactNode
+}
+
+// Helper to check if value is groups (has items array)
+function isGroupData(value: unknown[]): value is SortableGroupData[] {
+  return (
+    value.length > 0 &&
+    typeof value[0] === "object" &&
+    value[0] !== null &&
+    "items" in value[0] &&
+    Array.isArray((value[0] as SortableGroupData).items)
+  )
+}
+
+// Unified props - both modes use value/onValueChange
+type SortableRootProps<
+  T,
+  TGroup extends SortableGroupData<TItem>,
+  TItem extends SortableGroupItem,
+> = SingleModeProps<T> | MultiModeProps<TGroup, TItem>
+
+function SortableRoot<
+  T,
+  TGroup extends SortableGroupData<TItem>,
+  TItem extends SortableGroupItem,
+>(props: SortableRootProps<T, TGroup, TItem>) {
+  // Detect mode based on data structure (groups have items property)
+  const isMultiMode = isGroupData(props.value as unknown[])
+
+  if (isMultiMode) {
+    return (
+      <SortableRootMulti
+        {...(props as unknown as MultiModeProps<TGroup, TItem>)}
+      />
+    )
+  }
+  return <SortableRootSingle {...(props as unknown as SingleModeProps<T>)} />
+}
+
+// ============================================================
+// SortableRoot - Single Container Mode
+// ============================================================
+
+function SortableRootSingle<T>(props: SingleModeProps<T>) {
   const {
     value,
     onValueChange,
@@ -128,6 +225,7 @@ function SortableRoot<T>(props: SortableRootProps<T>) {
 
   const id = React.useId()
   const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null)
+  const groupsRef = React.useRef<HTMLElement | null>(null)
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -160,9 +258,7 @@ function SortableRoot<T>(props: SortableRootProps<T>) {
   const onDragStart = React.useCallback(
     (event: DragStartEvent) => {
       onDragStartProp?.(event)
-
       if (event.activatorEvent.defaultPrevented) return
-
       setActiveId(event.active.id)
     },
     [onDragStartProp]
@@ -171,7 +267,6 @@ function SortableRoot<T>(props: SortableRootProps<T>) {
   const onDragEnd = React.useCallback(
     (event: DragEndEvent) => {
       onDragEndProp?.(event)
-
       if (event.activatorEvent.defaultPrevented) return
 
       const { active, over } = event
@@ -197,9 +292,7 @@ function SortableRoot<T>(props: SortableRootProps<T>) {
   const onDragCancel = React.useCallback(
     (event: DragEndEvent) => {
       onDragCancelProp?.(event)
-
       if (event.activatorEvent.defaultPrevented) return
-
       setActiveId(null)
     },
     [onDragCancelProp]
@@ -234,16 +327,6 @@ function SortableRoot<T>(props: SortableRootProps<T>) {
         const activeValue = active.id.toString()
         return `Sorting cancelled. Sortable item "${activeValue}" returned to position ${activeIndex + 1} of ${value.length}.`
       },
-      onDragMove({ active, over }) {
-        if (over) {
-          const overIndex = over.data.current?.sortable.index ?? 0
-          const activeIndex = active.data.current?.sortable.index ?? 0
-          const moveDirection = overIndex > activeIndex ? "down" : "up"
-          const activeValue = active.id.toString()
-          return `Sortable item "${activeValue}" is moving ${moveDirection} to position ${overIndex + 1} of ${value.length}.`
-        }
-        return "Sortable item is no longer over a droppable area. Press escape to cancel."
-      },
     }),
     [value]
   )
@@ -259,7 +342,7 @@ function SortableRoot<T>(props: SortableRootProps<T>) {
     [orientation]
   )
 
-  const contextValue = React.useMemo(
+  const contextValue = React.useMemo<SortableRootContextValue<T>>(
     () => ({
       id,
       items,
@@ -269,6 +352,14 @@ function SortableRoot<T>(props: SortableRootProps<T>) {
       setActiveId,
       getItemValue,
       flatCursor,
+      // Multi-mode fields (not used in single mode)
+      mode: "single",
+      activeType: null,
+      groups: null,
+      findGroup: () => null,
+      isGroup: () => false,
+      getGroupOfItem: () => null,
+      groupsRef,
     }),
     [
       id,
@@ -306,9 +397,363 @@ function SortableRoot<T>(props: SortableRootProps<T>) {
   )
 }
 
+// ============================================================
+// SortableRoot - Multi Container Mode
+// ============================================================
+
+function SortableRootMulti<
+  TGroup extends SortableGroupData<TItem>,
+  TItem extends SortableGroupItem,
+>(props: MultiModeProps<TGroup, TItem>) {
+  const {
+    value: groups,
+    onValueChange: onGroupsChange,
+    flatCursor = false,
+    restrictToParent = true,
+    orientation = "mixed",
+    modifiers: modifiersProp,
+    children,
+    ...dndProps
+  } = props
+
+  const id = React.useId()
+  const [activeId, setActiveId] = React.useState<UniqueIdentifier | null>(null)
+  const [activeType, setActiveType] = React.useState<"group" | "item" | null>(
+    null
+  )
+  const lastOverId = React.useRef<UniqueIdentifier | null>(null)
+  const recentlyMovedToNewContainer = React.useRef(false)
+  const groupsRef = React.useRef<HTMLElement | null>(null)
+
+  const config = React.useMemo(
+    () => orientationConfig[orientation],
+    [orientation]
+  )
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, {
+      activationConstraint: { distance: 5 },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 150, tolerance: 5 },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  )
+
+  // Custom constraint modifier
+  const restrictToMainGrid: Modifier = React.useCallback(
+    ({ draggingNodeRect, transform }) => {
+      if (!restrictToParent || !groupsRef.current || !draggingNodeRect) {
+        return transform
+      }
+
+      const containerRect = groupsRef.current.getBoundingClientRect()
+      const value = { ...transform }
+
+      if (draggingNodeRect.top + value.y <= containerRect.top) {
+        value.y = containerRect.top - draggingNodeRect.top
+      } else if (
+        draggingNodeRect.bottom + value.y >=
+        containerRect.top + containerRect.height
+      ) {
+        value.y =
+          containerRect.top + containerRect.height - draggingNodeRect.bottom
+      }
+
+      if (draggingNodeRect.left + value.x <= containerRect.left) {
+        value.x = containerRect.left - draggingNodeRect.left
+      } else if (
+        draggingNodeRect.right + value.x >=
+        containerRect.left + containerRect.width
+      ) {
+        value.x =
+          containerRect.left + containerRect.width - draggingNodeRect.right
+      }
+
+      return value
+    },
+    [restrictToParent]
+  )
+
+  const findGroup = React.useCallback(
+    (groupId: UniqueIdentifier): TGroup | null => {
+      return groups.find((g) => g.id === groupId) || null
+    },
+    [groups]
+  )
+
+  const isGroup = React.useCallback(
+    (groupId: UniqueIdentifier): boolean => {
+      return groups.some((g) => g.id === groupId)
+    },
+    [groups]
+  )
+
+  const getGroupOfItem = React.useCallback(
+    (itemId: UniqueIdentifier): UniqueIdentifier | null => {
+      if (isGroup(itemId)) return itemId
+      for (const group of groups) {
+        if (group.items.some((item) => item.id === itemId)) {
+          return group.id
+        }
+      }
+      return null
+    },
+    [groups, isGroup]
+  )
+
+  // Collision detection for multi-container
+  const collisionDetection: CollisionDetection = React.useCallback(
+    (args) => {
+      if (activeType === "group") {
+        return closestCenter({
+          ...args,
+          droppableContainers: args.droppableContainers.filter((container) =>
+            isGroup(container.id)
+          ),
+        })
+      }
+
+      const pointerIntersections = pointerWithin(args)
+      const intersections =
+        pointerIntersections.length > 0
+          ? pointerIntersections
+          : rectIntersection(args)
+
+      let overId = getFirstCollision(intersections, "id")
+
+      if (overId != null) {
+        const overGroup = findGroup(overId)
+        if (overGroup && overGroup.items.length > 0) {
+          overId = closestCorners({
+            ...args,
+            droppableContainers: args.droppableContainers.filter(
+              (container) =>
+                container.id !== overId &&
+                overGroup.items.some((item) => item.id === container.id)
+            ),
+          })[0]?.id
+        }
+
+        lastOverId.current = overId
+        return [{ id: overId }]
+      }
+
+      if (recentlyMovedToNewContainer.current) {
+        lastOverId.current = activeId
+      }
+
+      return lastOverId.current ? [{ id: lastOverId.current }] : []
+    },
+    [activeId, activeType, findGroup, isGroup]
+  )
+
+  const handleDragStart = React.useCallback(
+    (event: DragStartEvent) => {
+      const { active } = event
+      setActiveId(active.id)
+      setActiveType(isGroup(active.id) ? "group" : "item")
+    },
+    [isGroup]
+  )
+
+  const handleDragOver = React.useCallback(
+    (event: DragOverEvent) => {
+      const { active, over } = event
+      const overId = over?.id
+
+      if (overId == null || active.id === overId) return
+      if (activeType === "group") return
+
+      const overGroupId = getGroupOfItem(overId)
+      const activeGroupId = getGroupOfItem(active.id)
+
+      if (!overGroupId || !activeGroupId) return
+
+      if (activeGroupId !== overGroupId) {
+        onGroupsChange(
+          groups.map((group) => {
+            if (group.id === activeGroupId) {
+              return {
+                ...group,
+                items: group.items.filter((item) => item.id !== active.id),
+              }
+            }
+            if (group.id === overGroupId) {
+              const overIndex = group.items.findIndex(
+                (item) => item.id === overId
+              )
+              const activeItem = groups
+                .find((g) => g.id === activeGroupId)
+                ?.items.find((item) => item.id === active.id)
+
+              if (!activeItem) return group
+
+              const isBelowOverItem =
+                over &&
+                active.rect.current.translated &&
+                active.rect.current.translated.top >
+                  over.rect.top + over.rect.height
+
+              const modifier = isBelowOverItem ? 1 : 0
+              const newIndex =
+                overId === overGroupId
+                  ? group.items.length
+                  : overIndex >= 0
+                    ? overIndex + modifier
+                    : group.items.length
+
+              return {
+                ...group,
+                items: [
+                  ...group.items.slice(0, newIndex),
+                  activeItem,
+                  ...group.items.slice(newIndex),
+                ],
+              }
+            }
+            return group
+          }) as TGroup[]
+        )
+        recentlyMovedToNewContainer.current = true
+      }
+    },
+    [activeType, groups, getGroupOfItem, onGroupsChange]
+  )
+
+  const handleDragEnd = React.useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event
+
+      if (activeType === "group") {
+        if (over && active.id !== over.id && isGroup(over.id)) {
+          const oldIndex = groups.findIndex((g) => g.id === active.id)
+          const newIndex = groups.findIndex((g) => g.id === over.id)
+          onGroupsChange(arrayMove(groups, oldIndex, newIndex) as TGroup[])
+        }
+        setActiveId(null)
+        setActiveType(null)
+        return
+      }
+
+      if (over) {
+        const activeGroupId = getGroupOfItem(active.id)
+        const overGroupId = getGroupOfItem(over.id)
+
+        if (activeGroupId && overGroupId && activeGroupId === overGroupId) {
+          const group = findGroup(activeGroupId)
+          if (group) {
+            const activeIndex = group.items.findIndex(
+              (item) => item.id === active.id
+            )
+            const overIndex = group.items.findIndex(
+              (item) => item.id === over.id
+            )
+
+            if (activeIndex !== overIndex) {
+              onGroupsChange(
+                groups.map((g) => {
+                  if (g.id === activeGroupId) {
+                    return {
+                      ...g,
+                      items: arrayMove(g.items, activeIndex, overIndex),
+                    }
+                  }
+                  return g
+                }) as TGroup[]
+              )
+            }
+          }
+        }
+      }
+
+      setActiveId(null)
+      setActiveType(null)
+    },
+    [activeType, groups, findGroup, getGroupOfItem, isGroup, onGroupsChange]
+  )
+
+  const handleDragCancel = React.useCallback(() => {
+    setActiveId(null)
+    setActiveType(null)
+  }, [])
+
+  React.useEffect(() => {
+    requestAnimationFrame(() => {
+      recentlyMovedToNewContainer.current = false
+    })
+  }, [groups])
+
+  const contextValue = React.useMemo<SortableRootContextValue<TItem>>(
+    () => ({
+      id,
+      items: groups.flatMap((g) => g.items.map((item) => item.id)),
+      modifiers: modifiersProp ?? [restrictToMainGrid],
+      strategy: config.strategy,
+      activeId,
+      setActiveId,
+      getItemValue: (item: TItem) => item.id,
+      flatCursor,
+      // Multi-mode fields
+      mode: "multi",
+      activeType,
+      groups: groups as SortableGroupData[],
+      findGroup: findGroup as (
+        id: UniqueIdentifier
+      ) => SortableGroupData | null,
+      isGroup,
+      getGroupOfItem,
+      groupsRef,
+    }),
+    [
+      id,
+      groups,
+      modifiersProp,
+      restrictToMainGrid,
+      config.strategy,
+      activeId,
+      flatCursor,
+      activeType,
+      findGroup,
+      isGroup,
+      getGroupOfItem,
+    ]
+  )
+
+  return (
+    <SortableRootContext.Provider
+      value={contextValue as SortableRootContextValue<unknown>}
+    >
+      <DndContext
+        sensors={sensors}
+        collisionDetection={collisionDetection}
+        measuring={{
+          droppable: { strategy: MeasuringStrategy.Always },
+        }}
+        modifiers={modifiersProp ?? [restrictToMainGrid]}
+        {...dndProps}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+      >
+        {children}
+      </DndContext>
+    </SortableRootContext.Provider>
+  )
+}
+
+// ============================================================
+// SortableContent - Works for both single & multi mode
+// ============================================================
+
 const SortableContentContext = React.createContext<boolean>(false)
 
 interface SortableContentProps extends React.ComponentProps<"div"> {
+  /** Items to sort (required in multi mode when inside SortableGroup) */
+  items?: UniqueIdentifier[]
   strategy?: SortableContextProps["strategy"]
   children: React.ReactNode
   asChild?: boolean
@@ -317,6 +762,7 @@ interface SortableContentProps extends React.ComponentProps<"div"> {
 
 function SortableContent(props: SortableContentProps) {
   const {
+    items: itemsProp,
     strategy: strategyProp,
     asChild,
     withoutSlot,
@@ -326,13 +772,17 @@ function SortableContent(props: SortableContentProps) {
   } = props
 
   const context = useSortableContext(CONTENT_NAME)
+  const groupContext = React.useContext(SortableGroupContext)
+
+  // In multi mode inside a group, use group's items
+  const items = itemsProp ?? groupContext?.items ?? context.items
 
   const ContentPrimitive = asChild ? Slot : "div"
 
   return (
     <SortableContentContext.Provider value={true}>
       <SortableContext
-        items={context.items}
+        items={items}
         strategy={strategyProp ?? context.strategy}
       >
         {withoutSlot ? (
@@ -350,6 +800,10 @@ function SortableContent(props: SortableContentProps) {
     </SortableContentContext.Provider>
   )
 }
+
+// ============================================================
+// SortableItem - Works for both single & multi mode
+// ============================================================
 
 interface SortableItemContextValue {
   id: string
@@ -426,8 +880,9 @@ function SortableItem(props: SortableItemProps) {
       transform: CSS.Translate.toString(transform),
       transition,
       ...style,
+      zIndex: isDragging ? 50 : undefined,
     }
-  }, [transform, transition, style])
+  }, [transform, transition, style, isDragging])
 
   const itemContext = React.useMemo<SortableItemContextValue>(
     () => ({
@@ -472,6 +927,10 @@ function SortableItem(props: SortableItemProps) {
   )
 }
 
+// ============================================================
+// SortableItemHandle
+// ============================================================
+
 interface SortableItemHandleProps extends React.ComponentProps<"button"> {
   asChild?: boolean
 }
@@ -514,6 +973,192 @@ function SortableItemHandle(props: SortableItemHandleProps) {
   )
 }
 
+// ============================================================
+// SortableGroup - Multi container wrapper (only for multi mode)
+// ============================================================
+
+interface SortableGroupContextValue {
+  groupId: UniqueIdentifier
+  items: UniqueIdentifier[]
+  attributes: DraggableAttributes
+  listeners: DraggableSyntheticListeners
+}
+
+const SortableGroupContext =
+  React.createContext<SortableGroupContextValue | null>(null)
+
+interface SortableGroupProps extends React.ComponentProps<"div"> {
+  value: UniqueIdentifier
+  asChild?: boolean
+}
+
+function SortableGroup(props: SortableGroupProps) {
+  const {
+    value: groupId,
+    asChild,
+    children,
+    className,
+    style,
+    ref,
+    ...rest
+  } = props
+
+  const context = useSortableContext(GROUP_NAME)
+
+  if (context.mode !== "multi") {
+    throw new Error(
+      `\`${GROUP_NAME}\` can only be used in multi mode (when value contains items with 'items' property)`
+    )
+  }
+
+  const group = context.findGroup(groupId)
+  const items = React.useMemo(
+    () => group?.items.map((item) => item.id) ?? [],
+    [group?.items]
+  )
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+    isOver,
+  } = useSortable({
+    id: groupId,
+    data: { type: "group" },
+  })
+
+  const combinedStyle = React.useMemo<React.CSSProperties>(
+    () => ({
+      transform: CSS.Translate.toString(transform),
+      transition,
+      ...style,
+      zIndex: isDragging ? 50 : undefined,
+    }),
+    [transform, transition, style, isDragging]
+  )
+
+  const composedRef = useComposedRefs(ref, setNodeRef)
+  const GroupPrimitive = asChild ? Slot : "div"
+
+  const groupContext = React.useMemo<SortableGroupContextValue>(
+    () => ({ groupId, items, attributes, listeners }),
+    [groupId, items, attributes, listeners]
+  )
+
+  return (
+    <SortableGroupContext.Provider value={groupContext}>
+      <GroupPrimitive
+        ref={composedRef}
+        data-slot="sortable-group"
+        data-dragging={isDragging ? "" : undefined}
+        data-over={isOver && context.activeType === "item" ? "" : undefined}
+        style={combinedStyle}
+        className={cn(
+          "focus-visible:ring-ring focus-visible:ring-1 focus-visible:ring-offset-1 focus-visible:outline-hidden",
+          {
+            "cursor-default": context.flatCursor,
+            "opacity-100": isDragging,
+          },
+          className
+        )}
+        {...rest}
+      >
+        {children}
+      </GroupPrimitive>
+    </SortableGroupContext.Provider>
+  )
+}
+
+// ============================================================
+// SortableGroupHandle - Handle for dragging groups
+// ============================================================
+
+interface SortableGroupHandleProps extends React.ComponentProps<"button"> {
+  asChild?: boolean
+}
+
+function SortableGroupHandle(props: SortableGroupHandleProps) {
+  const { asChild, className, ref, ...rest } = props
+  const groupContext = React.useContext(SortableGroupContext)
+  const context = useSortableContext(GROUP_HANDLE_NAME)
+
+  if (!groupContext) {
+    throw new Error(
+      `\`${GROUP_HANDLE_NAME}\` must be used within \`${GROUP_NAME}\``
+    )
+  }
+
+  const HandlePrimitive = asChild ? Slot : "button"
+
+  return (
+    <HandlePrimitive
+      type="button"
+      data-slot="sortable-group-handle"
+      {...groupContext.attributes}
+      {...groupContext.listeners}
+      ref={ref}
+      className={cn(
+        "touch-none select-none",
+        context.flatCursor
+          ? "cursor-default"
+          : "cursor-grab active:cursor-grabbing",
+        className
+      )}
+      {...rest}
+    />
+  )
+}
+
+// ============================================================
+// SortableGroupContent - Wrapper for groups grid (multi mode)
+// ============================================================
+
+interface SortableGroupContentProps extends React.ComponentProps<"div"> {
+  strategy?: SortableContextProps["strategy"]
+  asChild?: boolean
+}
+
+function SortableGroupContent(props: SortableGroupContentProps) {
+  const {
+    strategy = rectSortingStrategy,
+    asChild,
+    children,
+    ref,
+    ...rest
+  } = props
+
+  const context = useSortableContext("SortableGroupContent")
+
+  if (context.mode !== "multi" || !context.groups) {
+    throw new Error("`SortableGroupContent` can only be used in multi mode")
+  }
+
+  const composedRef = useComposedRefs(ref, context.groupsRef)
+  const ContentPrimitive = asChild ? Slot : "div"
+
+  return (
+    <SortableContext
+      items={context.groups.map((g) => g.id)}
+      strategy={strategy}
+    >
+      <ContentPrimitive
+        ref={composedRef}
+        data-slot="sortable-group-content"
+        {...rest}
+      >
+        {children}
+      </ContentPrimitive>
+    </SortableContext>
+  )
+}
+
+// ============================================================
+// SortableOverlay - Works for both modes
+// ============================================================
+
 const SortableOverlayContext = React.createContext(false)
 
 const dropAnimation: DropAnimation = {
@@ -526,11 +1171,16 @@ const dropAnimation: DropAnimation = {
   }),
 }
 
-interface SortableOverlayProps
-  extends Omit<React.ComponentProps<typeof DragOverlay>, "children"> {
+interface SortableOverlayProps extends Omit<
+  React.ComponentProps<typeof DragOverlay>,
+  "children"
+> {
   container?: Element | DocumentFragment | null
   children?:
-    | ((params: { value: UniqueIdentifier }) => React.ReactNode)
+    | ((params: {
+        value: UniqueIdentifier
+        type?: "group" | "item" | null
+      }) => React.ReactNode)
     | React.ReactNode
 }
 
@@ -557,7 +1207,7 @@ function SortableOverlay(props: SortableOverlayProps) {
       <SortableOverlayContext.Provider value={true}>
         {context.activeId
           ? typeof children === "function"
-            ? children({ value: context.activeId })
+            ? children({ value: context.activeId, type: context.activeType })
             : children
           : null}
       </SortableOverlayContext.Provider>
@@ -566,16 +1216,21 @@ function SortableOverlay(props: SortableOverlayProps) {
   )
 }
 
+// ============================================================
+// Exports
+// ============================================================
+
+// Rename SortableRoot to Sortable for export
+const Sortable = SortableRoot
+
 export {
-  SortableContent as Content,
-  SortableItem as Item,
-  SortableItemHandle as ItemHandle,
-  SortableOverlay as Overlay,
-  //
-  SortableRoot as Root,
-  SortableRoot as Sortable,
+  Sortable,
   SortableContent,
+  SortableGroup,
+  SortableGroupContent,
+  SortableGroupHandle,
   SortableItem,
   SortableItemHandle,
   SortableOverlay,
+  useSortableContext,
 }
