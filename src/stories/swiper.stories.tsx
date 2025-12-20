@@ -9,6 +9,7 @@ import {
   SwiperNext,
   SwiperPrevious,
   SwiperProgress,
+  SwiperWrapper,
   type SwiperApi,
 } from "@/components/ui/swiper"
 import type { Meta, StoryObj } from "@storybook/react-vite"
@@ -78,53 +79,30 @@ type Story = StoryObj<typeof Swiper>
 export const Basic: Story = {
   render: () => (
     <div className="w-full max-w-sm px-12">
-      <Swiper className="w-full">
-        <SwiperContent>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </div>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
-        <SwiperPrevious />
-        <SwiperNext />
+      <Swiper>
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <div className="p-1">
+                  <Card>
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold">
+                        {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
 }
-
-// ============================================================================
-// With Pagination
-// ============================================================================
-
-export const WithPagination: Story = {
-  render: () => (
-    <div className="w-full max-w-sm">
-      <Swiper className="w-full">
-        <SwiperContent pagination={{ clickable: true }}>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </div>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
-      </Swiper>
-    </div>
-  ),
-}
-
 // ============================================================================
 // With Custom Dots
 // ============================================================================
@@ -132,23 +110,27 @@ export const WithPagination: Story = {
 export const WithCustomDots: Story = {
   render: () => (
     <div className="w-full max-w-sm px-12">
-      <Swiper className="w-full">
-        <SwiperContent>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <div className="p-1">
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </div>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
-        <SwiperPrevious />
-        <SwiperNext />
-        <SwiperDots />
+      <Swiper>
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <div className="p-1">
+                  <Card>
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold">
+                        {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+          <SwiperDots />
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -161,25 +143,27 @@ export const WithCustomDots: Story = {
 export const WithDynamicBullets: Story = {
   render: () => (
     <div className="w-full max-w-sm px-12">
-      <Swiper className="w-full">
-        <SwiperContent>
-          {Array.from({ length: 15 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <div className="p-1">
-                <Card className="bg-linear-to-br from-violet-500 to-fuchsia-500">
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold text-white">
-                      {index + 1}
-                    </span>
-                  </CardContent>
-                </Card>
-              </div>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
-        <SwiperPrevious />
-        <SwiperNext />
-        <SwiperDynamicDots />
+      <Swiper>
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 15 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <div className="p-1">
+                  <Card className="bg-linear-to-br from-violet-500 to-fuchsia-500">
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold text-white">
+                        {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+          <SwiperDynamicDots />
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -192,20 +176,22 @@ export const WithDynamicBullets: Story = {
 export const MultipleSlidesPerView: Story = {
   render: () => (
     <div className="w-full max-w-2xl px-12">
-      <Swiper className="w-full">
-        <SwiperContent slidesPerView={3} spaceBetween={16}>
-          {Array.from({ length: 8 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <Card>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <span className="text-3xl font-semibold">{index + 1}</span>
-                </CardContent>
-              </Card>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
-        <SwiperPrevious />
-        <SwiperNext />
+      <Swiper slidesPerView={3} spaceBetween={16}>
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 8 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card>
+                  <CardContent className="flex aspect-square items-center justify-center p-6">
+                    <span className="text-3xl font-semibold">{index + 1}</span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -218,26 +204,29 @@ export const MultipleSlidesPerView: Story = {
 export const WithAutoplay: Story = {
   render: () => (
     <div className="w-full max-w-sm">
-      <Swiper modules={[Autoplay]} className="w-full">
-        <SwiperContent
-          autoplay={{ delay: 2000, disableOnInteraction: false }}
-          pagination={{ clickable: true }}
-          loop
-        >
-          {Array.from({ length: 5 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <div className="p-1">
-                <Card className="bg-linear-to-br from-purple-500 to-pink-500">
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold text-white">
-                      {index + 1}
-                    </span>
-                  </CardContent>
-                </Card>
-              </div>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
+      <Swiper
+        modules={[Autoplay]}
+        autoplay={{ delay: 2000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
+        loop
+      >
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <div className="p-1">
+                  <Card className="bg-linear-to-br from-purple-500 to-pink-500">
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold text-white">
+                        {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -250,24 +239,30 @@ export const WithAutoplay: Story = {
 export const FadeEffect: Story = {
   render: () => (
     <div className="w-full max-w-sm px-12">
-      <Swiper modules={[EffectFade]} className="w-full">
-        <SwiperContent effect="fade" pagination={{ clickable: true }}>
-          {["bg-red-500", "bg-blue-500", "bg-green-500", "bg-yellow-500"].map(
-            (color, index) => (
-              <SwiperItem key={index}>
-                <Card className={color}>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold text-white">
-                      Slide {index + 1}
-                    </span>
-                  </CardContent>
-                </Card>
-              </SwiperItem>
-            )
-          )}
-        </SwiperContent>
-        <SwiperPrevious />
-        <SwiperNext />
+      <Swiper
+        modules={[EffectFade]}
+        effect="fade"
+        pagination={{ clickable: true }}
+      >
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {["bg-red-500", "bg-blue-500", "bg-green-500", "bg-yellow-500"].map(
+              (color, index) => (
+                <SwiperItem key={index}>
+                  <Card className={color}>
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold text-white">
+                        Slide {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </SwiperItem>
+              )
+            )}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -280,32 +275,35 @@ export const FadeEffect: Story = {
 export const CoverflowEffect: Story = {
   render: () => (
     <div className="w-full max-w-2xl py-8">
-      <Swiper modules={[EffectCoverflow]} className="w-full">
-        <SwiperContent
-          effect="coverflow"
-          slidesPerView={3}
-          centeredSlides
-          coverflowEffect={{
-            rotate: 50,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-          }}
-          pagination={{ clickable: true }}
-        >
-          {Array.from({ length: 7 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <Card className="bg-linear-to-br from-slate-700 to-slate-900">
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <span className="text-4xl font-semibold text-white">
-                    {index + 1}
-                  </span>
-                </CardContent>
-              </Card>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
+      <Swiper
+        modules={[EffectCoverflow]}
+        effect="coverflow"
+        slidesPerView={3}
+        centeredSlides
+        coverflowEffect={{
+          rotate: 50,
+          stretch: 0,
+          depth: 100,
+          modifier: 1,
+          slideShadows: true,
+        }}
+        pagination={{ clickable: true }}
+      >
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 7 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card className="bg-linear-to-br from-slate-700 to-slate-900">
+                  <CardContent className="flex aspect-square items-center justify-center p-6">
+                    <span className="text-4xl font-semibold text-white">
+                      {index + 1}
+                    </span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -318,26 +316,28 @@ export const CoverflowEffect: Story = {
 export const CardsEffect: Story = {
   render: () => (
     <div className="flex w-80 items-center justify-center py-8">
-      <Swiper modules={[EffectCards]} className="w-64">
-        <SwiperContent effect="cards">
-          {[
-            "bg-rose-500",
-            "bg-orange-500",
-            "bg-amber-500",
-            "bg-lime-500",
-            "bg-emerald-500",
-          ].map((color, index) => (
-            <SwiperItem key={index}>
-              <Card className={`${color} shadow-xl`}>
-                <CardContent className="flex aspect-3/4 items-center justify-center p-6">
-                  <span className="text-5xl font-bold text-white">
-                    {index + 1}
-                  </span>
-                </CardContent>
-              </Card>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
+      <Swiper modules={[EffectCards]} effect="cards">
+        <SwiperWrapper className="w-64">
+          <SwiperContent>
+            {[
+              "bg-rose-500",
+              "bg-orange-500",
+              "bg-amber-500",
+              "bg-lime-500",
+              "bg-emerald-500",
+            ].map((color, index) => (
+              <SwiperItem key={index}>
+                <Card className={`${color} shadow-xl`}>
+                  <CardContent className="flex aspect-3/4 items-center justify-center p-6">
+                    <span className="text-5xl font-bold text-white">
+                      {index + 1}
+                    </span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -350,20 +350,26 @@ export const CardsEffect: Story = {
 export const Vertical: Story = {
   render: () => (
     <div className="h-96 w-full max-w-sm py-12">
-      <Swiper orientation="vertical" className="h-full w-full">
-        <SwiperContent pagination={{ clickable: true }} className="h-full">
-          {Array.from({ length: 5 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <Card className="h-full">
-                <CardContent className="flex h-full items-center justify-center p-6">
-                  <span className="text-4xl font-semibold">{index + 1}</span>
-                </CardContent>
-              </Card>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
-        <SwiperPrevious />
-        <SwiperNext />
+      <Swiper
+        orientation="vertical"
+        pagination={{ clickable: true }}
+        className="h-full"
+      >
+        <SwiperWrapper className="h-full w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card className="h-full">
+                  <CardContent className="flex h-full items-center justify-center p-6">
+                    <span className="text-4xl font-semibold">{index + 1}</span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -376,24 +382,26 @@ export const Vertical: Story = {
 export const WithCounterAndProgress: Story = {
   render: () => (
     <div className="w-full max-w-sm px-12">
-      <Swiper className="w-full">
-        <SwiperContent>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <Card className="bg-linear-to-br from-blue-500 to-purple-600">
-                <CardContent className="flex aspect-video items-center justify-center p-6">
-                  <span className="text-4xl font-semibold text-white">
-                    Slide {index + 1}
-                  </span>
-                </CardContent>
-              </Card>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
-        <SwiperPrevious />
-        <SwiperNext />
-        <SwiperProgress className="mt-4" />
-        <SwiperCounter className="mt-2" />
+      <Swiper>
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card className="bg-linear-to-br from-blue-500 to-purple-600">
+                  <CardContent className="flex aspect-video items-center justify-center p-6">
+                    <span className="text-4xl font-semibold text-white">
+                      Slide {index + 1}
+                    </span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+          <SwiperProgress className="mt-4" />
+          <SwiperCounter className="mt-2" />
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -419,46 +427,51 @@ export const WithThumbsGallery: Story = {
 
     return (
       <div className="w-full max-w-lg px-12">
-        <Swiper modules={[Thumbs]} className="mb-2 w-full">
-          <SwiperContent
-            thumbs={{
-              swiper:
-                thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-            }}
-          >
-            {images.map((src, index) => (
-              <SwiperItem key={index}>
-                <img
-                  src={src}
-                  alt={`Image ${index + 1}`}
-                  className="aspect-video w-full rounded-lg object-cover"
-                />
-              </SwiperItem>
-            ))}
-          </SwiperContent>
-          <SwiperPrevious />
-          <SwiperNext />
+        <Swiper
+          modules={[Thumbs]}
+          thumbs={{
+            swiper:
+              thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+          }}
+        >
+          <SwiperWrapper className="mb-2 w-full">
+            <SwiperContent>
+              {images.map((src, index) => (
+                <SwiperItem key={index}>
+                  <img
+                    src={src}
+                    alt={`Image ${index + 1}`}
+                    className="aspect-video w-full rounded-lg object-cover"
+                  />
+                </SwiperItem>
+              ))}
+            </SwiperContent>
+            <SwiperPrevious />
+            <SwiperNext />
+          </SwiperWrapper>
         </Swiper>
 
-        <Swiper modules={[FreeMode, Thumbs]} className="w-full">
-          <SwiperContent
-            onSwiper={setThumbsSwiper}
-            slidesPerView={4}
-            spaceBetween={8}
-            freeMode
-            watchSlidesProgress
-            className="[&_.swiper-slide]:cursor-pointer [&_.swiper-slide]:opacity-50 [&_.swiper-slide-thumb-active]:opacity-100"
-          >
-            {images.map((src, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={src}
-                  alt={`Thumb ${index + 1}`}
-                  className="aspect-video w-full rounded-md object-cover"
-                />
-              </SwiperSlide>
-            ))}
-          </SwiperContent>
+        <Swiper
+          modules={[FreeMode, Thumbs]}
+          slidesPerView={4}
+          spaceBetween={8}
+          freeMode
+          watchSlidesProgress
+          className="[&_.swiper-slide]:cursor-pointer [&_.swiper-slide]:opacity-50 [&_.swiper-slide-thumb-active]:opacity-100"
+        >
+          <SwiperWrapper className="w-full">
+            <SwiperContent onSwiper={setThumbsSwiper}>
+              {images.map((src, index) => (
+                <SwiperSlide key={index}>
+                  <img
+                    src={src}
+                    alt={`Thumb ${index + 1}`}
+                    className="aspect-video w-full rounded-md object-cover"
+                  />
+                </SwiperSlide>
+              ))}
+            </SwiperContent>
+          </SwiperWrapper>
         </Swiper>
       </div>
     )
@@ -488,20 +501,24 @@ export const WithApiControl: Story = {
 
     return (
       <div className="mx-auto w-full max-w-sm px-12">
-        <Swiper setApi={setApi} className="w-full">
-          <SwiperContent>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <SwiperItem key={index}>
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </SwiperItem>
-            ))}
-          </SwiperContent>
-          <SwiperPrevious />
-          <SwiperNext />
+        <Swiper setApi={setApi}>
+          <SwiperWrapper className="w-full">
+            <SwiperContent>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <SwiperItem key={index}>
+                  <Card>
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold">
+                        {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </SwiperItem>
+              ))}
+            </SwiperContent>
+            <SwiperPrevious />
+            <SwiperNext />
+          </SwiperWrapper>
         </Swiper>
         <div className="text-muted-foreground py-2 text-center text-sm">
           Slide {current} of {count}
@@ -518,23 +535,26 @@ export const WithApiControl: Story = {
 export const FreeModeExample: Story = {
   render: () => (
     <div className="w-full max-w-2xl">
-      <Swiper modules={[FreeMode]} className="w-full">
-        <SwiperContent
-          slidesPerView={3}
-          spaceBetween={16}
-          freeMode
-          pagination={{ clickable: true }}
-        >
-          {Array.from({ length: 10 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <Card>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <span className="text-3xl font-semibold">{index + 1}</span>
-                </CardContent>
-              </Card>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
+      <Swiper
+        modules={[FreeMode]}
+        slidesPerView={3}
+        spaceBetween={16}
+        freeMode
+        pagination={{ clickable: true }}
+      >
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card>
+                  <CardContent className="flex aspect-square items-center justify-center p-6">
+                    <span className="text-3xl font-semibold">{index + 1}</span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),
@@ -547,22 +567,24 @@ export const FreeModeExample: Story = {
 export const LoopMode: Story = {
   render: () => (
     <div className="w-full max-w-sm px-12">
-      <Swiper className="w-full">
-        <SwiperContent loop pagination={{ clickable: true }}>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <SwiperItem key={index}>
-              <Card className="bg-linear-to-r from-pink-500 via-red-500 to-yellow-500">
-                <CardContent className="flex aspect-square items-center justify-center p-6">
-                  <span className="text-4xl font-semibold text-white">
-                    {index + 1}
-                  </span>
-                </CardContent>
-              </Card>
-            </SwiperItem>
-          ))}
-        </SwiperContent>
-        <SwiperPrevious />
-        <SwiperNext />
+      <Swiper loop pagination={{ clickable: true }}>
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card className="bg-linear-to-r from-pink-500 via-red-500 to-yellow-500">
+                  <CardContent className="flex aspect-square items-center justify-center p-6">
+                    <span className="text-4xl font-semibold text-white">
+                      {index + 1}
+                    </span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+        </SwiperWrapper>
       </Swiper>
     </div>
   ),

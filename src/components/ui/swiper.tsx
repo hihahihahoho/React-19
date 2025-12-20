@@ -55,7 +55,7 @@ function useSwiperContext() {
 export { useSwiperContext as useSwiper }
 
 // ============================================================================
-// Swiper (Root - provides context, wrapper div)
+// Swiper (Root - provides context only, no wrapper rendering)
 // ============================================================================
 
 type SwiperProps = Omit<
@@ -68,7 +68,6 @@ type SwiperProps = Omit<
 }
 
 function Swiper({
-  className,
   children,
   setApi,
   orientation = "horizontal",
@@ -149,31 +148,47 @@ function Swiper({
 
   return (
     <SwiperContext.Provider value={contextValue}>
-      <div
-        className={cn("relative", className)}
-        data-slot="swiper"
-        data-orientation={orientation}
-      >
-        {children}
-      </div>
+      {children}
     </SwiperContext.Provider>
   )
 }
 
 // ============================================================================
-// SwiperContent - The actual Swiper carousel
+// SwiperWrapper (Container wrapper - for layout and positioning)
 // ============================================================================
 
-type SwiperContentProps = Omit<
-  React.ComponentProps<typeof SwiperPrimitive>,
-  "modules" | "onSlideChange"
->
+type SwiperWrapperProps = React.HTMLAttributes<HTMLDivElement>
+
+function SwiperWrapper({ className, children, ...props }: SwiperWrapperProps) {
+  const { orientation } = useSwiperContext()
+
+  return (
+    <div
+      className={cn("relative", className)}
+      data-slot="swiper"
+      data-orientation={orientation}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+}
+
+// ============================================================================
+// SwiperContent - The actual Swiper carousel (receives config from Swiper via context)
+// ============================================================================
+
+type SwiperContentProps = {
+  className?: string
+  children?: React.ReactNode
+  /** Only used for thumbs gallery - to get the swiper instance for linking */
+  onSwiper?: (swiper: SwiperType) => void
+}
 
 function SwiperContent({
   className,
   children,
   onSwiper: onSwiperProp,
-  ...props
 }: SwiperContentProps) {
   const {
     modules,
@@ -184,7 +199,7 @@ function SwiperContent({
   } = useSwiperContext()
 
   // Handle both context onSwiper and prop onSwiper (for thumbs)
-  const handleSwiper = (swiper: import("swiper/types").Swiper) => {
+  const handleSwiper = (swiper: SwiperType) => {
     onSwiperContext(swiper)
     onSwiperProp?.(swiper)
   }
@@ -201,12 +216,12 @@ function SwiperContent({
         "w-full",
         // Custom styles for scrollbar
         "[&_.swiper-scrollbar]:bg-muted [&_.swiper-scrollbar-drag]:bg-primary/50",
+        swiperProps.className,
         className
       )}
       data-slot="swiper-content"
       data-orientation={orientation}
       {...swiperProps}
-      {...props}
     >
       {children}
     </SwiperPrimitive>
@@ -574,5 +589,6 @@ export {
   SwiperNext,
   SwiperPrevious,
   SwiperProgress,
+  SwiperWrapper,
   type CarouselApi as SwiperApi,
 }
