@@ -81,6 +81,16 @@
 - [File Upload](https://react-19.octung112.workers.dev/r/file-upload.json): File upload component with drag and drop support.
 - [File Upload List](https://react-19.octung112.workers.dev/r/file-upload-list.json): File upload component with list view and preview.
 
+### Carousel & Slider
+
+- [Swiper](https://react-19.octung112.workers.dev/r/swiper.json): Powerful carousel/slider component built on Swiper.js with custom pagination, navigation, and effects.
+- [Swiper Panorama](https://react-19.octung112.workers.dev/r/swiper-panorama.json): Custom Swiper effect plugin for 3D panoramic carousel.
+- [Swiper Expo](https://react-19.octung112.workers.dev/r/swiper-expo.json): Custom Swiper effect plugin for parallax zoom effect with grayscale.
+
+### Drag & Drop
+
+- [Sortable](https://react-19.octung112.workers.dev/r/sortable.json): Drag and drop sortable component with DnD Kit for reordering lists and grids.
+
 ### Misc
 
 - [Pagination](https://react-19.octung112.workers.dev/r/pagination.json): Pagination component for lists and tables.
@@ -144,7 +154,7 @@ npx shadcn@latest add https://react-19.octung112.workers.dev/r/data-table.json
 
 ## Features
 
-- **83 Total Items**: 56 components, 18 hooks, 8 libraries
+- **93 Total Items**: 62 components, 18 hooks, 8 libraries, 5 custom plugins
 - **Advanced Select System**: Virtualized, searchable selects with multi-select support
 - **Form Integration**: All form components work seamlessly with React Hook Form and Zod
 - **File Upload**: Advanced file upload with drag-and-drop, preview, and validation
