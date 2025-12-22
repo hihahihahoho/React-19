@@ -11,10 +11,10 @@ import {
   SwiperProgress,
   SwiperWrapper,
   type SwiperApi,
-} from "@/components/ui/swiper"
+} from "@/components/ui/swiper/swiper"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import * as React from "react"
-// Import additional modules as needed
+// Import native Swiper modules
 import {
   Autoplay,
   EffectCards,
@@ -56,6 +56,10 @@ A powerful carousel/slider component built on Swiper.js with shadcn/ui styling.
 - Keyboard module enabled by default (arrow keys navigation)
 - A11y module for screen reader support
 - Proper ARIA labels on navigation controls
+
+## Custom Effect Plugins
+Additional effect plugins can be installed separately:
+- [Swiper Panorama Effect](https://react-19.octung112.workers.dev/r/swiper-panorama.json) - 3D panoramic carousel
         `,
       },
     },
@@ -73,7 +77,7 @@ export default meta
 type Story = StoryObj<typeof Swiper>
 
 // ============================================================================
-// Basic Example
+// BASIC USAGE
 // ============================================================================
 
 export const Basic: Story = {
@@ -103,9 +107,6 @@ export const Basic: Story = {
     </div>
   ),
 }
-// ============================================================================
-// With Custom Dots
-// ============================================================================
 
 export const WithCustomDots: Story = {
   render: () => (
@@ -136,14 +137,10 @@ export const WithCustomDots: Story = {
   ),
 }
 
-// ============================================================================
-// With Dynamic Bullets (for many slides)
-// ============================================================================
-
 export const WithDynamicBullets: Story = {
   render: () => (
     <div className="w-full max-w-sm px-12">
-      <Swiper>
+      <Swiper loop>
         <SwiperWrapper className="w-full">
           <SwiperContent>
             {Array.from({ length: 15 }).map((_, index) => (
@@ -169,10 +166,6 @@ export const WithDynamicBullets: Story = {
   ),
 }
 
-// ============================================================================
-// Multiple Slides Per View
-// ============================================================================
-
 export const MultipleSlidesPerView: Story = {
   render: () => (
     <div className="w-full max-w-2xl px-12">
@@ -197,11 +190,140 @@ export const MultipleSlidesPerView: Story = {
   ),
 }
 
+export const WithCounterAndProgress: Story = {
+  render: () => (
+    <div className="w-full max-w-sm px-12">
+      <Swiper>
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card className="bg-linear-to-br from-blue-500 to-purple-600">
+                  <CardContent className="flex aspect-video items-center justify-center p-6">
+                    <span className="text-4xl font-semibold text-white">
+                      Slide {index + 1}
+                    </span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+          <SwiperProgress className="mt-4" />
+          <SwiperCounter className="mt-2" />
+        </SwiperWrapper>
+      </Swiper>
+    </div>
+  ),
+}
+
+export const Vertical: Story = {
+  render: () => (
+    <div className="h-96 w-full max-w-sm py-12">
+      <Swiper
+        orientation="vertical"
+        pagination={{ clickable: true }}
+        className="h-full"
+      >
+        <SwiperWrapper className="h-full w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card className="h-full">
+                  <CardContent className="flex h-full items-center justify-center p-6">
+                    <span className="text-4xl font-semibold">{index + 1}</span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+        </SwiperWrapper>
+      </Swiper>
+    </div>
+  ),
+}
+
+export const LoopMode: Story = {
+  render: () => (
+    <div className="w-full max-w-sm px-12">
+      <Swiper loop pagination={{ clickable: true }}>
+        <SwiperWrapper className="w-full">
+          <SwiperContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SwiperItem key={index}>
+                <Card className="bg-linear-to-r from-pink-500 via-red-500 to-yellow-500">
+                  <CardContent className="flex aspect-square items-center justify-center p-6">
+                    <span className="text-4xl font-semibold text-white">
+                      {index + 1}
+                    </span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+        </SwiperWrapper>
+      </Swiper>
+    </div>
+  ),
+}
+
+export const WithApiControl: Story = {
+  render: function Render() {
+    const [api, setApi] = React.useState<SwiperApi>()
+    const [current, setCurrent] = React.useState(0)
+    const [count, setCount] = React.useState(0)
+
+    React.useEffect(() => {
+      if (!api) return
+
+      setCount(api.slides.length)
+      setCurrent(api.activeIndex + 1)
+
+      api.on("slideChange", () => {
+        setCurrent(api.activeIndex + 1)
+      })
+    }, [api])
+
+    return (
+      <div className="mx-auto w-full max-w-sm px-12">
+        <Swiper setApi={setApi}>
+          <SwiperWrapper className="w-full">
+            <SwiperContent>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <SwiperItem key={index}>
+                  <Card>
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold">
+                        {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </SwiperItem>
+              ))}
+            </SwiperContent>
+            <SwiperPrevious />
+            <SwiperNext />
+          </SwiperWrapper>
+        </Swiper>
+        <div className="text-muted-foreground py-2 text-center text-sm">
+          Slide {current} of {count}
+        </div>
+      </div>
+    )
+  },
+}
+
 // ============================================================================
-// With Autoplay (import Autoplay module)
+// NATIVE EFFECTS (Built-in Swiper Modules)
 // ============================================================================
 
 export const WithAutoplay: Story = {
+  name: "Native Effect: Autoplay",
   render: () => (
     <div className="w-full max-w-sm">
       <Swiper
@@ -232,11 +354,8 @@ export const WithAutoplay: Story = {
   ),
 }
 
-// ============================================================================
-// Fade Effect (import EffectFade module)
-// ============================================================================
-
 export const FadeEffect: Story = {
+  name: "Native Effect: Fade",
   render: () => (
     <div className="w-full max-w-sm px-12">
       <Swiper
@@ -268,11 +387,8 @@ export const FadeEffect: Story = {
   ),
 }
 
-// ============================================================================
-// Coverflow Effect (import EffectCoverflow module)
-// ============================================================================
-
 export const CoverflowEffect: Story = {
+  name: "Native Effect: Coverflow",
   render: () => (
     <div className="w-full max-w-2xl py-8">
       <Swiper
@@ -309,11 +425,8 @@ export const CoverflowEffect: Story = {
   ),
 }
 
-// ============================================================================
-// Cards Effect (import EffectCards module)
-// ============================================================================
-
 export const CardsEffect: Story = {
+  name: "Native Effect: Cards",
   render: () => (
     <div className="flex w-80 items-center justify-center py-8">
       <Swiper modules={[EffectCards]} effect="cards">
@@ -343,75 +456,37 @@ export const CardsEffect: Story = {
   ),
 }
 
-// ============================================================================
-// Vertical
-// ============================================================================
-
-export const Vertical: Story = {
+export const FreeModeExample: Story = {
+  name: "Native Effect: Free Mode",
   render: () => (
-    <div className="h-96 w-full max-w-sm py-12">
+    <div className="w-full max-w-2xl">
       <Swiper
-        orientation="vertical"
+        modules={[FreeMode]}
+        slidesPerView={3}
+        spaceBetween={16}
+        freeMode
         pagination={{ clickable: true }}
-        className="h-full"
       >
-        <SwiperWrapper className="h-full w-full">
-          <SwiperContent>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <SwiperItem key={index}>
-                <Card className="h-full">
-                  <CardContent className="flex h-full items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </SwiperItem>
-            ))}
-          </SwiperContent>
-          <SwiperPrevious />
-          <SwiperNext />
-        </SwiperWrapper>
-      </Swiper>
-    </div>
-  ),
-}
-
-// ============================================================================
-// With Counter & Progress
-// ============================================================================
-
-export const WithCounterAndProgress: Story = {
-  render: () => (
-    <div className="w-full max-w-sm px-12">
-      <Swiper>
         <SwiperWrapper className="w-full">
           <SwiperContent>
-            {Array.from({ length: 5 }).map((_, index) => (
+            {Array.from({ length: 10 }).map((_, index) => (
               <SwiperItem key={index}>
-                <Card className="bg-linear-to-br from-blue-500 to-purple-600">
-                  <CardContent className="flex aspect-video items-center justify-center p-6">
-                    <span className="text-4xl font-semibold text-white">
-                      Slide {index + 1}
-                    </span>
+                <Card>
+                  <CardContent className="flex aspect-square items-center justify-center p-6">
+                    <span className="text-3xl font-semibold">{index + 1}</span>
                   </CardContent>
                 </Card>
               </SwiperItem>
             ))}
           </SwiperContent>
-          <SwiperPrevious />
-          <SwiperNext />
-          <SwiperProgress className="mt-4" />
-          <SwiperCounter className="mt-2" />
         </SwiperWrapper>
       </Swiper>
     </div>
   ),
 }
 
-// ============================================================================
-// With Thumbs Gallery (import FreeMode, Thumbs modules)
-// ============================================================================
-
 export const WithThumbsGallery: Story = {
+  name: "Native Effect: Thumbs Gallery",
   render: function Render() {
     const [thumbsSwiper, setThumbsSwiper] = React.useState<SwiperType | null>(
       null
@@ -476,116 +551,4 @@ export const WithThumbsGallery: Story = {
       </div>
     )
   },
-}
-
-// ============================================================================
-// With API Control
-// ============================================================================
-
-export const WithApiControl: Story = {
-  render: function Render() {
-    const [api, setApi] = React.useState<SwiperApi>()
-    const [current, setCurrent] = React.useState(0)
-    const [count, setCount] = React.useState(0)
-
-    React.useEffect(() => {
-      if (!api) return
-
-      setCount(api.slides.length)
-      setCurrent(api.activeIndex + 1)
-
-      api.on("slideChange", () => {
-        setCurrent(api.activeIndex + 1)
-      })
-    }, [api])
-
-    return (
-      <div className="mx-auto w-full max-w-sm px-12">
-        <Swiper setApi={setApi}>
-          <SwiperWrapper className="w-full">
-            <SwiperContent>
-              {Array.from({ length: 5 }).map((_, index) => (
-                <SwiperItem key={index}>
-                  <Card>
-                    <CardContent className="flex aspect-square items-center justify-center p-6">
-                      <span className="text-4xl font-semibold">
-                        {index + 1}
-                      </span>
-                    </CardContent>
-                  </Card>
-                </SwiperItem>
-              ))}
-            </SwiperContent>
-            <SwiperPrevious />
-            <SwiperNext />
-          </SwiperWrapper>
-        </Swiper>
-        <div className="text-muted-foreground py-2 text-center text-sm">
-          Slide {current} of {count}
-        </div>
-      </div>
-    )
-  },
-}
-
-// ============================================================================
-// Free Mode (import FreeMode module)
-// ============================================================================
-
-export const FreeModeExample: Story = {
-  render: () => (
-    <div className="w-full max-w-2xl">
-      <Swiper
-        modules={[FreeMode]}
-        slidesPerView={3}
-        spaceBetween={16}
-        freeMode
-        pagination={{ clickable: true }}
-      >
-        <SwiperWrapper className="w-full">
-          <SwiperContent>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <SwiperItem key={index}>
-                <Card>
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-3xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </SwiperItem>
-            ))}
-          </SwiperContent>
-        </SwiperWrapper>
-      </Swiper>
-    </div>
-  ),
-}
-
-// ============================================================================
-// Loop Mode with Navigation
-// ============================================================================
-
-export const LoopMode: Story = {
-  render: () => (
-    <div className="w-full max-w-sm px-12">
-      <Swiper loop pagination={{ clickable: true }}>
-        <SwiperWrapper className="w-full">
-          <SwiperContent>
-            {Array.from({ length: 5 }).map((_, index) => (
-              <SwiperItem key={index}>
-                <Card className="bg-linear-to-r from-pink-500 via-red-500 to-yellow-500">
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold text-white">
-                      {index + 1}
-                    </span>
-                  </CardContent>
-                </Card>
-              </SwiperItem>
-            ))}
-          </SwiperContent>
-          <SwiperPrevious />
-          <SwiperNext />
-        </SwiperWrapper>
-      </Swiper>
-    </div>
-  ),
 }

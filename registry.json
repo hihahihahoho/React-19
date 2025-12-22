@@ -1838,6 +1838,67 @@
           "target": "components/ui/date-range-picker/date-range-picker-form.tsx"
         }
       ]
+    },
+    {
+      "name": "swiper",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "swiper",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/swiper/swiper.tsx",
+          "type": "registry:component",
+          "target": "components/ui/swiper/swiper.tsx"
+        },
+        {
+          "path": "src/components/ui/swiper/swiper.css",
+          "type": "registry:file",
+          "target": "components/ui/swiper/swiper.css"
+        }
+      ]
+    },
+    {
+      "name": "swiper-panorama",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "swiper"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/swiper.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/swiper/swiper-panorama.ts",
+          "type": "registry:component",
+          "target": "components/ui/swiper/swiper-panorama.ts"
+        }
+      ]
+    },
+    {
+      "name": "swiper-expo",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "swiper"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/swiper.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/swiper/swiper-expo.ts",
+          "type": "registry:component",
+          "target": "components/ui/swiper/swiper-expo.ts"
+        }
+      ]
     }
   ]
 }
