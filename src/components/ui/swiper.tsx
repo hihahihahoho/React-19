@@ -29,7 +29,9 @@ type SwiperContextProps = {
   scrollPrev: () => void
   scrollNext: () => void
   activeIndex: number
+  realIndex: number
   slidesCount: number
+  isLoop: boolean
   // For SwiperContent to receive config
   modules: SwiperModule[]
   swiperProps: Partial<React.ComponentProps<typeof SwiperPrimitive>>
@@ -80,6 +82,7 @@ function Swiper({
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
   const [activeIndex, setActiveIndex] = React.useState(0)
+  const [realIndex, setRealIndex] = React.useState(0)
   const [slidesCount, setSlidesCount] = React.useState(0)
 
   // Combine user modules with essential modules (A11y, Keyboard, Navigation for accessibility)
@@ -88,10 +91,29 @@ function Swiper({
   }, [modules])
 
   const updateState = React.useCallback((swiper: SwiperType) => {
-    setCanScrollPrev(!swiper.isBeginning)
-    setCanScrollNext(!swiper.isEnd)
+    const isLoopMode = Boolean(swiper.params.loop)
+
+    // For loop mode, count unique slides by data-swiper-slide-index
+    // This is more reliable than using loopedSlides which may not be set
+    let actualSlidesCount: number
+    if (isLoopMode) {
+      const uniqueIndices = new Set<string>()
+      swiper.slides.forEach((slide) => {
+        const index = slide.getAttribute("data-swiper-slide-index")
+        if (index !== null) {
+          uniqueIndices.add(index)
+        }
+      })
+      actualSlidesCount = uniqueIndices.size
+    } else {
+      actualSlidesCount = swiper.slides.length
+    }
+
+    setCanScrollPrev(!swiper.isBeginning || isLoopMode)
+    setCanScrollNext(!swiper.isEnd || isLoopMode)
     setActiveIndex(swiper.activeIndex)
-    setSlidesCount(swiper.slides.length)
+    setRealIndex(swiper.realIndex)
+    setSlidesCount(actualSlidesCount)
   }, [])
 
   const handleSwiper = React.useCallback(
@@ -111,6 +133,8 @@ function Swiper({
     swiperInstance?.slideNext()
   }, [swiperInstance])
 
+  const isLoop = Boolean(props.loop)
+
   const contextValue = React.useMemo<SwiperContextProps>(
     () => ({
       swiper: swiperInstance,
@@ -120,7 +144,9 @@ function Swiper({
       scrollPrev,
       scrollNext,
       activeIndex,
+      realIndex,
       slidesCount,
+      isLoop,
       // Pass config to SwiperContent
       modules: allModules,
       swiperProps: {
@@ -138,7 +164,9 @@ function Swiper({
       scrollPrev,
       scrollNext,
       activeIndex,
+      realIndex,
       slidesCount,
+      isLoop,
       allModules,
       props,
       handleSwiper,
@@ -312,9 +340,18 @@ function SwiperNext({
 type SwiperDotsProps = React.HTMLAttributes<HTMLDivElement>
 
 function SwiperDots({ className, ...props }: SwiperDotsProps) {
-  const { swiper, activeIndex, slidesCount, orientation } = useSwiperContext()
+  const { swiper, realIndex, slidesCount, orientation, isLoop } =
+    useSwiperContext()
 
   if (slidesCount === 0) return null
+
+  const handleClick = (index: number) => {
+    if (isLoop) {
+      swiper?.slideToLoop(index)
+    } else {
+      swiper?.slideTo(index)
+    }
+  }
 
   return (
     <div
@@ -332,11 +369,11 @@ function SwiperDots({ className, ...props }: SwiperDotsProps) {
           type="button"
           className={cn(
             "flex size-2 rounded-full transition-all",
-            index === activeIndex
+            index === realIndex
               ? "bg-primary"
               : "bg-primary/30 hover:bg-primary/50"
           )}
-          onClick={() => swiper?.slideTo(index)}
+          onClick={() => handleClick(index)}
           aria-label={`Go to slide ${index + 1}`}
         />
       ))}
@@ -358,6 +395,8 @@ type SwiperDynamicDotsProps = React.HTMLAttributes<HTMLDivElement> & {
   size?: number
   /** Gap between bullets in Tailwind units (default: 1.5 = gap-1.5 = 0.375rem) */
   gap?: number
+  /** Width multiplier for active bullet (default: 1, set to e.g. 2 for pill shape) */
+  activeBulletWidth?: number
   /** Custom render function for bullets */
   renderBullet?: (
     index: number,
@@ -376,10 +415,12 @@ function SwiperDynamicDots({
   visibleBullets = 5,
   size = 2,
   gap = 1.5,
+  activeBulletWidth = 1,
   renderBullet,
   ...props
 }: SwiperDynamicDotsProps) {
-  const { swiper, activeIndex, slidesCount, orientation } = useSwiperContext()
+  const { swiper, realIndex, slidesCount, orientation, isLoop } =
+    useSwiperContext()
 
   if (slidesCount === 0) return null
 
@@ -387,24 +428,29 @@ function SwiperDynamicDots({
   const bulletSizeRem = size * 0.25
   const gapRem = gap * 0.25
   const bulletWidthRem = bulletSizeRem + gapRem
+  const activeBulletWidthRem = bulletSizeRem * activeBulletWidth
 
   // Calculate how many bullets to scale on each side
   const scaledPerSide = Math.floor((visibleBullets - dynamicMainBullets) / 2)
 
-  // Calculate container size
-  const containerSizeCalc = `calc(${visibleBullets} * ${bulletSizeRem}rem + ${visibleBullets - 1} * ${gapRem}rem)`
+  // Calculate extra width from active bullet
+  const extraActiveWidth =
+    activeBulletWidth > 1 ? (activeBulletWidth - 1) * bulletSizeRem : 0
+
+  // Calculate container size (add extra width for active bullet)
+  const containerSizeCalc = `calc(${visibleBullets} * ${bulletSizeRem}rem + ${visibleBullets - 1} * ${gapRem}rem + ${extraActiveWidth}rem)`
 
   // Ghost bullets needed for centering at edges
   const ghostCount = Math.floor(visibleBullets / 2)
 
-  // Calculate transform offset - always center on active bullet
+  // Calculate transform offset - always center on active bullet (use realIndex for loop mode)
   const centerOffset = ghostCount
   const transformValue =
-    -(activeIndex + ghostCount - centerOffset) * bulletWidthRem
+    -(realIndex + ghostCount - centerOffset) * bulletWidthRem
 
-  // Calculate scale for each bullet based on distance from active
+  // Calculate scale for each bullet based on distance from active (use realIndex for loop mode)
   const getScale = (index: number) => {
-    const distance = Math.abs(index - activeIndex)
+    const distance = Math.abs(index - realIndex)
 
     // Main bullets at full size
     const mainRadius = Math.floor((dynamicMainBullets - 1) / 2)
@@ -420,9 +466,19 @@ function SwiperDynamicDots({
     return 0
   }
 
+  // Handle click - use slideToLoop for loop mode
+  const handleClick = (index: number) => {
+    if (isLoop) {
+      swiper?.slideToLoop(index)
+    } else {
+      swiper?.slideTo(index)
+    }
+  }
+
   const cssVars = {
     "--swiper-bullet-size": `${bulletSizeRem}rem`,
     "--swiper-bullet-gap": `${gapRem}rem`,
+    "--swiper-active-bullet-width": `${activeBulletWidthRem}rem`,
   } as React.CSSProperties
 
   // Create array with ghost slots at beginning and end
@@ -488,8 +544,8 @@ function SwiperDynamicDots({
             // Actual bullet
             const index = slotIndex - ghostCount
             const scale = getScale(index)
-            const isActive = index === activeIndex
-            const onClick = () => swiper?.slideTo(index)
+            const isActive = index === realIndex
+            const onClick = () => handleClick(index)
 
             // Custom render
             if (renderBullet) {
@@ -510,7 +566,9 @@ function SwiperDynamicDots({
                   isActive ? "bg-primary" : "bg-primary/30 hover:bg-primary/50"
                 )}
                 style={{
-                  width: "var(--swiper-bullet-size)",
+                  width: isActive
+                    ? "var(--swiper-active-bullet-width)"
+                    : "var(--swiper-bullet-size)",
                   height: "var(--swiper-bullet-size)",
                   transform: `scale(${scale})`,
                   opacity: scale,

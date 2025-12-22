@@ -162,7 +162,7 @@ export const WithDynamicBullets: Story = {
           </SwiperContent>
           <SwiperPrevious />
           <SwiperNext />
-          <SwiperDynamicDots />
+          <SwiperDynamicDots activeBulletWidth={3} />
         </SwiperWrapper>
       </Swiper>
     </div>
