@@ -1,3 +1,5 @@
+"use client"
+
 import { cva, type VariantProps } from "class-variance-authority"
 import * as React from "react"
 
@@ -11,7 +13,7 @@ import {
 } from "../tooltip"
 
 const badgeVariants = cva(
-  "focus:ring-ring focus:outline-hidden inline-flex items-center justify-center gap-1 rounded-md px-2.5 py-0.5 text-xs font-medium ring-inset transition-colors focus:ring-2 focus:ring-offset-2 [&_svg]:size-4 [&_svg]:shrink-0",
+  "focus:ring-ring inline-flex items-center justify-center gap-1 rounded-md px-2.5 py-0.5 text-xs font-medium transition-colors ring-inset focus:ring-2 focus:ring-offset-2 focus:outline-hidden [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -79,8 +81,7 @@ const badgeVariants = cva(
 )
 
 export interface BadgeProps
-  extends React.ComponentProps<"div">,
-    VariantProps<typeof badgeVariants> {
+  extends React.ComponentProps<"div">, VariantProps<typeof badgeVariants> {
   onClearBtnClick?: () => void
   iconLeft?: React.ReactNode
   iconRight?: React.ReactNode

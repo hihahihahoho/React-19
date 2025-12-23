@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { Cell, flexRender } from "@tanstack/react-table"
 import { TableCell } from "./table"

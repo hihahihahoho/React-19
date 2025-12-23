@@ -1,3 +1,5 @@
+"use client"
+
 import {
   useItemOverflow,
   UseItemOverflowProps,
@@ -55,7 +57,7 @@ function OverflowBadgeGroup({
       data-slot="overflow-badge-group"
       className={cn(
         "relative flex h-full w-full flex-wrap items-center gap-1 whitespace-nowrap",
-        (overflowState === "collapse" || maxLine > 1) && "py-[3px]",
+        (overflowState === "collapse" || maxLine > 1) && "py-0.75",
         className
       )}
       {...props}

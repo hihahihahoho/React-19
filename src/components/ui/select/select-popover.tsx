@@ -1,3 +1,5 @@
+"use client"
+
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { cn } from "@/lib/utils"
 import { PopoverContentProps } from "@radix-ui/react-popover"

@@ -1,3 +1,5 @@
+"use client"
+
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
 import { ZodString } from "zod"
 import { FormField } from "../form/form"
@@ -7,7 +9,9 @@ import { Textarea, TextareaProps } from "./textarea"
 export interface TextareaFormProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends ControllerProps<TFieldValues, TName>,
+>
+  extends
+    ControllerProps<TFieldValues, TName>,
     Omit<TextareaProps, "defaultValue" | "name"> {}
 
 const TextareaForm = <

@@ -1,3 +1,5 @@
+"use client"
+
 import { getNodeText } from "@/lib/get-node-text"
 import { cn } from "@/lib/utils"
 import { lowercaseFirstChar } from "@/lib/utils-plus"
@@ -18,8 +20,7 @@ import {
 export type OnValueChangeTextarea =
   TextareaHTMLAttributes<HTMLTextAreaElement>["value"]
 
-export interface TextareaProps
-  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   formComposition?: FormCompositionProps
   onValueChange?: (value: OnValueChangeTextarea) => void
   maxHeight?: number

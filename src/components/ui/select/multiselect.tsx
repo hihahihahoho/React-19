@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { ChevronDown } from "lucide-react"
 import * as React from "react"
@@ -17,8 +19,10 @@ import { SelectCommandVirtualizeProps } from "./select-command-virtualize"
 import { SelectGroup, SelectItems } from "./select-interface"
 import { SelectPopover } from "./select-popover"
 
-export interface MultiSelectProps
-  extends Omit<React.ComponentProps<"button">, "value"> {
+export interface MultiSelectProps extends Omit<
+  React.ComponentProps<"button">,
+  "value"
+> {
   placeholder?: string | React.ReactNode
   placeholderColor?: string
   options?: SelectItems[] | SelectGroup[]

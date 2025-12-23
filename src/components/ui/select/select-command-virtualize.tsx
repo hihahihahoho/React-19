@@ -1,3 +1,5 @@
+"use client"
+
 import { fuzzyFilterStrings } from "@/lib/fuzzy-search"
 import { getNodeText } from "@/lib/get-node-text"
 import { useVirtualizer, VirtualizerOptions } from "@tanstack/react-virtual"

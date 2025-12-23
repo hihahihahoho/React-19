@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { ChevronDown, ChevronRight } from "lucide-react"
 import React, { useCallback, useMemo, useState } from "react"

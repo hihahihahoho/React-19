@@ -1,3 +1,5 @@
+"use client"
+
 import { CombinedPagination } from "../pagination"
 import { Select } from "../select/select"
 import { useDataTable } from "./data-table-context"

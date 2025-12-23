@@ -1,3 +1,5 @@
+"use client"
+
 import { getNodeText } from "@/lib/get-node-text"
 import { cn } from "@/lib/utils"
 import { lowercaseFirstChar } from "@/lib/utils-plus"

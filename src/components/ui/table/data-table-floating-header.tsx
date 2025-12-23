@@ -1,3 +1,5 @@
+"use client"
+
 import useScrollPosition from "@/hooks/use-scroll-position"
 import { useSyncScroll } from "@/hooks/use-sync-scroll"
 import { cn } from "@/lib/utils"

@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { ColumnPinningState, flexRender, Header } from "@tanstack/react-table"
 import { ArrowDown, ArrowUp, ArrowUpDown, Pin } from "lucide-react"

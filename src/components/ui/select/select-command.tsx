@@ -1,3 +1,5 @@
+"use client"
+
 import { cn } from "@/lib/utils"
 import { Check, CheckCheck } from "lucide-react"
 import React from "react"
@@ -201,8 +203,10 @@ function SelectCommandItem({
     </CommandItem>
   )
 }
-export interface SelectCommandProps
-  extends Omit<React.ComponentProps<typeof Command>, "onSelect"> {
+export interface SelectCommandProps extends Omit<
+  React.ComponentProps<typeof Command>,
+  "onSelect"
+> {
   onSelect?: (selected: SelectItems) => void
   selected?: string[]
   setSelected?: (selected: string[]) => void

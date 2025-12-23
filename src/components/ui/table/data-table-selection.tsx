@@ -1,3 +1,5 @@
+"use client"
+
 import { CheckCheck, XCircle } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { Button } from "../button"
