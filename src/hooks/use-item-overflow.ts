@@ -1,5 +1,7 @@
-import { useResizeObserver } from "@/hooks/use-resize-observer"
-import React from "react"
+"use client";
+
+import { useResizeObserver } from "@/hooks/use-resize-observer";
+import React from "react";
 
 // Define the possible overflow states
 type OverflowState = "collapse" | "none"

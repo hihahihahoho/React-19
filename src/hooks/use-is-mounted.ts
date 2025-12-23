@@ -1,3 +1,5 @@
+"use client"
+
 // https://usehooks-ts.com/react-hook/use-is-mounted
 
 import React from "react"

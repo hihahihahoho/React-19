@@ -1,3 +1,5 @@
+"use client"
+
 import { generateLocaleDateConfig } from "@/lib/locale-date"
 import React from "react"
 

@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 interface UseAutosizeTextAreaProps {
   textAreaRef: React.MutableRefObject<HTMLTextAreaElement | null>

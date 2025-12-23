@@ -1,3 +1,5 @@
+"use client"
+
 import { sonnerToast } from "@/components/ui/sonner"
 import { ACCEPTED_IMAGE_TYPES } from "@/lib/const"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"

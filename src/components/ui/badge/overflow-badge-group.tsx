@@ -7,7 +7,8 @@ import * as React from "react"
 import { Badge, BadgeProps } from "../badge/badge"
 
 export interface OverflowBadgeGroupProps
-  extends React.ComponentProps<"div">,
+  extends
+    React.ComponentProps<"div">,
     Omit<UseItemOverflowProps, "totalItems"> {
   items: Array<{
     key: string
@@ -70,7 +71,8 @@ function OverflowBadgeGroup({
               badgeMeasureClassName,
               visible
                 ? "relative opacity-100"
-                : "pointer-events-none absolute opacity-0"
+                : "pointer-events-none absolute opacity-0",
+              badgeProps?.className
             )}
             style={visible ? {} : { position: "absolute" }}
             aria-hidden={!visible}

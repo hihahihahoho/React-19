@@ -1,9 +1,9 @@
 // https://usehooks-ts.com/react-hook/use-resize-observer
+"use client";
 
-
-import type { RefObject } from "react"
-import React from "react"
-import { useIsMounted } from "./use-is-mounted"
+import type { RefObject } from "react";
+import React from "react";
+import { useIsMounted } from "./use-is-mounted";
 
 type Size = {
   width: number | undefined
