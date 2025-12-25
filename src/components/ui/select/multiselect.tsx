@@ -4,16 +4,18 @@ import { cn } from "@/lib/utils"
 import { ChevronDown } from "lucide-react"
 import * as React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
-import {
-  OverflowBadgeGroup,
-  OverflowBadgeGroupProps,
-} from "../badge/overflow-badge-group"
+import { Badge } from "../badge"
 import {
   FormComposition,
   FormCompositionProps,
   FormControlButton,
 } from "../form/form"
-import { Separator } from "../separator"
+import {
+  OverflowGroup,
+  OverflowGroupIndicator,
+  OverflowGroupItem,
+  OverflowGroupProps,
+} from "../overflow-group"
 import { flatItems, SelectCommand, SelectCommandProps } from "./select-command"
 import { SelectCommandVirtualizeProps } from "./select-command-virtualize"
 import { SelectGroup, SelectItems } from "./select-interface"
@@ -39,8 +41,7 @@ export interface MultiSelectProps extends Omit<
   readonly?: boolean
   showClear?: boolean
   customDisplayValue?: SelectItems[]
-  bagdeGroupProps?: Omit<OverflowBadgeGroupProps, "items">
-  variant?: "default" | "button"
+  overflowGroupProps?: Omit<OverflowGroupProps, "children">
 }
 
 function MultiSelect({
@@ -55,8 +56,7 @@ function MultiSelect({
   placeholderColor = "text-muted-foreground",
   selectCommandProps,
   customDisplayValue,
-  variant = "default",
-  bagdeGroupProps,
+  overflowGroupProps,
   virtualComponents,
   ...props
 }: MultiSelectProps) {
@@ -92,6 +92,7 @@ function MultiSelect({
     },
     [currentValue, handleValueChange]
   )
+
   const currentItems = React.useMemo(() => {
     if (customDisplayValue) return customDisplayValue
 
@@ -99,6 +100,12 @@ function MultiSelect({
       .map((value) => flattenItems.find((item) => item.value === value))
       .filter(Boolean) as SelectItems[]
   }, [customDisplayValue, currentValue, flattenItems])
+
+  // Reverse order for overflow display (newest first)
+  const displayItems = React.useMemo(() => {
+    const shouldReverse = overflowGroupProps?.overflowState !== "none"
+    return shouldReverse ? [...currentItems].reverse() : currentItems
+  }, [currentItems, overflowGroupProps?.overflowState])
 
   const SelectComponentToUse = virtualComponents || SelectCommand
 
@@ -108,31 +115,9 @@ function MultiSelect({
       setOpen={setOpen}
       triggerContent={
         <FormComposition
-          iconRight={
-            variant !== "button" ? <ChevronDown className="opacity-50" /> : null
-          }
+          iconRight={<ChevronDown className="opacity-50" />}
           inputClear={true}
           {...formComposition}
-          prefix={
-            variant === "button" ? (
-              <div
-                className={cn(
-                  "flex items-start gap-2",
-                  currentValue.length && "pr-2.5"
-                )}
-              >
-                {formComposition?.prefix}
-                {currentValue.length > 0 && (
-                  <Separator
-                    className="h-auto self-stretch"
-                    orientation="vertical"
-                  />
-                )}
-              </div>
-            ) : (
-              formComposition?.prefix
-            )
-          }
           className={cn("cursor-pointer", formComposition?.className)}
           asChild
           clearWhenNotFocus={true}
@@ -151,11 +136,26 @@ function MultiSelect({
             {...props}
           >
             {currentValue.length > 0 ? (
-              <OverflowBadgeGroup
-                items={currentItems.map((optionValue) => {
-                  return {
-                    key: optionValue.value,
-                    content: (
+              <OverflowGroup
+                {...overflowGroupProps}
+                className={cn(
+                  "-ml-2 h-full py-0.75",
+                  overflowGroupProps?.className
+                )}
+              >
+                {displayItems.map((optionValue, index) => (
+                  <OverflowGroupItem
+                    key={optionValue.value}
+                    index={index}
+                    asChild
+                  >
+                    <Badge
+                      variant="secondary"
+                      size="md"
+                      clearBtn={!optionValue?.disabled}
+                      onClearBtnClick={() => handleRemove(optionValue.value)}
+                      {...optionValue?.badgeProps}
+                    >
                       <div className="flex max-w-[90px] items-center gap-1 overflow-hidden text-ellipsis">
                         {optionValue?.icon &&
                           (typeof optionValue.icon === "string" ? (
@@ -173,24 +173,18 @@ function MultiSelect({
                           {optionValue?.label || optionValue.value}
                         </span>
                       </div>
-                    ),
-                    removeButton: !optionValue?.disabled,
-                    onRemove: () => handleRemove(optionValue.value),
-                    badgeProps: optionValue?.badgeProps,
-                  }
-                })}
-                badgeProps={{
-                  clearBtn: true,
-                  variant: "secondary",
-                  size: "md",
-                }}
-                reverseOrder={
-                  bagdeGroupProps?.overflowState === "none" ? false : true
-                }
-                {...bagdeGroupProps}
-                className={cn("-ml-2", bagdeGroupProps?.className)}
-              />
-            ) : variant !== "button" ? (
+                    </Badge>
+                  </OverflowGroupItem>
+                ))}
+                <OverflowGroupIndicator>
+                  {(count) => (
+                    <Badge variant="secondary" size="md" clearBtn={false}>
+                      {count > 99 ? ">99" : `+${count}`}
+                    </Badge>
+                  )}
+                </OverflowGroupIndicator>
+              </OverflowGroup>
+            ) : (
               <div
                 className={cn(
                   "flex h-full w-full items-center",
@@ -199,7 +193,7 @@ function MultiSelect({
               >
                 {placeholder}
               </div>
-            ) : null}
+            )}
           </FormControlButton>
         </FormComposition>
       }

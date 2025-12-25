@@ -973,22 +973,6 @@
       ]
     },
     {
-      "name": "use-item-overflow",
-      "author": "hihahihahoho",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/use-resize-observer.json"
-      ],
-      "type": "registry:hook",
-      "files": [
-        {
-          "path": "src/hooks/use-item-overflow.ts",
-          "type": "registry:hook",
-          "target": "hooks/use-item-overflow.ts"
-        }
-      ]
-    },
-    {
       "name": "use-date-locale-config",
       "author": "hihahihahoho",
       "dependencies": [],
@@ -1295,11 +1279,10 @@
         "https://react-19.octung112.workers.dev/r/select-command-virtualize.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "https://react-19.octung112.workers.dev/r/select-popover.json",
-        "separator",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/utils-plus.json",
-        "https://react-19.octung112.workers.dev/r/overflow-badge-group.json"
+        "https://react-19.octung112.workers.dev/r/overflow-group.json"
       ],
       "type": "registry:component",
       "files": [
@@ -1330,28 +1313,29 @@
       "type": "registry:component",
       "files": [
         {
-          "path": "src/components/ui/badge/badge.tsx",
+          "path": "src/components/ui/badge.tsx",
           "type": "registry:component",
-          "target": "components/ui/badge/badge.tsx"
+          "target": "components/ui/badge.tsx"
         }
       ]
     },
     {
-      "name": "overflow-badge-group",
+      "name": "overflow-group",
       "author": "hihahihahoho",
-      "dependencies": [],
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
       "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/badge.json",
-        "https://react-19.octung112.workers.dev/r/use-item-overflow.json",
         "utils",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json"
+        "https://react-19.octung112.workers.dev/r/use-media-query.json",
+        "https://react-19.octung112.workers.dev/r/use-resize-observer.json"
       ],
       "type": "registry:component",
       "files": [
         {
-          "path": "src/components/ui/badge/overflow-badge-group.tsx",
+          "path": "src/components/ui/overflow-group.tsx",
           "type": "registry:component",
-          "target": "components/ui/badge/overflow-badge-group.tsx"
+          "target": "components/ui/overflow-group.tsx"
         }
       ]
     },

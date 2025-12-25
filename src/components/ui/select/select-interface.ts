@@ -1,5 +1,5 @@
 import { Command as CommandPrimitive } from "cmdk"
-import { BadgeProps } from "../badge/badge"
+import { BadgeProps } from "../badge"
 import { CommandItem } from "../command"
 
 export type SelectItems = React.ComponentProps<typeof CommandItem> & {

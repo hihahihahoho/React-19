@@ -5,7 +5,7 @@ import { getNodeText } from "@/lib/get-node-text"
 import { useVirtualizer, VirtualizerOptions } from "@tanstack/react-virtual"
 import { CheckCheck } from "lucide-react"
 import React from "react"
-import { Badge } from "../badge/badge"
+import { Badge } from "../badge"
 import {
   Command,
   CommandEmpty,

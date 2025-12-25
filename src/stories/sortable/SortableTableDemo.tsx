@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge/badge"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input/input"
 import { Select } from "@/components/ui/select/select"

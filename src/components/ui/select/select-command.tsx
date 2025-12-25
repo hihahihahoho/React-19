@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { Check, CheckCheck } from "lucide-react"
 import React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
-import { Badge } from "../badge/badge"
+import { Badge } from "../badge"
 import {
   Command,
   CommandEmpty,

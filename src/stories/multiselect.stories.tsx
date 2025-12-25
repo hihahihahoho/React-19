@@ -18,23 +18,12 @@ import {
   ArrowDownIcon,
   BanIcon,
   BriefcaseIcon,
-  BugIcon,
   CalendarIcon,
-  CheckCircleIcon,
-  ClipboardIcon,
-  EyeIcon,
-  FileTextIcon,
   Flag,
   GlobeIcon,
-  ListIcon,
   Loader2Icon,
-  PlusCircleIcon,
-  StarIcon,
-  TagIcon,
-  TimerIcon,
   User,
   User2,
-  ZapIcon,
 } from "lucide-react"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -101,7 +90,7 @@ They are useful when you want to allow multiple selections from a set of options
       description: "Function called when selection changes",
       action: "values changed",
     },
-    bagdeGroupProps: {
+    overflowGroupProps: {
       description:
         "Configuration for the badge group display behavior including maxShownItems and overflowState",
     },
@@ -404,7 +393,7 @@ export const ColoredBadges: Story = {
           }}
           placeholder="Select colors"
           defaultValue={["red", "blue", "green"]}
-          bagdeGroupProps={{
+          overflowGroupProps={{
             maxShownItems: 8,
           }}
         />
@@ -425,185 +414,6 @@ export const ColoredBadges: Story = {
       description: {
         story:
           "MultiSelect with colored badges to provide visual categorization. The badge colors are specified using the `badgeProps` property on each option. This can be useful for color-coding categories, priority levels, or statuses.",
-      },
-    },
-  },
-}
-
-/**
- * Examples of MultiSelect with button variant styling.
- */
-export const ButtonVariant: Story = {
-  render: () => {
-    const categoryOptions: SelectItems[] = [
-      {
-        value: "work",
-        label: "Work",
-        icon: <BriefcaseIcon className="size-4" />,
-        badgeProps: { variant: "blue" },
-      },
-      {
-        value: "personal",
-        label: "Personal",
-        icon: <User className="size-4" />,
-        badgeProps: { variant: "purple" },
-      },
-      {
-        value: "urgent",
-        label: "Urgent",
-        icon: <AlertTriangleIcon className="size-4" />,
-        badgeProps: { variant: "red" },
-      },
-      {
-        value: "low-priority",
-        label: "Low Priority",
-        icon: <ArrowDownIcon className="size-4" />,
-        badgeProps: { variant: "green" },
-      },
-    ]
-
-    const statusOptions: SelectItems[] = [
-      {
-        value: "todo",
-        label: "To Do",
-        icon: <ClipboardIcon className="size-4" />,
-        badgeProps: { variant: "secondary" },
-      },
-      {
-        value: "in-progress",
-        label: "In Progress",
-        icon: <TimerIcon className="size-4" />,
-        badgeProps: { variant: "blue" },
-      },
-      {
-        value: "review",
-        label: "In Review",
-        icon: <EyeIcon className="size-4" />,
-        badgeProps: { variant: "purple" },
-      },
-      {
-        value: "done",
-        label: "Done",
-        icon: <CheckCircleIcon className="size-4" />,
-        badgeProps: { variant: "green" },
-      },
-    ]
-
-    const labelOptions: SelectItems[] = [
-      {
-        value: "feature",
-        label: "Feature",
-        icon: <StarIcon className="size-4" />,
-        badgeProps: { variant: "yellow" },
-      },
-      {
-        value: "bug",
-        label: "Bug",
-        icon: <BugIcon className="size-4" />,
-        badgeProps: { variant: "red" },
-      },
-      {
-        value: "enhancement",
-        label: "Enhancement",
-        icon: <ZapIcon className="size-4" />,
-        badgeProps: { variant: "blue" },
-      },
-      {
-        value: "documentation",
-        label: "Documentation",
-        icon: <FileTextIcon className="size-4" />,
-        badgeProps: { variant: "default" },
-      },
-    ]
-
-    return (
-      <div className="flex w-full flex-col gap-4">
-        <h3 className="text-sm font-medium">Basic button variants</h3>
-        <div className="flex flex-wrap gap-2">
-          <MultiSelect
-            options={categoryOptions}
-            variant="button"
-            formComposition={{
-              iconRight: null,
-              iconLeft: <PlusCircleIcon className="size-4" />,
-              prefix: "Category",
-            }}
-            placeholder="Select"
-            defaultValue={["urgent"]}
-          />
-
-          <MultiSelect
-            options={statusOptions}
-            variant="button"
-            formComposition={{
-              iconRight: null,
-              iconLeft: <ListIcon className="size-4" />,
-              prefix: "Status",
-            }}
-            placeholder="Select"
-            defaultValue={["in-progress", "review"]}
-          />
-
-          <MultiSelect
-            options={labelOptions}
-            variant="button"
-            formComposition={{
-              iconRight: null,
-              iconLeft: <TagIcon className="size-4" />,
-              prefix: "Labels",
-            }}
-            placeholder="Select"
-          />
-        </div>
-
-        <h3 className="mt-4 text-sm font-medium">Different styling options</h3>
-        <div className="flex flex-wrap gap-2">
-          <MultiSelect
-            options={categoryOptions}
-            variant="button"
-            formComposition={{
-              iconRight: null,
-              iconLeft: <PlusCircleIcon className="size-4" />,
-              prefix: "Category",
-              className: "border-dashed",
-            }}
-            placeholder="Select"
-          />
-
-          <MultiSelect
-            options={statusOptions}
-            variant="button"
-            formComposition={{
-              iconRight: null,
-              iconLeft: <ListIcon className="text-primary size-4" />,
-              prefix: "Status",
-              className: "bg-primary/5 border-primary/20",
-            }}
-            placeholder="Select"
-            defaultValue={["todo"]}
-          />
-
-          <MultiSelect
-            options={labelOptions}
-            variant="button"
-            formComposition={{
-              iconRight: null,
-              iconLeft: <TagIcon className="size-4" />,
-              prefix: "Labels",
-              className: "rounded-full px-4",
-            }}
-            placeholder="Select"
-            defaultValue={["feature", "enhancement"]}
-          />
-        </div>
-      </div>
-    )
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "The button variant of MultiSelect is designed for inline usage in forms, toolbars, and filter interfaces. It uses a more compact button-like appearance with a prefix label and badges for selected items. This style is useful when you need multiple multiselect controls in a horizontal layout or when you want a more action-oriented appearance.",
       },
     },
   },
@@ -709,7 +519,7 @@ export const BadgeOverflow: Story = {
             description: `Select multiple languages (showing max ${maxBadges} badges)`,
           }}
           placeholder="Select languages"
-          bagdeGroupProps={{
+          overflowGroupProps={{
             maxShownItems: maxBadges,
           }}
           defaultValue={[
@@ -826,7 +636,7 @@ export const MultiSelectInFormWithFetchedData: Story = {
                 // Show search only if we have a significant number of options
                 minItemsToShowSearch: 5,
               }}
-              bagdeGroupProps={{
+              overflowGroupProps={{
                 maxShownItems: 3,
               }}
             />
@@ -985,7 +795,7 @@ export const VirtualizedMultiSelect: Story = {
                   estimateSize: () => 50,
                 },
               }}
-              bagdeGroupProps={{
+              overflowGroupProps={{
                 maxShownItems: 5,
               }}
               virtualComponents={SelectCommandVirtualize}
@@ -1171,7 +981,7 @@ export const ServerSideFetchingInForm: Story = {
                 requiredSymbol: true,
               }}
               customDisplayValue={formSelectedCountries}
-              bagdeGroupProps={{
+              overflowGroupProps={{
                 overflowState: "none",
               }}
               selectCommandProps={{
@@ -1264,7 +1074,7 @@ export const BadgeOverflowStates: Story = {
               description: `Shows max ${maxBadges} badges and collapses the rest with +X indicator`,
             }}
             placeholder="Select languages"
-            bagdeGroupProps={{
+            overflowGroupProps={{
               maxShownItems: maxBadges,
               overflowState: "collapse", // Default behavior
             }}
@@ -1289,7 +1099,7 @@ export const BadgeOverflowStates: Story = {
               description: `Allows up to 2 lines (maxLine=2) and collapses overflow with +X indicator`,
             }}
             placeholder="Select languages"
-            bagdeGroupProps={{
+            overflowGroupProps={{
               maxLine: 2,
               overflowState: "collapse",
             }}
@@ -1313,7 +1123,7 @@ export const BadgeOverflowStates: Story = {
               label: "Programming Languages",
             }}
             placeholder="Select languages"
-            bagdeGroupProps={{
+            overflowGroupProps={{
               overflowState: "none", // No collapse, just show up to maxShownItems
             }}
             defaultValue={[

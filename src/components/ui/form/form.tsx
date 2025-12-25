@@ -74,17 +74,17 @@ const inputSizeVariants = cva("", {
     {
       isMinHeight: true,
       size: "sm",
-      className: "min-h-[30px]",
+      className: "min-h-8",
     },
     {
       isMinHeight: true,
       size: "default",
-      className: "min-h-[34px]",
+      className: "min-h-9",
     },
     {
       isMinHeight: true,
       size: "lg",
-      className: "min-h-[38px]",
+      className: "min-h-10",
     },
   ],
 })
@@ -281,8 +281,9 @@ function FormLabelWrapper({
   )
 }
 
-interface FormLabelProps
-  extends React.ComponentProps<typeof LabelPrimitive.Root> {
+interface FormLabelProps extends React.ComponentProps<
+  typeof LabelPrimitive.Root
+> {
   requiredSymbol?: boolean
 }
 
@@ -349,7 +350,8 @@ function FormControlButton({ ...props }: React.ComponentProps<"button">) {
 }
 
 export interface FormCompositionProps
-  extends VariantProps<typeof inputContainerVariants>,
+  extends
+    VariantProps<typeof inputContainerVariants>,
     VariantProps<typeof inputSizeVariants>,
     FormWrapperProps {
   className?: string
@@ -479,6 +481,7 @@ function FormComposition({
               {iconLeft && (
                 <span
                   className={cn(
+                    "-my-px",
                     compositionClass,
                     inputSizeVariants({ size, isMinHeight: true }),
                     "form-icon -ml-0.5"
@@ -490,6 +493,7 @@ function FormComposition({
               {prefix && (
                 <span
                   className={cn(
+                    "-my-px",
                     "prefix-class",
                     compositionClass,
                     inputSizeVariants({ size, isMinHeight: true })
@@ -524,6 +528,7 @@ function FormComposition({
                       onClear?.()
                     }}
                     className={cn(
+                      "-my-px",
                       compositionClass,
                       "-mr-1 cursor-pointer opacity-70 focus:outline-hidden",
                       inputSizeVariants({ size, isMinHeight: true })
@@ -535,6 +540,7 @@ function FormComposition({
               {suffixNotFocusInput && (
                 <div
                   className={cn(
+                    "-my-px",
                     compositionClass,
                     inputSizeVariants({ size, isMinHeight: true })
                   )}
@@ -546,6 +552,7 @@ function FormComposition({
               {suffix && (
                 <span
                   className={cn(
+                    "-my-px",
                     "suffix-class",
                     compositionClass,
                     inputSizeVariants({ size, isMinHeight: true })
@@ -558,6 +565,7 @@ function FormComposition({
               {iconRight && (
                 <span
                   className={cn(
+                    "-my-px",
                     compositionClass,
                     inputSizeVariants({ size, isMinHeight: true }),
                     "form-icon -mr-0.5"

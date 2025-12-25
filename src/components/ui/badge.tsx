@@ -10,7 +10,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../tooltip"
+} from "./tooltip"
 
 const badgeVariants = cva(
   "focus:ring-ring inline-flex items-center justify-center gap-1 rounded-md px-2.5 py-0.5 text-xs font-medium transition-colors ring-inset focus:ring-2 focus:ring-offset-2 focus:outline-hidden [&_svg]:size-4 [&_svg]:shrink-0",

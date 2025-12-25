@@ -9,7 +9,7 @@ import { CommandInput, useCommandState } from "cmdk"
 import { AlertCircle, PlusCircle } from "lucide-react"
 import * as React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
-import { Badge, BadgeProps } from "../badge/badge"
+import { Badge, BadgeProps } from "../badge"
 import { Command, CommandGroup, CommandItem } from "../command"
 import { FormComposition, FormCompositionProps } from "../form/form"
 import { Popover, PopoverContent } from "../popover"
@@ -23,11 +23,10 @@ import {
 } from "../tooltip"
 import { Input } from "./input"
 
-export interface InputTagProps
-  extends Omit<
-    React.ComponentProps<typeof Input>,
-    "value" | "onChange" | "defaultValue" | "onValueChange"
-  > {
+export interface InputTagProps extends Omit<
+  React.ComponentProps<typeof Input>,
+  "value" | "onChange" | "defaultValue" | "onValueChange"
+> {
   /** Options displayed for tag suggestions */
   options?: SelectItems[] | SelectGroup[]
   /** Current selected tags (controlled) */
@@ -548,7 +547,7 @@ export function InputTag({
     return tagDisplay
   }
   const inputArea = (
-    <div className="flex min-h-full flex-1 flex-wrap gap-1 py-[3px]">
+    <div className="flex min-h-full flex-1 flex-wrap gap-1 py-0.75">
       {customDisplayValue?.map((tag, index) => renderTag("", index, tag)) ||
         currentTags.map((tag, index) => renderTag(tag, index))}
       <div ref={formCompositionRef} className="h-7 min-w-[120px] flex-1 px-2">
