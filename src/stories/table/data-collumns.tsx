@@ -26,6 +26,9 @@ export const columns: ColumnDef<SegmentData>[] = [
     meta: {
       align: "center",
       hideActionsButton: true,
+      pinned: "left",
+      pinnedLocked: true,
+      pinOrder: 1000,
     },
   },
   {
@@ -116,6 +119,9 @@ export const columns: ColumnDef<SegmentData>[] = [
     meta: {
       align: "center",
       hideActionsButton: true,
+      pinned: "right",
+      pinnedLocked: true,
+      pinOrder: 900,
     },
     header: ({ table }) => (
       <Checkbox
@@ -139,6 +145,9 @@ export const columns: ColumnDef<SegmentData>[] = [
     meta: {
       align: "center",
       hideActionsButton: true,
+      pinned: "right",
+      pinnedLocked: true,
+      pinOrder: 1000,
     },
     cell: () => {
       return (

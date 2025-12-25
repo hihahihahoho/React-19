@@ -63,6 +63,7 @@
     "input-otp": "^1.4.2",
     "lucide-react": "^0.552.0",
     "motion": "^12.23.25",
+    "next": "^16.1.1",
     "photoswipe": "^5.4.4",
     "radix-ui": "^1.4.3",
     "react": "^19.2.1",

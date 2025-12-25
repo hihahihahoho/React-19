@@ -52,7 +52,7 @@ const preview: Preview = {
         </QueryClientProvider>
       )
     },
-    withThemeByClassName<any>({
+    withThemeByClassName({
       themes: {
         light: "",
         dark: "dark",

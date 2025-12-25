@@ -16,6 +16,7 @@ import {
 import {
   createContext,
   useContext,
+  useMemo,
   useState,
   type Dispatch,
   type ReactNode,
@@ -32,11 +33,9 @@ interface DataTableContextProps<TData> {
   setRowSelection: Dispatch<SetStateAction<Record<string, boolean>>>
   currentPage: number
   totalPages: number
-  defaultPinLeft: string[]
-  fixedPinRight: string[]
-  fixedPinLeft: string[]
   totalNumber: number
   handlePageChange: (page: number) => void
+  isPending?: boolean
 }
 
 const DataTableContext = createContext<DataTableContextProps<unknown> | null>(
@@ -47,8 +46,11 @@ interface DataTableProviderProps<TData, TValue> {
   children?: ReactNode
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  /** @deprecated Use column meta.pinned instead */
   defaultPinLeft?: string[]
+  /** @deprecated Use column meta.pinned + meta.pinnedLocked instead */
   fixedPinRight?: string[]
+  /** @deprecated Use column meta.pinned + meta.pinnedLocked instead */
   fixedPinLeft?: string[]
   pageSize?: number
   defaultSelection?: RowSelectionState
@@ -56,26 +58,62 @@ interface DataTableProviderProps<TData, TValue> {
   tableOptions?: Partial<Omit<TableOptions<TData>, "data" | "columns">>
 }
 
+/** Helper to derive initial pin state from column definitions */
+function getInitialPinningFromColumns<TData, TValue>(
+  columns: ColumnDef<TData, TValue>[],
+  legacyPinLeft: string[] = [],
+  legacyPinRight: string[] = []
+): ColumnPinningState {
+  const left: string[] = [...legacyPinLeft]
+  const right: string[] = [...legacyPinRight]
+
+  columns.forEach((col) => {
+    const id =
+      (col as { id?: string; accessorKey?: string }).id ??
+      (col as { accessorKey?: string }).accessorKey
+    if (!id) return
+
+    const meta = col.meta
+    if (meta?.pinned === "left" && !left.includes(id)) {
+      left.push(id)
+    } else if (meta?.pinned === "right" && !right.includes(id)) {
+      right.push(id)
+    }
+  })
+
+  return { left, right }
+}
+
 function DataTableProvider<TData, TValue>({
   children,
   columns,
   data,
   defaultPinLeft = [],
-  fixedPinRight = ["actions-column"],
-  fixedPinLeft = ["index"],
+  fixedPinRight = [],
+  fixedPinLeft = [],
   defaultSelection = {},
   pageSize = 10,
   tableOptions,
 }: DataTableProviderProps<TData, TValue>) {
+  // Derive initial pinning from column meta (with legacy props fallback)
+  const initialPinning = useMemo(
+    () =>
+      getInitialPinningFromColumns(
+        columns,
+        [...defaultPinLeft, ...fixedPinLeft],
+        fixedPinRight
+      ),
+    // Only compute once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
   const [sorting, setSorting] = useState<SortingState>([])
-  const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({
-    left: [...defaultPinLeft, ...fixedPinLeft],
-    right: [...fixedPinRight],
-  })
+  const [columnPinning, setColumnPinning] =
+    useState<ColumnPinningState>(initialPinning)
   const [rowSelection, setRowSelection] =
     useState<RowSelectionState>(defaultSelection)
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable<TData>({
     data,
     columns,
@@ -125,9 +163,6 @@ function DataTableProvider<TData, TValue>({
     currentPage,
     totalPages,
     handlePageChange,
-    defaultPinLeft,
-    fixedPinRight,
-    fixedPinLeft,
     totalNumber: data?.length || 0,
   }
 
@@ -148,4 +183,5 @@ function useDataTable<TData>() {
   return context as DataTableContextProps<TData>
 }
 
-export { DataTableProvider, useDataTable }
+export { DataTableContext, DataTableProvider, useDataTable }
+export type { DataTableContextProps }

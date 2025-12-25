@@ -46,14 +46,15 @@ export function DataTable({
   tableWrapperClassName,
   extendActions,
 }: DataTableProps) {
-  const { table } = useDataTable()
+  const { table, totalNumber, isPending } = useDataTable()
   const tableRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLTableSectionElement>(null)
   const mainScrollRef = useRef<HTMLDivElement>(null)
   const [scrollBarContainer, setScrollBarContainer] =
     React.useState<HTMLDivElement | null>(null)
 
-  if (table.getRowCount() <= 0)
+  // Don't show empty state during initial loading (server-side)
+  if (table.getRowCount() <= 0 && !isPending)
     return (
       emptyState || (
         <EmptyState className="rounded">
@@ -64,7 +65,7 @@ export function DataTable({
 
   return (
     <HeaderRefsProvider>
-      <div className="" ref={tableRef}>
+      <div ref={tableRef}>
         <FloatingHeader
           mainScrollRef={mainScrollRef}
           tableRef={tableRef}
@@ -75,7 +76,7 @@ export function DataTable({
         <div
           className={cn(
             tableVariants({ variant }),
-            (table.getRowCount() <= 10 || !showPagination) && "rounded-b-xl",
+            (totalNumber <= 10 || !showPagination) && "rounded-b-xl",
             autoWidthTable && "inline-flex max-w-full",
             tableWrapperClassName
           )}
@@ -108,7 +109,12 @@ export function DataTable({
                   </TableRow>
                 ))}
               </TableHeader>
-              <TableBody>
+              <TableBody
+                className={cn(
+                  "transition-opacity duration-200",
+                  isPending && "pointer-events-none opacity-50"
+                )}
+              >
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
                     <TableRow
@@ -139,14 +145,12 @@ export function DataTable({
         <div
           className={cn(
             "bg-background/80 sticky bottom-0 z-30 -mt-px rounded-b-2xl border backdrop-blur-sm",
-            (table.getRowCount() <= 10 || !showPagination) &&
+            (totalNumber <= 10 || !showPagination) &&
               "opacity-0 has-data-[state=visible]:opacity-100"
           )}
         >
           <div ref={setScrollBarContainer} className="border-b-0" />
-          {table.getRowCount() > 10 && showPagination && (
-            <DataTablePagination />
-          )}
+          {totalNumber > 10 && showPagination && <DataTablePagination />}
         </div>
       </div>
     </HeaderRefsProvider>

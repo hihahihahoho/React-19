@@ -24,7 +24,7 @@ export function FloatingHeader({
   mainScrollRef,
   autoWidthTable = false,
 }: FloatingHeaderProps) {
-  const { table, setColumnPinning } = useDataTable()
+  const { table, columnPinning } = useDataTable()
   const { headerRefs } = useHeaderRefs()
   const [showClonedHeader, setShowClonedHeader] = useState(false)
   const [tableOffset, setTableOffset] = useState({ left: 0, width: 0 })
@@ -33,6 +33,10 @@ export function FloatingHeader({
 
   // Use refs to track previous values and avoid unnecessary state updates
   const prevOffsetRef = useRef({ left: 0, width: 0 })
+
+  // Track pagination to force re-render when page changes
+  const paginationState = table.getState().pagination
+  const [, forceUpdate] = useState(0)
 
   useSyncScroll(syncWithScrollRef, mainScrollRef)
 
@@ -53,6 +57,23 @@ export function FloatingHeader({
       }
     }
   }, [tableRef])
+
+  // Force re-render when pagination or data changes to recalculate header widths
+  // For server-side tables, rowModel changes when data is fetched
+  const rows = table.getRowModel().rows
+  useEffect(() => {
+    const rafId = requestAnimationFrame(() => {
+      updateTableOffset()
+      forceUpdate((c) => c + 1)
+    })
+    return () => cancelAnimationFrame(rafId)
+  }, [
+    paginationState.pageIndex,
+    paginationState.pageSize,
+    rows,
+    columnPinning,
+    updateTableOffset,
+  ])
 
   // Handle scroll and resize events
   useEffect(() => {
@@ -116,7 +137,13 @@ export function FloatingHeader({
   }, [tableRef, headerRef, updateTableOffset])
 
   // Memoize header groups to prevent unnecessary re-renders
-  const headerGroups = React.useMemo(() => table.getHeaderGroups(), [table])
+  // Memoize header groups to prevent unnecessary re-renders
+  const headerGroups = React.useMemo(() => {
+    if (columnPinning) {
+      // Force re-render when pinning changes
+    }
+    return table.getHeaderGroups()
+  }, [table, columnPinning])
 
   return (
     <div
@@ -157,7 +184,6 @@ export function FloatingHeader({
                     <DataTableHeaderCell
                       key={header.id}
                       header={header}
-                      setColumnPinning={setColumnPinning}
                       width={width}
                       isRegisterHeaderRef={false}
                     />
