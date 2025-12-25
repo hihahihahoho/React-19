@@ -1888,6 +1888,25 @@
           "target": "components/ui/swiper/swiper-expo.ts"
         }
       ]
+    },
+    {
+      "name": "data-table-server",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@tanstack/react-table"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/data-table.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/table/data-table-context-server.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/data-table-context-server.tsx"
+        }
+      ]
     }
   ]
 }
