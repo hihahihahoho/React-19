@@ -11,13 +11,14 @@ import * as React from "react"
 
 type OverflowState = "collapse" | "none"
 
-interface OverflowGroupContextValue {
+interface OverflowGroupContextValue<T = unknown> {
   visibleCount: number
   overflowCount: number
   totalItems: number
   isVisible: (index: number) => boolean
   overflowState: OverflowState
-  hiddenItems: number[]
+  hiddenItems: T[]
+  items: T[]
 }
 
 // ============================================================================
@@ -27,19 +28,28 @@ interface OverflowGroupContextValue {
 const OverflowGroupContext =
   React.createContext<OverflowGroupContextValue | null>(null)
 
-export function useOverflowGroupContext() {
-  const context = React.useContext(OverflowGroupContext)
+function useOverflowGroupContext<T = unknown>() {
+  const context = React.useContext(
+    OverflowGroupContext
+  ) as OverflowGroupContextValue<T> | null
   if (!context) {
     throw new Error("useOverflowGroupContext must be used within OverflowGroup")
   }
   return context
 }
 
+export { useOverflowGroupContext }
+
 // ============================================================================
 // OverflowGroup (Root)
 // ============================================================================
 
-export interface OverflowGroupProps extends React.ComponentProps<"div"> {
+export interface OverflowGroupProps<T> extends Omit<
+  React.ComponentProps<"div">,
+  "children"
+> {
+  /** Array of items to manage overflow for */
+  items: T[]
   children: React.ReactNode
   maxShownItems?: number
   maxLine?: number
@@ -47,7 +57,8 @@ export interface OverflowGroupProps extends React.ComponentProps<"div"> {
   overflowState?: OverflowState
 }
 
-function OverflowGroup({
+function OverflowGroup<T>({
+  items,
   children,
   maxShownItems = Infinity,
   maxLine = 1,
@@ -55,28 +66,26 @@ function OverflowGroup({
   overflowState = "collapse",
   className,
   ...props
-}: OverflowGroupProps) {
+}: OverflowGroupProps<T>) {
   const containerRef = React.useRef<HTMLDivElement>(null)
   const [visibleCount, setVisibleCount] = React.useState<number>(0)
-  const [totalItems, setTotalItems] = React.useState<number>(0)
+
+  // Get totalItems from items.length - same as old hook
+  const totalItems = items.length
 
   const calculateOverflow = React.useCallback(() => {
+    const containerWidth = containerRef.current?.getBoundingClientRect().width
+    if (!containerWidth) return
     if (!containerRef.current) return
 
-    const containerWidth = containerRef.current.getBoundingClientRect().width
-    if (!containerWidth) return
-
-    const itemNodes = containerRef.current.querySelectorAll<HTMLDivElement>(
-      "[data-overflow-item]"
-    )
-    const itemCount = itemNodes.length
-    setTotalItems(itemCount)
-
-    if (itemCount === 0) {
+    if (totalItems === 0) {
       setVisibleCount(0)
       return
     }
 
+    const itemNodes = containerRef.current.querySelectorAll<HTMLDivElement>(
+      "[data-overflow-item]"
+    )
     const itemGap = parseInt(getComputedStyle(containerRef.current).gap) || 0
     const indicatorNode = containerRef.current.querySelector<HTMLDivElement>(
       "[data-overflow-indicator]"
@@ -102,11 +111,11 @@ function OverflowGroup({
       }
 
       if (overflowState === "none") {
-        setVisibleCount(Math.min(itemCount, maxShownItems))
+        setVisibleCount(Math.min(totalItems, maxShownItems))
         return
       }
 
-      if (count === itemCount) {
+      if (count === totalItems) {
         setVisibleCount(count)
       } else {
         while (count > 0) {
@@ -147,7 +156,7 @@ function OverflowGroup({
         }
         if (shown >= maxShownItems) break
       }
-      setVisibleCount(Math.min(shown, maxShownItems, itemCount))
+      setVisibleCount(Math.min(shown, maxShownItems, totalItems))
       return
     }
 
@@ -202,9 +211,9 @@ function OverflowGroup({
 
     visible += added
     if (visible < minShowItems) visible = minShowItems
-    visible = Math.min(visible, maxShownItems, itemCount)
+    visible = Math.min(visible, maxShownItems, totalItems)
     setVisibleCount(visible)
-  }, [maxShownItems, maxLine, minShowItems, overflowState])
+  }, [totalItems, maxShownItems, maxLine, minShowItems, overflowState])
 
   useResizeObserver({
     ref: containerRef,
@@ -215,7 +224,7 @@ function OverflowGroup({
     calculateOverflow()
   }, [calculateOverflow])
 
-  // Determine how many items to show
+  // Determine how many items to show - EXACTLY like old hook
   const showCount =
     overflowState === "none"
       ? Math.min(totalItems, maxShownItems)
@@ -223,6 +232,7 @@ function OverflowGroup({
 
   const overflowCount = totalItems - showCount
 
+  // isVisible - EXACTLY like old hook
   const isVisible = React.useCallback(
     (index: number) =>
       overflowState === "none"
@@ -231,27 +241,31 @@ function OverflowGroup({
     [overflowState, maxShownItems, minShowItems, showCount]
   )
 
+  // Get actual hidden items (not just indices)
   const hiddenItems = React.useMemo(() => {
-    const hidden: number[] = []
+    const hidden: T[] = []
     for (let i = 0; i < totalItems; i++) {
       if (!isVisible(i)) {
-        hidden.push(i)
+        hidden.push(items[i])
       }
     }
     return hidden
-  }, [totalItems, isVisible])
+  }, [totalItems, isVisible, items])
 
-  const contextValue: OverflowGroupContextValue = {
+  const contextValue: OverflowGroupContextValue<T> = {
     visibleCount: showCount,
     overflowCount,
     totalItems,
     isVisible,
     overflowState,
     hiddenItems,
+    items,
   }
 
   return (
-    <OverflowGroupContext.Provider value={contextValue}>
+    <OverflowGroupContext.Provider
+      value={contextValue as OverflowGroupContextValue}
+    >
       <div
         ref={containerRef}
         data-slot="overflow-group"
@@ -281,6 +295,7 @@ function OverflowGroupItem({
   index,
   children,
   className,
+  style,
   ...props
 }: OverflowGroupItemProps) {
   const { isVisible } = useOverflowGroupContext()
@@ -294,12 +309,10 @@ function OverflowGroupItem({
       data-overflow-item=""
       data-visible={visible}
       className={cn(
-        visible
-          ? "relative opacity-100"
-          : "pointer-events-none absolute opacity-0",
+        visible ? "" : "pointer-events-none absolute top-0 left-0 opacity-0",
         className
       )}
-      style={visible ? {} : { position: "absolute" }}
+      style={style}
       aria-hidden={!visible}
       {...props}
     >
@@ -328,8 +341,6 @@ function OverflowGroupIndicator({
 }: OverflowGroupIndicatorProps) {
   const { overflowCount } = useOverflowGroupContext()
 
-  if (overflowCount <= 0) return null
-
   const Comp = asChild ? Slot : "div"
   const content =
     typeof children === "function"
@@ -340,7 +351,10 @@ function OverflowGroupIndicator({
     <Comp
       data-slot="overflow-group-indicator"
       data-overflow-indicator=""
-      className={cn("relative opacity-100", className)}
+      className={cn(
+        overflowCount <= 0 && "pointer-events-none absolute opacity-0",
+        className
+      )}
       {...props}
     >
       {content}
@@ -352,19 +366,20 @@ function OverflowGroupIndicator({
 // OverflowGroupHiddenItems
 // ============================================================================
 
-export interface OverflowGroupHiddenItemsProps {
-  /**
-   * Render function that receives the array of hidden item indices
-   */
-  children: (hiddenItems: number[]) => React.ReactNode
+export interface OverflowGroupHiddenItemsProps<T> {
+  /** Render function that receives the array of hidden items */
+  children: (hiddenItems: T[]) => React.ReactNode
 }
 
 /**
  * Component to render hidden/overflowed items.
- * Provides access to the indices of hidden items via render prop.
+ * Provides access to the actual hidden items via render prop.
+ * Specify the type for type safety: `<OverflowGroupHiddenItems<MyType>>`
  */
-function OverflowGroupHiddenItems({ children }: OverflowGroupHiddenItemsProps) {
-  const { hiddenItems, overflowCount } = useOverflowGroupContext()
+function OverflowGroupHiddenItems<T>({
+  children,
+}: OverflowGroupHiddenItemsProps<T>) {
+  const { hiddenItems, overflowCount } = useOverflowGroupContext<T>()
 
   if (overflowCount <= 0) return null
 

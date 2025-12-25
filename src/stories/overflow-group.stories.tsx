@@ -104,7 +104,7 @@ const sampleItems = [
 export const Basic: Story = {
   render: () => (
     <div className="w-[300px]">
-      <OverflowGroup>
+      <OverflowGroup items={sampleItems}>
         {sampleItems.map((item, index) => (
           <OverflowGroupItem key={item} index={index} asChild>
             <Badge variant="secondary">{item}</Badge>
@@ -132,7 +132,7 @@ export const Basic: Story = {
 export const MaxShownItems: Story = {
   render: () => (
     <div className="w-[500px]">
-      <OverflowGroup maxShownItems={3}>
+      <OverflowGroup items={sampleItems} maxShownItems={3}>
         {sampleItems.map((item, index) => (
           <OverflowGroupItem key={item} index={index} asChild>
             <Badge variant="secondary">{item}</Badge>
@@ -160,7 +160,7 @@ export const MaxShownItems: Story = {
 export const MinShowItems: Story = {
   render: () => (
     <div className="w-[150px]">
-      <OverflowGroup minShowItems={2}>
+      <OverflowGroup items={sampleItems} minShowItems={2}>
         {sampleItems.map((item, index) => (
           <OverflowGroupItem key={item} index={index} asChild>
             <Badge variant="secondary">{item}</Badge>
@@ -188,7 +188,7 @@ export const MinShowItems: Story = {
 export const MultiLine: Story = {
   render: () => (
     <div className="w-[300px]">
-      <OverflowGroup maxLine={2}>
+      <OverflowGroup items={sampleItems} maxLine={2}>
         {sampleItems.map((item, index) => (
           <OverflowGroupItem key={item} index={index} asChild>
             <Badge variant="secondary">{item}</Badge>
@@ -216,7 +216,7 @@ export const MultiLine: Story = {
 export const NoOverflow: Story = {
   render: () => (
     <div className="w-[500px]">
-      <OverflowGroup overflowState="none">
+      <OverflowGroup items={sampleItems} overflowState="none">
         {sampleItems.map((item, index) => (
           <OverflowGroupItem key={item} index={index} asChild>
             <Badge variant="secondary">{item}</Badge>
@@ -240,11 +240,12 @@ export const NoOverflow: Story = {
 
 /**
  * Use OverflowGroupHiddenItems to show hidden items in a popover.
+ * Now receives actual items instead of indices!
  */
 export const WithPopover: Story = {
   render: () => (
     <div className="w-[250px]">
-      <OverflowGroup>
+      <OverflowGroup items={sampleItems}>
         {sampleItems.map((item, index) => (
           <OverflowGroupItem key={item} index={index} asChild>
             <Badge variant="secondary">{item}</Badge>
@@ -261,12 +262,13 @@ export const WithPopover: Story = {
             </OverflowGroupIndicator>
           </PopoverTrigger>
           <PopoverContent className="w-auto">
-            <OverflowGroupHiddenItems>
-              {(hiddenIndices) => (
+            <OverflowGroupHiddenItems<(typeof sampleItems)[number]>>
+              {(hiddenItems) => (
                 <div className="flex flex-wrap gap-1">
-                  {hiddenIndices.map((index) => (
-                    <Badge key={index} variant="secondary">
-                      {sampleItems[index]}
+                  {/* Now receives actual items, not indices! */}
+                  {hiddenItems.map((item) => (
+                    <Badge key={item} variant="secondary">
+                      {item}
                     </Badge>
                   ))}
                 </div>
@@ -281,7 +283,7 @@ export const WithPopover: Story = {
     docs: {
       description: {
         story:
-          "Use `OverflowGroupHiddenItems` to access hidden item indices and render them in a popover.",
+          "Use `OverflowGroupHiddenItems` to access hidden items directly (not indices) and render them in a popover.",
       },
     },
   },
@@ -303,7 +305,7 @@ export const CustomStyling: Story = {
 
     return (
       <div className="w-[300px]">
-        <OverflowGroup>
+        <OverflowGroup items={colorfulItems}>
           {colorfulItems.map((item, index) => (
             <OverflowGroupItem key={item.label} index={index} asChild>
               <Badge variant={item.variant}>{item.label}</Badge>
@@ -339,7 +341,7 @@ export const WithIcons: Story = {
 
     return (
       <div className="w-[300px]">
-        <OverflowGroup>
+        <OverflowGroup items={users}>
           {users.map((user, index) => (
             <OverflowGroupItem key={user} index={index} asChild>
               <Badge variant="secondary">
@@ -378,7 +380,7 @@ export const Responsive: Story = {
       <div className="flex flex-col gap-4">
         <div className="w-[150px] rounded border p-2">
           <p className="text-muted-foreground mb-2 text-xs">150px</p>
-          <OverflowGroup>
+          <OverflowGroup items={items}>
             {items.map((item, index) => (
               <OverflowGroupItem key={item} index={index} asChild>
                 <Badge variant="secondary" size="sm">
@@ -398,7 +400,7 @@ export const Responsive: Story = {
 
         <div className="w-[250px] rounded border p-2">
           <p className="text-muted-foreground mb-2 text-xs">250px</p>
-          <OverflowGroup>
+          <OverflowGroup items={items}>
             {items.map((item, index) => (
               <OverflowGroupItem key={item} index={index} asChild>
                 <Badge variant="secondary" size="sm">
@@ -418,7 +420,7 @@ export const Responsive: Story = {
 
         <div className="w-[400px] rounded border p-2">
           <p className="text-muted-foreground mb-2 text-xs">400px</p>
-          <OverflowGroup>
+          <OverflowGroup items={items}>
             {items.map((item, index) => (
               <OverflowGroupItem key={item} index={index} asChild>
                 <Badge variant="secondary" size="sm">

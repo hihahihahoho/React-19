@@ -41,7 +41,10 @@ export interface MultiSelectProps extends Omit<
   readonly?: boolean
   showClear?: boolean
   customDisplayValue?: SelectItems[]
-  overflowGroupProps?: Omit<OverflowGroupProps, "children">
+  overflowGroupProps?: Omit<
+    OverflowGroupProps<SelectItems>,
+    "children" | "items"
+  >
 }
 
 function MultiSelect({
@@ -137,6 +140,7 @@ function MultiSelect({
           >
             {currentValue.length > 0 ? (
               <OverflowGroup
+                items={displayItems}
                 {...overflowGroupProps}
                 className={cn(
                   "-ml-2 h-full py-0.75",
