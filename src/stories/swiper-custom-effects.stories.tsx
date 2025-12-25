@@ -24,7 +24,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
  * ```
  */
 const meta: Meta<typeof Swiper> = {
-  title: "Components/Swiper/Custom Effects",
+  title: "Layout/Swiper/Custom Effects",
   component: Swiper,
   parameters: {
     layout: "centered",

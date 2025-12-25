@@ -18,7 +18,7 @@ import { User } from "lucide-react"
  * It automatically hides items that overflow and shows an indicator with the count.
  */
 const meta = {
-  title: "Components/OverflowGroup",
+  title: "Layout/Overflow Group",
   component: OverflowGroup,
   parameters: {
     layout: "centered",

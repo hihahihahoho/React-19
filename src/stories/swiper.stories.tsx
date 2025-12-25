@@ -31,7 +31,7 @@ import type { Swiper as SwiperType } from "swiper/types"
  * Supports various effects, navigation, pagination, and accessibility features.
  */
 const meta: Meta<typeof Swiper> = {
-  title: "Components/Swiper",
+  title: "Layout/Swiper",
   component: Swiper,
   parameters: {
     layout: "centered",
