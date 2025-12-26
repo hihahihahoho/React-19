@@ -1,10 +1,12 @@
 "use client"
 
-import { FileIcon } from "lucide-react"
+import { FileIcon, Play } from "lucide-react"
 import "photoswipe/dist/photoswipe.css"
 import React from "react"
 import { renderToStaticMarkup } from "react-dom/server"
 import { Item, Gallery as PrimitiveGallery } from "react-photoswipe-gallery"
+
+import { Skeleton } from "./skeleton"
 
 // Types
 export type GalleryImageType = {
@@ -53,6 +55,11 @@ export type GalleryMedia =
   | GalleryPdfType
   | GalleryIframeType
 
+// Skeleton component for loading states
+function GalleryItemSkeleton() {
+  return <Skeleton className="aspect-square h-full w-full" />
+}
+
 // Image item (minimal detection once)
 export function ImageGalleryItem({
   image,
@@ -65,15 +72,24 @@ export function ImageGalleryItem({
     width: image.width || 0,
     height: image.height || 0,
   })
+  const [isLoading, setIsLoading] = React.useState(
+    !image.width || !image.height
+  )
 
   React.useEffect(() => {
     if (image.width && image.height) return
+    setIsLoading(true)
     const img = new Image()
     img.onload = () => {
       setDims({
         width: img.naturalWidth || 800,
         height: img.naturalHeight || 600,
       })
+      setIsLoading(false)
+    }
+    img.onerror = () => {
+      setDims({ width: 800, height: 600 })
+      setIsLoading(false)
     }
     img.src = image.src
   }, [image.src, image.width, image.height])
@@ -81,6 +97,10 @@ export function ImageGalleryItem({
   const w = dims.width || 800
   const h = dims.height || 600
   const thumb = image.thumbnail || image.src
+
+  if (isLoading) {
+    return <GalleryItemSkeleton />
+  }
 
   return (
     <Item
@@ -125,9 +145,11 @@ export function VideoGalleryItem({
           : Number(video.height) || 0,
     })
   )
+  const [isLoading, setIsLoading] = React.useState(!dims.width || !dims.height)
 
   React.useEffect(() => {
     if (dims.width && dims.height) return // already have both
+    setIsLoading(true)
     const el = document.createElement("video")
     el.preload = "metadata"
     el.src = video.src
@@ -138,10 +160,17 @@ export function VideoGalleryItem({
         // fallback if metadata fails
         setDims({ width: 640, height: 360 })
       }
+      setIsLoading(false)
+    }
+    const onError = () => {
+      setDims({ width: 640, height: 360 })
+      setIsLoading(false)
     }
     el.addEventListener("loadedmetadata", onLoaded)
+    el.addEventListener("error", onError)
     return () => {
       el.removeEventListener("loadedmetadata", onLoaded)
+      el.removeEventListener("error", onError)
     }
   }, [video.src, dims.width, dims.height])
 
@@ -151,6 +180,11 @@ export function VideoGalleryItem({
   // Autoplay only inside the lightbox (not inline)
   const html = `\n<div data-pswp-video-slide>\n<video muted playsinline controls style="max-width:100%;max-height:100vh;object-fit:contain;" onended="this.pause();this.currentTime=0;">\n  <source src="${video.src}" type="video/mp4" />\n  Your browser does not support the video tag.\n</video>\n</div>`
   const hasCustomThumb = !!video.thumbnail && video.thumbnail !== video.src
+
+  if (isLoading) {
+    return <GalleryItemSkeleton />
+  }
+
   return (
     <Item key={index} html={html} thumbnail={thumb} width={w} height={h}>
       {({ ref, open }) => (
@@ -177,10 +211,8 @@ export function VideoGalleryItem({
               preload="metadata"
             />
           )}
-          <div className="pointer-events-none absolute inset-0 z-[2] flex items-center justify-center bg-black/30 text-white">
-            <svg viewBox="0 0 24 24" className="h-10 w-10 fill-current">
-              <path d="M8 5v14l11-7z" />
-            </svg>
+          <div className="pointer-events-none absolute inset-0 z-2 flex items-center justify-center bg-black/30 text-white">
+            <Play />
           </div>
           <div className="absolute right-1 bottom-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white">
             {w}×{h}
@@ -209,7 +241,7 @@ export function PdfGalleryItem({
         <div
           ref={ref}
           onClick={open}
-          className="bg-muted/40 relative aspect-square h-full w-full cursor-zoom-in overflow-hidden rounded-md"
+          className="bg-muted relative aspect-square h-full w-full cursor-zoom-in overflow-hidden rounded-md"
         >
           <div className="flex h-full w-full items-center justify-center text-center">
             <div className="flex flex-col items-center gap-2 p-4 text-xs font-medium">
@@ -284,10 +316,8 @@ export function IframeGalleryItem({
               {iframe.alt || "Open"}
             </div>
           )}
-          <div className="pointer-events-none absolute inset-0 z-[2] flex items-center justify-center bg-black/30 text-white">
-            <svg viewBox="0 0 24 24" className="h-8 w-8 fill-current">
-              <path d="M4 4h16v16H4z" />
-            </svg>
+          <div className="pointer-events-none absolute inset-0 z-2 flex items-center justify-center bg-black/30 text-white">
+            <Play />
           </div>
           <div className="absolute right-1 bottom-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white">
             {w}×{h}
