@@ -417,6 +417,9 @@
       "dependencies": [
         "photoswipe"
       ],
+      "registryDependencies": [
+        "skeleton"
+      ],
       "type": "registry:component",
       "files": [
         {
