@@ -29,63 +29,58 @@ interface TaskGroup extends SortableGroupData<TaskItem> {
 }
 
 // Sample data
-const initialGroups: TaskGroup[] = [
-  {
-    id: "group-1",
-    title: "Design Tasks",
-    bgColor: "bg-purple-500/10 border-purple-500/30",
-    icon: "palette",
-    items: [
-      { id: "item-1", name: "UI Components", color: "bg-purple-500" },
-      { id: "item-2", name: "Color Palette", color: "bg-violet-500" },
-      { id: "item-3", name: "Typography", color: "bg-fuchsia-500" },
-    ],
-  },
-  {
-    id: "group-2",
-    title: "Development",
-    bgColor: "bg-blue-500/10 border-blue-500/30",
-    icon: "package",
-    items: [
-      { id: "item-4", name: "API Integration", color: "bg-blue-500" },
-      { id: "item-5", name: "Database Schema", color: "bg-cyan-500" },
-    ],
-  },
-  {
-    id: "group-3",
-    title: "Testing",
-    bgColor: "bg-green-500/10 border-green-500/30",
-    icon: "package",
-    items: [
-      { id: "item-6", name: "Unit Tests", color: "bg-green-500" },
-      { id: "item-7", name: "E2E Tests", color: "bg-emerald-500" },
-    ],
-  },
-  {
-    id: "group-4",
-    title: "Deployment",
-    bgColor: "bg-orange-500/10 border-orange-500/30",
-    icon: "package",
-    items: [{ id: "item-8", name: "CI/CD Pipeline", color: "bg-orange-500" }],
-  },
-  {
-    id: "group-5",
-    title: "Documentation",
-    bgColor: "bg-pink-500/10 border-pink-500/30",
-    icon: "package",
-    items: [
-      { id: "item-9", name: "API Docs", color: "bg-pink-500" },
-      { id: "item-10", name: "User Guide", color: "bg-rose-500" },
-    ],
-  },
-  {
-    id: "group-6",
-    title: "Review",
-    bgColor: "bg-amber-500/10 border-amber-500/30",
-    icon: "package",
-    items: [],
-  },
-]
+// Initial data generation
+function generateData(groupCount: number, itemsPerGroup: number): TaskGroup[] {
+  const groups: TaskGroup[] = []
+  const icons: ("palette" | "package")[] = ["palette", "package"]
+  const bgColors = [
+    "bg-purple-500/10 border-purple-500/30",
+    "bg-blue-500/10 border-blue-500/30",
+    "bg-green-500/10 border-green-500/30",
+    "bg-yellow-500/10 border-yellow-500/30",
+    "bg-red-500/10 border-red-500/30",
+    "bg-pink-500/10 border-pink-500/30",
+    "bg-indigo-500/10 border-indigo-500/30",
+    "bg-orange-500/10 border-orange-500/30",
+  ]
+  const colors = [
+    "bg-purple-500",
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-yellow-500",
+    "bg-red-500",
+    "bg-pink-500",
+    "bg-indigo-500",
+    "bg-orange-500",
+  ]
+
+  let itemIdCounter = 1
+
+  for (let i = 0; i < groupCount; i++) {
+    const items: TaskItem[] = []
+    for (let j = 0; j < itemsPerGroup; j++) {
+      items.push({
+        id: `item-${itemIdCounter}`,
+        name: `Task Item ${itemIdCounter}`,
+        color: colors[i % colors.length],
+      })
+      itemIdCounter++
+    }
+
+    groups.push({
+      id: `group-${i + 1}`,
+      title: `Group ${i + 1}`,
+      bgColor: bgColors[i % bgColors.length],
+      icon: icons[i % icons.length],
+      items,
+    })
+  }
+
+  return groups
+}
+
+// Generate ~400 items (20 groups * 20 items)
+const initialGroups: TaskGroup[] = generateData(20, 20)
 
 // Icon component
 const GroupIcon = ({ type }: { type: "palette" | "package" }) => {

@@ -20,6 +20,7 @@ pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/data-table.j
 For server-side pagination/sorting with URL sync, use \`DataTableProviderServer\`:
 
 \`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/data-table-server.json
 # This component uses next/navigation for URL sync
 \`\`\`
 
