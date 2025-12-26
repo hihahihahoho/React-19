@@ -1,107 +1,188 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { flexRender, Header } from "@tanstack/react-table"
+import { Column, flexRender, Header } from "@tanstack/react-table"
 import { ArrowDown, ArrowUp, ArrowUpDown, Pin } from "lucide-react"
 import React from "react"
 import { Button } from "../button"
-import { SelectCommand } from "../select/select-command"
-import { SelectGroup, SelectItems } from "../select/select-interface"
-import { SelectPopover } from "../select/select-popover"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../dropdown-menu"
 import { useDataTable } from "./data-table-context"
 import { useHeaderRefs } from "./header-ref-context"
 import { TableHead } from "./table"
 
 interface DataTableHeaderCellProps<TData, TValue> {
   header: Header<TData, TValue>
-  isPin?: boolean
   width?: number
   isRegisterHeaderRef?: boolean
 }
 
-const toolbarOptions: SelectGroup[] = [
-  {
-    heading: "Sắp xếp",
-    value: "sort-group",
-    options: [
-      {
-        value: "asc",
-        label: (
-          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
-            <ArrowUp />
+// Sub-component for Sorting
+function DataTableColumnSort<TData, TValue>({
+  column,
+}: {
+  column: Column<TData, TValue>
+}) {
+  if (!column.getCanSort()) return null
+
+  const sortState = column.getIsSorted()
+  const currentSort =
+    sortState === "asc" ? "asc" : sortState === "desc" ? "desc" : "no-sort"
+
+  const handleSortChange = (value: string) => {
+    if (value === "asc") {
+      column.toggleSorting(false)
+    } else if (value === "desc") {
+      column.toggleSorting(true)
+    } else {
+      column.clearSorting()
+    }
+  }
+
+  return (
+    <>
+      <DropdownMenuLabel>Sắp xếp</DropdownMenuLabel>
+      <DropdownMenuRadioGroup
+        value={currentSort}
+        onValueChange={handleSortChange}
+      >
+        <DropdownMenuRadioItem value="asc">
+          <div className="flex flex-1 items-center gap-1.5">
+            <ArrowUp className="text-muted-foreground" />
             Tăng dần
           </div>
-        ),
-      },
-      {
-        value: "desc",
-        label: (
-          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
-            <ArrowDown />
+        </DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="desc">
+          <div className="flex flex-1 items-center gap-1.5">
+            <ArrowDown className="text-muted-foreground" />
             Giảm dần
           </div>
-        ),
-      },
-      {
-        value: "no-sort",
-        label: (
-          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
-            <ArrowUpDown />
+        </DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="no-sort">
+          <div className="flex flex-1 items-center gap-1.5">
+            <ArrowUpDown className="text-muted-foreground" />
             Bỏ sắp xếp
           </div>
-        ),
-      },
-    ],
-  },
-  {
-    heading: "Ghim cột",
-    value: "pin-group",
-    options: [
-      {
-        value: "pin-left",
-        label: (
-          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
-            <Pin className="-rotate-45" />
+        </DropdownMenuRadioItem>
+      </DropdownMenuRadioGroup>
+    </>
+  )
+}
+
+// Sub-component for Pinning
+function DataTableColumnPinning<TData, TValue>({
+  column,
+}: {
+  column: Column<TData, TValue>
+}) {
+  const { table, setColumnPinning } = useDataTable()
+  const meta = column.columnDef.meta
+  const pinnable = meta?.pinnable !== false
+  const pinnedLocked = meta?.pinnedLocked === true
+
+  if (!pinnable || pinnedLocked) return null
+
+  const isPinned = column.getIsPinned()
+  const currentPin =
+    isPinned === "left"
+      ? "pin-left"
+      : isPinned === "right"
+        ? "pin-right"
+        : "unpin"
+
+  const handlePinChange = (value: string) => {
+    // Don't allow pin changes if locked
+    if (meta?.pinnedLocked) return
+
+    const columnId = column.id
+
+    setColumnPinning((prev) => {
+      // Helper to check if a column is locked (system column)
+      const isColumnLocked = (id: string) => {
+        const col = table.getColumn(id)
+        return col?.columnDef.meta?.pinnedLocked === true
+      }
+
+      const getColumnPinOrder = (id: string) => {
+        const col = table.getColumn(id)
+        return col?.columnDef.meta?.pinOrder ?? 0
+      }
+
+      // If unpinning, just remove current column
+      if (value === "unpin") {
+        return {
+          left: prev.left?.filter((id) => id !== columnId) ?? [],
+          right: prev.right?.filter((id) => id !== columnId) ?? [],
+        }
+      }
+
+      // If pinning new column:
+      // 1. Keep only locked (system) columns
+      const newLeft = prev.left?.filter((id) => isColumnLocked(id)) ?? []
+      const newRight = prev.right?.filter((id) => isColumnLocked(id)) ?? []
+
+      // 2. Add new column to target side
+      const targetSide = value === "pin-left" ? "left" : "right"
+      if (targetSide === "left") {
+        newLeft.push(columnId)
+      } else {
+        newRight.push(columnId)
+      }
+
+      // 3. Sort to ensure system columns stay at edges
+      // Left pins: Add and sort descending (Higher order = Closer to left edge)
+      newLeft.sort((a, b) => getColumnPinOrder(b) - getColumnPinOrder(a))
+      // Right pins: Add and sort ascending (Higher order = Closer to right edge)
+      newRight.sort((a, b) => getColumnPinOrder(a) - getColumnPinOrder(b))
+
+      return { left: newLeft, right: newRight }
+    })
+  }
+
+  return (
+    <>
+      <DropdownMenuLabel>Ghim cột</DropdownMenuLabel>
+      <DropdownMenuRadioGroup
+        value={currentPin}
+        onValueChange={handlePinChange}
+      >
+        <DropdownMenuRadioItem value="pin-left">
+          <div className="flex flex-1 items-center gap-1.5">
+            <Pin className="text-muted-foreground -rotate-45" />
             Ghim trái
           </div>
-        ),
-      },
-      {
-        value: "pin-right",
-        label: (
-          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
-            <Pin className="rotate-45" />
+        </DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="pin-right">
+          <div className="flex flex-1 items-center gap-1.5">
+            <Pin className="text-muted-foreground rotate-45" />
             Ghim phải
           </div>
-        ),
-      },
-      {
-        value: "unpin",
-        label: (
-          <div className="flex flex-1 items-center gap-1.5 [&_svg]:size-4">
+        </DropdownMenuRadioItem>
+        <DropdownMenuRadioItem value="unpin">
+          <div className="flex flex-1 items-center gap-1.5">
             <Pin className="text-muted-foreground" />
             Bỏ ghim
           </div>
-        ),
-      },
-    ],
-  },
-]
+        </DropdownMenuRadioItem>
+      </DropdownMenuRadioGroup>
+    </>
+  )
+}
 
 export function DataTableHeaderCell<TData, TValue>({
   header,
-  isPin = false,
   width,
   isRegisterHeaderRef = true,
 }: DataTableHeaderCellProps<TData, TValue>) {
-  const { table, setColumnPinning } = useDataTable()
-  const sortState = header.column.getIsSorted()
   const ref = React.useRef<HTMLTableCellElement>(null)
-  const initialSelected = ["no-sort"]
-  if (isPin) initialSelected.push("pin")
   const { registerHeaderRef, unregisterHeaderRef } = useHeaderRefs()
-
-  const [selected, setSelected] = React.useState<string[]>(initialSelected)
   const [open, setOpen] = React.useState(false)
 
   const triggerContent = flexRender(
@@ -109,139 +190,22 @@ export function DataTableHeaderCell<TData, TValue>({
     header.getContext()
   )
 
-  const handleOnSelect = (newSelected: SelectItems) => {
-    const selected = newSelected.value
+  // Use derived state for rendering logic
+  const showSort = header.column.getCanSort()
+  const meta = header.column.columnDef.meta
+  const showPin = meta?.pinnable !== false && meta?.pinnedLocked !== true
 
-    // Handle sorting actions
-    if (["asc", "desc", "no-sort"].includes(selected)) {
-      if (selected === "asc") {
-        header.column.toggleSorting(false)
-      } else if (selected === "desc") {
-        header.column.toggleSorting(true)
-      } else {
-        header.column.clearSorting()
-      }
-
-      // Update the selected state for sorting without affecting pinning
-      setSelected((prev) => {
-        const withoutSort = prev.filter(
-          (val) => !["asc", "desc", "no-sort"].includes(val)
-        )
-        return [...withoutSort, selected]
-      })
-    }
-
-    // Handle pinning actions with ordering support
-    if (["pin-left", "pin-right", "unpin"].includes(selected)) {
-      const meta = header.column.columnDef.meta
-      // Don't allow pin changes if locked
-      if (meta?.pinnedLocked) return
-
-      const columnId = header.column.id
-
-      setColumnPinning((prev) => {
-        // Helper to check if a column is locked (system column)
-        const isColumnLocked = (id: string) => {
-          const col = table.getColumn(id)
-          return col?.columnDef.meta?.pinnedLocked === true
-        }
-
-        const getColumnPinOrder = (id: string) => {
-          const col = table.getColumn(id)
-          return col?.columnDef.meta?.pinOrder ?? 0
-        }
-
-        // If unpinning, just remove current column
-        if (selected === "unpin") {
-          return {
-            left: prev.left?.filter((id) => id !== columnId) ?? [],
-            right: prev.right?.filter((id) => id !== columnId) ?? [],
-          }
-        }
-
-        // If pinning new column:
-        // 1. Keep only locked (system) columns
-        const newLeft = prev.left?.filter((id) => isColumnLocked(id)) ?? []
-        const newRight = prev.right?.filter((id) => isColumnLocked(id)) ?? []
-
-        // 2. Add new column to target side
-        const targetSide = selected === "pin-left" ? "left" : "right"
-        if (targetSide === "left") {
-          newLeft.push(columnId)
-        } else {
-          newRight.push(columnId)
-        }
-
-        // 3. Sort to ensure system columns stay at edges
-        // Left pins: Add and sort descending (Higher order = Closer to left edge)
-        newLeft.sort((a, b) => getColumnPinOrder(b) - getColumnPinOrder(a))
-        // Right pins: Add and sort ascending (Higher order = Closer to right edge)
-        newRight.sort((a, b) => getColumnPinOrder(a) - getColumnPinOrder(b))
-
-        return { left: newLeft, right: newRight }
-      })
-    }
-  }
-
-  const filteredOptions = React.useMemo(() => {
-    const meta = header.column.columnDef.meta
-    let options = [...toolbarOptions]
-
-    // Filter out sort group if column can't sort
-    if (!header.column.getCanSort()) {
-      options = options.filter((group) => group.value !== "sort-group")
-    }
-
-    // Filter out pin group if column is not pinnable or is locked
-    const pinnable = meta?.pinnable !== false
-    const pinnedLocked = meta?.pinnedLocked === true
-    if (!pinnable || pinnedLocked) {
-      options = options.filter((group) => group.value !== "pin-group")
-    }
-
-    return options
-  }, [header.column])
-
-  // Determine pin classes based on pinned state
   const isPinned = header.column.getIsPinned?.()
   const isLastPinned = header.column.getIsLastColumn("left")
   const isFirstPinnedRight = header.column.getIsFirstColumn("right")
+
   const pinnedClasses = isPinned
     ? isPinned === "left"
       ? "sticky z-20"
       : "sticky z-20"
     : ""
-  // Update selected state when pin state changes
-  React.useEffect(() => {
-    setSelected((prev) => {
-      const withoutPin = prev.filter(
-        (val) => !["pin-left", "pin-right", "unpin"].includes(val)
-      )
-      if (isPinned === "left") {
-        return [...withoutPin, "pin-left"]
-      } else if (isPinned === "right") {
-        return [...withoutPin, "pin-right"]
-      } else {
-        return [...withoutPin, "unpin"]
-      }
-    })
-  }, [isPinned])
 
-  React.useEffect(() => {
-    setSelected((prev) => {
-      const withoutSort = prev.filter(
-        (val) => !["asc", "desc", "no-sort"].includes(val)
-      )
-
-      if (sortState === "asc") {
-        return [...withoutSort, "asc"]
-      } else if (sortState === "desc") {
-        return [...withoutSort, "desc"]
-      } else {
-        return [...withoutSort, "no-sort"]
-      }
-    })
-  }, [sortState])
+  const sortState = header.column.getIsSorted()
 
   React.useEffect(() => {
     if (isRegisterHeaderRef) {
@@ -258,6 +222,7 @@ export function DataTableHeaderCell<TData, TValue>({
     unregisterHeaderRef,
     isRegisterHeaderRef,
   ])
+
   return (
     <TableHead
       key={header.id}
@@ -299,10 +264,8 @@ export function DataTableHeaderCell<TData, TValue>({
             .columnDef.meta?.hideActionsButton ? (
           triggerContent
         ) : (
-          <SelectPopover
-            open={open}
-            setOpen={setOpen}
-            triggerContent={
+          <DropdownMenu open={open} onOpenChange={setOpen}>
+            <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
                 size={"sm"}
@@ -324,15 +287,13 @@ export function DataTableHeaderCell<TData, TValue>({
                   )}
                 </div>
               </Button>
-            }
-            label={triggerContent}
-          >
-            <SelectCommand
-              items={filteredOptions}
-              selected={selected}
-              onSelect={handleOnSelect}
-            />
-          </SelectPopover>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="min-w-50" align="start">
+              {showSort && <DataTableColumnSort column={header.column} />}
+              {showSort && showPin && <DropdownMenuSeparator />}
+              {showPin && <DataTableColumnPinning column={header.column} />}
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </div>
       {isPinned &&
