@@ -160,7 +160,7 @@ function MultiSelect({
                       onClearBtnClick={() => handleRemove(optionValue.value)}
                       {...optionValue?.badgeProps}
                     >
-                      <div className="flex max-w-[90px] items-center gap-1 overflow-hidden text-ellipsis">
+                      <div className="flex max-w-22.5 items-center gap-1 overflow-hidden text-ellipsis">
                         {optionValue?.icon &&
                           (typeof optionValue.icon === "string" ? (
                             <Avatar size={"xs"}>
