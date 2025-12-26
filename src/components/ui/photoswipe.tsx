@@ -1,3 +1,5 @@
+"use client"
+
 import { FileIcon } from "lucide-react"
 import "photoswipe/dist/photoswipe.css"
 import React from "react"
