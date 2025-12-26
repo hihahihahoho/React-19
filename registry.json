@@ -1186,7 +1186,7 @@
       "description": "Virtualized version of select command for handling large lists efficiently",
       "dependencies": [
         "lucide-react",
-        "@tanstack/react-virtual"
+        "virtua"
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/badge.json",
@@ -1196,8 +1196,7 @@
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
         "separator",
-        "utils",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json"
+        "utils"
       ],
       "type": "registry:component",
       "files": [
@@ -1621,6 +1620,7 @@
         "https://react-19.octung112.workers.dev/r/pagination.json",
         "https://react-19.octung112.workers.dev/r/select.json",
         "https://react-19.octung112.workers.dev/r/select-command.json",
+        "dropdown-menu",
         "utils",
         "https://react-19.octung112.workers.dev/r/compose-refs.json",
         "https://react-19.octung112.workers.dev/r/use-scroll-position.json",

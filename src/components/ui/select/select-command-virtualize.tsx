@@ -2,9 +2,9 @@
 
 import { fuzzyFilterStrings } from "@/lib/fuzzy-search"
 import { getNodeText } from "@/lib/get-node-text"
-import { useVirtualizer, VirtualizerOptions } from "@tanstack/react-virtual"
 import { CheckCheck } from "lucide-react"
 import React from "react"
+import { Virtualizer, VirtualizerHandle } from "virtua"
 import { Badge } from "../badge"
 import {
   Command,
@@ -25,7 +25,17 @@ import {
 
 export interface SelectCommandVirtualizeProps extends SelectCommandProps {
   height?: string | number
-  virtualizerOptions?: Partial<VirtualizerOptions<HTMLDivElement, Element>>
+  /**
+   * Item size hint for unmeasured items in pixels.
+   * If not set, initial item sizes will be automatically estimated from measured sizes (recommended).
+   */
+  itemSize?: number
+  /**
+   * Extra item space in pixels to render before/after the viewport.
+   * Lower value will give better performance but you can increase to avoid showing blank items in fast scrolling.
+   * @default 200
+   */
+  bufferSize?: number
 }
 
 function SelectCommandVirtualize({
@@ -44,16 +54,18 @@ function SelectCommandVirtualize({
   showEmptyState = true,
   contentBefore,
   height = "auto",
-  virtualizerOptions,
+  itemSize,
+  bufferSize,
   ...props
 }: SelectCommandVirtualizeProps) {
-  const flattenItems = flatItems(items)
-  const modifyItemsNew = modifyItems(items)
+  // Memoize flattened and modified items to ensure stable references for React Compiler
+  const flattenItems = React.useMemo(() => flatItems(items), [items])
+  const modifyItemsNew = React.useMemo(() => modifyItems(items), [items])
   const Comp = commandWrapper ? Command : React.Fragment
 
   const [filter, setFilter] = React.useState("")
-  const parentRef = React.useRef<HTMLDivElement>(null)
-  const rowRefsMap = React.useRef(new Map<number, HTMLDivElement>())
+  const scrollRef = React.useRef<HTMLDivElement>(null)
+  const virtualizerRef = React.useRef<VirtualizerHandle>(null)
   const uniqueId = React.useId()
 
   const {
@@ -102,40 +114,26 @@ function SelectCommandVirtualize({
     [filteredItemIndices, flattenItems]
   )
 
-  // Create virtualized list with dynamic measurement
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const virtualizer = useVirtualizer({
-    count: filteredItems.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 32, // Initial height estimation
-    overscan: 10,
-    measureElement: (element, _entry, instance) => {
-      const direction = instance.scrollDirection
-      if (direction === "forward" || direction === null) {
-        // Allow remeasuring when scrolling down or direction is null
-        return element.clientHeight
-      } else {
-        // When scrolling up, use cached measurement to prevent stuttering
-        const indexKey = Number(element.getAttribute("data-index"))
-        const cachedMeasurement = instance.measurementsCache[indexKey]?.size
-        return cachedMeasurement || element.clientHeight
-      }
-    },
-    ...virtualizerOptions,
-  })
-
+  // Scroll to top when filter changes
   React.useEffect(() => {
-    if (parentRef.current && filter.length > 0) {
-      virtualizer.scrollToIndex(0)
+    if (virtualizerRef.current && filter.length > 0) {
+      virtualizerRef.current.scrollToIndex(0)
     }
-  }, [filter, virtualizer])
+  }, [filter])
 
   // Scroll to the selected item on first open (when there is a selection and no active filter)
   const didInitialScrollRef = React.useRef(false)
+
+  // Reset scroll flag when items change or when filter is cleared
+  React.useEffect(() => {
+    didInitialScrollRef.current = false
+  }, [items])
+
   React.useEffect(() => {
     if (didInitialScrollRef.current) return
     if (filter) return
     if (!selected || selected.length === 0) return
+    if (!virtualizerRef.current) return
 
     const lastSelected = selected.at(-1)
     if (!lastSelected) return
@@ -143,13 +141,20 @@ function SelectCommandVirtualize({
     const targetIndex = filteredItems.findIndex(
       (it) => it.value === lastSelected
     )
-    if (targetIndex >= 0) {
-      virtualizer.scrollToIndex(targetIndex, { align: "center" })
-      didInitialScrollRef.current = true
-    }
-  }, [filter, selected, filteredItems, virtualizer])
 
-  const virtualRows = virtualizer.getVirtualItems()
+    if (targetIndex >= 0) {
+      // Use a small delay to ensure virtualizer is fully initialized
+      const timeoutId = setTimeout(() => {
+        virtualizerRef.current?.scrollToIndex(targetIndex, {
+          align: "center",
+          smooth: false,
+        })
+        didInitialScrollRef.current = true
+      }, 0)
+
+      return () => clearTimeout(timeoutId)
+    }
+  }, [filter, selected, filteredItems])
 
   const compProps = commandWrapper
     ? { defaultValue: selected.at(-1), ...props }
@@ -188,11 +193,12 @@ function SelectCommandVirtualize({
       )}
 
       <CommandList
-        ref={parentRef}
+        ref={scrollRef}
         tabIndex={0}
         style={{
           height: typeof height === "number" ? `${height}px` : height,
           overflow: "auto",
+          overflowAnchor: "none", // Required for virtua
         }}
       >
         {contentBefore}
@@ -205,45 +211,28 @@ function SelectCommandVirtualize({
               <CommandEmpty>Không tìm thấy kết quả</CommandEmpty>
             )}
 
-            <CommandGroup>
-              <div
-                style={{
-                  height: `${virtualizer.getTotalSize()}px`,
-                  width: "100%",
-                  position: "relative",
-                }}
-              >
-                {virtualRows.map((virtualRow) => {
-                  const option = filteredItems[virtualRow.index]
-                  const isItemSelected = selected.includes(option.value)
-                  const isMultiSelect =
-                    modifyItemsNew.some(
-                      (group) =>
-                        group.isMultiSelect &&
-                        group.options.some(
-                          (item) => item.value === option.value
-                        )
-                    ) || !!allMultiSelect
+            {filteredItems.length > 0 && (
+              <CommandGroup>
+                <Virtualizer
+                  ref={virtualizerRef}
+                  scrollRef={scrollRef}
+                  itemSize={itemSize}
+                  bufferSize={bufferSize}
+                >
+                  {filteredItems.map((option) => {
+                    const isItemSelected = selected.includes(option.value)
+                    const isMultiSelect =
+                      modifyItemsNew.some(
+                        (group) =>
+                          group.isMultiSelect &&
+                          group.options.some(
+                            (item) => item.value === option.value
+                          )
+                      ) || !!allMultiSelect
 
-                  return (
-                    <div
-                      key={uniqueId + option.value}
-                      data-index={virtualRow.index}
-                      ref={(el) => {
-                        if (el) {
-                          virtualizer.measureElement(el)
-                          rowRefsMap.current.set(virtualRow.index, el)
-                        }
-                      }}
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        transform: `translateY(${virtualRow.start}px)`,
-                      }}
-                    >
+                    return (
                       <SelectCommandItem
+                        key={uniqueId + option.value}
                         option={option}
                         isSelected={isItemSelected}
                         isMultiSelect={isMultiSelect}
@@ -257,11 +246,11 @@ function SelectCommandVirtualize({
                           handleSetSelected([option.value])
                         }}
                       />
-                    </div>
-                  )
-                })}
-              </div>
-            </CommandGroup>
+                    )
+                  })}
+                </Virtualizer>
+              </CommandGroup>
+            )}
           </>
         )}
       </CommandList>
