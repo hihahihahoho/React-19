@@ -1611,8 +1611,7 @@
       "dependencies": [
         "@tanstack/react-table",
         "class-variance-authority",
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://react-19.octung112.workers.dev/r/table.json",
@@ -1663,6 +1662,11 @@
           "path": "src/components/ui/table/data-table-floating-header.tsx",
           "type": "registry:component",
           "target": "components/ui/table/data-table-floating-header.tsx"
+        },
+        {
+          "path": "src/components/ui/table/data-table-selection.tsx",
+          "type": "registry:component",
+          "target": "components/ui/table/data-table-selection.tsx"
         },
         {
           "path": "src/components/ui/table/header-ref-context.tsx",

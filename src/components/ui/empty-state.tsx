@@ -16,6 +16,10 @@ export interface EmptyStateProps extends React.ComponentProps<"div"> {
   variant?: VariantKey
   title?: string
   description?: string
+  /** Show only the icon without title and description */
+  iconOnly?: boolean
+  /** Icon size in pixels */
+  iconSize?: number
 }
 
 const getDefaultContent = (variant: VariantKey) => {
@@ -53,6 +57,8 @@ function EmptyState({
   variant = "empty-data",
   title,
   description,
+  iconOnly = false,
+  iconSize = 100,
   className,
   children,
   ...props
@@ -60,6 +66,24 @@ function EmptyState({
   const defaultContent = getDefaultContent(variant)
   const displayTitle = title || defaultContent.title
   const displayDescription = description || defaultContent.description
+
+  // Icon only mode - compact display
+  if (iconOnly) {
+    return (
+      <div
+        data-slot="empty-state"
+        className={cn("flex items-center justify-center p-4", className)}
+        {...props}
+      >
+        <img
+          src={VARIANTS[variant]}
+          alt={`Empty state ${variant}`}
+          width={iconSize}
+          height={iconSize}
+        />
+      </div>
+    )
+  }
 
   return (
     <div
@@ -71,8 +95,8 @@ function EmptyState({
         <img
           src={VARIANTS[variant]}
           alt={`Empty state ${variant}`}
-          width={100}
-          height={100}
+          width={iconSize}
+          height={iconSize}
         />
       </div>
 

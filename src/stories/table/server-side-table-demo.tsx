@@ -1,11 +1,13 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/table/data-table"
 import {
   DataTableContext,
   useDataTable,
   type DataTableContextProps,
 } from "@/components/ui/table/data-table-context"
+import { DataTableSelection } from "@/components/ui/table/data-table-selection"
 import { ShowHideColumnButton } from "@/components/ui/table/show-hide-collumn-button"
 import {
   ColumnDef,
@@ -16,6 +18,7 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table"
+import { Download, Trash } from "lucide-react"
 import {
   useCallback,
   useEffect,
@@ -286,6 +289,16 @@ export default function ServerSideTableDemo() {
             <ShowHideColumnButton />
           </div>
           <DataTable variant="rounded" />
+          <DataTableSelection>
+            <Button variant="outline" isRounded>
+              <Download />
+              Tải xuống
+            </Button>
+            <Button variant="destructive" isRounded>
+              <Trash />
+              Xoá
+            </Button>
+          </DataTableSelection>
         </div>
       </ServerSideProvider>
 

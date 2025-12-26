@@ -6,12 +6,12 @@ import React, { useRef } from "react"
 import { Button } from "../button"
 import { EmptyState } from "../empty-state"
 import { ScrollAreaTable } from "../scroll-area"
+import { Skeleton } from "../skeleton"
 import { DataTableCell } from "./data-table-cell"
 import { useDataTable } from "./data-table-context"
 import { FloatingHeader } from "./data-table-floating-header"
 import { DataTableHeaderCell } from "./data-table-header-cell"
 import { DataTablePagination } from "./data-table-pagination"
-import { DataTableSelection } from "./data-table-selection"
 import { HeaderRefsProvider } from "./header-ref-context"
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "./table"
 
@@ -34,7 +34,6 @@ interface DataTableProps {
   showPagination?: boolean
   autoWidthTable?: boolean
   tableWrapperClassName?: string
-  extendActions?: React.ReactNode
 }
 
 export function DataTable({
@@ -44,7 +43,6 @@ export function DataTable({
   showPagination = true,
   autoWidthTable = false,
   tableWrapperClassName,
-  extendActions,
 }: DataTableProps) {
   const { table, totalNumber, isPending } = useDataTable()
   const tableRef = useRef<HTMLDivElement>(null)
@@ -126,13 +124,26 @@ export function DataTable({
                       ))}
                     </TableRow>
                   ))
+                ) : isPending ? (
+                  // Skeleton loading rows - use pageSize from table state
+                  Array.from({
+                    length: table.getState().pagination.pageSize,
+                  }).map((_, rowIndex) => (
+                    <TableRow key={`skeleton-${rowIndex}`}>
+                      {table.getVisibleFlatColumns().map((column) => (
+                        <TableCell key={column.id}>
+                          <Skeleton className="h-4 w-full" />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
                 ) : (
                   <TableRow>
                     <TableCell
                       colSpan={table.getAllColumns().length}
                       className="h-24 text-center"
                     >
-                      Không có dữ liệu.
+                      <EmptyState iconOnly />
                     </TableCell>
                   </TableRow>
                 )}
@@ -140,8 +151,6 @@ export function DataTable({
             </Table>
           </ScrollAreaTable>
         </div>
-        <DataTableSelection extendActions={extendActions} />
-
         <div
           className={cn(
             "bg-background/80 sticky bottom-0 z-30 -mt-px rounded-b-2xl border backdrop-blur-sm",
