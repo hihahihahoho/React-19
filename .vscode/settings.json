@@ -44,5 +44,7 @@
   },
   "files.associations": {
     "*.css": "tailwindcss"
-  }
+  },
+  "javascript.preferences.autoImportFileExcludePatterns": ["@radix-ui/*"],
+  "typescript.preferences.autoImportFileExcludePatterns": ["@radix-ui/*"]
 }

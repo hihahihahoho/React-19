@@ -46,12 +46,6 @@ interface DataTableProviderProps<TData, TValue> {
   children?: ReactNode
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  /** @deprecated Use column meta.pinned instead */
-  defaultPinLeft?: string[]
-  /** @deprecated Use column meta.pinned + meta.pinnedLocked instead */
-  fixedPinRight?: string[]
-  /** @deprecated Use column meta.pinned + meta.pinnedLocked instead */
-  fixedPinLeft?: string[]
   pageSize?: number
   defaultSelection?: RowSelectionState
   /** Extend or override table options */
@@ -60,12 +54,10 @@ interface DataTableProviderProps<TData, TValue> {
 
 /** Helper to derive initial pin state from column definitions */
 function getInitialPinningFromColumns<TData, TValue>(
-  columns: ColumnDef<TData, TValue>[],
-  legacyPinLeft: string[] = [],
-  legacyPinRight: string[] = []
+  columns: ColumnDef<TData, TValue>[]
 ): ColumnPinningState {
-  const left: string[] = [...legacyPinLeft]
-  const right: string[] = [...legacyPinRight]
+  const left: string[] = []
+  const right: string[] = []
 
   columns.forEach((col) => {
     const id =
@@ -74,9 +66,9 @@ function getInitialPinningFromColumns<TData, TValue>(
     if (!id) return
 
     const meta = col.meta
-    if (meta?.pinned === "left" && !left.includes(id)) {
+    if (meta?.pinned === "left") {
       left.push(id)
-    } else if (meta?.pinned === "right" && !right.includes(id)) {
+    } else if (meta?.pinned === "right") {
       right.push(id)
     }
   })
@@ -88,21 +80,13 @@ function DataTableProvider<TData, TValue>({
   children,
   columns,
   data,
-  defaultPinLeft = [],
-  fixedPinRight = [],
-  fixedPinLeft = [],
   defaultSelection = {},
   pageSize = 10,
   tableOptions,
 }: DataTableProviderProps<TData, TValue>) {
-  // Derive initial pinning from column meta (with legacy props fallback)
+  // Derive initial pinning from column meta
   const initialPinning = useMemo(
-    () =>
-      getInitialPinningFromColumns(
-        columns,
-        [...defaultPinLeft, ...fixedPinLeft],
-        fixedPinRight
-      ),
+    () => getInitialPinningFromColumns(columns),
     // Only compute once on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
