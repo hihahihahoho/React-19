@@ -11,10 +11,16 @@ import {
   FormCompositionProps,
   FormControlButton,
 } from "../form/form"
+import {
+  ResponsivePopover,
+  ResponsivePopoverContent,
+  ResponsivePopoverHeader,
+  ResponsivePopoverTitle,
+  ResponsivePopoverTrigger,
+} from "../responsive-popover"
 import { flatItems, SelectCommand, SelectCommandProps } from "./select-command"
 import { SelectCommandVirtualizeProps } from "./select-command-virtualize"
 import { SelectGroup, SelectItems } from "./select-interface"
-import { SelectPopover } from "./select-popover"
 
 export type OnValueChangeSelect = string | undefined
 
@@ -79,12 +85,11 @@ function Select({
     flattenItems.find((item) => item.value === currentValue)
 
   const SelectComponentToUse = virtualComponents || SelectCommand
+  const label = formComposition?.label || placeholder || "Chọn"
 
   return (
-    <SelectPopover
-      open={open}
-      setOpen={setOpen}
-      triggerContent={
+    <ResponsivePopover open={open} onOpenChange={setOpen}>
+      <ResponsivePopoverTrigger asChild>
         <FormComposition
           clearWhenNotFocus={true}
           inputClear={false}
@@ -146,20 +151,28 @@ function Select({
             </div>
           </FormControlButton>
         </FormComposition>
-      }
-      label={formComposition?.label || placeholder || "Chọn"}
-    >
-      <SelectComponentToUse
-        {...selectCommandProps}
-        artificialFocus={true}
-        items={options}
-        selected={[currentValue || ""]}
-        setSelected={(values) => handleValueChange(values[0])}
-        onSelect={() => {
-          setOpen(false)
-        }}
-      />
-    </SelectPopover>
+      </ResponsivePopoverTrigger>
+      <ResponsivePopoverContent
+        data-slot="select-popover-content"
+        align="center"
+        className="popover-content-width-full p-0"
+        onWheel={(e) => e.stopPropagation()}
+      >
+        <ResponsivePopoverHeader className="border-b sm:hidden">
+          {label && <ResponsivePopoverTitle>{label}</ResponsivePopoverTitle>}
+        </ResponsivePopoverHeader>
+        <SelectComponentToUse
+          {...selectCommandProps}
+          artificialFocus={true}
+          items={options}
+          selected={[currentValue || ""]}
+          setSelected={(values) => handleValueChange(values[0])}
+          onSelect={() => {
+            setOpen(false)
+          }}
+        />
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   )
 }
 

@@ -4,9 +4,15 @@ import { flexRender } from "@tanstack/react-table"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import {
+  ResponsivePopover,
+  ResponsivePopoverContent,
+  ResponsivePopoverHeader,
+  ResponsivePopoverTitle,
+  ResponsivePopoverTrigger,
+} from "@/components/ui/responsive-popover"
 import { SelectCommand } from "@/components/ui/select/select-command"
 import { SelectItems } from "@/components/ui/select/select-interface"
-import { SelectPopover } from "@/components/ui/select/select-popover"
 import { Grid } from "lucide-react"
 import { useDataTable } from "./data-table-context"
 
@@ -39,10 +45,8 @@ function ShowHideColumnButton() {
     .map((column) => column.id)
 
   return (
-    <SelectPopover
-      open={open}
-      setOpen={setOpen}
-      triggerContent={
+    <ResponsivePopover open={open} onOpenChange={setOpen}>
+      <ResponsivePopoverTrigger asChild>
         <Button
           className="txt-body-default-medium text-muted-foreground font-[Inter] normal-case"
           size={"sm"}
@@ -51,35 +55,40 @@ function ShowHideColumnButton() {
           Ẩn/Hiện cột ({visibleColumns.length})
           <Grid />
         </Button>
-      }
-      popoverContentProps={{
-        align: "end",
-      }}
-      label="Ẩn/Hiện cột"
-    >
-      <SelectCommand
-        items={[
-          {
-            heading: "Cột",
-            options: columns,
-            isMultiSelect: true,
-          },
-        ]}
-        selected={visibleColumns}
-        setSelected={(values) => {
-          table.getAllColumns().forEach((column) => {
-            if (column.getCanHide()) {
-              column.toggleVisibility(values.includes(column.id))
-            }
-          })
-        }}
-        showSearch={columns.length > 5}
-        isCheckAll={true}
-        commandInputProps={{
-          placeholder: "Tìm cột...",
-        }}
-      />
-    </SelectPopover>
+      </ResponsivePopoverTrigger>
+      <ResponsivePopoverContent
+        data-slot="select-popover-content"
+        align="end"
+        className="popover-content-width-full p-0"
+        onWheel={(e) => e.stopPropagation()}
+      >
+        <ResponsivePopoverHeader className="border-b sm:hidden">
+          <ResponsivePopoverTitle>Ẩn/Hiện cột</ResponsivePopoverTitle>
+        </ResponsivePopoverHeader>
+        <SelectCommand
+          items={[
+            {
+              heading: "Cột",
+              options: columns,
+              isMultiSelect: true,
+            },
+          ]}
+          selected={visibleColumns}
+          setSelected={(values) => {
+            table.getAllColumns().forEach((column) => {
+              if (column.getCanHide()) {
+                column.toggleVisibility(values.includes(column.id))
+              }
+            })
+          }}
+          showSearch={columns.length > 5}
+          isCheckAll={true}
+          commandInputProps={{
+            placeholder: "Tìm cột...",
+          }}
+        />
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   )
 }
 

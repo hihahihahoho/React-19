@@ -16,10 +16,16 @@ import {
   OverflowGroupItem,
   OverflowGroupProps,
 } from "../overflow-group"
+import {
+  ResponsivePopover,
+  ResponsivePopoverContent,
+  ResponsivePopoverHeader,
+  ResponsivePopoverTitle,
+  ResponsivePopoverTrigger,
+} from "../responsive-popover"
 import { flatItems, SelectCommand, SelectCommandProps } from "./select-command"
 import { SelectCommandVirtualizeProps } from "./select-command-virtualize"
 import { SelectGroup, SelectItems } from "./select-interface"
-import { SelectPopover } from "./select-popover"
 
 export interface MultiSelectProps extends Omit<
   React.ComponentProps<"button">,
@@ -111,12 +117,11 @@ function MultiSelect({
   }, [currentItems, overflowGroupProps?.overflowState])
 
   const SelectComponentToUse = virtualComponents || SelectCommand
+  const label = formComposition?.label || placeholder
 
   return (
-    <SelectPopover
-      open={open}
-      setOpen={setOpen}
-      triggerContent={
+    <ResponsivePopover open={open} onOpenChange={setOpen}>
+      <ResponsivePopoverTrigger asChild>
         <FormComposition
           iconRight={<ChevronDown className="opacity-50" />}
           inputClear={true}
@@ -208,18 +213,26 @@ function MultiSelect({
             )}
           </FormControlButton>
         </FormComposition>
-      }
-      label={formComposition?.label || placeholder}
-    >
-      <SelectComponentToUse
-        {...selectCommandProps}
-        items={options}
-        selected={currentValue}
-        setSelected={handleValueChange}
-        isCheckAll={true}
-        allMultiSelect={true}
-      />
-    </SelectPopover>
+      </ResponsivePopoverTrigger>
+      <ResponsivePopoverContent
+        data-slot="select-popover-content"
+        align="center"
+        className="popover-content-width-full p-0"
+        onWheel={(e) => e.stopPropagation()}
+      >
+        <ResponsivePopoverHeader className="border-b sm:hidden">
+          {label && <ResponsivePopoverTitle>{label}</ResponsivePopoverTitle>}
+        </ResponsivePopoverHeader>
+        <SelectComponentToUse
+          {...selectCommandProps}
+          items={options}
+          selected={currentValue}
+          setSelected={handleValueChange}
+          isCheckAll={true}
+          allMultiSelect={true}
+        />
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
   )
 }
 

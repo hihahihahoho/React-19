@@ -293,7 +293,7 @@ function SelectCommand({
       {isCheckAll && (
         <>
           <div className="flex items-center gap-2 p-2">
-            <div className="flex-1">
+            <div className="flex-1 text-left">
               <Badge
                 size={"md"}
                 className="cursor-pointer select-none"

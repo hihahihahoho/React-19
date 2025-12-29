@@ -31,8 +31,9 @@ function Index() {
     <div className="p-2">
       <h3>Welcome Home!</h3>
       <Button asChild>
-        <History />
-        <LinkWithZodSchema>Go to History with Zod Schema</LinkWithZodSchema>
+        <LinkWithZodSchema>
+          <History /> Go to History with Zod Schema
+        </LinkWithZodSchema>
       </Button>
     </div>
   )

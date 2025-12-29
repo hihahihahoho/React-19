@@ -505,6 +505,27 @@
       ]
     },
     {
+      "name": "responsive-popover",
+      "author": "hihahihahoho",
+      "title": "Responsive Popover",
+      "description": "A responsive popover that switches between Popover (desktop) and Drawer (mobile)",
+      "dependencies": [],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/drawer.json",
+        "popover",
+        "https://react-19.octung112.workers.dev/r/use-media-query.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/responsive-popover.tsx",
+          "type": "registry:component",
+          "target": "components/ui/responsive-popover.tsx"
+        }
+      ]
+    },
+    {
       "name": "dialog",
       "author": "hihahihahoho",
       "dependencies": [
@@ -1271,7 +1292,7 @@
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/select-command-virtualize.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
-        "https://react-19.octung112.workers.dev/r/select-popover.json",
+        "https://react-19.octung112.workers.dev/r/responsive-popover.json",
         "separator",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
@@ -1305,7 +1326,7 @@
         "https://react-19.octung112.workers.dev/r/select-command.json",
         "https://react-19.octung112.workers.dev/r/select-command-virtualize.json",
         "https://react-19.octung112.workers.dev/r/select-interface.json",
-        "https://react-19.octung112.workers.dev/r/select-popover.json",
+        "https://react-19.octung112.workers.dev/r/responsive-popover.json",
         "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
         "utils",
         "https://react-19.octung112.workers.dev/r/utils-plus.json",
@@ -1648,6 +1669,7 @@
         "https://react-19.octung112.workers.dev/r/pagination.json",
         "https://react-19.octung112.workers.dev/r/select.json",
         "https://react-19.octung112.workers.dev/r/select-command.json",
+        "https://react-19.octung112.workers.dev/r/responsive-popover.json",
         "dropdown-menu",
         "utils",
         "https://react-19.octung112.workers.dev/r/compose-refs.json",
