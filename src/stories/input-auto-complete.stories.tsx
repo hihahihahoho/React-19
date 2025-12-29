@@ -236,8 +236,8 @@ export const InitialStateSuggestions: Story = {
               <Badge
                 key={item}
                 variant={badgeStyles[i % badgeStyles.length] as any}
-                iconLeft={<Clock className="size-3" />}
               >
+                <Clock className="size-3" />
                 {item}
               </Badge>
             ))}
@@ -255,8 +255,8 @@ export const InitialStateSuggestions: Story = {
               <Badge
                 key={item}
                 variant={badgeStyles[(i + 3) % badgeStyles.length] as any}
-                iconLeft={<TrendingUp className="size-3" />}
               >
+                <TrendingUp className="size-3" />
                 {item}
               </Badge>
             ))}
@@ -274,8 +274,8 @@ export const InitialStateSuggestions: Story = {
               <Badge
                 key={item}
                 variant={badgeStyles[(i + 6) % badgeStyles.length] as any}
-                iconLeft={<Star className="size-3" />}
               >
+                <Star className="size-3" />
                 {item}
               </Badge>
             ))}
@@ -398,12 +398,12 @@ export const ServerSideFetchingOnSearch: Story = {
               <Badge
                 key={city}
                 variant="blue"
-                iconLeft={<History className="size-3" />}
                 onClick={() => {
                   setSelectedCity(city)
                   setSearch(city) // Update search when badge is clicked
                 }}
               >
+                <History className="size-3" />
                 {city}
               </Badge>
             ))}
@@ -421,12 +421,12 @@ export const ServerSideFetchingOnSearch: Story = {
               <Badge
                 key={city}
                 variant="emerald"
-                iconLeft={<Map className="size-3" />}
                 onClick={() => {
                   setSelectedCity(city)
                   setSearch(city) // Update search when badge is clicked
                 }}
               >
+                <Map className="size-3" />
                 {city}
               </Badge>
             ))}
@@ -580,9 +580,9 @@ export const LocationSearchWithAPI: Story = {
                 <Badge
                   key={location}
                   variant="blue"
-                  iconLeft={<Map className="size-3" />}
                   onClick={() => setSearch(location)}
                 >
+                  <Map className="size-3" />
                   {location}
                 </Badge>
               ))}
@@ -601,9 +601,9 @@ export const LocationSearchWithAPI: Story = {
             <Badge
               key={location.value}
               variant="amber"
-              iconLeft={<Map className="size-3" />}
               onClick={() => setSearch(location.value)}
             >
+              <Map className="size-3" />
               {location.value}
             </Badge>
           ))}
@@ -703,11 +703,11 @@ export const FormIntegrationWithHistory: Story = {
                     i % 6
                   ] as any
                 }
-                iconLeft={<History className="size-3" />}
                 onClick={() =>
                   form.setValue("destination", item, { shouldValidate: true })
                 }
               >
+                <History className="size-3" />
                 {item}
               </Badge>
             ))}
@@ -881,13 +881,13 @@ export const FormIntegrationWithLocationSearch: Story = {
             <Badge
               key={location}
               variant="amber"
-              iconLeft={<Map className="size-3" />}
               onClick={() => {
                 // Update form field value with location from badge
                 form.setValue("location", location, { shouldValidate: true })
                 setSearch(location)
               }}
             >
+              <Map className="size-3" />
               {location}
             </Badge>
           ))}
