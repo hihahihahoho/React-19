@@ -16,28 +16,6 @@ import {
 } from "./slider"
 
 // ============================================================================
-// Slider (Basic Shadcn-style slider component)
-// ============================================================================
-
-interface SliderProps extends Omit<SliderRootProps, "children"> {
-  /** ClassName applied to the SliderControl element */
-  className?: string
-}
-
-function Slider({ className, disabled, ...props }: SliderProps) {
-  return (
-    <SliderRoot disabled={disabled} {...props}>
-      <SliderControl className={className}>
-        <SliderTrack>
-          <SliderRange />
-        </SliderTrack>
-        <SliderThumb />
-      </SliderControl>
-    </SliderRoot>
-  )
-}
-
-// ============================================================================
 // SliderForm (With react-hook-form integration)
 // ============================================================================
 
@@ -163,5 +141,4 @@ const SliderForm = <
   )
 }
 
-export { Slider, SliderForm }
-export type { SliderProps }
+export { SliderForm }

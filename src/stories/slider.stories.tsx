@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Form } from "@/components/ui/form/form"
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import {
+  Slider,
   SliderControl,
   SliderIndicator,
   SliderLabel,
@@ -11,7 +12,7 @@ import {
   SliderTrack,
   SliderValue,
 } from "@/components/ui/slider"
-import { Slider, SliderForm } from "@/components/ui/slider-form"
+import { SliderForm } from "@/components/ui/slider-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 import { useState } from "react"
