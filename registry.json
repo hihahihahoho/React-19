@@ -1257,28 +1257,6 @@
       ]
     },
     {
-      "name": "select-popover",
-      "author": "hihahihahoho",
-      "title": "Select Popover",
-      "description": "Popover wrapper component for select dropdowns",
-      "dependencies": [],
-      "registryDependencies": [
-        "https://react-19.octung112.workers.dev/r/drawer.json",
-        "popover",
-        "https://react-19.octung112.workers.dev/r/select-interface.json",
-        "https://react-19.octung112.workers.dev/r/use-media-query.json",
-        "utils"
-      ],
-      "type": "registry:component",
-      "files": [
-        {
-          "path": "src/components/ui/select/select-popover.tsx",
-          "type": "registry:component",
-          "target": "components/ui/select/select-popover.tsx"
-        }
-      ]
-    },
-    {
       "name": "select",
       "author": "hihahihahoho",
       "title": "Select",
