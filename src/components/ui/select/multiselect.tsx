@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, X } from "lucide-react"
 import * as React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
 import { Badge } from "../badge"
@@ -157,8 +157,8 @@ function MultiSelect({
                       variant="secondary"
                       size="md"
                       clearBtn={!optionValue?.disabled}
-                      onClearBtnClick={() => handleRemove(optionValue.value)}
                       {...optionValue?.badgeProps}
+                      className={cn("pr-1", optionValue?.badgeProps?.className)}
                     >
                       <div className="flex max-w-22.5 items-center gap-1 overflow-hidden text-ellipsis">
                         {optionValue?.icon &&
@@ -176,6 +176,14 @@ function MultiSelect({
                         <span className="overflow-hidden text-ellipsis">
                           {optionValue?.label || optionValue.value}
                         </span>
+                        <div
+                          className="flex aspect-square h-5 cursor-pointer items-center justify-center opacity-40 hover:opacity-100"
+                          onClick={() => {
+                            handleRemove(optionValue.value)
+                          }}
+                        >
+                          <X className="x-button" />
+                        </div>
                       </div>
                     </Badge>
                   </OverflowGroupItem>

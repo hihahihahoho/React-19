@@ -31,12 +31,10 @@ const buttonVariants = cva(
         true: "pointer-events-none opacity-50",
       },
       size: {
-        xs: ["h-6 min-w-6 gap-1 rounded-md px-2 py-1 text-xs"],
-        default: ["h-9 min-w-9 px-4 py-2"],
-        sm: [
-          "has-[svg:first-child+:not(:empty)]:pl-1 has-[svg:last-child+:not(:empty)]:pr-1",
-        ],
-        lg: ["h-10 min-w-10 rounded-xl px-8"],
+        xs: "h-6 min-w-6 gap-1 rounded-md px-2 py-1 text-xs",
+        default: "h-9 min-w-9 px-4 py-2",
+        sm: "h-8 min-w-8 px-3",
+        lg: "h-10 min-w-10 rounded-xl px-8",
       },
       iconOnly: {
         true: "p-0",

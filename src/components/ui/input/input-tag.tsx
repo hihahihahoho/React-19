@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { PopoverAnchor } from "@radix-ui/react-popover"
 import { Measurable } from "@radix-ui/rect"
 import { CommandInput, useCommandState } from "cmdk"
-import { AlertCircle, PlusCircle } from "lucide-react"
+import { AlertCircle, PlusCircle, X } from "lucide-react"
 import * as React from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar"
 import { Badge, BadgeProps } from "../badge"
@@ -501,17 +501,19 @@ export function InputTag({
         key={`${tag}-${index}`}
         size={"md"}
         variant={duplicate ? "red" : "blue"}
-        className={cn(activeTagIndex === index && "ring-2 ring-blue-500")}
         clearBtn={true}
-        onClearBtnClick={() => {
-          removeTag(index)
-        }}
         onClick={(e) => {
           e.stopPropagation()
           setActiveTagIndex(index)
         }}
         {...badgeProps}
         {...tagContent?.badgeProps}
+        className={cn(
+          "pr-1",
+          activeTagIndex === index && "ring-2 ring-blue-500",
+          badgeProps?.className,
+          tagContent?.badgeProps?.className
+        )}
       >
         {tagContent?.icon &&
           (typeof tagContent.icon === "string" ? (
@@ -528,6 +530,14 @@ export function InputTag({
         <span className="overflow-hidden text-ellipsis">
           {tagContent?.label || tagContent?.value || tag}
         </span>
+        <div
+          className="flex aspect-square h-5 cursor-pointer items-center justify-center opacity-40 hover:opacity-100"
+          onClick={() => {
+            removeTag(index)
+          }}
+        >
+          <X className="x-button" />
+        </div>
       </Badge>
     )
 

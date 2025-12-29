@@ -14,7 +14,6 @@ import {
   Settings,
   Star,
   Tag,
-  Trash,
 } from "lucide-react"
 
 /**
@@ -99,20 +98,6 @@ They can include icons, display text, and have interactive elements like tooltip
       description:
         "When true, displays a clear button (×) on the right side of the badge",
     },
-    onClearBtnClick: {
-      description: "Function called when the clear button is clicked",
-      action: "clear clicked",
-    },
-    iconLeft: {
-      description: "Icon displayed on the left side of the badge",
-    },
-    iconRight: {
-      description: "Icon displayed on the right side of the badge",
-    },
-    tooltip: {
-      control: "text",
-      description: "Text displayed in tooltip when hovering over the badge",
-    },
     className: {
       control: "text",
       description: "Additional CSS classes to apply to the badge",
@@ -159,16 +144,20 @@ export const BasicVariants: Story = {
 export const ColorVariants: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
-      <Badge variant="green" iconLeft={<Check className="size-4" />}>
+      <Badge variant="green">
+        <Check className="size-4" />
         Success
       </Badge>
-      <Badge variant="orange" iconLeft={<AlertTriangle className="size-4" />}>
+      <Badge variant="orange">
+        <AlertTriangle className="size-4" />
         Warning
       </Badge>
-      <Badge variant="blue" iconLeft={<Info className="size-4" />}>
+      <Badge variant="blue">
+        <Info className="size-4" />
         Information
       </Badge>
-      <Badge variant="red" iconLeft={<AlertCircle className="size-4" />}>
+      <Badge variant="red">
+        <AlertCircle className="size-4" />
         Error
       </Badge>
     </div>
@@ -244,20 +233,23 @@ export const SizeVariants: Story = {
 /**
  * Showcase of badges with icons positioned on the left side.
  */
-export const WithLeftIcons: Story = {
+export const WithIcons: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      <Badge iconLeft={<Bell className="size-4" />}>Notifications</Badge>
-      <Badge variant="secondary" iconLeft={<Star className="size-4" />}>
+      <Badge>
+        <Bell className="size-4" />
+        Notifications
+      </Badge>
+      <Badge variant="secondary">
+        <Star className="size-4" />
         Featured
       </Badge>
-      <Badge
-        variant="destructive"
-        iconLeft={<AlertCircle className="size-4" />}
-      >
+      <Badge variant="destructive">
+        <AlertCircle className="size-4" />
         Critical
       </Badge>
-      <Badge variant="outline" iconLeft={<Tag className="size-4" />}>
+      <Badge variant="outline">
+        <Tag className="size-4" />
         Tagged
       </Badge>
     </div>
@@ -265,75 +257,37 @@ export const WithLeftIcons: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Badges with left-aligned icons for additional visual context.",
+        story: "Badges with icons as children for additional visual context.",
       },
     },
   },
 }
 
 /**
- * Showcase of badges with icons positioned on the right side.
+ * Badges with multiple icons as children.
  */
-export const WithRightIcons: Story = {
+export const WithMultipleIcons: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      <Badge iconRight={<Check className="size-4" />}>Status</Badge>
-      <Badge
-        variant="secondary"
-        iconRight={<ChevronRight className="size-4" />}
-      >
-        Next
-      </Badge>
-      <Badge variant="destructive" iconRight={<Trash className="size-4" />}>
-        Remove
-      </Badge>
-      <Badge variant="outline" iconRight={<Settings className="size-4" />}>
-        Settings
-      </Badge>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Badges with right-aligned icons, useful for actions or navigation cues.",
-      },
-    },
-  },
-}
-
-/**
- * Badges with icons on both sides for enhanced visual communication.
- */
-export const WithIconsOnBothSides: Story = {
-  render: () => (
-    <div className="flex flex-wrap gap-4">
-      <Badge
-        iconLeft={<Mail className="size-4" />}
-        iconRight={<Check className="size-4" />}
-      >
+      <Badge>
+        <Mail className="size-4" />
         Messages
+        <Check className="size-4" />
       </Badge>
-      <Badge
-        variant="secondary"
-        iconLeft={<Clock className="size-4" />}
-        iconRight={<ChevronRight className="size-4" />}
-      >
+      <Badge variant="secondary">
+        <Clock className="size-4" />
         Pending
+        <ChevronRight className="size-4" />
       </Badge>
-      <Badge
-        variant="destructive"
-        iconLeft={<AlertCircle className="size-4" />}
-        iconRight={<CircleX className="size-4" />}
-      >
+      <Badge variant="destructive">
+        <AlertCircle className="size-4" />
         Error
+        <CircleX className="size-4" />
       </Badge>
-      <Badge
-        variant="outline"
-        iconLeft={<Tag className="size-4" />}
-        iconRight={<Settings className="size-4" />}
-      >
+      <Badge variant="outline">
+        <Tag className="size-4" />
         Category
+        <Settings className="size-4" />
       </Badge>
     </div>
   ),
@@ -341,7 +295,7 @@ export const WithIconsOnBothSides: Story = {
     docs: {
       description: {
         story:
-          "Badges with icons on both sides provide rich visual context for complex states or actions.",
+          "Badges with multiple icons as children provide rich visual context for complex states or actions.",
       },
     },
   },
@@ -353,30 +307,16 @@ export const WithIconsOnBothSides: Story = {
 export const WithClearButtons: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      <Badge clearBtn onClearBtnClick={() => console.log("Default cleared")}>
-        Default
-      </Badge>
-      <Badge
-        variant="secondary"
-        clearBtn
-        onClearBtnClick={() => console.log("Secondary cleared")}
-        iconLeft={<Star className="size-4" />}
-      >
+      <Badge clearBtn>Default</Badge>
+      <Badge variant="secondary" clearBtn>
+        <Star className="size-4" />
         Starred
       </Badge>
-      <Badge
-        variant="destructive"
-        clearBtn
-        onClearBtnClick={() => console.log("Destructive cleared")}
-      >
+      <Badge variant="destructive" clearBtn>
         Error
       </Badge>
-      <Badge
-        variant="outline"
-        clearBtn
-        onClearBtnClick={() => console.log("Outline cleared")}
-        iconLeft={<Tag className="size-4" />}
-      >
+      <Badge variant="outline" clearBtn>
+        <Tag className="size-4" />
         Tag
       </Badge>
     </div>
@@ -392,114 +332,69 @@ export const WithClearButtons: Story = {
 }
 
 /**
- * Badges with tooltips to provide additional information or context.
- */
-export const WithTooltips: Story = {
-  render: () => (
-    <div className="flex flex-wrap gap-4">
-      <Badge
-        tooltip="3 unread notifications"
-        iconLeft={<Bell className="size-4" />}
-      >
-        3
-      </Badge>
-      <Badge
-        variant="secondary"
-        tooltip="Featured content"
-        iconLeft={<Star className="size-4" />}
-      >
-        Featured
-      </Badge>
-      <Badge
-        variant="destructive"
-        tooltip="Critical system error"
-        iconLeft={<AlertCircle className="size-4" />}
-      >
-        Critical
-      </Badge>
-      <Badge
-        variant="blue"
-        tooltip="System is running normally"
-        iconLeft={<Info className="size-4" />}
-      >
-        System Status
-      </Badge>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Badges with tooltips provide additional context or explanation when hovered.",
-      },
-    },
-  },
-}
-
-/**
  * Combined showcase demonstrating different badge sizes with icons.
  */
 export const SizesWithIcons: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-4">
-        <Badge size="xs" iconLeft={<Bell className="size-4" />}>
+        <Badge size="xs">
+          <Bell className="size-4" />
           XSmall
         </Badge>
-        <Badge size="xs" iconRight={<ChevronRight className="size-4" />}>
+        <Badge size="xs">
           XSmall
+          <ChevronRight className="size-4" />
         </Badge>
-        <Badge
-          size="xs"
-          iconLeft={<Star className="size-4" />}
-          iconRight={<Check className="size-4" />}
-        >
+        <Badge size="xs">
+          <Star className="size-4" />
           XSmall
+          <Check className="size-4" />
         </Badge>
       </div>
       <div className="flex flex-wrap items-center gap-4">
-        <Badge size="sm" iconLeft={<Bell className="size-4" />}>
+        <Badge size="sm">
+          <Bell className="size-4" />
           Small
         </Badge>
-        <Badge size="sm" iconRight={<ChevronRight className="size-4" />}>
+        <Badge size="sm">
           Small
+          <ChevronRight className="size-4" />
         </Badge>
-        <Badge
-          size="sm"
-          iconLeft={<Star className="size-4" />}
-          iconRight={<Check className="size-4" />}
-        >
+        <Badge size="sm">
+          <Star className="size-4" />
           Small
+          <Check className="size-4" />
         </Badge>
       </div>
       <div className="flex flex-wrap items-center gap-4">
-        <Badge size="md" iconLeft={<Bell className="size-4" />}>
+        <Badge size="md">
+          <Bell className="size-4" />
           Medium
         </Badge>
-        <Badge size="md" iconRight={<ChevronRight className="size-4" />}>
+        <Badge size="md">
           Medium
+          <ChevronRight className="size-4" />
         </Badge>
-        <Badge
-          size="md"
-          iconLeft={<Star className="size-4" />}
-          iconRight={<Check className="size-4" />}
-        >
+        <Badge size="md">
+          <Star className="size-4" />
           Medium
+          <Check className="size-4" />
         </Badge>
       </div>
       <div className="flex flex-wrap items-center gap-4">
-        <Badge size="lg" iconLeft={<Bell className="size-4" />}>
+        <Badge size="lg">
+          <Bell className="size-4" />
           Large
         </Badge>
-        <Badge size="lg" iconRight={<ChevronRight className="size-4" />}>
+        <Badge size="lg">
           Large
+          <ChevronRight className="size-4" />
         </Badge>
-        <Badge
-          size="lg"
-          iconLeft={<Star className="size-4" />}
-          iconRight={<Check className="size-4" />}
-        >
+        <Badge size="lg">
+          <Star className="size-4" />
           Large
+          <Check className="size-4" />
         </Badge>
       </div>
     </div>
@@ -507,8 +402,7 @@ export const SizesWithIcons: Story = {
   parameters: {
     docs: {
       description: {
-        story:
-          "Comparison of different badge sizes with icon placement variations.",
+        story: "Comparison of different badge sizes with icons as children.",
       },
     },
   },
@@ -531,12 +425,12 @@ export const Customization: Story = {
           <Badge
             variant="secondary"
             className="flex aspect-square h-8 w-8 items-center justify-center rounded-full p-0"
-            iconLeft={<Bell className="size-4" />}
-          />
+          >
+            <Bell className="size-4" />
+          </Badge>
           <Badge
             variant="blue"
             className="flex aspect-square h-10 w-10 items-center justify-center rounded-full p-0"
-            tooltip="Profile notifications"
           >
             <Mail className="size-5" />
           </Badge>
@@ -564,7 +458,6 @@ export const Customization: Story = {
           <Badge
             variant="red"
             className="flex aspect-square h-10 w-10 items-center justify-center rounded-md p-0"
-            tooltip="Critical alerts"
           >
             <AlertCircle className="size-5" />
           </Badge>
@@ -653,13 +546,18 @@ export const CompleteShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium">With Icons</h3>
         <div className="flex flex-wrap gap-2">
-          <Badge iconLeft={<Bell className="size-4" />}>Notifications</Badge>
-          <Badge iconRight={<Mail className="size-4" />}>Messages</Badge>
-          <Badge
-            iconLeft={<Star className="size-4" />}
-            iconRight={<Heart className="size-4" />}
-          >
+          <Badge>
+            <Bell className="size-4" />
+            Notifications
+          </Badge>
+          <Badge>
+            Messages
+            <Mail className="size-4" />
+          </Badge>
+          <Badge>
+            <Star className="size-4" />
             Favorite
+            <Heart className="size-4" />
           </Badge>
         </div>
       </div>
@@ -667,18 +565,9 @@ export const CompleteShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium">Interactive Features</h3>
         <div className="flex flex-wrap gap-2">
-          <Badge clearBtn onClearBtnClick={() => console.log("Cleared")}>
-            Clearable
-          </Badge>
-          <Badge tooltip="Additional information displayed on hover">
-            With Tooltip
-          </Badge>
-          <Badge
-            clearBtn
-            onClearBtnClick={() => console.log("Cleared")}
-            tooltip="Click × to remove"
-            iconLeft={<Tag className="size-4" />}
-          >
+          <Badge clearBtn>Clearable</Badge>
+          <Badge clearBtn>
+            <Tag className="size-4" />
             Interactive
           </Badge>
         </div>
@@ -687,22 +576,27 @@ export const CompleteShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium">Common Use Cases</h3>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="green" iconLeft={<Check className="size-4" />}>
+          <Badge variant="green">
+            <Check className="size-4" />
             Completed
           </Badge>
-          <Badge variant="blue" iconLeft={<Info className="size-4" />}>
+          <Badge variant="blue">
+            <Info className="size-4" />
             New
           </Badge>
-          <Badge variant="orange" iconLeft={<Clock className="size-4" />}>
+          <Badge variant="orange">
+            <Clock className="size-4" />
             Pending
           </Badge>
-          <Badge variant="red" iconLeft={<AlertCircle className="size-4" />}>
+          <Badge variant="red">
+            <AlertCircle className="size-4" />
             Failed
           </Badge>
           <Badge variant="secondary" clearBtn>
             Filter
           </Badge>
-          <Badge variant="outline" iconLeft={<Tag className="size-4" />}>
+          <Badge variant="outline">
+            <Tag className="size-4" />
             Category
           </Badge>
         </div>
@@ -725,35 +619,20 @@ export const CompleteShowcase: Story = {
 export const WithIconsAndClear: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">
-      <Badge
-        clearBtn
-        onClearBtnClick={() => console.log("Default cleared")}
-        iconLeft={<Bell className="size-4" />}
-      >
+      <Badge clearBtn>
+        <Bell className="size-4" />
         Notifications
       </Badge>
-      <Badge
-        variant="secondary"
-        clearBtn
-        onClearBtnClick={() => console.log("Secondary cleared")}
-        iconLeft={<Star className="size-4" />}
-      >
+      <Badge variant="secondary" clearBtn>
+        <Star className="size-4" />
         Featured
       </Badge>
-      <Badge
-        variant="blue"
-        clearBtn
-        onClearBtnClick={() => console.log("Info cleared")}
-        iconLeft={<Info className="size-4" />}
-      >
+      <Badge variant="blue" clearBtn>
+        <Info className="size-4" />
         Info
       </Badge>
-      <Badge
-        variant="red"
-        clearBtn
-        onClearBtnClick={() => console.log("Error cleared")}
-        iconLeft={<AlertCircle className="size-4" />}
-      >
+      <Badge variant="red" clearBtn>
+        <AlertCircle className="size-4" />
         Error
       </Badge>
     </div>
