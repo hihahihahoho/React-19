@@ -101,7 +101,8 @@ export const BasicTableExample = () => {
         }
         const config = statusConfig[status]
         return (
-          <Badge variant={config.variant} iconLeft={config.icon}>
+          <Badge variant={config.variant}>
+            {config.icon}
             {status}
           </Badge>
         )
