@@ -1961,6 +1961,36 @@
           "target": "components/ui/table/data-table-context-server.tsx"
         }
       ]
+    },
+    {
+      "name": "image-crop",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "react-easy-crop",
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/slider.json",
+        "https://react-19.octung112.workers.dev/r/dialog.json",
+        "https://react-19.octung112.workers.dev/r/avatar.json",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/image-crop.tsx",
+          "type": "registry:component",
+          "target": "components/ui/image-crop.tsx"
+        },
+        {
+          "path": "src/components/ui/image-crop-avatar-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/image-crop-avatar-form.tsx"
+        }
+      ]
     }
   ]
 }
