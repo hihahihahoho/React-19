@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { SelectCommand } from "@/components/ui/select/select-command"
 import { SelectItems } from "@/components/ui/select/select-interface"
 import { SelectPopover } from "@/components/ui/select/select-popover"
-import { Grid7 } from "iconsax-reactjs"
+import { Grid } from "lucide-react"
 import { useDataTable } from "./data-table-context"
 
 function ShowHideColumnButton() {
@@ -49,7 +49,7 @@ function ShowHideColumnButton() {
           variant="outline"
         >
           Ẩn/Hiện cột ({visibleColumns.length})
-          <Grid7 />
+          <Grid />
         </Button>
       }
       popoverContentProps={{
