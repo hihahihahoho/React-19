@@ -791,9 +791,6 @@ export const VirtualizedMultiSelect: Story = {
               selectCommandProps={{
                 loading: isLoading,
                 minItemsToShowSearch: 5,
-                virtualizerOptions: {
-                  estimateSize: () => 50,
-                },
               }}
               overflowGroupProps={{
                 maxShownItems: 5,
