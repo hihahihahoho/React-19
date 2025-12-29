@@ -6,7 +6,6 @@ import {
   SliderIndicator,
   SliderLabel,
   SliderRange,
-  SliderRangeDisplay,
   SliderRoot,
   SliderThumb,
   SliderTrack,
@@ -127,7 +126,7 @@ export const WithThumbLabel: Story = {
       <SliderRoot
         value={value}
         onValueChange={setValue}
-        label=" VND"
+        suffix=" VND"
         className="w-full"
       >
         <SliderControl>
@@ -242,7 +241,7 @@ export const RangeSlider: Story = {
       <SliderRoot
         value={value}
         onValueChange={setValue}
-        label=" VND"
+        suffix=" VND"
         className="w-full"
       >
         <SliderControl>
@@ -285,10 +284,17 @@ export const FullFeatured: Story = {
         onValueChange={setValue}
         min={0}
         max={100}
-        label=" triệu"
+        suffix=" triệu"
         className="w-full"
       >
-        <SliderRangeDisplay label="Price Range" className="mb-4" />
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-muted-foreground text-sm">Price Range</span>
+          <div className="flex items-center gap-1 text-sm font-medium">
+            <SliderValue valueIndex={0} />
+            <span className="text-muted-foreground">-</span>
+            <SliderValue valueIndex={1} />
+          </div>
+        </div>
 
         <SliderIndicator step={25} />
 
@@ -331,7 +337,7 @@ export const WithValueDisplay: Story = {
       <SliderRoot
         value={value}
         onValueChange={setValue}
-        label="%"
+        suffix="%"
         className="w-full"
       >
         <div className="mb-4 flex items-center justify-between">
@@ -495,7 +501,7 @@ export const WithFormRange: Story = {
                 name="priceRange"
                 min={0}
                 max={100}
-                label=" triệu"
+                suffix=" triệu"
                 showIndicator
                 indicatorStep={25}
                 showThumbLabel
@@ -546,7 +552,7 @@ export const CustomLabelFunction: Story = {
         onValueChange={setValue}
         min={0}
         max={100}
-        label={formatCurrency}
+        suffix={formatCurrency}
         className="w-full"
       >
         <SliderControl>

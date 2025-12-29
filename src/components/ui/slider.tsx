@@ -13,7 +13,7 @@ interface SliderContextValue {
   min: number
   max: number
   handleValueChange: (value: number[]) => void
-  label?: React.ReactNode | ((value: number | undefined) => React.ReactNode)
+  suffix?: React.ReactNode | ((value: number | undefined) => React.ReactNode)
   disabled?: boolean
 }
 
@@ -42,7 +42,7 @@ interface SliderRootProps extends Omit<
   max?: number
   step?: number
   disabled?: boolean
-  label?: React.ReactNode | ((value: number | undefined) => React.ReactNode)
+  suffix?: React.ReactNode | ((value: number | undefined) => React.ReactNode)
 }
 
 function SliderRoot({
@@ -54,7 +54,7 @@ function SliderRoot({
   value: controlledValue,
   onValueChange,
   defaultValue,
-  label,
+  suffix,
   disabled = false,
   ...props
 }: SliderRootProps) {
@@ -82,10 +82,10 @@ function SliderRoot({
       min,
       max,
       handleValueChange,
-      label,
+      suffix,
       disabled,
     }),
-    [currentValue, min, max, handleValueChange, label, disabled]
+    [currentValue, min, max, handleValueChange, suffix, disabled]
   )
 
   return (
@@ -217,16 +217,16 @@ function SliderLabel({
   showArrow = true,
   ...props
 }: SliderLabelProps) {
-  const { label } = useSliderContext()
+  const { suffix } = useSliderContext()
 
   const renderContent = () => {
-    if (typeof label === "function") {
-      return label(value)
+    if (typeof suffix === "function") {
+      return suffix(value)
     }
     return (
       <>
         {value}
-        {label && <span>{label}</span>}
+        {suffix && <span>{suffix}</span>}
       </>
     )
   }
@@ -276,7 +276,7 @@ function SliderIndicator({
   position = "top",
   ...props
 }: SliderIndicatorProps) {
-  const { min, max, value, handleValueChange, label, disabled } =
+  const { min, max, value, handleValueChange, suffix, disabled } =
     useSliderContext()
 
   const positions = React.useMemo(() => {
@@ -348,7 +348,7 @@ function SliderIndicator({
                 ) : (
                   <>
                     {pos}
-                    {typeof label !== "function" && label}
+                    {typeof suffix !== "function" && suffix}
                   </>
                 )}
               </span>
@@ -369,7 +369,7 @@ interface SliderValueProps extends React.ComponentProps<"div"> {
   /**
    * Index of the value to display. If not provided, shows the last value.
    */
-  index?: number
+  valueIndex?: number
   /**
    * Custom render function for the value
    */
@@ -378,26 +378,26 @@ interface SliderValueProps extends React.ComponentProps<"div"> {
 
 function SliderValue({
   className,
-  index,
+  valueIndex,
   renderValue,
   ...props
 }: SliderValueProps) {
-  const { value, label } = useSliderContext()
+  const { value, suffix } = useSliderContext()
 
   const displayValue =
-    index !== undefined ? value[index] : value[value.length - 1]
+    valueIndex !== undefined ? value[valueIndex] : value[value.length - 1]
 
   const renderContent = () => {
     if (renderValue) {
       return renderValue(displayValue)
     }
-    if (typeof label === "function") {
-      return label(displayValue)
+    if (typeof suffix === "function") {
+      return suffix(displayValue)
     }
     return (
       <>
         {displayValue}
-        {label && <span className="ml-0.5">{label}</span>}
+        {suffix && <span className="ml-0.5">{suffix}</span>}
       </>
     )
   }
@@ -414,75 +414,6 @@ function SliderValue({
 }
 
 // ============================================================================
-// Slider Range Display (shows start - end values with label)
-// ============================================================================
-
-interface SliderRangeDisplayProps extends React.ComponentProps<"div"> {
-  /**
-   * Label to display before the values
-   */
-  label?: React.ReactNode
-  /**
-   * Separator between the two values
-   * @default "-"
-   */
-  separator?: React.ReactNode
-  /**
-   * Custom render function for the value
-   */
-  renderValue?: (value: number) => React.ReactNode
-}
-
-function SliderRangeDisplay({
-  className,
-  label: displayLabel,
-  separator = "-",
-  renderValue,
-  ...props
-}: SliderRangeDisplayProps) {
-  const { value, label: contextLabel } = useSliderContext()
-
-  const startValue = value[0]
-  const endValue = value.length > 1 ? value[value.length - 1] : undefined
-
-  const formatValue = (val: number) => {
-    if (renderValue) {
-      return renderValue(val)
-    }
-    if (typeof contextLabel === "function") {
-      return contextLabel(val)
-    }
-    return (
-      <>
-        {val}
-        {contextLabel && <span className="ml-0.5">{contextLabel}</span>}
-      </>
-    )
-  }
-
-  return (
-    <div
-      data-slot="slider-range-display"
-      className={cn("flex items-center justify-between", className)}
-      {...props}
-    >
-      {displayLabel && (
-        <span className="text-muted-foreground text-sm">{displayLabel}</span>
-      )}
-      <div className="flex items-center gap-2 text-sm font-medium">
-        <span className="tabular-nums">{formatValue(startValue)}</span>
-        {endValue !== undefined && (
-          <>
-            <span className="text-muted-foreground">{separator}</span>
-            <span className="tabular-nums">{formatValue(endValue)}</span>
-          </>
-        )}
-      </div>
-    </div>
-  )
-}
-
-// ============================================================================
 // Exports
 // ============================================================================
 
@@ -491,7 +422,6 @@ export {
   SliderIndicator,
   SliderLabel,
   SliderRange,
-  SliderRangeDisplay,
   SliderRoot,
   SliderThumb,
   SliderTrack,
@@ -503,7 +433,6 @@ export type {
   SliderControlProps,
   SliderIndicatorProps,
   SliderLabelProps,
-  SliderRangeDisplayProps,
   SliderRangeProps,
   SliderRootProps,
   SliderThumbProps,
