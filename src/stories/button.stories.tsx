@@ -72,7 +72,8 @@ They come in various styles, sizes, and can include icons or loading states.
       },
     },
     children: {
-      description: "The content displayed inside the button",
+      description:
+        "The content displayed inside the button. Can include icons (SVG) - padding adjusts automatically when first/last child is an SVG",
       control: "text",
     },
     isRounded: {
@@ -91,12 +92,6 @@ They come in various styles, sizes, and can include icons or loading states.
     disabled: {
       control: "boolean",
       description: "When true, disables the button",
-    },
-    iconLeft: {
-      description: "Icon displayed on the left side of the button text",
-    },
-    iconRight: {
-      description: "Icon displayed on the right side of the button text",
     },
     asChild: {
       control: "boolean",
@@ -173,14 +168,20 @@ export const SizeVariants: Story = {
 export const WithLeftIcons: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      <Button iconLeft={<Plus />}>Add New</Button>
-      <Button variant="secondary" iconLeft={<Download />}>
+      <Button>
+        <Plus />
+        Add New
+      </Button>
+      <Button variant="secondary">
+        <Download />
         Download
       </Button>
-      <Button variant="destructive" iconLeft={<Trash />}>
+      <Button variant="destructive">
+        <Trash />
         Delete
       </Button>
-      <Button variant="outline" iconLeft={<Settings />}>
+      <Button variant="outline">
+        <Settings />
         Settings
       </Button>
     </div>
@@ -200,15 +201,21 @@ export const WithLeftIcons: Story = {
 export const WithRightIcons: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      <Button iconRight={<ChevronRight />}>Next</Button>
-      <Button variant="secondary" iconRight={<Mail />}>
+      <Button>
+        Next
+        <ChevronRight />
+      </Button>
+      <Button variant="secondary">
         Send
+        <Mail />
       </Button>
-      <Button variant="destructive" iconRight={<AlertCircle />}>
+      <Button variant="destructive">
         Warning
+        <AlertCircle />
       </Button>
-      <Button variant="outline" iconRight={<Bell />}>
+      <Button variant="outline">
         Notifications
+        <Bell />
       </Button>
     </div>
   ),
@@ -228,18 +235,20 @@ export const WithRightIcons: Story = {
 export const WithIconsOnBothSides: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      <Button iconLeft={<Mail />} iconRight={<ChevronRight />}>
+      <Button>
+        <Mail />
         Messages
+        <ChevronRight />
       </Button>
-      <Button variant="secondary" iconLeft={<Save />} iconRight={<Check />}>
+      <Button variant="secondary">
+        <Save />
         Save Changes
+        <Check />
       </Button>
-      <Button
-        variant="outline"
-        iconLeft={<Settings />}
-        iconRight={<ChevronRight />}
-      >
+      <Button variant="outline">
+        <Settings />
         Advanced Settings
+        <ChevronRight />
       </Button>
     </div>
   ),
@@ -259,25 +268,18 @@ export const WithIconsOnBothSides: Story = {
 export const IconOnly: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      <Button iconLeft={<Plus />} iconOnly aria-label="Add item" />
-      <Button
-        variant="secondary"
-        iconLeft={<Settings />}
-        iconOnly
-        aria-label="Settings"
-      />
-      <Button
-        variant="destructive"
-        iconLeft={<Trash />}
-        iconOnly
-        aria-label="Delete"
-      />
-      <Button
-        variant="outline"
-        iconLeft={<Bell />}
-        iconOnly
-        aria-label="Notifications"
-      />
+      <Button iconOnly aria-label="Add item">
+        <Plus />
+      </Button>
+      <Button variant="secondary" iconOnly aria-label="Settings">
+        <Settings />
+      </Button>
+      <Button variant="destructive" iconOnly aria-label="Delete">
+        <Trash />
+      </Button>
+      <Button variant="outline" iconOnly aria-label="Notifications">
+        <Bell />
+      </Button>
     </div>
   ),
   parameters: {
@@ -297,19 +299,16 @@ export const RoundedButtons: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
       <Button isRounded>Rounded</Button>
-      <Button variant="secondary" isRounded iconLeft={<Plus />}>
+      <Button variant="secondary" isRounded>
+        <Plus />
         New Item
       </Button>
       <Button variant="outline" isRounded>
         Outline Rounded
       </Button>
-      <Button
-        variant="destructive"
-        isRounded
-        iconLeft={<Trash />}
-        iconOnly
-        aria-label="Delete"
-      />
+      <Button variant="destructive" isRounded iconOnly aria-label="Delete">
+        <Trash />
+      </Button>
     </div>
   ),
   parameters: {
@@ -360,7 +359,8 @@ export const DisabledStates: Story = {
       <Button variant="secondary" disabled>
         Unavailable
       </Button>
-      <Button variant="outline" disabled iconLeft={<Settings />}>
+      <Button variant="outline" disabled>
+        <Settings />
         Settings
       </Button>
       <Button variant="destructive" disabled>
@@ -384,23 +384,28 @@ export const DisabledStates: Story = {
 export const CombinedExamples: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-      <Button size="lg" iconLeft={<Plus />}>
+      <Button size="lg">
+        <Plus />
         Create New
       </Button>
-      <Button variant="secondary" isRounded iconRight={<ChevronRight />}>
+      <Button variant="secondary" isRounded>
         Continue
+        <ChevronRight />
       </Button>
-      <Button variant="destructive" size="sm" iconLeft={<Trash />}>
+      <Button variant="destructive" size="sm">
+        <Trash />
         Remove Item
       </Button>
       <Button variant="outline" isLoading>
         Uploading...
       </Button>
-      <Button variant="ghost" iconLeft={<Settings />}>
+      <Button variant="ghost">
+        <Settings />
         Preferences
       </Button>
-      <Button variant="link" iconRight={<ChevronRight />}>
+      <Button variant="link">
         Learn More
+        <ChevronRight />
       </Button>
     </div>
   ),

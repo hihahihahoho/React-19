@@ -31,11 +31,10 @@ const fileIcon = {
   other: <File />,
 }
 
-export interface FileUploadGridProps
-  extends Omit<
-    React.ComponentProps<"input">,
-    "value" | "accept" | "defaultValue"
-  > {
+export interface FileUploadGridProps extends Omit<
+  React.ComponentProps<"input">,
+  "value" | "accept" | "defaultValue"
+> {
   onFileChange?: (files: FileList) => void
   maxFiles?: number
   accept?: TAccept[]
@@ -172,8 +171,9 @@ function FileUploadGrid({
                       e.stopPropagation()
                       handlePreviewFile(fileMeta)
                     }}
-                    iconLeft={<Eye className="size-3.5!" />}
-                  />
+                  >
+                    <Eye className="size-3.5!" />
+                  </Button>
                   <Button
                     size="xs"
                     variant="ghost"
@@ -184,13 +184,14 @@ function FileUploadGrid({
                       e.stopPropagation()
                       removeFile(fileMeta.id)
                     }}
-                    iconLeft={<X />}
-                  />
+                  >
+                    <X className="size-3.5!" />
+                  </Button>
                 </div>
               </div>
             ))}
             {(internalFiles.length < maxFiles || maxFiles === 1) && (
-              <div className="flex h-[100px] flex-col items-center justify-center gap-3 rounded-lg border border-dashed">
+              <div className="flex h-25 flex-col items-center justify-center gap-3 rounded-lg border border-dashed">
                 <div className="bg-accent flex size-12 items-center justify-center rounded-2xl">
                   <CloudUpload />
                 </div>

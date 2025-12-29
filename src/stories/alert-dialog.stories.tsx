@@ -118,7 +118,8 @@ export const ConfirmationVariants: Story = {
     const DeleteConfirm = () => (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="destructive" iconLeft={<Trash />}>
+          <Button variant="destructive">
+            <Trash />
             Delete Item
           </Button>
         </AlertDialogTrigger>
@@ -146,7 +147,10 @@ export const ConfirmationVariants: Story = {
     const SaveConfirm = () => (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button iconLeft={<Save />}>Save Changes</Button>
+          <Button>
+            <Save />
+            Save Changes
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -169,7 +173,8 @@ export const ConfirmationVariants: Story = {
     const InfoAlert = () => (
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outline" iconLeft={<Info />}>
+          <Button variant="outline">
+            <Info />
             Information
           </Button>
         </AlertDialogTrigger>
@@ -407,28 +412,20 @@ export const DynamicAlerts: Story = {
       return (
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap gap-4">
-            <Button onClick={showSuccessAlert} iconLeft={<Check />}>
+            <Button onClick={showSuccessAlert}>
+              <Check />
               Show Success Alert
             </Button>
-            <Button
-              variant="destructive"
-              onClick={showDeleteAlert}
-              iconLeft={<Trash />}
-            >
+            <Button variant="destructive" onClick={showDeleteAlert}>
+              <Trash />
               Show Delete Alert
             </Button>
-            <Button
-              variant="outline"
-              onClick={showInfoAlert}
-              iconLeft={<Info />}
-            >
+            <Button variant="outline" onClick={showInfoAlert}>
+              <Info />
               Show Info Alert
             </Button>
-            <Button
-              variant="outline"
-              onClick={showWarningAlert}
-              iconLeft={<AlertCircle />}
-            >
+            <Button variant="outline" onClick={showWarningAlert}>
+              <AlertCircle />
               Show Warning Alert
             </Button>
           </div>
@@ -458,7 +455,7 @@ export const CustomizedAlertDialog: Story = {
         <Button variant="outline">Open Custom Alert</Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="max-w-md">
-        <div className="absolute right-4 top-4">
+        <div className="absolute top-4 right-4">
           <AlertDialogCancel className="h-auto rounded-full p-2">
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
@@ -480,7 +477,7 @@ export const CustomizedAlertDialog: Story = {
             . During this period, services may be temporarily unavailable.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <div className="mt-4 rounded-md bg-muted/50 p-4">
+        <div className="bg-muted/50 mt-4 rounded-md p-4">
           <h4 className="mb-2 text-sm font-medium">What to expect:</h4>
           <ul className="list-disc space-y-1 pl-5 text-sm">
             <li>Temporary service disruption</li>
