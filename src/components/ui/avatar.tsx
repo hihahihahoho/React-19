@@ -23,14 +23,15 @@ const avatarVariants = cva(
 )
 
 export interface AvatarProps
-  extends React.ComponentProps<typeof AvatarPrimitive.Root>,
+  extends
+    React.ComponentProps<typeof AvatarPrimitive.Root>,
     VariantProps<typeof avatarVariants> {}
 
 function Avatar({ className, size, ...props }: AvatarProps) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
-      className={cn(avatarVariants({ size, className }))}
+      className={cn(avatarVariants({ size }), className)}
       {...props}
     />
   )
