@@ -148,7 +148,7 @@ export function FloatingHeader({
   return (
     <div
       className={cn(
-        "bg-background fixed top-0 z-30 overflow-hidden border-b-0",
+        "bg-background fixed top-0 z-30 overflow-hidden border border-y-0",
         fixedHeaderOffset
       )}
       style={{
