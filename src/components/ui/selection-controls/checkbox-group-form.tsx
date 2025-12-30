@@ -32,7 +32,6 @@ const CheckboxGroupForm = <
   formComposition,
   children,
   className,
-  disabled,
   ...props
 }: CheckboxGroupFormProps<TFieldValues, TName>) => {
   const { control: contextControl } = useFormContext<TFieldValues>()
@@ -54,9 +53,9 @@ const CheckboxGroupForm = <
             variant="empty"
           >
             <CheckboxGroup
+              {...props}
               value={value}
               onValueChange={field.onChange}
-              disabled={disabled}
               className={cn("mt-2", className)}
             >
               {children}
