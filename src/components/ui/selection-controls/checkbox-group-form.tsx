@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { CheckboxProps } from "@radix-ui/react-checkbox"
+import * as React from "react"
 import {
   ControllerProps,
   FieldPath,
@@ -10,22 +10,17 @@ import {
 } from "react-hook-form"
 import { FormComposition, FormCompositionProps, FormField } from "../form/form"
 import { useZodSchema } from "../form/zod-schema-context"
-import { Checkbox } from "./checkbox"
-import { SelectionGroup, SelectionGroupProps } from "./selection-group"
+import { CheckboxGroup, CheckboxGroupProps } from "./checkbox-group"
 
-export type ItemCheckboxType = CheckboxProps & {
-  label: React.ReactNode
-  value: string
-}
-
-export interface CheckboxFormProps<
+export interface CheckboxGroupFormProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<ControllerProps<TFieldValues, TName>, "render"> {
+>
+  extends
+    Omit<ControllerProps<TFieldValues, TName>, "render">,
+    Omit<CheckboxGroupProps, "value" | "onValueChange" | "defaultValue"> {
   formComposition?: FormCompositionProps
-  selectionGroup?: SelectionGroupProps
-  items: ItemCheckboxType[]
-  className?: string
+  children: React.ReactNode
 }
 
 const CheckboxGroupForm = <
@@ -35,11 +30,11 @@ const CheckboxGroupForm = <
   name,
   control,
   formComposition,
-  selectionGroup,
-  items,
+  children,
   className,
+  disabled,
   ...props
-}: CheckboxFormProps<TFieldValues, TName>) => {
+}: CheckboxGroupFormProps<TFieldValues, TName>) => {
   const { control: contextControl } = useFormContext<TFieldValues>()
   const { getSchemaFromPath } = useZodSchema()
   const { isRequired } = getSchemaFromPath(name)
@@ -58,31 +53,14 @@ const CheckboxGroupForm = <
             isMinHeight
             variant="empty"
           >
-            <div className={cn("mt-2 grid grid-cols-2 gap-2", className)}>
-              {items.map((item) => {
-                const { label, ...checkboxProps } = item
-                return (
-                  <SelectionGroup
-                    key={item.value}
-                    control={
-                      <Checkbox
-                        {...checkboxProps}
-                        checked={value.includes(item.value)}
-                        onCheckedChange={(checked) => {
-                          const newValue = checked
-                            ? [...value, item.value]
-                            : value.filter((val) => val !== item.value)
-                          field.onChange(newValue)
-                        }}
-                      />
-                    }
-                    {...selectionGroup}
-                  >
-                    {label}
-                  </SelectionGroup>
-                )
-              })}
-            </div>
+            <CheckboxGroup
+              value={value}
+              onValueChange={field.onChange}
+              disabled={disabled}
+              className={cn("mt-2", className)}
+            >
+              {children}
+            </CheckboxGroup>
           </FormComposition>
         )
       }}

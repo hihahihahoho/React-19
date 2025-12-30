@@ -17,14 +17,11 @@ import { PasswordValidator } from "@/components/ui/password-validator"
 import { MultiSelectForm } from "@/components/ui/select/multiselect-form"
 import { SelectForm } from "@/components/ui/select/select-form"
 import { CheckboxForm } from "@/components/ui/selection-controls/checkbox-form"
-import {
-  CheckboxGroupForm,
-  ItemCheckboxType,
-} from "@/components/ui/selection-controls/checkbox-group-form"
-import {
-  ItemRadioType,
-  RadioGroupForm,
-} from "@/components/ui/selection-controls/radio-group-form"
+import { CheckboxGroupItem } from "@/components/ui/selection-controls/checkbox-group"
+import { CheckboxGroupForm } from "@/components/ui/selection-controls/checkbox-group-form"
+import { RadioGroupItem } from "@/components/ui/selection-controls/radio-group"
+import { RadioGroupForm } from "@/components/ui/selection-controls/radio-group-form"
+import { SelectionGroup } from "@/components/ui/selection-controls/selection-group"
 import { TextareaForm } from "@/components/ui/textarea/textarea-form"
 import {
   ACCEPTED_PDF_TYPES,
@@ -38,45 +35,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { addYears, parse } from "date-fns"
 import { useForm, useWatch } from "react-hook-form"
 import { z } from "zod"
-
-const itemsCheckbox: ItemCheckboxType[] = [
-  {
-    value: "recents",
-    label: "Recents",
-  },
-  {
-    value: "home",
-    label: "Home",
-  },
-  {
-    value: "applications",
-    label: "Applications",
-  },
-  {
-    value: "desktop",
-    label: "Desktop",
-  },
-  {
-    value: "downloads",
-    label: "Downloads",
-  },
-  {
-    value: "documents",
-    label: "Documents",
-    disabled: true,
-  },
-] as const
-
-const itemsRadioGroup: ItemRadioType[] = [
-  {
-    value: "include",
-    label: "Bao gồm",
-  },
-  {
-    value: "exclude",
-    label: "Loại trừ",
-  },
-]
 
 // Password validation schema for PasswordValidator component
 const passwordValidationSchema = z
@@ -478,16 +436,49 @@ function FormDemo() {
           <CheckboxGroupForm
             control={form.control}
             name="checkbox_group"
-            selectionGroup={{
-              variant: "card",
-            }}
             formComposition={{
               label: "Checkboxes",
               labelPosition: "horizontal",
             }}
             className="grid-cols-1 gap-4 lg:grid-cols-2"
-            items={itemsCheckbox}
-          />
+          >
+            <SelectionGroup
+              variant="card"
+              control={<CheckboxGroupItem value="recents" />}
+            >
+              Recents
+            </SelectionGroup>
+            <SelectionGroup
+              variant="card"
+              control={<CheckboxGroupItem value="home" />}
+            >
+              Home
+            </SelectionGroup>
+            <SelectionGroup
+              variant="card"
+              control={<CheckboxGroupItem value="applications" />}
+            >
+              Applications
+            </SelectionGroup>
+            <SelectionGroup
+              variant="card"
+              control={<CheckboxGroupItem value="desktop" />}
+            >
+              Desktop
+            </SelectionGroup>
+            <SelectionGroup
+              variant="card"
+              control={<CheckboxGroupItem value="downloads" />}
+            >
+              Downloads
+            </SelectionGroup>
+            <SelectionGroup
+              variant="card"
+              control={<CheckboxGroupItem value="documents" disabled />}
+            >
+              Documents
+            </SelectionGroup>
+          </CheckboxGroupForm>
           <RadioGroupForm
             control={form.control}
             name="radio_group"
@@ -495,8 +486,14 @@ function FormDemo() {
               label: "Radio",
               labelPosition: "horizontal",
             }}
-            items={itemsRadioGroup}
-          />
+          >
+            <SelectionGroup control={<RadioGroupItem value="include" />}>
+              Bao gồm
+            </SelectionGroup>
+            <SelectionGroup control={<RadioGroupItem value="exclude" />}>
+              Loại trừ
+            </SelectionGroup>
+          </RadioGroupForm>
           <CheckboxForm control={form.control} name="checkbox_term">
             Tôi đã đọc và đồng ý với các điều khoản và điều kiện
           </CheckboxForm>

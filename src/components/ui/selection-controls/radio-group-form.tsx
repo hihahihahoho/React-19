@@ -1,27 +1,24 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { RadioGroupItemProps } from "@radix-ui/react-radio-group"
+import * as React from "react"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
 import { FormComposition, FormCompositionProps, FormField } from "../form/form"
-
 import { useZodSchema } from "../form/zod-schema-context"
-import { RadioGroup, RadioGroupItem } from "./radio-group"
-import { SelectionGroup, SelectionGroupProps } from "./selection-group"
-
-export type ItemRadioType = RadioGroupItemProps & {
-  label: React.ReactNode
-  value: string
-}
+import { RadioGroup } from "./radio-group"
 
 export interface RadioGroupFormProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<ControllerProps<TFieldValues, TName>, "render"> {
+>
+  extends
+    Omit<ControllerProps<TFieldValues, TName>, "render">,
+    Omit<
+      React.ComponentProps<typeof RadioGroup>,
+      "value" | "onValueChange" | "defaultValue" | "name"
+    > {
   formComposition?: FormCompositionProps
-  selectionGroup?: SelectionGroupProps
-  items: ItemRadioType[]
-  className?: string
+  children: React.ReactNode
 }
 
 const RadioGroupForm = <
@@ -31,13 +28,13 @@ const RadioGroupForm = <
   control,
   name,
   formComposition,
-  selectionGroup,
   className,
-  items,
+  children,
   ...props
 }: RadioGroupFormProps<TFieldValues, TName>) => {
   const { getSchemaFromPath } = useZodSchema()
   const { isRequired } = getSchemaFromPath(name)
+
   return (
     <FormField
       control={control}
@@ -55,18 +52,7 @@ const RadioGroupForm = <
             value={field.value}
             onValueChange={field.onChange}
           >
-            {items.map((item) => {
-              const { label, ...props } = item
-              return (
-                <SelectionGroup
-                  key={item.value}
-                  control={<RadioGroupItem {...props} />}
-                  {...selectionGroup}
-                >
-                  <div className="z-10">{label}</div>
-                </SelectionGroup>
-              )
-            })}
+            {children}
           </RadioGroup>
         </FormComposition>
       )}

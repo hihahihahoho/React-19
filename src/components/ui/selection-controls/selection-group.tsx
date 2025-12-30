@@ -6,7 +6,6 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, VariantProps } from "class-variance-authority"
-import { FormControl } from "../form/form"
 
 // Define the variant styles using cva
 const selectionGroupVariants = cva(
@@ -26,7 +25,8 @@ const selectionGroupVariants = cva(
 
 // Interface for SelectionGroup props
 export interface SelectionGroupProps
-  extends VariantProps<typeof selectionGroupVariants>,
+  extends
+    VariantProps<typeof selectionGroupVariants>,
     React.ComponentProps<"label"> {
   control?: React.ReactNode
 }
@@ -49,9 +49,7 @@ function SelectionGroup({
           <span aria-hidden="true" className="w-0 select-none">
             &nbsp;
           </span>
-          <FormControl>
-            <Slot className={cn("align-middle")}>{control}</Slot>
-          </FormControl>
+          <Slot className={cn("align-middle")}>{control}</Slot>
         </div>
       </div>
       <div className="group-has-[button:disabled]/group-selection:opacity-60 group-has-[input:disabled]/group-selection:cursor-not-allowed group-has-[input:disabled]/group-selection:opacity-60 peer-disabled:cursor-not-allowed peer-disabled:opacity-60">

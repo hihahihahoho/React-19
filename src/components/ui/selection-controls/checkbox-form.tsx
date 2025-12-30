@@ -9,8 +9,13 @@ import { SelectionGroup, SelectionGroupProps } from "./selection-group"
 export interface CheckboxFormProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<ControllerProps<TFieldValues, TName>, "render">,
-    Omit<CheckboxProps, "name" | "onValueChange" | "defaultValue" | "value"> {
+>
+  extends
+    Omit<ControllerProps<TFieldValues, TName>, "render">,
+    Omit<
+      CheckboxProps,
+      "name" | "onCheckedChange" | "defaultValue" | "checked"
+    > {
   selectionGroup?: SelectionGroupProps
   formComposition?: FormCompositionProps
 }

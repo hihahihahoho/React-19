@@ -6,10 +6,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/selection-controls/radio-group"
-import {
-  ItemRadioType,
-  RadioGroupForm,
-} from "@/components/ui/selection-controls/radio-group-form"
+import { RadioGroupForm } from "@/components/ui/selection-controls/radio-group-form"
 import { SelectionGroup } from "@/components/ui/selection-controls/selection-group"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { Meta, StoryObj } from "@storybook/react-vite"
@@ -90,13 +87,6 @@ Unlike checkboxes, radio buttons enforce a single selection within a group and c
 export default meta
 type Story = StoryObj<typeof RadioGroup>
 
-const itemsRadio: ItemRadioType[] = [
-  { value: "radioDisabled", label: "Radio disabled", disabled: true },
-  { value: "include", label: "Include" },
-  { value: "exclude", label: "Exclude" },
-  { value: "pending", label: "Pending", disabled: true },
-]
-
 const FormSchema = z.object({
   radioGroupDemo: z.enum(["include", "exclude", "pending", "radioDisabled"], {
     error: "You need to select an option.",
@@ -127,8 +117,24 @@ const RadioFormDemo = () => {
               label: "Radio Group",
               description: "Select your preference",
             }}
-            items={itemsRadio}
-          />
+          >
+            <SelectionGroup
+              control={<RadioGroupItem value="radioDisabled" disabled />}
+            >
+              Radio disabled
+            </SelectionGroup>
+            <SelectionGroup control={<RadioGroupItem value="include" />}>
+              Include
+            </SelectionGroup>
+            <SelectionGroup control={<RadioGroupItem value="exclude" />}>
+              Exclude
+            </SelectionGroup>
+            <SelectionGroup
+              control={<RadioGroupItem value="pending" disabled />}
+            >
+              Pending
+            </SelectionGroup>
+          </RadioGroupForm>
           <Button type="submit">Submit</Button>
         </form>
       </Form>
@@ -143,17 +149,20 @@ export const BasicVariants: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-6">
       <RadioGroup defaultValue="include">
-        {itemsRadio.map((item) => {
-          const { value, ...props } = item
-          return (
-            <SelectionGroup
-              key={value}
-              control={<RadioGroupItem value={value} {...props} />}
-            >
-              {item.label}
-            </SelectionGroup>
-          )
-        })}
+        <SelectionGroup
+          control={<RadioGroupItem value="radioDisabled" disabled />}
+        >
+          Radio disabled
+        </SelectionGroup>
+        <SelectionGroup control={<RadioGroupItem value="include" />}>
+          Include
+        </SelectionGroup>
+        <SelectionGroup control={<RadioGroupItem value="exclude" />}>
+          Exclude
+        </SelectionGroup>
+        <SelectionGroup control={<RadioGroupItem value="pending" disabled />}>
+          Pending
+        </SelectionGroup>
       </RadioGroup>
     </div>
   ),
@@ -173,17 +182,20 @@ export const BasicVariants: Story = {
 export const Default: Story = {
   render: () => (
     <RadioGroup defaultValue="radioDisabled">
-      {itemsRadio.map((item) => {
-        const { value, ...props } = item
-        return (
-          <SelectionGroup
-            key={value}
-            control={<RadioGroupItem value={value} {...props} />}
-          >
-            {item.label}
-          </SelectionGroup>
-        )
-      })}
+      <SelectionGroup
+        control={<RadioGroupItem value="radioDisabled" disabled />}
+      >
+        Radio disabled
+      </SelectionGroup>
+      <SelectionGroup control={<RadioGroupItem value="include" />}>
+        Include
+      </SelectionGroup>
+      <SelectionGroup control={<RadioGroupItem value="exclude" />}>
+        Exclude
+      </SelectionGroup>
+      <SelectionGroup control={<RadioGroupItem value="pending" disabled />}>
+        Pending
+      </SelectionGroup>
     </RadioGroup>
   ),
   parameters: {
@@ -470,22 +482,23 @@ export const AdvancedForm: Story = {
                   label: "Subscription Plan",
                   description: "Select the plan that works for you",
                 }}
-                selectionGroup={{
-                  variant: "card",
-                }}
-                items={subscriptionPlans.map((plan) => ({
-                  value: plan.value,
-                  label: (
+                className="grid-cols-1 gap-4"
+              >
+                {subscriptionPlans.map((plan) => (
+                  <SelectionGroup
+                    key={plan.value}
+                    variant="card"
+                    control={<RadioGroupItem value={plan.value} />}
+                  >
                     <div className="flex flex-col">
                       <span className="font-medium">{plan.label}</span>
                       <span className="text-muted-foreground text-xs">
                         {plan.description}
                       </span>
                     </div>
-                  ),
-                }))}
-                className="grid-cols-1 gap-4"
-              />
+                  </SelectionGroup>
+                ))}
+              </RadioGroupForm>
 
               <RadioGroupForm
                 control={form.control}
@@ -494,8 +507,21 @@ export const AdvancedForm: Story = {
                   label: "Contact Preference",
                   description: "How should we contact you?",
                 }}
-                items={contactMethods}
-              />
+              >
+                {contactMethods.map((method) => (
+                  <SelectionGroup
+                    key={method.value}
+                    control={
+                      <RadioGroupItem
+                        value={method.value}
+                        disabled={method.disabled}
+                      />
+                    }
+                  >
+                    {method.label}
+                  </SelectionGroup>
+                ))}
+              </RadioGroupForm>
 
               <Button type="submit" className="w-full">
                 Complete Subscription

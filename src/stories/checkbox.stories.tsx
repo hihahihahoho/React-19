@@ -4,6 +4,7 @@ import { Form } from "@/components/ui/form/form"
 import { ZodSchemaProvider } from "@/components/ui/form/zod-schema-context"
 import { Checkbox } from "@/components/ui/selection-controls/checkbox"
 import { CheckboxForm } from "@/components/ui/selection-controls/checkbox-form"
+import { CheckboxGroupItem } from "@/components/ui/selection-controls/checkbox-group"
 import { CheckboxGroupForm } from "@/components/ui/selection-controls/checkbox-group-form"
 import { SelectionGroup } from "@/components/ui/selection-controls/selection-group"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -247,14 +248,6 @@ export const CheckboxGroupExample: Story = {
         )
       }
 
-      const items = [
-        { value: "email", label: "Email" },
-        { value: "sms", label: "SMS" },
-        { value: "push", label: "Push notifications" },
-        { value: "in_app", label: "In-app notifications" },
-        { value: "none", label: "None", disabled: true },
-      ]
-
       return (
         <ZodSchemaProvider schema={formSchema}>
           <Form {...form}>
@@ -265,13 +258,30 @@ export const CheckboxGroupExample: Story = {
               <CheckboxGroupForm
                 control={form.control}
                 name="notificationPreferences"
-                items={items}
                 formComposition={{
                   label: "Notification Preferences",
                   description: "Select at least 2 notification channels",
                 }}
                 className="grid-cols-1"
-              />
+              >
+                <SelectionGroup control={<CheckboxGroupItem value="email" />}>
+                  Email
+                </SelectionGroup>
+                <SelectionGroup control={<CheckboxGroupItem value="sms" />}>
+                  SMS
+                </SelectionGroup>
+                <SelectionGroup control={<CheckboxGroupItem value="push" />}>
+                  Push notifications
+                </SelectionGroup>
+                <SelectionGroup control={<CheckboxGroupItem value="in_app" />}>
+                  In-app notifications
+                </SelectionGroup>
+                <SelectionGroup
+                  control={<CheckboxGroupItem value="none" disabled />}
+                >
+                  None
+                </SelectionGroup>
+              </CheckboxGroupForm>
 
               <Button type="submit" className="w-full">
                 Save Preferences
@@ -461,16 +471,35 @@ export const WithFormValidation: Story = {
                   label: "Your Interests",
                   description: "Select at least one area of interest",
                 }}
-                items={[
-                  { value: "technology", label: "Technology" },
-                  { value: "design", label: "Design" },
-                  { value: "business", label: "Business" },
-                  { value: "marketing", label: "Marketing" },
-                  { value: "development", label: "Development" },
-                  { value: "other", label: "Other" },
-                ]}
                 className="grid-cols-1"
-              />
+              >
+                <SelectionGroup
+                  control={<CheckboxGroupItem value="technology" />}
+                >
+                  Technology
+                </SelectionGroup>
+                <SelectionGroup control={<CheckboxGroupItem value="design" />}>
+                  Design
+                </SelectionGroup>
+                <SelectionGroup
+                  control={<CheckboxGroupItem value="business" />}
+                >
+                  Business
+                </SelectionGroup>
+                <SelectionGroup
+                  control={<CheckboxGroupItem value="marketing" />}
+                >
+                  Marketing
+                </SelectionGroup>
+                <SelectionGroup
+                  control={<CheckboxGroupItem value="development" />}
+                >
+                  Development
+                </SelectionGroup>
+                <SelectionGroup control={<CheckboxGroupItem value="other" />}>
+                  Other
+                </SelectionGroup>
+              </CheckboxGroupForm>
 
               <CheckboxForm
                 control={form.control}

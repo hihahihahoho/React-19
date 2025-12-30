@@ -1969,6 +1969,94 @@
           "target": "components/ui/image-crop-avatar-form.tsx"
         }
       ]
+    },
+    {
+      "name": "selection-group",
+      "author": "hihahihahoho",
+      "title": "Selection Group",
+      "description": "A layout component for checkbox and radio items with label",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/selection-controls/selection-group.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/selection-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "author": "hihahihahoho",
+      "title": "Checkbox",
+      "description": "Checkbox component with form integration",
+      "dependencies": [
+        "@radix-ui/react-checkbox",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/selection-group.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/selection-controls/checkbox.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/checkbox.tsx"
+        },
+        {
+          "path": "src/components/ui/selection-controls/checkbox-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/checkbox-form.tsx"
+        },
+        {
+          "path": "src/components/ui/selection-controls/checkbox-group.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/checkbox-group.tsx"
+        },
+        {
+          "path": "src/components/ui/selection-controls/checkbox-group-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/checkbox-group-form.tsx"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "author": "hihahihahoho",
+      "title": "Radio Group",
+      "description": "Radio group component with form integration",
+      "dependencies": [
+        "@radix-ui/react-radio-group",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/selection-group.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/selection-controls/radio-group.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/radio-group.tsx"
+        },
+        {
+          "path": "src/components/ui/selection-controls/radio-group-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/selection-controls/radio-group-form.tsx"
+        }
+      ]
     }
   ]
 }
