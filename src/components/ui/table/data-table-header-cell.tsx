@@ -255,7 +255,7 @@ export function DataTableHeaderCell<TData, TValue>({
       <div
         className={cn(
           "flex items-center",
-          header.column.columnDef.meta?.align === "right" && "justify-right",
+          header.column.columnDef.meta?.align === "right" && "justify-end",
           header.column.columnDef.meta?.align === "center" && "justify-center",
           pinnedClasses
         )}

@@ -11,12 +11,14 @@ import React from "react"
  */
 
 export function useLocaleDateConfig(locale?: string) {
-  // Detect user's browser locale if not provided
-  const effectiveLocale = React.useMemo(() => {
-    if (!locale) {
-      return navigator.language || "en"
+  // Default to provided locale or "vi-VN" (VNPAY context) for server-side consistency
+  const [effectiveLocale, setEffectiveLocale] = React.useState(locale || "vi-VN")
+
+  React.useEffect(() => {
+    // Only detect browser locale on client side if no locale is provided
+    if (!locale && typeof window !== "undefined") {
+      setEffectiveLocale(navigator.language || "vi-VN")
     }
-    return locale
   }, [locale])
 
   // Generate the locale configuration
