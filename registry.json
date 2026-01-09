@@ -2063,7 +2063,9 @@
       "type": "registry:component",
       "css": {
         "@import \"./styles/test.css\"": {}
-      }
+      },
+      "path": "src/styles/test.css",
+      "target": "styles/test.css"
     }
   ]
 }
