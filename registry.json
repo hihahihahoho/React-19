@@ -414,18 +414,29 @@
     {
       "name": "photoswipe",
       "author": "hihahihahoho",
+      "title": "PhotoSwipe Gallery",
+      "description": "Responsive lightbox gallery with zoom, swipe, and video/PDF support",
       "dependencies": [
-        "photoswipe"
+        "photoswipe",
+        "react-photoswipe-gallery"
       ],
       "registryDependencies": [
         "skeleton"
       ],
       "type": "registry:component",
+      "css": {
+        "@import \"./styles/photoswipe.css\"": {}
+      },
       "files": [
         {
           "path": "src/components/ui/photoswipe.tsx",
           "type": "registry:component",
           "target": "components/ui/photoswipe.tsx"
+        },
+        {
+          "path": "src/styles/photoswipe.css",
+          "type": "registry:file",
+          "target": "styles/photoswipe.css"
         }
       ]
     },
@@ -1863,6 +1874,8 @@
     {
       "name": "swiper",
       "author": "hihahihahoho",
+      "title": "Swiper Carousel",
+      "description": "Powerful carousel component built on Swiper.js with shadcn/ui styling, keyboard navigation, and multiple effects",
       "dependencies": [
         "swiper",
         "lucide-react"
@@ -1872,6 +1885,9 @@
         "utils"
       ],
       "type": "registry:component",
+      "css": {
+        "@import \"./styles/swiper.css\"": {}
+      },
       "files": [
         {
           "path": "src/components/ui/swiper/swiper.tsx",
@@ -1879,9 +1895,9 @@
           "target": "components/ui/swiper/swiper.tsx"
         },
         {
-          "path": "src/components/ui/swiper/swiper.css",
+          "path": "src/styles/swiper.css",
           "type": "registry:file",
-          "target": "components/ui/swiper/swiper.css"
+          "target": "styles/swiper.css"
         }
       ]
     },
@@ -2059,13 +2075,37 @@
       ]
     },
     {
-      "name": "custom-import",
-      "type": "registry:component",
+      "name": "base-styles",
+      "author": "hihahihahoho",
+      "title": "Base Styles",
+      "description": "Base CSS styles including custom font, scrollbar styles, and utility classes. Includes tailwindcss-safe-area plugin for safe area insets on mobile devices.",
+      "type": "registry:style",
+      "dependencies": [
+        "tailwindcss-safe-area"
+      ],
       "css": {
-        "@import \"./styles/test.css\"": {}
+        "@plugin \"tailwindcss-safe-area\"": {},
+        "@import \"./styles/base.css\" layer(base)": {},
+        "@import \"./styles/components.css\" layer(components)": {},
+        "@import \"./styles/custom-utilities.css\"": {}
       },
-      "path": "src/styles/test.css",
-      "target": "styles/test.css"
+      "files": [
+        {
+          "path": "src/styles/base.css",
+          "type": "registry:file",
+          "target": "styles/base.css"
+        },
+        {
+          "path": "src/styles/components.css",
+          "type": "registry:file",
+          "target": "styles/components.css"
+        },
+        {
+          "path": "src/styles/custom-utilities.css",
+          "type": "registry:file",
+          "target": "styles/custom-utilities.css"
+        }
+      ]
     }
   ]
 }

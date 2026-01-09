@@ -1,10 +1,9 @@
 @import "tailwindcss";
-@import "tailwindcss";
-@import "swiper/swiper-bundle.css";
-@import "./styles/photoswipe";
+@import "./styles/swiper.css";
+@import "./styles/photoswipe.css";
 @import "./styles/base.css" layer(base);
-@import "./styles/embla.css" layer(base);
-@import "./styles/base.utilities.css" layer(utilities);
+@import "./styles/components.css" layer(components);
+@import "./styles/custom-utilities.css";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
