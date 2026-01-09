@@ -2057,6 +2057,14 @@
           "target": "components/ui/selection-controls/radio-group-form.tsx"
         }
       ]
+    },
+    {
+      "name": "custom-import",
+      "type": "registry:component",
+      "css": {
+        "@import \"tailwindcss\"": {},
+        "@import \"./styles/test.css\"": {}
+      }
     }
   ]
 }
