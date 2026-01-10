@@ -58,6 +58,13 @@ type Story = StoryObj<typeof meta>
 export const BackgroundShorthand: Story = {
   render: () => (
     <div className="space-y-6">
+      <div
+        className="h-24 w-full rounded-lg border-2 bg-green-300"
+        style={{
+          borderImage:
+            "url(\"data:image/svg+xml,%3Csvg width='102' height='102' viewBox='0 0 102 102' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='1' y='1' width='100' height='100' rx='10' stroke='url(%23paint0_linear_1548_2)' stroke-width='2'/%3E%3Cdefs%3E%3ClinearGradient id='paint0_linear_1548_2' x1='1' y1='1' x2='98.748' y2='103.155' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FF0000'/%3E%3Cstop offset='1' stop-color='%232BAEFF' stop-opacity='0.4'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E%0A\") 10 / 10px stretch",
+        }}
+      ></div>
       <div className="rounded-lg border p-6">
         <h3 className="mb-4 text-lg font-semibold">
           bgs-* (Background Shorthand)

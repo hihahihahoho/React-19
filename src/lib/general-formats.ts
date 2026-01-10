@@ -46,36 +46,20 @@ function isValidNumber(value: unknown): value is number {
   return typeof value === "number" && !isNaN(value)
 }
 
-export function formatCurrency(
-  amount: Nullable<number>,
+export function formatNumber(
+  value: Nullable<number>,
   {
     locale = "vi-VN",
-    currency,
     fallback = "N/A",
-    intlOptions,
-    customSymbol,
-  }: {
-    locale: string
-    currency: string
+    ...intlOptions
+  }: Intl.NumberFormatOptions & {
+    locale?: string
     fallback?: string
-    intlOptions?: Intl.NumberFormatOptions
-    customSymbol?: string
-  }
+  } = {}
 ): string {
-  if (!isValidNumber(amount)) {
+  if (!isValidNumber(value)) {
     return fallback
   }
 
-  const formatted = new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
-    currencyDisplay: customSymbol ? "code" : undefined,
-    ...intlOptions,
-  }).format(amount)
-
-  if (customSymbol) {
-    return formatted.replace(currency, customSymbol).trim()
-  }
-
-  return formatted
+  return new Intl.NumberFormat(locale, intlOptions).format(value)
 }

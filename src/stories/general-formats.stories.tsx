@@ -1,7 +1,7 @@
 import {
-  formatCurrency,
   formatDate,
   formatDateRange,
+  formatNumber,
 } from "@/lib/general-formats"
 import { type Meta, type StoryObj } from "@storybook/react-vite"
 import { addDays, subDays } from "date-fns"
@@ -22,13 +22,13 @@ Utility functions for formatting common data types consistently across the appli
 ## Features
 - **Date Formatting**: Format dates with customizable patterns
 - **Date Range Formatting**: Format date ranges with start and end dates
-- **Currency Formatting**: Format monetary values with locale and currency support
+- **Number Formatting**: Format numbers with locale support (decimal, currency, percent, unit)
 - **Null Safety**: All functions handle null/undefined gracefully
-- **Customization**: Support for custom formats, locales, and symbols
+- **Customization**: Support for custom formats, locales, and all Intl.NumberFormat options
 
 ## Usage
 \`\`\`tsx
-import { formatDate, formatDateRange, formatCurrency } from "@/lib/general-formats"
+import { formatDate, formatDateRange, formatNumber } from "@/lib/general-formats"
 
 // Format a date
 formatDate(new Date(), "dd/MM/yyyy") // "17/11/2025"
@@ -39,11 +39,17 @@ formatDateRange(
   "dd/MM/yyyy"
 ) // "17/11/2025 - 24/11/2025"
 
+// Format number (decimal)
+formatNumber(1234567.89) // "1.234.567,89"
+
 // Format currency
-formatCurrency(1234567, {
-  locale: "vi-VN",
-  currency: "VND",
-}) // "1.234.567 ₫"
+formatNumber(1234567, { style: "currency", currency: "VND" }) // "1.234.567 ₫"
+
+// Format percent
+formatNumber(0.15, { style: "percent" }) // "15%"
+
+// Format unit
+formatNumber(100, { style: "unit", unit: "kilometer" }) // "100 km"
 \`\`\`
         `,
       },
@@ -190,108 +196,216 @@ export const DateRangeFormatting: Story = {
 }
 
 /**
- * Currency formatting with different locales and currencies.
+ * Number formatting with different styles and locales.
  */
-export const CurrencyFormatting: Story = {
+export const NumberFormatting: Story = {
   render: () => {
-    const amount = 1234567.89
+    const amount = 1234567
+    const percentage = 0.1523
 
     const formats = [
+      // Basic decimal formatting
       {
-        label: "Vietnamese Dong (VND)",
-        value: formatCurrency(amount, {
-          locale: "vi-VN",
-          currency: "VND",
-        }),
-      },
-      {
-        label: "US Dollar (USD)",
-        value: formatCurrency(amount, {
-          locale: "en-US",
-          currency: "USD",
-        }),
-      },
-      {
-        label: "Euro (EUR)",
-        value: formatCurrency(amount, {
-          locale: "de-DE",
-          currency: "EUR",
-        }),
-      },
-      {
-        label: "British Pound (GBP)",
-        value: formatCurrency(amount, {
-          locale: "en-GB",
-          currency: "GBP",
-        }),
-      },
-      {
-        label: "Japanese Yen (JPY)",
-        value: formatCurrency(amount, {
-          locale: "ja-JP",
-          currency: "JPY",
-        }),
-      },
-      {
-        label: "Custom Symbol",
-        value: formatCurrency(amount, {
-          locale: "vi-VN",
-          currency: "VND",
-          customSymbol: "VND",
-        }),
-      },
-      {
-        label: "With Custom Options",
-        value: formatCurrency(amount, {
-          locale: "en-US",
-          currency: "USD",
-          intlOptions: {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+        category: "Basic Decimal",
+        items: [
+          {
+            label: "Default (vi-VN)",
+            value: formatNumber(amount),
           },
-        }),
+          {
+            label: "US Locale",
+            value: formatNumber(amount, { locale: "en-US" }),
+          },
+          {
+            label: "German Locale",
+            value: formatNumber(amount, { locale: "de-DE" }),
+          },
+          {
+            label: "No Decimals",
+            value: formatNumber(amount, { maximumFractionDigits: 0 }),
+          },
+          {
+            label: "Fixed 2 Decimals",
+            value: formatNumber(1234.5, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }),
+          },
+          {
+            label: "Min Integer Digits (5)",
+            value: formatNumber(42, { minimumIntegerDigits: 5 }),
+          },
+          {
+            label: "Always Show Sign",
+            value: formatNumber(1234, { signDisplay: "always" }),
+          },
+          {
+            label: "Negative Number",
+            value: formatNumber(-1234567.89),
+          },
+        ],
       },
+      // Currency formatting
       {
-        label: "Null Value",
-        value: formatCurrency(null, {
-          locale: "en-US",
-          currency: "USD",
-        }),
+        category: "Currency",
+        items: [
+          {
+            label: "Vietnamese Dong",
+            value: formatNumber(amount, { style: "currency", currency: "VND" }),
+          },
+          {
+            label: "US Dollar",
+            value: formatNumber(amount, {
+              locale: "en-US",
+              style: "currency",
+              currency: "USD",
+            }),
+          },
+          {
+            label: "Euro",
+            value: formatNumber(amount, {
+              locale: "de-DE",
+              style: "currency",
+              currency: "EUR",
+            }),
+          },
+          {
+            label: "Currency Display: Code",
+            value: formatNumber(amount, {
+              style: "currency",
+              currency: "VND",
+              currencyDisplay: "code",
+            }),
+          },
+          {
+            label: "Currency Display: Name",
+            value: formatNumber(amount, {
+              style: "currency",
+              currency: "VND",
+              currencyDisplay: "name",
+            }),
+          },
+        ],
       },
+      // Percent formatting
       {
-        label: "Undefined Value",
-        value: formatCurrency(undefined, {
-          locale: "en-US",
-          currency: "USD",
-        }),
+        category: "Percent",
+        items: [
+          {
+            label: "Basic Percent",
+            value: formatNumber(percentage, { style: "percent" }),
+          },
+          {
+            label: "With 2 Decimals",
+            value: formatNumber(percentage, {
+              style: "percent",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            }),
+          },
+        ],
       },
+      // Unit formatting
       {
-        label: "Custom Fallback",
-        value: formatCurrency(null, {
-          locale: "en-US",
-          currency: "USD",
-          fallback: "—",
-        }),
+        category: "Unit",
+        items: [
+          {
+            label: "Kilometer",
+            value: formatNumber(100, { style: "unit", unit: "kilometer" }),
+          },
+          {
+            label: "Meter (Long)",
+            value: formatNumber(500, {
+              style: "unit",
+              unit: "meter",
+              unitDisplay: "long",
+            }),
+          },
+          {
+            label: "Kilogram",
+            value: formatNumber(75.5, { style: "unit", unit: "kilogram" }),
+          },
+          {
+            label: "Speed (km/h)",
+            value: formatNumber(120, {
+              style: "unit",
+              unit: "kilometer-per-hour",
+            }),
+          },
+        ],
+      },
+      // Compact notation
+      {
+        category: "Compact Notation",
+        items: [
+          {
+            label: "Short Compact",
+            value: formatNumber(amount, { notation: "compact" }),
+          },
+          {
+            label: "Long Compact",
+            value: formatNumber(amount, {
+              notation: "compact",
+              compactDisplay: "long",
+            }),
+          },
+          {
+            label: "Compact USD",
+            value: formatNumber(1500000, {
+              locale: "en-US",
+              style: "currency",
+              currency: "USD",
+              notation: "compact",
+            }),
+          },
+        ],
+      },
+      // Null/Fallback handling
+      {
+        category: "Fallback Handling",
+        items: [
+          {
+            label: "Null Value",
+            value: formatNumber(null),
+          },
+          {
+            label: "Undefined Value",
+            value: formatNumber(undefined),
+          },
+          {
+            label: "Custom Fallback",
+            value: formatNumber(null, { fallback: "—" }),
+          },
+        ],
       },
     ]
 
     return (
-      <div className="w-full max-w-2xl space-y-2">
+      <div className="w-full max-w-2xl space-y-6">
         <h3 className="mb-4 text-lg font-semibold">
-          Currency Formatting Examples
+          Number Formatting Examples
         </h3>
         <p className="text-muted-foreground mb-4 text-sm">
           Amount: <code className="font-mono">1234567.89</code>
         </p>
-        {formats.map((format, index) => (
-          <div
-            key={index}
-            className="flex justify-between border-b pb-2 last:border-0"
-          >
-            <span className="text-muted-foreground">{format.label}:</span>
-            <code className="font-mono text-sm font-semibold">
-              {format.value}
-            </code>
+        {formats.map((section, sectionIndex) => (
+          <div key={sectionIndex} className="space-y-2">
+            <h4 className="text-muted-foreground text-sm font-semibold">
+              {section.category}
+            </h4>
+            {section.items.map((item, itemIndex) => (
+              <div
+                key={itemIndex}
+                className="flex justify-between border-b pb-2 pl-4 last:border-0"
+              >
+                <span className="text-muted-foreground text-sm">
+                  {item.label}:
+                </span>
+                <code className="font-mono text-sm font-semibold">
+                  {item.value}
+                </code>
+              </div>
+            ))}
           </div>
         ))}
       </div>
@@ -301,7 +415,7 @@ export const CurrencyFormatting: Story = {
     docs: {
       description: {
         story:
-          "Currency formatting with different locales, currencies, and custom options. Returns 'N/A' (or custom fallback) for invalid values.",
+          "Number formatting with different styles (decimal, currency, percent, unit), locales, and notations. Uses all native Intl.NumberFormat options. Returns 'N/A' (or custom fallback) for invalid values.",
       },
     },
   },
@@ -355,8 +469,8 @@ export const AllFormats: Story = {
             <div className="flex justify-between">
               <span className="text-muted-foreground">Subtotal:</span>
               <span className="font-mono">
-                {formatCurrency(invoice.subtotal, {
-                  locale: "vi-VN",
+                {formatNumber(invoice.subtotal, {
+                  style: "currency",
                   currency: "VND",
                 })}
               </span>
@@ -364,8 +478,8 @@ export const AllFormats: Story = {
             <div className="flex justify-between">
               <span className="text-muted-foreground">Tax (10%):</span>
               <span className="font-mono">
-                {formatCurrency(invoice.tax, {
-                  locale: "vi-VN",
+                {formatNumber(invoice.tax, {
+                  style: "currency",
                   currency: "VND",
                 })}
               </span>
@@ -373,8 +487,8 @@ export const AllFormats: Story = {
             <div className="flex justify-between border-t pt-2 text-lg font-bold">
               <span>Total:</span>
               <span className="font-mono">
-                {formatCurrency(invoice.total, {
-                  locale: "vi-VN",
+                {formatNumber(invoice.total, {
+                  style: "currency",
                   currency: "VND",
                 })}
               </span>
@@ -441,48 +555,35 @@ export const EdgeCases: Story = {
         ],
       },
       {
-        category: "Currency Formatting",
+        category: "Number Formatting",
         items: [
           {
             label: "Valid Number",
-            value: formatCurrency(1234.56, {
-              locale: "en-US",
-              currency: "USD",
-            }),
+            value: formatNumber(1234.56),
           },
           {
             label: "Zero",
-            value: formatCurrency(0, { locale: "en-US", currency: "USD" }),
+            value: formatNumber(0),
           },
           {
             label: "Negative",
-            value: formatCurrency(-1234.56, {
-              locale: "en-US",
-              currency: "USD",
-            }),
+            value: formatNumber(-1234.56),
           },
           {
             label: "Null",
-            value: formatCurrency(null, { locale: "en-US", currency: "USD" }),
+            value: formatNumber(null),
           },
           {
             label: "Undefined",
-            value: formatCurrency(undefined, {
-              locale: "en-US",
-              currency: "USD",
-            }),
+            value: formatNumber(undefined),
           },
           {
             label: "NaN",
-            value: formatCurrency(NaN, { locale: "en-US", currency: "USD" }),
+            value: formatNumber(NaN),
           },
           {
             label: "Custom Fallback",
-            value: formatCurrency(null, {
-              locale: "en-US",
-              currency: "USD",
-              fallback: "No amount",
-            }),
+            value: formatNumber(null, { fallback: "No amount" }),
           },
         ],
       },

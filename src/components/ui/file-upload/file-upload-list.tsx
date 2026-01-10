@@ -31,11 +31,10 @@ const fileIcon = {
   other: <File />,
 }
 
-export interface FileUploadListProps
-  extends Omit<
-    React.ComponentProps<"input">,
-    "value" | "accept" | "defaultValue"
-  > {
+export interface FileUploadListProps extends Omit<
+  React.ComponentProps<"input">,
+  "value" | "accept" | "defaultValue"
+> {
   onFileChange?: (files: FileList) => void
   maxFiles?: number
   accept?: TAccept[]
@@ -128,7 +127,7 @@ function FileUploadList({
                 <CloudUpload />
                 <div className="flex-1">
                   {maxFiles === 1 ? (
-                    <>Chọn lại</>
+                    <>Tải lại</>
                   ) : (
                     <>
                       <span className="text-primary">Tải lên</span> hoặc kéo thả

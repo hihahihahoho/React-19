@@ -17,9 +17,3 @@ export const formatFileSize = (size: number) => {
     }).format(size) + units[unitIndex]
   )
 }
-
-export const formatNumber = (number: number) => {
-  return new Intl.NumberFormat(undefined, {
-    maximumFractionDigits: 0,
-  }).format(number)
-}

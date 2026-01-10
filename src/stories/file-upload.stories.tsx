@@ -540,14 +540,7 @@ export const DisplayVariantsComparison: Story = {
       "https://pbs.twimg.com/media/Gk58xZCWUAABX7L?format=jpg&name=large",
       1000000
     )
-
-    const sampleFile2 = createRemoteFileProxy(
-      "https://pdfobject.com/pdf/sample.pdf",
-      1000000,
-      "application/pdf"
-    )
-
-    const sampleFiles = [sampleFile1, sampleFile2]
+    const sampleFiles = [sampleFile1]
 
     return (
       <div className="w-full space-y-8">
@@ -563,6 +556,8 @@ export const DisplayVariantsComparison: Story = {
         <h3 className="mt-8 text-lg font-medium">List Display</h3>
         <FileUploadList
           defaultValue={sampleFiles}
+          maxFiles={2}
+          maxFileSize={500000}
           formComposition={{
             label: "List Display",
             description: "Files displayed in a list layout",

@@ -2106,6 +2106,31 @@
           "target": "styles/custom-utilities.css"
         }
       ]
+    },
+    {
+      "name": "number-to-words",
+      "author": "hihahihahoho",
+      "title": "Number to Words",
+      "description": "Converts numeric values to words with multi-locale support (vi-VN, en-US). Vietnamese: lẻ, mốt, lăm rules. English: hyphenated format.",
+      "dependencies": [],
+      "type": "registry:lib",
+      "files": [
+        {
+          "path": "src/lib/number-to-words/index.ts",
+          "type": "registry:lib",
+          "target": "lib/number-to-words/index.ts"
+        },
+        {
+          "path": "src/lib/number-to-words/vi-VN.ts",
+          "type": "registry:lib",
+          "target": "lib/number-to-words/vi-VN.ts"
+        },
+        {
+          "path": "src/lib/number-to-words/en-US.ts",
+          "type": "registry:lib",
+          "target": "lib/number-to-words/en-US.ts"
+        }
+      ]
     }
   ]
 }
