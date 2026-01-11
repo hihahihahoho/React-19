@@ -34,8 +34,11 @@ export function FloatingHeader({
   // Use refs to track previous values and avoid unnecessary state updates
   const prevOffsetRef = useRef({ left: 0, width: 0 })
 
-  // Track pagination to force re-render when page changes
-  const paginationState = table.getState().pagination
+  // Track table state for re-render triggers
+  const tableState = table.getState()
+  const paginationState = tableState.pagination
+  const columnVisibility = tableState.columnVisibility
+  const columnOrder = tableState.columnOrder
   const [, forceUpdate] = useState(0)
 
   useSyncScroll(syncWithScrollRef, mainScrollRef)
@@ -58,7 +61,7 @@ export function FloatingHeader({
     }
   }, [tableRef])
 
-  // Force re-render when pagination or data changes to recalculate header widths
+  // Force re-render when pagination, data, or column state changes to recalculate header widths
   // For server-side tables, rowModel changes when data is fetched
   const rows = table.getRowModel().rows
   useEffect(() => {
@@ -72,6 +75,8 @@ export function FloatingHeader({
     paginationState.pageSize,
     rows,
     columnPinning,
+    columnVisibility, // Re-render when columns are shown/hidden
+    columnOrder, // Re-render when column order changes
     updateTableOffset,
   ])
 
@@ -136,14 +141,8 @@ export function FloatingHeader({
     }
   }, [tableRef, headerRef, updateTableOffset])
 
-  // Memoize header groups to prevent unnecessary re-renders
-  // Memoize header groups to prevent unnecessary re-renders
-  const headerGroups = React.useMemo(() => {
-    if (columnPinning) {
-      // Force re-render when pinning changes
-    }
-    return table.getHeaderGroups()
-  }, [table, columnPinning])
+  // Get header groups - this will be recalculated on each render triggered by forceUpdate
+  const headerGroups = table.getHeaderGroups()
 
   return (
     <div
