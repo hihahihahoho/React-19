@@ -19,6 +19,7 @@ import {
   Autoplay,
   EffectCards,
   EffectCoverflow,
+  EffectCreative,
   EffectFade,
   FreeMode,
   Thumbs,
@@ -66,7 +67,7 @@ Additional effect plugins can be installed separately:
   },
   decorators: [
     (Story) => (
-      <div className="flex flex-col items-center gap-6 p-6">
+      <div className="flex max-w-full min-w-0 flex-col items-center gap-6 p-6">
         <Story />
       </div>
     ),
@@ -396,8 +397,9 @@ export const CoverflowEffect: Story = {
         effect="coverflow"
         slidesPerView={3}
         centeredSlides
+        spaceBetween={20}
         coverflowEffect={{
-          rotate: 50,
+          rotate: 0,
           stretch: 0,
           depth: 100,
           modifier: 1,
@@ -551,4 +553,71 @@ export const WithThumbsGallery: Story = {
       </div>
     )
   },
+}
+
+export const CreativeEffectCentered: Story = {
+  name: "Native Effect: Creative Centered",
+  render: () => (
+    <div className="w-full max-w-2xl min-w-0 py-8 max-sm:max-w-full">
+      <Swiper
+        modules={[EffectCreative]}
+        effect="creative"
+        centeredSlides
+        loop
+        breakpoints={{
+          320: {
+            slidesPerView: "auto",
+          },
+          640: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        }}
+        creativeEffect={{
+          limitProgress: 3,
+          prev: {
+            // Slide trước: dịch sang trái, scale lớn hơn 30%, đẩy ra phía sau
+            translate: ["-110%", 0, 0],
+            scale: 0.8,
+          },
+          next: {
+            // Slide sau: dịch sang phải, scale lớn hơn 30%, đẩy ra phía sau
+            translate: ["110%", 0, 0],
+            scale: 0.8,
+          },
+        }}
+        pagination={{ clickable: true }}
+      >
+        <SwiperWrapper className="w-full min-w-0">
+          <SwiperContent>
+            {[
+              "bg-gradient-to-br from-violet-600 to-indigo-600",
+              "bg-gradient-to-br from-rose-500 to-pink-500",
+              "bg-gradient-to-br from-amber-500 to-orange-500",
+              "bg-gradient-to-br from-emerald-500 to-teal-500",
+              "bg-gradient-to-br from-sky-500 to-blue-600",
+            ].map((color, index) => (
+              <SwiperItem key={index} className="max-w-[50vw]">
+                <Card className={`${color} shadow-2xl`}>
+                  <CardContent className="flex aspect-video items-center justify-center p-6">
+                    <span className="text-5xl font-bold text-white">
+                      {index + 1}
+                    </span>
+                  </CardContent>
+                </Card>
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperPrevious />
+          <SwiperNext />
+          <SwiperDots />
+        </SwiperWrapper>
+      </Swiper>
+    </div>
+  ),
 }

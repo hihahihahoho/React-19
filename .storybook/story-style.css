@@ -13,3 +13,7 @@ body {
 .dark .docs-story {
   background: var(--background);
 }
+
+#storybook-root {
+  min-width: 0;
+}

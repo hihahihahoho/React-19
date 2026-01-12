@@ -4,6 +4,45 @@
   "homepage": "https://react-19.octung112.workers.dev",
   "items": [
     {
+      "name": "copy",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/copy.tsx",
+          "type": "registry:component",
+          "target": "components/ui/copy.tsx"
+        }
+      ]
+    },
+    {
+      "name": "copy-button",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "lucide-react",
+        "sonner"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/copy.json",
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/copy-button.tsx",
+          "type": "registry:component",
+          "target": "components/ui/copy-button.tsx"
+        }
+      ]
+    },
+    {
       "name": "utils-plus",
       "author": "hihahihahoho",
       "type": "registry:lib",
