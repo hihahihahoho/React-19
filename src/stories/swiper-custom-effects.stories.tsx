@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/swiper/swiper"
 import { EffectExpo } from "@/components/ui/swiper/swiper-expo"
 import { EffectPanorama } from "@/components/ui/swiper/swiper-panorama"
+import EffectPosters from "@/components/ui/swiper/swiper-posters"
 import type { Meta, StoryObj } from "@storybook/react-vite"
 
 /**
@@ -21,6 +22,11 @@ import type { Meta, StoryObj } from "@storybook/react-vite"
  * Install the Expo effect:
  * ```bash
  * pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/swiper-expo.json
+ * ```
+ *
+ * Install the Posters effect:
+ * ```bash
+ * pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/swiper-posters.json
  * ```
  */
 const meta: Meta<typeof Swiper> = {
@@ -49,6 +55,13 @@ Creates a zoom parallax effect with image offset, scale, rotation, and optional 
 pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/swiper-expo.json
 \`\`\`
 
+### Posters Effect
+Creates a 3D stacked posters carousel with depth, rotation, and shadow overlay.
+
+\`\`\`bash
+pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/swiper-posters.json
+\`\`\`
+
 **Required HTML structure for Expo effect:**
 \`\`\`html
 <div class="expo-container">
@@ -62,7 +75,7 @@ pnpm dlx shadcn@latest add https://react-19.octung112.workers.dev/r/swiper-expo.
   },
   decorators: [
     (Story) => (
-      <div className="flex flex-col items-center gap-6 p-6">
+      <div className="flex flex-col items-center gap-6 overflow-hidden p-6">
         <Story />
       </div>
     ),
@@ -238,6 +251,61 @@ export const ExpoWithRotation: Story = {
             ))}
           </SwiperContent>
           <SwiperDynamicDots className="mt-6" />
+        </SwiperWrapper>
+      </Swiper>
+    </div>
+  ),
+}
+
+// ============================================================================
+// POSTERS EFFECT (3D Stacked Carousel)
+// ============================================================================
+
+export const PostersEffect: Story = {
+  name: "Posters Effect",
+  render: () => (
+    <div className="flex w-5xl max-w-full items-center justify-center py-16">
+      <Swiper
+        modules={[EffectPosters]}
+        effect="posters"
+        slidesPerView={1}
+        centeredSlides
+        loop
+        grabCursor
+        speed={600}
+        resistanceRatio={0}
+        spaceBetween={24}
+        postersEffect={{
+          limitProgress: 3,
+          shadowPerProgress: false, // Disable shadow - using opacity instead
+          perspective: true,
+          prev: {
+            translate: ["-15%", 0, -200],
+            rotate: [0, 0, 0],
+            opacity: 0, // Hide previous slides completely
+            shadow: false, // No shadow needed since slides are hidden
+          },
+          next: {
+            translate: ["100%", 0, 0],
+            opacity: 0, // Hide next slides
+            shadow: false,
+          },
+        }}
+        className="w-48 overflow-visible!"
+      >
+        <SwiperWrapper>
+          <SwiperContent>
+            {Array.from({ length: 8 }).map((_, index) => (
+              <SwiperItem key={index} className="overflow-hidden rounded-xl">
+                <img
+                  src={`https://picsum.photos/seed/${index + 70}/400/600`}
+                  alt={`Poster ${index + 1}`}
+                  className="aspect-2/3 w-full object-cover"
+                />
+              </SwiperItem>
+            ))}
+          </SwiperContent>
+          <SwiperDynamicDots className="mt-8" />
         </SwiperWrapper>
       </Swiper>
     </div>

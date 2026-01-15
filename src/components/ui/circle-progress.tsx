@@ -3,8 +3,7 @@
 import { cn } from "@/lib/utils"
 import React from "react"
 
-export interface CircleProgressProps
-  extends React.HtmlHTMLAttributes<HTMLDivElement> {
+export interface CircleProgressProps extends React.HtmlHTMLAttributes<HTMLDivElement> {
   value: number
   maxValue: number
   size?: number
@@ -21,8 +20,10 @@ export interface CircleProgressProps
   className?: string
   // Animation duration in ms
   animationDuration?: number
-  // Disable animation
+  // Disable animation completely
   disableAnimation?: boolean
+  // Skip initial animation on mount, but animate subsequent changes
+  skipInitialAnimation?: boolean
   // Gradient support
   useGradient?: boolean
   // Gradient colors array (from start to end)
@@ -44,17 +45,23 @@ const CircleProgress = ({
   className,
   // Animation duration with default of 300ms
   animationDuration = 300,
-  // Option to disable animation
+  // Option to disable animation completely
   disableAnimation = false,
+  // Skip only the initial animation on mount
+  skipInitialAnimation = false,
   // Gradient options
   useGradient = false,
   gradientColors = ["#10b981", "#f59e0b", "#ef4444"],
   gradientId,
   ...props
 }: CircleProgressProps) => {
+  // Track if this is the first render
+  const isFirstRender = React.useRef(true)
+
   // Add state for animated value
+  // Skip initial animation if skipInitialAnimation is true OR disableAnimation is true
   const [animatedValue, setAnimatedValue] = React.useState(
-    disableAnimation ? value : 0
+    disableAnimation || skipInitialAnimation ? value : 0
   )
   // Use a ref to track the current animation value without causing re-renders
   const animatedValueRef = React.useRef(animatedValue)
@@ -89,11 +96,21 @@ const CircleProgress = ({
 
   // Animation effect - fixed to avoid the dependency loop
   React.useEffect(() => {
-    // If animation is disabled, just set the value directly
+    // If animation is disabled completely, just set the value directly
     if (disableAnimation) {
       setAnimatedValue(value)
       return
     }
+
+    // Skip animation on first render if skipInitialAnimation is true
+    if (isFirstRender.current && skipInitialAnimation) {
+      isFirstRender.current = false
+      setAnimatedValue(value)
+      return
+    }
+
+    // Mark first render as complete
+    isFirstRender.current = false
 
     // Start from current animated value using the ref
     const start = animatedValueRef.current
@@ -121,7 +138,13 @@ const CircleProgress = ({
     const animationFrame = requestAnimationFrame(animateProgress)
 
     return () => cancelAnimationFrame(animationFrame)
-  }, [value, maxValue, animationDuration, disableAnimation]) // removed animatedValue from deps
+  }, [
+    value,
+    maxValue,
+    animationDuration,
+    disableAnimation,
+    skipInitialAnimation,
+  ])
 
   React.useEffect(() => {
     if (onColorChange) {

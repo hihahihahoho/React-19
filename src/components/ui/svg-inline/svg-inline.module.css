@@ -1,0 +1,19 @@
+.svg {
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  [fill="#141B34"] {
+    fill: currentColor;
+  }
+  [stroke="#141B34"] {
+    stroke: currentColor;
+  }
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -73,7 +73,12 @@ It provides visual feedback about processes, tasks completion, or resource utili
     },
     disableAnimation: {
       control: "boolean",
-      description: "When true, disables the initial animation effect",
+      description: "When true, disables all animation effects completely",
+    },
+    skipInitialAnimation: {
+      control: "boolean",
+      description:
+        "When true, skips the initial animation on mount but allows subsequent animations",
     },
   },
   decorators: [
@@ -564,7 +569,120 @@ export const AnimatedProgress: Story = {
   },
 }
 
-// ...existing imports and code...
+/**
+ * Skip initial animation - starts at target value but animates on subsequent changes.
+ */
+export const SkipInitialAnimation: Story = {
+  args: {
+    value: 75,
+    maxValue: 100,
+    skipInitialAnimation: true,
+  },
+  render: function SkipInitialAnimationComponent() {
+    const [progress, setProgress] = useState(75)
+
+    return (
+      <div className="flex flex-col items-center gap-8">
+        <div className="flex gap-8">
+          {/* With skipInitialAnimation */}
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              <CircleProgress
+                value={progress}
+                maxValue={100}
+                size={100}
+                strokeWidth={8}
+                skipInitialAnimation
+                animationDuration={500}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-semibold">{progress}%</span>
+              </div>
+            </div>
+            <span className="mt-2 text-sm font-medium">
+              Skip Initial Animation
+            </span>
+            <span className="text-muted-foreground text-xs">
+              Starts at value, animates changes
+            </span>
+          </div>
+
+          {/* With normal animation */}
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              <CircleProgress
+                value={progress}
+                maxValue={100}
+                size={100}
+                strokeWidth={8}
+                animationDuration={500}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-semibold">{progress}%</span>
+              </div>
+            </div>
+            <span className="mt-2 text-sm font-medium">Normal Animation</span>
+            <span className="text-muted-foreground text-xs">
+              Animates from 0 on mount
+            </span>
+          </div>
+
+          {/* With disableAnimation */}
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              <CircleProgress
+                value={progress}
+                maxValue={100}
+                size={100}
+                strokeWidth={8}
+                disableAnimation
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xl font-semibold">{progress}%</span>
+              </div>
+            </div>
+            <span className="mt-2 text-sm font-medium">No Animation</span>
+            <span className="text-muted-foreground text-xs">
+              Never animates
+            </span>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="flex gap-4">
+          <Button variant="outline" onClick={() => setProgress(25)}>
+            Set 25%
+          </Button>
+          <Button variant="outline" onClick={() => setProgress(50)}>
+            Set 50%
+          </Button>
+          <Button variant="outline" onClick={() => setProgress(75)}>
+            Set 75%
+          </Button>
+          <Button variant="outline" onClick={() => setProgress(100)}>
+            Set 100%
+          </Button>
+        </div>
+        <p className="text-muted-foreground max-w-md text-center text-sm">
+          <strong>skipInitialAnimation:</strong> The progress starts at the
+          target value without animation, but will animate when you change the
+          value using the buttons. Compare with normal animation (animates from
+          0) and disabled animation (never animates).
+        </p>
+      </div>
+    )
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The `skipInitialAnimation` prop allows the progress to start at its target value without the initial animation, " +
+          "but still animate when the value changes afterwards. This is useful for cases like timers or initial data display " +
+          "where you don't want the 'filling up' animation on mount.",
+      },
+    },
+  },
+}
 
 /**
  * Gradient progress examples with custom color transitions.

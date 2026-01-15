@@ -20,3 +20,8 @@
 .swiper-scrollbar-drag {
   background: hsl(var(--primary) / 0.5);
 }
+
+/* Posters Effect - Override Swiper 3D shadow defaults */
+.swiper-posters .swiper-slide-shadow {
+  background: var(--posters-shadow-color, rgba(0, 0, 0, 1));
+}

@@ -124,6 +124,7 @@ The select system includes multiple components for different use cases:
 - [Swiper](https://react-19.octung112.workers.dev/r/swiper.json): Powerful carousel/slider component built on Swiper.js with custom pagination, navigation, and effects.
 - [Swiper Panorama](https://react-19.octung112.workers.dev/r/swiper-panorama.json): Custom Swiper effect plugin for 3D panoramic carousel.
 - [Swiper Expo](https://react-19.octung112.workers.dev/r/swiper-expo.json): Custom Swiper effect plugin for parallax zoom effect with grayscale.
+- [Swiper Posters](https://react-19.octung112.workers.dev/r/swiper-posters.json): Custom Swiper effect plugin for 3D stacked posters carousel with depth, rotation and shadow.
 
 ## Table Components
 

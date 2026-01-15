@@ -1977,6 +1977,24 @@
       ]
     },
     {
+      "name": "swiper-posters",
+      "author": "hihahihahoho",
+      "dependencies": [
+        "swiper"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/swiper.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/swiper/swiper-posters.ts",
+          "type": "registry:component",
+          "target": "components/ui/swiper/swiper-posters.ts"
+        }
+      ]
+    },
+    {
       "name": "data-table-server",
       "author": "hihahihahoho",
       "dependencies": [
@@ -2168,6 +2186,32 @@
           "path": "src/lib/number-to-words/en-US.ts",
           "type": "registry:lib",
           "target": "lib/number-to-words/en-US.ts"
+        }
+      ]
+    },
+    {
+      "name": "svg-inline",
+      "author": "hihahihahoho",
+      "title": "SVG Inline",
+      "description": "Loads SVG files inline for dynamic CSS styling with color inheritance and loading states",
+      "dependencies": [
+        "react-svg"
+      ],
+      "registryDependencies": [
+        "skeleton",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/svg-inline/svg-inline.tsx",
+          "type": "registry:component",
+          "target": "components/ui/svg-inline/svg-inline.tsx"
+        },
+        {
+          "path": "src/components/ui/svg-inline/svg-inline.module.css",
+          "type": "registry:file",
+          "target": "components/ui/svg-inline/svg-inline.module.css"
         }
       ]
     }
