@@ -8,12 +8,12 @@ import { cn } from "@/lib/utils"
 
 type StickyDirection = "top" | "bottom" | "left" | "right"
 
-export interface StickyProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface StickyProps extends React.HTMLAttributes<HTMLElement> {
   direction?: StickyDirection
   onStickyChange?: (isSticky: boolean) => void
   asChild?: boolean
   stickyClassName?: string
-  ref?: React.Ref<HTMLDivElement>
+  ref?: React.Ref<HTMLElement>
 }
 
 function Sticky({
@@ -27,7 +27,7 @@ function Sticky({
   ref,
   ...props
 }: StickyProps) {
-  const internalRef = React.useRef<HTMLDivElement>(null)
+  const internalRef = React.useRef<React.ComponentRef<typeof Slot>>(null)
   const composedRefs = useComposedRefs(internalRef, ref)
   const [isSticky, setIsSticky] = React.useState(false)
 
@@ -69,8 +69,9 @@ function Sticky({
 
   return (
     <Comp
-      // @ts-expect-error: React 19 RefCallback types conflict with Slot/HTMLElement types
-      ref={composedRefs}
+      ref={(node: HTMLDivElement | null) => {
+        composedRefs(node)
+      }}
       data-slot="sticky"
       data-sticky-direction={direction}
       data-sticky={isSticky ? "" : undefined}

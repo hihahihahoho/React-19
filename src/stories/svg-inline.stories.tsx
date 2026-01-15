@@ -84,6 +84,7 @@ export const Basic: Story = {
  * SVG Inline with different sizes using Tailwind classes.
  */
 export const SizeVariants: Story = {
+  args: { src: "/images/icons/theme-switch.svg" },
   render: () => (
     <div className="flex flex-wrap items-end gap-8">
       <div className="flex flex-col items-center">
@@ -126,6 +127,7 @@ export const SizeVariants: Story = {
  * SVG Inline inherits the text color of its parent container.
  */
 export const ColorInheritance: Story = {
+  args: { src: "/images/icons/theme-switch.svg" },
   render: () => (
     <div className="flex flex-wrap items-center gap-6">
       <div className="flex flex-col items-center text-red-500">
@@ -168,6 +170,7 @@ export const ColorInheritance: Story = {
  * SVG Inline with hover color transitions.
  */
 export const HoverEffects: Story = {
+  args: { src: "/images/icons/theme-switch.svg" },
   render: () => (
     <div className="flex flex-wrap items-center gap-6">
       <div className="flex flex-col items-center">
@@ -204,6 +207,7 @@ export const HoverEffects: Story = {
  * Using SVGInline in different contexts like buttons and cards.
  */
 export const UsageInContext: Story = {
+  args: { src: "/images/icons/theme-switch.svg" },
   render: () => (
     <div className="flex flex-col gap-8">
       {/* In buttons */}
@@ -285,6 +289,7 @@ export const UsageInContext: Story = {
  * A comprehensive showcase of all SVGInline features.
  */
 export const CompleteShowcase: Story = {
+  args: { src: "/images/icons/theme-switch.svg" },
   render: () => (
     <div className="grid gap-12">
       <div>
