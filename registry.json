@@ -43,6 +43,27 @@
       ]
     },
     {
+      "name": "sticky",
+      "author": "hihahihahoho",
+      "title": "Sticky",
+      "description": "Detect when sticky positioned elements become stuck using IntersectionObserver with sentinel pattern",
+      "dependencies": [
+        "@radix-ui/react-slot"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/compose-refs.json",
+        "utils"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/sticky.tsx",
+          "type": "registry:component",
+          "target": "components/ui/sticky.tsx"
+        }
+      ]
+    },
+    {
       "name": "utils-plus",
       "author": "hihahihahoho",
       "type": "registry:lib",

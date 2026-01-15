@@ -30,6 +30,7 @@
 - [Copy Button](https://react-19.octung112.workers.dev/r/copy-button.json): Pre-styled copy button with toast feedback, built on Copy component.
 - [Empty State](https://react-19.octung112.workers.dev/r/empty-state.json): Empty state component for no data scenarios.
 - [SVG Inline](https://react-19.octung112.workers.dev/r/svg-inline.json): Loads SVG files inline for dynamic CSS styling with currentColor inheritance and loading states.
+- [Sticky](https://react-19.octung112.workers.dev/r/sticky.json): Detects when a sticky positioned element becomes "stuck" to the viewport. Supports direction (top/bottom/left/right) and custom sticky styles.
 
 > **Missing from shadcn/ui**: Skeleton, Card, Aspect Ratio, Separator (native shadcn versions recommended)
 
