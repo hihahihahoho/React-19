@@ -26,7 +26,10 @@
 - [Avatar](https://react-19.octung112.workers.dev/r/avatar.json): Enhanced avatar component with fallback and image support.
 - [Badge](https://react-19.octung112.workers.dev/r/badge.json): Badge component for labels and status indicators.
 - [Circle Progress](https://react-19.octung112.workers.dev/r/circle-progress.json): Circular progress indicator component.
+- [Copy](https://react-19.octung112.workers.dev/r/copy.json): Base copy-to-clipboard component with render prop pattern and state management (idle, copying, copied, error).
+- [Copy Button](https://react-19.octung112.workers.dev/r/copy-button.json): Pre-styled copy button with toast feedback, built on Copy component.
 - [Empty State](https://react-19.octung112.workers.dev/r/empty-state.json): Empty state component for no data scenarios.
+- [SVG Inline](https://react-19.octung112.workers.dev/r/svg-inline.json): Loads SVG files inline for dynamic CSS styling with currentColor inheritance and loading states.
 
 > **Missing from shadcn/ui**: Skeleton, Card, Aspect Ratio, Separator (native shadcn versions recommended)
 
@@ -163,6 +166,7 @@ The select system includes multiple components for different use cases:
 - [file-size](https://react-19.octung112.workers.dev/r/file-size.json): Utility for formatting file sizes.
 - [const](https://react-19.octung112.workers.dev/r/const.json): Shared constants and configuration values.
 - [compose-refs](https://react-19.octung112.workers.dev/r/compose-refs.json): Utility for composing multiple refs.
+- [number-to-words](https://react-19.octung112.workers.dev/r/number-to-words.json): Converts numeric values to words with multi-locale support (vi-VN, en-US). Vietnamese follows lẻ, mốt, lăm rules. English uses hyphenated format.
 
 ## Form Utilities
 
