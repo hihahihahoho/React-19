@@ -556,7 +556,7 @@ export const DisplayVariantsComparison: Story = {
         <h3 className="mt-8 text-lg font-medium">List Display</h3>
         <FileUploadList
           defaultValue={sampleFiles}
-          maxFiles={2}
+          maxFiles={1}
           maxFileSize={500000}
           formComposition={{
             label: "List Display",
