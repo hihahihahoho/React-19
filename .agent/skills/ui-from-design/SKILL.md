@@ -17,89 +17,14 @@ Generate React UI components from design input (image, Figma, or text descriptio
 
 ## Available Components
 
-### Form Components (use with react-hook-form)
+**Đọc kỹ danh sách component tại:** https://react-19.octung112.workers.dev/llms.txt
 
-Khi tạo form, luôn dùng version `*Form` với `control` prop:
+Link trên chứa đầy đủ:
 
-| Component               | Import                                                     | Key Props                                         |
-| ----------------------- | ---------------------------------------------------------- | ------------------------------------------------- |
-| `InputForm`             | `@/components/ui/input/input-form`                         | `control`, `name`, `type`, `formComposition`      |
-| `InputNumberForm`       | `@/components/ui/input/input-number-form`                  | `control`, `name`, `formComposition`              |
-| `InputTagForm`          | `@/components/ui/input/input-tag-form`                     | `control`, `name`, `options`, `mode`              |
-| `InputAutoCompleteForm` | `@/components/ui/input/input-auto-complete-form`           | `control`, `name`, `options`                      |
-| `TextareaForm`          | `@/components/ui/textarea/textarea-form`                   | `control`, `name`, `maxLength`, `formComposition` |
-| `SelectForm`            | `@/components/ui/select/select-form`                       | `control`, `name`, `options`, `formComposition`   |
-| `MultiselectForm`       | `@/components/ui/select/multiselect-form`                  | `control`, `name`, `options`                      |
-| `CheckboxForm`          | `@/components/ui/selection-controls/checkbox-form`         | `control`, `name`, children                       |
-| `CheckboxGroupForm`     | `@/components/ui/selection-controls/checkbox-group-form`   | `control`, `name`, `options`                      |
-| `RadioGroupForm`        | `@/components/ui/selection-controls/radio-group-form`      | `control`, `name`, `options`                      |
-| `SwitchForm`            | `@/components/ui/selection-controls/switch-form`           | `control`, `name`                                 |
-| `DatePickerForm`        | `@/components/ui/datepicker/datepicker-form`               | `control`, `name`, `formComposition`              |
-| `DateRangePickerForm`   | `@/components/ui/date-range-picker/date-range-picker-form` | `control`, `name`                                 |
-| `RatingForm`            | `@/components/ui/rating/rating-form`                       | `control`, `name`, `max`                          |
-| `SliderForm`            | `@/components/ui/slider-form`                              | `control`, `name`, `min`, `max`                   |
-| `InputOTPForm`          | `@/components/ui/input-otp-form`                           | `control`, `name`, `maxLength`                    |
-| `FileUploadForm`        | `@/components/ui/file-upload/file-upload-form`             | `control`, `name`                                 |
-| `ImageCropAvatarForm`   | `@/components/ui/image-crop-avatar-form`                   | `control`, `name`                                 |
-
-### Layout Components
-
-| Component                                                                                                      | Import                      | Key Props      |
-| -------------------------------------------------------------------------------------------------------------- | --------------------------- | -------------- |
-| `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`                              | `@/components/ui/card`      | `className`    |
-| `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter` | `@/components/ui/dialog`    | -              |
-| `Sheet`, `SheetTrigger`, `SheetContent`, `SheetHeader`, `SheetTitle`                                           | `@/components/ui/sheet`     | `side`         |
-| `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`                                                               | `@/components/ui/tabs/tabs` | `defaultValue` |
-| `Separator`                                                                                                    | `@/components/ui/separator` | `orientation`  |
-
-### Data Display
-
-| Component                                 | Import                                           | Key Props                      |
-| ----------------------------------------- | ------------------------------------------------ | ------------------------------ |
-| `DataTable`                               | `@/components/ui/table/data-table`               | `variant`, `showPagination`    |
-| `DataTableProvider`                       | `@/components/ui/table/data-table-context`       | `columns`, `data`, `pageSize`  |
-| `DataTableSelection`                      | `@/components/ui/table/data-table-selection`     | children (action buttons)      |
-| `ShowHideColumnButton`                    | `@/components/ui/table/show-hide-collumn-button` | -                              |
-| `Badge`                                   | `@/components/ui/badge`                          | `variant`                      |
-| `Alert`, `AlertTitle`, `AlertDescription` | `@/components/ui/alert`                          | `variant`                      |
-| `EmptyState`                              | `@/components/ui/empty-state`                    | `icon`, `title`, `description` |
-| `Skeleton`                                | `@/components/ui/skeleton`                       | `className`                    |
-| `CircleProgress`                          | `@/components/ui/circle-progress`                | `value`, `max`                 |
-
-### Actions
-
-| Component      | Import                          | Key Props                                                           |
-| -------------- | ------------------------------- | ------------------------------------------------------------------- |
-| `Button`       | `@/components/ui/button`        | `variant`, `size`, `iconOnly`, `isRounded`, `isLoading`, `disabled` |
-| `DropdownMenu` | `@/components/ui/dropdown-menu` | -                                                                   |
-| `ContextMenu`  | `@/components/ui/context-menu`  | -                                                                   |
-| `CopyButton`   | `@/components/ui/copy-button`   | `value`                                                             |
-
-> **Note**: `Button` giống shadcn/ui nhưng thêm:
->
-> - `iconOnly` - button chỉ chứa icon, không padding sides
-> - `isRounded` - bo tròn full (`rounded-full`)
-> - `isLoading` - hiện loading spinner
-
-### Feedback
-
-| Component           | Import                   | Usage                                              |
-| ------------------- | ------------------------ | -------------------------------------------------- |
-| `toast`             | `sonner`                 | `toast.success("Message")`, `toast.error("Error")` |
-| `Sonner` (provider) | `@/components/ui/sonner` | Add to layout once                                 |
-
-### Special Components
-
-| Component           | Import                                      | Key Props                                     |
-| ------------------- | ------------------------------------------- | --------------------------------------------- |
-| `InputTag`          | `@/components/ui/input/input-tag`           | `options`, `mode`, `maxTags`, `onValueChange` |
-| `InputAutoComplete` | `@/components/ui/input/input-auto-complete` | `options`, `onSelect`                         |
-| `Multiselect`       | `@/components/ui/select/multiselect`        | `options`, `value`, `onValueChange`           |
-| `Sortable`          | `@/components/ui/sortable`                  | `items`, `onReorder`                          |
-| `Swiper`            | `@/components/ui/swiper/swiper`             | `slides`                                      |
-| `PhotoSwipe`        | `@/components/ui/photoswipe`                | `images`                                      |
-| `ImageCrop`         | `@/components/ui/image-crop`                | `src`, `onCrop`                               |
-| `FileUpload`        | `@/components/ui/file-upload/file-upload`   | `onFilesChange`, `accept`, `maxFiles`         |
+- Tất cả UI components có sẵn
+- Import paths
+- Props và cách sử dụng
+- Form components với `*Form` pattern
 
 ---
 
@@ -289,37 +214,54 @@ formComposition={{
 
 ## File Structure Pattern (TanStack Router)
 
-Khi generate UI cho route page:
+### Cách TanStack Router hoạt động
+
+Khi tạo thư mục và file trong `src/routes/`:
+
+- TanStack **tự động sinh template** khi tạo `index.tsx` hoặc `route.tsx`
+- Chỉ cần tạo file, template sẽ được fill sẵn
+
+### Các loại file
+
+| File         | Mô tả                                                                                |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `index.tsx`  | Entry point của route - hiển thị content chính                                       |
+| `route.tsx`  | Layout wrapper - dùng `<Outlet />` cho sub-routes, thường có `staticData: { title }` |
+| `$param.tsx` | Dynamic route với parameter                                                          |
+
+### Cấu trúc chuẩn
 
 ```
 src/routes/{route-name}/
-├── -components/           # Logic & reusable parts
-│   ├── schema.ts          # Zod validation schema (if form)
-│   ├── context.tsx        # Form context (if form)
-│   └── {component}.tsx    # UI components
-├── index.tsx              # Route page (main entry)
-└── route.tsx              # Route definition (optional)
+├── (index)/               # Group folder cho index page (không ảnh hưởng URL)
+│   ├── -components/       # Components cho index page
+│   │   └── {component}.tsx
+│   └── index.tsx          # Route entry - TanStack tự sinh
+└── route.tsx              # Layout wrapper với Outlet - TanStack tự sinh
 ```
+
+> **Lưu ý**: Form trong dialog hoặc component nhỏ → gộp schema + context + UI vào **1 file**. Chỉ tách file khi form phức tạp.
 
 ### Ví dụ: Contact Page
 
 ```
 src/routes/contact/
-├── -components/
-│   ├── schema.ts
-│   ├── context.tsx
-│   └── contact-form.tsx
-├── index.tsx              # Route page - import ContactForm
-└── route.tsx              # createFileRoute('/contact')
+├── (index)/
+│   ├── -components/
+│   │   └── contact-form.tsx   # Gộp schema + form UI trong 1 file
+│   └── index.tsx
+└── route.tsx
 ```
 
-### index.tsx (Route Page)
+### index.tsx (Route Entry)
+
+TanStack tự sinh template này khi tạo file:
 
 ```tsx
 import { createFileRoute } from "@tanstack/react-router"
 import { ContactForm } from "./-components/contact-form"
 
-export const Route = createFileRoute("/contact")({
+export const Route = createFileRoute("/contact/")({
   component: ContactPage,
 })
 
@@ -333,21 +275,62 @@ function ContactPage() {
 }
 ```
 
-### Dynamic Route Names
+### route.tsx (Layout Wrapper)
 
-Route file có thể có tên khác ngoài `index.tsx`:
+TanStack tự sinh template, cần sửa thêm:
 
-- `index.tsx` → `/route-name`
-- `$id.tsx` → `/route-name/:id` (dynamic param)
-- `card-abc.tsx` → `/route-name/card-abc`
+- `<Outlet />` để render sub-routes
+- `staticData: { title }` cho breadcrumb/navigation
+
+```tsx
+import { createFileRoute, Outlet } from "@tanstack/react-router"
+
+export const Route = createFileRoute("/contact")({
+  staticData: {
+    title: "Liên hệ", // Dùng cho breadcrumb, document title
+  },
+  component: ContactLayout,
+})
+
+function ContactLayout() {
+  return (
+    <div>
+      {/* Có thể thêm header, sidebar riêng cho section này */}
+      <Outlet />
+    </div>
+  )
+}
+```
+
+### Dynamic Routes
+
+| File           | URL                    |
+| -------------- | ---------------------- |
+| `index.tsx`    | `/route-name`          |
+| `$id.tsx`      | `/route-name/:id`      |
+| `settings.tsx` | `/route-name/settings` |
 
 ```
 src/routes/dashboard/
 ├── -components/
 │   └── stats-card.tsx
+├── route.tsx              # Layout với Outlet
 ├── index.tsx              # /dashboard
 ├── settings.tsx           # /dashboard/settings
 └── $userId.tsx            # /dashboard/:userId
+```
+
+### Group Routes (folders)
+
+Dùng `(folder)` để group mà không ảnh hưởng URL:
+
+```
+src/routes/admin/
+├── (management)/          # Group không ảnh hưởng URL
+│   ├── users.tsx          # /admin/users
+│   └── roles.tsx          # /admin/roles
+├── route.tsx
+└── index.tsx
 ```
 
 ---
@@ -449,32 +432,51 @@ meta: {
 
 ---
 
-## Dialog Pattern
+## Alert Dialog (Programmatic)
+
+Dùng `alertDialog` để hiện dialog confirm/warning mà không cần render component:
 
 ```tsx
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-;<Dialog>
-  <DialogTrigger asChild>
-    <Button>Open</Button>
-  </DialogTrigger>
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>Title</DialogTitle>
-    </DialogHeader>
-    {/* Content */}
-    <DialogFooter>
-      <Button>Action</Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
+import { alertDialog } from "@/hooks/use-alert-dialog"
+
+// Confirm action
+alertDialog({
+  status: "warning",
+  title: "Xác nhận xoá",
+  description: "Bạn có chắc chắn muốn xoá?",
+  showCancel: true,
+  action: (
+    <Button variant="destructive" onClick={() => handleDelete()}>
+      Xoá
+    </Button>
+  ),
+})
+
+// Success notification
+alertDialog({
+  status: "success",
+  title: "Thành công",
+  description: "Đã lưu thay đổi.",
+})
 ```
+
+### alertDialog Options
+
+```tsx
+{
+  status?: "default" | "success" | "warning" | "destructive",
+  title: ReactNode,
+  description?: ReactNode,
+  content?: ReactNode,           // Custom content
+  action?: ReactNode,            // Action button
+  showCancel?: boolean,          // Hiện nút Cancel
+  cancelContent?: ReactNode,     // Custom cancel text
+  showFooter?: boolean,
+  footerOrientation?: "horizontal" | "vertical",
+}
+```
+
+> **Note**: Cần có `<AlertDialogContainer />` trong layout để render dialogs.
 
 ---
 
