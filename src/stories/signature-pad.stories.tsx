@@ -79,7 +79,7 @@ It provides a professional interface for capturing user signatures with features
   },
   decorators: [
     (Story) => (
-      <div className="w-100 min-w-[400px]">
+      <div className="flex items-center justify-center *:w-full md:w-96">
         <Story />
       </div>
     ),

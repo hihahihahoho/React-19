@@ -118,6 +118,76 @@ export function useSignaturePad() {
 }
 
 // ============================================================================
+// Utilities
+// ============================================================================
+
+function getTrimmedCanvas(canvas: HTMLCanvasElement) {
+  const ctx = canvas.getContext("2d")
+  if (!ctx) return canvas
+
+  const copy = document.createElement("canvas")
+  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height)
+  const l = pixels.data.length
+  let i
+  const bound = {
+    top: null as number | null,
+    left: null as number | null,
+    right: null as number | null,
+    bottom: null as number | null,
+  }
+  let x, y
+
+  for (i = 0; i < l; i += 4) {
+    if (pixels.data[i + 3] !== 0) {
+      x = (i / 4) % canvas.width
+      y = Math.floor(i / 4 / canvas.width)
+
+      if (bound.top === null) {
+        bound.top = y
+      }
+
+      if (bound.left === null) {
+        bound.left = x
+      } else if (x < bound.left) {
+        bound.left = x
+      }
+
+      if (bound.right === null) {
+        bound.right = x
+      } else if (bound.right < x) {
+        bound.right = x
+      }
+
+      if (bound.bottom === null) {
+        bound.bottom = y
+      } else if (bound.bottom < y) {
+        bound.bottom = y
+      }
+    }
+  }
+
+  if (
+    bound.top === null ||
+    bound.left === null ||
+    bound.right === null ||
+    bound.bottom === null
+  ) {
+    return canvas
+  }
+
+  const trimHeight = bound.bottom - bound.top + 1
+  const trimWidth = bound.right - bound.left + 1
+  const trimmed = ctx.getImageData(bound.left, bound.top, trimWidth, trimHeight)
+
+  copy.width = trimWidth
+  copy.height = trimHeight
+  const copyCtx = copy.getContext("2d")
+  copyCtx?.putImageData(trimmed, 0, 0)
+
+  return copy
+}
+
+// ============================================================================
 // SignaturePadRoot
 // ============================================================================
 
@@ -169,7 +239,10 @@ function SignaturePadRoot({
 
     const data: SignaturePadData = {
       isEmpty: empty,
-      dataUrl: empty ? null : signaturePadRef.current.toDataURL(),
+      dataUrl:
+        empty || !canvasRef.current
+          ? null
+          : getTrimmedCanvas(canvasRef.current).toDataURL(),
       svg: empty ? null : signaturePadRef.current.toSVG(),
       points: empty ? null : signaturePadRef.current.toData(),
     }
@@ -331,7 +404,10 @@ function SignaturePadRoot({
     const empty = signaturePadRef.current.isEmpty()
     return {
       isEmpty: empty,
-      dataUrl: empty ? null : signaturePadRef.current.toDataURL(),
+      dataUrl:
+        empty || !canvasRef.current
+          ? null
+          : getTrimmedCanvas(canvasRef.current).toDataURL(),
       svg: empty ? null : signaturePadRef.current.toSVG(),
       points: empty ? null : signaturePadRef.current.toData(),
     }
@@ -341,7 +417,11 @@ function SignaturePadRoot({
   padApiRef.current = {
     isEmpty: () => signaturePadRef.current?.isEmpty() ?? true,
     toDataURL: (type?: string, quality?: number) =>
-      signaturePadRef.current?.toDataURL(type, quality) ?? "",
+      !signaturePadRef.current ||
+      signaturePadRef.current.isEmpty() ||
+      !canvasRef.current
+        ? ""
+        : getTrimmedCanvas(canvasRef.current).toDataURL(type, quality),
     toSVG: (opts?: { includeBackgroundColor?: boolean }) =>
       signaturePadRef.current?.toSVG(opts) ?? "",
     toData: () => signaturePadRef.current?.toData() ?? [],
