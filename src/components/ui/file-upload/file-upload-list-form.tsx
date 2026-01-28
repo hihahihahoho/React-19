@@ -1,20 +1,17 @@
 "use client"
 
+import { ZodFileMeta } from "@/lib/zod"
 import { ControllerProps, FieldPath, FieldValues } from "react-hook-form"
 import { FormField } from "../form/form"
 import { useZodSchema } from "../form/zod-schema-context"
 import { FileUploadList, FileUploadListProps } from "./file-upload-list"
 
-type JsonDescriptionType = {
-  accepted?: string[]
-  maxFiles?: number
-  maxFileSize?: number
-}
-
 export interface FileUploadListFormProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> extends Omit<ControllerProps<TFieldValues, TName>, "render">,
+>
+  extends
+    Omit<ControllerProps<TFieldValues, TName>, "render">,
     Omit<
       FileUploadListProps,
       "name" | "value" | "onFileChange" | "defaultValue"
@@ -30,8 +27,8 @@ const FileUploadListForm = <
   ...props
 }: FileUploadListFormProps<TFieldValues, TName>) => {
   const { getSchemaFromPath } = useZodSchema()
-  const { isRequired, description } = getSchemaFromPath(name)
-  const jsonDescription: JsonDescriptionType = JSON.parse(description || "{}")
+  const { isRequired, meta } = getSchemaFromPath(name)
+  const metadata = meta() as ZodFileMeta | undefined
   return (
     <FormField
       name={name}
@@ -44,9 +41,9 @@ const FileUploadListForm = <
 
         return (
           <FileUploadList
-            maxFileSize={jsonDescription.maxFileSize}
-            maxFiles={jsonDescription.maxFiles}
-            accept={jsonDescription.accepted}
+            maxFileSize={metadata?.maxFileSize}
+            maxFiles={metadata?.maxFiles}
+            accept={metadata?.accepted}
             {...props}
             ref={ref}
             value={value || []}
