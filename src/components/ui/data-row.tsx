@@ -63,7 +63,7 @@ const DataRowValue = ({
     <div
       data-slot="data-row-value"
       className={cn(
-        "text-text-14-regular word-break col-span-7 flex items-center gap-2 sm:col-span-8",
+        "col-span-7 flex items-center gap-2 wrap-break-word sm:col-span-8",
         className
       )}
       {...props}
