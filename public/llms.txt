@@ -64,6 +64,7 @@
 - [Slider](https://react-19.octung112.workers.dev/r/slider.json): Slider component with form integration.
 - [Switch](https://react-19.octung112.workers.dev/r/switch.json): Toggle switch component with form integration.
 - [Textarea](https://react-19.octung112.workers.dev/r/textarea.json): Multi-line text input component with auto-resize support.
+- [Signature Pad](https://react-19.octung112.workers.dev/r/signature-pad.json): Smooth signature drawing component with form integration and undo/redo support.
 
 > **Missing from Origin UI / shadcn**: Color Picker, Time Picker, Date Time Picker (combine with existing date picker)
 

@@ -695,6 +695,37 @@
       ]
     },
     {
+      "name": "signature-pad",
+      "author": "hihahihahoho",
+      "title": "Signature Pad",
+      "description": "A smooth signature drawing component based on signature_pad library with form integration and undo/redo support.",
+      "dependencies": [
+        "signature_pad",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://react-19.octung112.workers.dev/r/button.json",
+        "button-group",
+        "https://react-19.octung112.workers.dev/r/form.json",
+        "https://react-19.octung112.workers.dev/r/zod-schema-context.json",
+        "utils",
+        "https://react-19.octung112.workers.dev/r/compose-refs.json"
+      ],
+      "type": "registry:component",
+      "files": [
+        {
+          "path": "src/components/ui/signature-pad/signature-pad.tsx",
+          "type": "registry:component",
+          "target": "components/ui/signature-pad/signature-pad.tsx"
+        },
+        {
+          "path": "src/components/ui/signature-pad/signature-pad-form.tsx",
+          "type": "registry:component",
+          "target": "components/ui/signature-pad/signature-pad-form.tsx"
+        }
+      ]
+    },
+    {
       "name": "input-otp",
       "author": "hihahihahoho",
       "dependencies": [],
