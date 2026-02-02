@@ -1,7 +1,7 @@
 "use client"
 
 import { ZodDateMeta } from "@/lib/zod"
-import { isBefore } from "date-fns"
+import { isBefore, startOfDay } from "date-fns"
 import {
   ControllerProps,
   FieldPath,
@@ -64,10 +64,17 @@ const DatePickerForm = <
             {...props}
             calendarProps={{
               disabled: (date) => {
-                if (metadata?.minDate && isBefore(date, metadata?.minDate)) {
+                const dateDay = startOfDay(date)
+                if (
+                  metadata?.minDate &&
+                  isBefore(dateDay, startOfDay(metadata.minDate))
+                ) {
                   return true
                 }
-                if (metadata?.maxDate && isBefore(metadata?.maxDate, date)) {
+                if (
+                  metadata?.maxDate &&
+                  isBefore(startOfDay(metadata.maxDate), dateDay)
+                ) {
                   return true
                 }
                 return false

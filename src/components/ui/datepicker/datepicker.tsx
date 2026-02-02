@@ -37,8 +37,10 @@ import {
 
 export type OnValueChangeDatePicker = Date | undefined
 
-export interface DatePickerProps
-  extends Omit<React.ComponentProps<"button">, "value" | "defaultValue"> {
+export interface DatePickerProps extends Omit<
+  React.ComponentProps<"button">,
+  "value" | "defaultValue"
+> {
   placeholder?: React.ReactNode
   placeholderColor?: string
   defaultValue?: Date
